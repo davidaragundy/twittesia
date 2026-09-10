@@ -33,7 +33,7 @@ export const useRecoveryCodeMutation = ({ form }: Props) => {
           duration: 20_000,
           action: {
             label: "Go to settings",
-            onClick: () => router.push("/settings/security"),
+            onClick: () => router.push("/home?settings=security"),
           },
         },
       );

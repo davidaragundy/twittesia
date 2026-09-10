@@ -19,7 +19,7 @@ export const useChangeEmailMutation = ({ form }: Props) => {
     mutationFn: async (values: ChangeEmailFormValues) => {
       const { error } = await authClient.changeEmail({
         newEmail: values.email,
-        callbackURL: "/settings/account",
+        callbackURL: "/home?settings=account",
       });
 
       if (error) return Promise.reject(error);
