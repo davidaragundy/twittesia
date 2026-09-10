@@ -2,7 +2,7 @@ import { ArrowReloadHorizontalIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 
-import { TypographyH1 } from "@/shared/components/ui/typography";
+import { TypographyH1 } from "@/shared/components/typography";
 
 export default function NotFound() {
   return (

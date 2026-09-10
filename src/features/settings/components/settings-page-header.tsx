@@ -2,7 +2,7 @@ import { ArrowLeft01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 
-import { TypographyH3, TypographyMuted } from "@/shared/components/ui/typography";
+import { TypographyH3, TypographyMuted } from "@/shared/components/typography";
 
 type Props = {
   title: string;

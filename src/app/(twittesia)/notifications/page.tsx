@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 
-import { TypographyH1, TypographyMuted } from "@/shared/components/ui/typography";
+import { TypographyH1, TypographyMuted } from "@/shared/components/typography";
 
 export const metadata: Metadata = {
   title: "Twittesia | Notifications",

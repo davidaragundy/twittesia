@@ -4,10 +4,10 @@ import { Loading03Icon, ArrowReloadHorizontalIcon } from "@hugeicons/core-free-i
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
+import { TypographyH4 } from "@/shared/components/typography";
 import { Button } from "@/shared/components/ui/button";
 import { Field, FieldLabel, FieldDescription, FieldError } from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
-import { TypographyH4 } from "@/shared/components/ui/typography";
 
 import { useGenerateBackupCodesForm } from "@/features/settings/hooks/use-generate-backup-codes-form";
 

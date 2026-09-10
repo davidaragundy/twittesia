@@ -5,6 +5,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { Controller } from "react-hook-form";
 
+import { TypographyH1, TypographyP } from "@/shared/components/typography";
 import { Button } from "@/shared/components/ui/button";
 import {
   Card,
@@ -15,7 +16,6 @@ import {
 } from "@/shared/components/ui/card";
 import { Field, FieldLabel, FieldError } from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
-import { TypographyH1, TypographyP } from "@/shared/components/ui/typography";
 import { cn } from "@/shared/utils/cn";
 
 import { useForgotPasswordForm } from "@/features/auth/hooks/use-forgot-password-form";
@@ -51,7 +51,7 @@ export function ForgotPasswordForm({ className, ...props }: React.ComponentProps
                       {...field}
                       id={field.name}
                       aria-invalid={fieldState.invalid}
-                      className="peer ps-9 shadow-none not-aria-invalid:border-none aria-invalid:text-destructive-foreground"
+                      className="peer aria-invalid:text-destructive-foreground ps-9 shadow-none not-aria-invalid:border-none"
                       type="email"
                       disabled={isPending}
                       placeholder={fieldState.invalid ? undefined : "david@aragundy.com"}

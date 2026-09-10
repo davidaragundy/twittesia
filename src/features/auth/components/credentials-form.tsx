@@ -29,7 +29,7 @@ export function CredentialsForm() {
                 {...field}
                 id={field.name}
                 aria-invalid={fieldState.invalid}
-                className="peer ps-9 shadow-none not-aria-invalid:border-none aria-invalid:text-destructive-foreground"
+                className="peer aria-invalid:text-destructive-foreground ps-9 shadow-none not-aria-invalid:border-none"
                 disabled={isPending}
                 placeholder={fieldState.invalid ? undefined : "david@aragundy.com"}
               />
@@ -71,7 +71,7 @@ export function CredentialsForm() {
                 {...field}
                 id={field.name}
                 aria-invalid={fieldState.invalid}
-                className="peer ps-9 shadow-none not-aria-invalid:border-none aria-invalid:text-destructive-foreground"
+                className="peer aria-invalid:text-destructive-foreground ps-9 shadow-none not-aria-invalid:border-none"
                 disabled={isPending}
                 type="password"
                 placeholder={fieldState.invalid ? undefined : "••••••••"}

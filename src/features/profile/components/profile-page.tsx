@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
+import { TypographyH1, TypographyMuted, TypographyP } from "@/shared/components/typography";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
-import { TypographyH1, TypographyMuted, TypographyP } from "@/shared/components/ui/typography";
 
 import { getProfile } from "@/features/profile/actions/get-profile";
 

@@ -6,6 +6,7 @@ import { REGEXP_ONLY_DIGITS } from "input-otp";
 import Link from "next/link";
 import { Controller } from "react-hook-form";
 
+import { TypographyH1, TypographyP } from "@/shared/components/typography";
 import { Button } from "@/shared/components/ui/button";
 import {
   Card,
@@ -16,7 +17,6 @@ import {
 } from "@/shared/components/ui/card";
 import { Field, FieldError } from "@/shared/components/ui/field";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/shared/components/ui/input-otp";
-import { TypographyH1, TypographyP } from "@/shared/components/ui/typography";
 import { cn } from "@/shared/utils/cn";
 
 import { useTwoFactorForm } from "@/features/auth/hooks/use-two-factor-form";

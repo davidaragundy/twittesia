@@ -6,8 +6,8 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { NavLink } from "@/shared/components/nav-link";
 import { NavUser } from "@/shared/components/nav-user";
 import { NavUserSkeleton } from "@/shared/components/nav-user-skeleton";
+import { TypographyLarge } from "@/shared/components/typography";
 import { Button } from "@/shared/components/ui/button";
-import { TypographyLarge } from "@/shared/components/ui/typography";
 import { useSidebar } from "@/shared/hooks/use-sidebar";
 
 export const Sidebar = () => {

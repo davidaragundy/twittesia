@@ -1,7 +1,7 @@
+import { TypographyH4 } from "@/shared/components/typography";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Skeleton } from "@/shared/components/ui/skeleton";
-import { TypographyH4 } from "@/shared/components/ui/typography";
 
 import { ActiveSessionCardSkeleton } from "@/features/settings/components/active-session-card-skeleton";
 import { SettingsPageHeader } from "@/features/settings/components/settings-page-header";

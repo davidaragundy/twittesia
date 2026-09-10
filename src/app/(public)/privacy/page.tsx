@@ -5,7 +5,7 @@ import {
   TypographyH2,
   TypographyMuted,
   TypographyP,
-} from "@/shared/components/ui/typography";
+} from "@/shared/components/typography";
 
 export const metadata: Metadata = {
   title: "Twittesia | Privacy Policy",

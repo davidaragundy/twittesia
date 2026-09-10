@@ -5,6 +5,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { Controller } from "react-hook-form";
 
+import { TypographyH1, TypographyP } from "@/shared/components/typography";
 import { Button } from "@/shared/components/ui/button";
 import {
   Card,
@@ -15,7 +16,6 @@ import {
 } from "@/shared/components/ui/card";
 import { Field, FieldError } from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
-import { TypographyH1, TypographyP } from "@/shared/components/ui/typography";
 import { cn } from "@/shared/utils/cn";
 
 import { useRecoveryCodeForm } from "@/features/auth/hooks/use-recovery-code-form";
