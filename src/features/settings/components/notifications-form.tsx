@@ -18,7 +18,7 @@ export function NotificationsForm() {
 
   return (
     <>
-      <div className="relative mx-auto w-full max-w-sm aspect-square">
+      <div className="relative mx-auto aspect-square w-full max-w-sm">
         <Image src="/coming-soon.svg" alt="Coming soon" fill />
       </div>
 
@@ -40,19 +40,19 @@ export function NotificationsForm() {
               defaultValue={field.value}
               className="flex flex-col space-y-1"
             >
-              <Field className="flex items-center space-x-3 space-y-0">
+              <Field className="flex items-center space-y-0 space-x-3">
                 <RadioGroupItem value="all" id="type-all" />
                 <FieldLabel htmlFor="type-all" className="font-normal">
                   All new messages
                 </FieldLabel>
               </Field>
-              <Field className="flex items-center space-x-3 space-y-0">
+              <Field className="flex items-center space-y-0 space-x-3">
                 <RadioGroupItem value="mentions" id="type-mentions" />
                 <FieldLabel htmlFor="type-mentions" className="font-normal">
                   Direct messages and mentions
                 </FieldLabel>
               </Field>
-              <Field className="flex items-center space-x-3 space-y-0">
+              <Field className="flex items-center space-y-0 space-x-3">
                 <RadioGroupItem value="none" id="type-none" />
                 <FieldLabel htmlFor="type-none" className="font-normal">
                   Nothing
@@ -158,7 +158,7 @@ export function NotificationsForm() {
         render={({ field, fieldState }) => (
           <Field
             data-invalid={fieldState.invalid}
-            className="flex flex-row items-start space-x-3 space-y-0"
+            className="flex flex-row items-start space-y-0 space-x-3"
           >
             <Checkbox id={field.name} checked={field.value} onCheckedChange={field.onChange} />
             <div className="space-y-1 leading-none">

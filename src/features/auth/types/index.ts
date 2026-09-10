@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { authClient } from "@/shared/lib/better-auth/client";
+
 import { credentialsFormSchema } from "@/features/auth/schemas/credentials-form-schema";
 import { forgotPasswordFormSchema } from "@/features/auth/schemas/forgot-password-form-schema";
 import { magicLinkFormSchema } from "@/features/auth/schemas/magic-link-form-schema";
@@ -7,7 +9,6 @@ import { recoveryCodeFormSchema } from "@/features/auth/schemas/recovery-code-fo
 import { resetPasswordFormSchema } from "@/features/auth/schemas/reset-password-form-schema";
 import { signUpFormSchema } from "@/features/auth/schemas/sign-up-form-schema";
 import { twoFactorSchema } from "@/features/auth/schemas/two-factor-schema";
-import { authClient } from "@/shared/lib/better-auth/client";
 
 export type CredentialsFormValues = z.infer<typeof credentialsFormSchema>;
 export type ForgotPasswordFormValues = z.infer<typeof forgotPasswordFormSchema>;

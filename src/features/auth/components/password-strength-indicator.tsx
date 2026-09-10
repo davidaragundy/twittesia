@@ -1,7 +1,7 @@
 "use client";
 
-import { HugeiconsIcon } from "@hugeicons/react";
 import { Cancel01Icon, Tick02Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 
 import { usePasswordStrengthIndicator } from "@/features/auth/hooks/use-password-strength-indicator";
 
@@ -16,7 +16,7 @@ export const PasswordStrengthIndicator = ({ password }: Props) => {
   return (
     <>
       <div
-        className="bg-border mt-3 mb-4 h-1 w-full overflow-hidden rounded-full"
+        className="mt-3 mb-4 h-1 w-full overflow-hidden rounded-full bg-border"
         role="progressbar"
         aria-valuenow={strengthScore}
         aria-valuemin={0}
@@ -29,7 +29,7 @@ export const PasswordStrengthIndicator = ({ password }: Props) => {
         />
       </div>
 
-      <p className="text-foreground mb-2 text-sm font-medium">
+      <p className="mb-2 text-sm font-medium text-foreground">
         {getStrengthText(strengthScore)}. Must contain:
       </p>
 

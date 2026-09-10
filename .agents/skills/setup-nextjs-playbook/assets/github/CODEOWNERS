@@ -1,0 +1,4 @@
+# Review is requested automatically from the owners listed here.
+# GitHub skips the request when the owner is the pull request author.
+
+* @{{OWNER}}

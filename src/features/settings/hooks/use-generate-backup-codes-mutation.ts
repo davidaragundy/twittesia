@@ -2,11 +2,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
-import { SESSION_QUERY_KEY } from "@/features/auth/lib/query-keys";
 import { authClient } from "@/shared/lib/better-auth/client";
 
-import { getTxtArrayBuffer } from "@/features/settings/utils/get-txt-array-buffer";
+import { SESSION_QUERY_KEY } from "@/features/auth/lib/query-keys";
 import type { GenerateBackupCodesFormValues } from "@/features/settings/types";
+import { getTxtArrayBuffer } from "@/features/settings/utils/get-txt-array-buffer";
 
 interface Props {
   form: UseFormReturn<GenerateBackupCodesFormValues>;

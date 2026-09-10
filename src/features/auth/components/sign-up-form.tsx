@@ -1,8 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import { Controller } from "react-hook-form";
-import { HugeiconsIcon } from "@hugeicons/react";
 import {
   AtIcon,
   Loading03Icon,
@@ -10,6 +7,9 @@ import {
   Mail01Icon,
   UserIcon,
 } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import Link from "next/link";
+import { Controller } from "react-hook-form";
 
 import { Button } from "@/shared/components/ui/button";
 import {
@@ -24,8 +24,8 @@ import { Input } from "@/shared/components/ui/input";
 import { TypographyH1, TypographyP } from "@/shared/components/ui/typography";
 import { cn } from "@/shared/utils/cn";
 
-import { useSignUpForm } from "@/features/auth/hooks/use-sign-up-form";
 import { PasswordStrengthIndicator } from "@/features/auth/components/password-strength-indicator";
+import { useSignUpForm } from "@/features/auth/hooks/use-sign-up-form";
 
 export function SignUpForm({ className, ...props }: React.ComponentProps<"div">) {
   const { form, onSubmit, isPending, handleSignUpWithGithub, handleSignUpWithGoogle } =

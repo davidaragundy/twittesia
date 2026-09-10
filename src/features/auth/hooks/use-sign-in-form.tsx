@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { UserIdVerificationIcon, MagicWand01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { useState } from "react";
 
 import { CredentialsForm } from "@/features/auth/components/credentials-form";
 import { MagicLinkForm } from "@/features/auth/components/magic-link-form";

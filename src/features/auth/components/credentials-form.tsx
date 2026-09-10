@@ -1,9 +1,9 @@
 "use client";
 
+import { Loading03Icon, LockPasswordIcon, Mail01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { Controller } from "react-hook-form";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Loading03Icon, LockPasswordIcon, Mail01Icon } from "@hugeicons/core-free-icons";
 
 import { Button } from "@/shared/components/ui/button";
 import { Field, FieldLabel, FieldError } from "@/shared/components/ui/field";

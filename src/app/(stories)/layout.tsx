@@ -1,5 +1,5 @@
-import { headers } from "next/headers";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import { headers } from "next/headers";
 
 import { Sidebar } from "@/shared/components/sidebar";
 import { auth } from "@/shared/lib/better-auth/server";

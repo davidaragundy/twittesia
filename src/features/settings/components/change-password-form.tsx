@@ -1,15 +1,15 @@
 "use client";
 
-import { Controller } from "react-hook-form";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { Loading03Icon, ArrowReloadHorizontalIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Controller } from "react-hook-form";
 
 import { Button } from "@/shared/components/ui/button";
 import { Field, FieldLabel, FieldDescription, FieldError } from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
 import { TypographyH4 } from "@/shared/components/ui/typography";
-import { PasswordStrengthIndicator } from "@/features/auth/components/password-strength-indicator";
 
+import { PasswordStrengthIndicator } from "@/features/auth/components/password-strength-indicator";
 import { useChangePasswordForm } from "@/features/settings/hooks/use-change-password-form";
 
 export const ChangePasswordForm = () => {
@@ -29,7 +29,7 @@ export const ChangePasswordForm = () => {
         disabled={isPending || !isSessionSuccess}
         render={({ field, fieldState }) => (
           <Field data-invalid={fieldState.invalid}>
-            <div className="flex flex-wrap gap-2 items-center justify-start">
+            <div className="flex flex-wrap items-center justify-start gap-2">
               <FieldLabel htmlFor={field.name}>New password</FieldLabel>
 
               <Input
@@ -61,7 +61,7 @@ export const ChangePasswordForm = () => {
           render={({ field, fieldState }) => (
             <Field
               data-invalid={fieldState.invalid}
-              className="bg-destructive/40 flex flex-col items-start rounded-lg p-4 gap-4"
+              className="flex flex-col items-start gap-4 rounded-lg bg-destructive/40 p-4"
             >
               <div className="space-y-0.5">
                 <FieldLabel htmlFor={field.name} className="text-base">

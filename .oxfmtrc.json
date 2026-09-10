@@ -1,4 +1,22 @@
 {
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "ignorePatterns": [".agents/", ".claude/", "skills-lock.json"],
+  "sortImports": {
+    "groups": [
+      "side_effect",
+      "builtin",
+      "external",
+      "shared",
+      "features",
+      "internal",
+      "stylesheets"
+    ],
+    "customGroups": [
+      { "groupName": "stylesheets", "elementNamePattern": ["**/*.css", "**/*.scss"] },
+      { "groupName": "shared", "elementNamePattern": ["@/shared/**"] },
+      { "groupName": "features", "elementNamePattern": ["@/features/**"] }
+    ]
+  },
   "sortTailwindcss": {
     "stylesheet": "./src/shared/styles/globals.css",
     "functions": ["clsx", "cn"],

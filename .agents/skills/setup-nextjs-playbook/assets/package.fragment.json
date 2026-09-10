@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,mjs,cjs,ts,tsx,mts}": [
+      "eslint --fix --no-warn-ignored",
+      "prettier --write"
+    ],
+    "*.{json,md,css,yml,yaml}": ["prettier --write"]
+  }
+}

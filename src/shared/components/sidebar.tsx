@@ -1,14 +1,14 @@
 "use client";
 
-import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowReloadHorizontalIcon, Loading03Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 
-import { useSidebar } from "@/shared/hooks/use-sidebar";
 import { NavLink } from "@/shared/components/nav-link";
 import { NavUser } from "@/shared/components/nav-user";
 import { NavUserSkeleton } from "@/shared/components/nav-user-skeleton";
 import { Button } from "@/shared/components/ui/button";
 import { TypographyLarge } from "@/shared/components/ui/typography";
+import { useSidebar } from "@/shared/hooks/use-sidebar";
 
 export const Sidebar = () => {
   const {
@@ -22,12 +22,12 @@ export const Sidebar = () => {
   } = useSidebar();
 
   return (
-    <div className="flex flex-col items-center md:items-stretch gap-4">
-      <TypographyLarge className="font-extrabold text-4xl">
+    <div className="flex flex-col items-center gap-4 md:items-stretch">
+      <TypographyLarge className="text-4xl font-extrabold">
         T<span className="hidden md:inline">wittesia</span>
       </TypographyLarge>
 
-      <nav className="flex flex-col items-start md:items-stretch gap-2">
+      <nav className="flex flex-col items-start gap-2 md:items-stretch">
         {links.map((link) => (
           <NavLink key={link.href} href={link.href} label={link.label} icon={link.icon} />
         ))}

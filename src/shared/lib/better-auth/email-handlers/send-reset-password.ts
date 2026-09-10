@@ -1,7 +1,7 @@
 import { APIError, type User } from "better-auth";
 
-import { resend } from "@/shared/lib/resend/server";
 import ResetPassword from "@/shared/lib/react-email/reset-password";
+import { resend } from "@/shared/lib/resend/server";
 
 export const sendResetPassword = async ({
   user,

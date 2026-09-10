@@ -1,0 +1,70 @@
+name: Bug report
+description: Something is broken or behaves incorrectly
+title: "[Bug]: "
+labels:
+  - bug
+  - needs-triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Everything must be in English. Write a short title that states the problem, for example `[Bug]: validation error is not cleared on input change`.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What is happening, and where? Include the affected files or routes if you know them.
+      placeholder: Posts past their expiry still appear in the feed.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: The exact steps someone else can follow to see the problem.
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+      description: What should happen instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance criteria
+      description: What does "done" look like? One checkbox per verifiable outcome. Required by CONTRIBUTING.md.
+      value: |
+        - [ ]
+        - [ ]
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Where does this happen?
+      multiple: true
+      options:
+        - Production
+        - Local development
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Screenshots, logs, browser and device, or anything else that helps.
+    validations:
+      required: false

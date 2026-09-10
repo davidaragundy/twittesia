@@ -1,10 +1,10 @@
+import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { useTheme } from "next-themes";
 import { toast } from "sonner";
 
-import { authClient } from "@/shared/lib/better-auth/client";
 import { useIsMobile } from "@/shared/hooks/use-mobile";
+import { authClient } from "@/shared/lib/better-auth/client";
 
 export const useNavUser = () => {
   const isMobile = useIsMobile();

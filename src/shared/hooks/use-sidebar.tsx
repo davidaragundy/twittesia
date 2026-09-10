@@ -1,5 +1,3 @@
-import { useMemo } from "react";
-import { HugeiconsIcon } from "@hugeicons/react";
 import {
   AnonymousIcon,
   Chatting01Icon,
@@ -10,6 +8,8 @@ import {
   UserCheck01Icon,
   UserIcon,
 } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { useMemo } from "react";
 
 import { useSession } from "@/features/auth/hooks/use-session";
 

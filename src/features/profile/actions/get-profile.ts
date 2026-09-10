@@ -2,8 +2,8 @@
 
 import { eq, or } from "drizzle-orm";
 
-import { db } from "@/shared/lib/drizzle/server";
 import { user } from "@/shared/lib/drizzle/schema";
+import { db } from "@/shared/lib/drizzle/server";
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import type { FeatureActionResponse, Profile } from "@/features/profile/types";

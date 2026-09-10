@@ -1,0 +1,14 @@
+branch="$(git rev-parse --abbrev-ref HEAD)"
+pattern='^(feat|fix|refactor|perf|docs|style|test|build|ci|chore|revert)/twt-[0-9]+$'
+
+if [ "$branch" = "main" ]; then
+  echo "pre-push: refusing to push directly to main." >&2
+  echo "Branch off and open a pull request instead." >&2
+  exit 1
+fi
+
+if ! printf '%s' "$branch" | grep -Eq "$pattern"; then
+  echo "pre-push: branch '$branch' does not match type/twt-<issue-number>." >&2
+  echo "Rename it, for example: git branch -m fix/twt-115" >&2
+  exit 1
+fi

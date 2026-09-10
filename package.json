@@ -9,8 +9,10 @@
     "start": "next start",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
+    "typecheck": "next typegen && tsc --noEmit",
     "fmt": "oxfmt",
-    "fmt:check": "oxfmt --check"
+    "fmt:check": "oxfmt --check",
+    "prepare": "husky"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",
@@ -48,6 +50,8 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@commitlint/cli": "^21.2.2",
+    "@commitlint/config-conventional": "^21.2.2",
     "@react-email/ui": "6.0.8",
     "@tailwindcss/postcss": "^4.2.4",
     "@tanstack/react-query-devtools": "^5.100.9",
@@ -56,12 +60,23 @@
     "@types/react-dom": "^19.2.3",
     "babel-plugin-react-compiler": "1.0.0",
     "drizzle-kit": "0.31.10",
-    "oxfmt": "^0.48.0",
-    "oxlint": "^1.63.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.5.0",
+    "oxfmt": "^0.67.0",
+    "oxlint": "^1.82.0",
     "shadcn": "^4.7.0",
     "tailwindcss": "^4.2.4",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3"
+  },
+  "lint-staged": {
+    "*.{js,jsx,mjs,cjs,ts,tsx,mts}": [
+      "oxlint --fix --no-error-on-unmatched-pattern",
+      "oxfmt --no-error-on-unmatched-pattern"
+    ],
+    "*.{json,md,css,yml,yaml}": [
+      "oxfmt --no-error-on-unmatched-pattern"
+    ]
   },
   "packageManager": "pnpm@12.3.4"
 }

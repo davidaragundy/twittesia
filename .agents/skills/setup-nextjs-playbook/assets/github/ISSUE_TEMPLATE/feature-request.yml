@@ -1,0 +1,46 @@
+name: Feature or change request
+description: Propose new behaviour, an improvement, or a chore
+title: "[Request]: "
+labels:
+  - enhancement
+  - needs-triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Everything must be in English. Write a short title that states what is missing, for example `[Request]: allow attendees to update their registration email`.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What is missing or painful today? Describe the problem before the solution.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: What should be built or changed? Mention the areas of the codebase you expect to touch.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance criteria
+      description: What does "done" look like? One checkbox per verifiable outcome. Required by CONTRIBUTING.md.
+      value: |
+        - [ ]
+        - [ ]
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other approaches you weighed, and why you did not pick them.
+    validations:
+      required: false

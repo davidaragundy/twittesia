@@ -107,7 +107,7 @@ export function TypographyLarge({ className, children, ...props }: React.Compone
 
 export function TypographySmall({ className, children, ...props }: React.ComponentProps<"small">) {
   return (
-    <small className={cn("text-sm font-medium leading-none", className)} {...props}>
+    <small className={cn("text-sm leading-none font-medium", className)} {...props}>
       {children}
     </small>
   );

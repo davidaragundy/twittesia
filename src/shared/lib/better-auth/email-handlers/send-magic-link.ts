@@ -1,7 +1,7 @@
 import { APIError } from "better-auth";
 
-import { resend } from "@/shared/lib/resend/server";
 import MagicLink from "@/shared/lib/react-email/magic-link";
+import { resend } from "@/shared/lib/resend/server";
 
 export const sendMagicLink = async (
   {

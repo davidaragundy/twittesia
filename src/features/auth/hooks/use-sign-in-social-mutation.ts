@@ -1,10 +1,11 @@
-import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-import type { AuthClientError } from "@/features/auth/types";
 import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants";
 import { authClient } from "@/shared/lib/better-auth/client";
+
+import type { AuthClientError } from "@/features/auth/types";
 
 export const useSignInSocialMutation = () => {
   const router = useRouter();

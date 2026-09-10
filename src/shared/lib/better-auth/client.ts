@@ -1,10 +1,10 @@
-import { createAuthClient } from "better-auth/react";
 import {
   usernameClient,
   magicLinkClient,
   twoFactorClient,
   inferAdditionalFields,
 } from "better-auth/client/plugins";
+import { createAuthClient } from "better-auth/react";
 // import { sentinelClient } from "@better-auth/infra/client";
 import { toast } from "sonner";
 

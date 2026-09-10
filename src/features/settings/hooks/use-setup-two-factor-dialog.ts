@@ -1,5 +1,5 @@
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 import { twoFactorSchema } from "@/features/auth/schemas/two-factor-schema";
 import type { TwoFactorFormValues } from "@/features/auth/types";

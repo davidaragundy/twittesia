@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { REGEXP_ONLY_DIGITS } from "input-otp";
-import { Controller } from "react-hook-form";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { Loading03Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
+import Link from "next/link";
+import { Controller } from "react-hook-form";
 
 import { Button } from "@/shared/components/ui/button";
 import {

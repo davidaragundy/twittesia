@@ -4,15 +4,15 @@ import { nextCookies } from "better-auth/next-js";
 import { username, magicLink, twoFactor, haveIBeenPwned } from "better-auth/plugins";
 // import { dash } from "@better-auth/infra";
 
+import { BASE_URL } from "@/shared/constants";
+import { redisSecondaryStorage } from "@/shared/lib/better-auth/adapters/redis-secondary-storage";
 import { sendChangeEmailConfirmation } from "@/shared/lib/better-auth/email-handlers/send-change-email-confirmation";
 import { sendExistingUserSignUpEmail } from "@/shared/lib/better-auth/email-handlers/send-existing-user-sign-up";
-import { sendOTP } from "@/shared/lib/better-auth/email-handlers/send-otp";
 import { sendMagicLink } from "@/shared/lib/better-auth/email-handlers/send-magic-link";
-import { sendVerificationEmail } from "@/shared/lib/better-auth/email-handlers/send-verification-email";
+import { sendOTP } from "@/shared/lib/better-auth/email-handlers/send-otp";
 import { sendResetPassword } from "@/shared/lib/better-auth/email-handlers/send-reset-password";
-import { BASE_URL } from "@/shared/constants";
+import { sendVerificationEmail } from "@/shared/lib/better-auth/email-handlers/send-verification-email";
 import { db } from "@/shared/lib/drizzle/server";
-import { redisSecondaryStorage } from "@/shared/lib/better-auth/adapters/redis-secondary-storage";
 
 export const auth = betterAuth({
   appName: "Twittesia",

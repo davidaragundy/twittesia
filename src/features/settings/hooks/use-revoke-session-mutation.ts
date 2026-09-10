@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import type { AuthClientError, Session } from "@/features/auth/types";
 import { authClient } from "@/shared/lib/better-auth/client";
 
+import type { AuthClientError, Session } from "@/features/auth/types";
 import { SESSIONS_QUERY_KEY } from "@/features/settings/lib/react-query/query-keys";
 
 export const useRevokeSessionMutation = () => {

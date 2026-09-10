@@ -1,5 +1,5 @@
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 import { useSignUpEmailMutation } from "@/features/auth/hooks/use-sign-up-email-mutation";
 import { useSignUpSocialMutation } from "@/features/auth/hooks/use-sign-up-social-mutation";

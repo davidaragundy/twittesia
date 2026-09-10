@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
 
-import { getProfile } from "@/features/profile/actions/get-profile";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 import { TypographyH1, TypographyMuted, TypographyP } from "@/shared/components/ui/typography";
+
+import { getProfile } from "@/features/profile/actions/get-profile";
 
 interface Props {
   username: string;

@@ -1,8 +1,8 @@
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
-import { forgotPasswordFormSchema } from "@/features/auth/schemas/forgot-password-form-schema";
 import { useForgotPasswordMutation } from "@/features/auth/hooks/use-forgot-password-mutation";
+import { forgotPasswordFormSchema } from "@/features/auth/schemas/forgot-password-form-schema";
 import type { ForgotPasswordFormValues } from "@/features/auth/types";
 
 export const useForgotPasswordForm = () => {

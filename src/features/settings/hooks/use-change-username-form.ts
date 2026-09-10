@@ -1,5 +1,5 @@
-import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, useWatch } from "react-hook-form";
 
 import { useSession } from "@/features/auth/hooks/use-session";
 import { useChangeUsernameMutation } from "@/features/settings/hooks/use-change-username-mutation";

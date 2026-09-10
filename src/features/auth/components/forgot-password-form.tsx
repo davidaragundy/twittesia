@@ -1,9 +1,9 @@
 "use client";
 
+import { Loading03Icon, Mail01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { Controller } from "react-hook-form";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Loading03Icon, Mail01Icon } from "@hugeicons/core-free-icons";
 
 import { Button } from "@/shared/components/ui/button";
 import {
@@ -14,8 +14,8 @@ import {
   CardTitle,
 } from "@/shared/components/ui/card";
 import { Field, FieldLabel, FieldError } from "@/shared/components/ui/field";
-import { TypographyH1, TypographyP } from "@/shared/components/ui/typography";
 import { Input } from "@/shared/components/ui/input";
+import { TypographyH1, TypographyP } from "@/shared/components/ui/typography";
 import { cn } from "@/shared/utils/cn";
 
 import { useForgotPasswordForm } from "@/features/auth/hooks/use-forgot-password-form";
