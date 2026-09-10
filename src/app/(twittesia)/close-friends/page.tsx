@@ -1,6 +1,14 @@
+import { UserCheck01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import type { Metadata } from "next";
 
-import { TypographyH1, TypographyP } from "@/shared/components/typography";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/shared/components/ui/empty";
 
 export const metadata: Metadata = {
   title: "Twittesia | Close Friends",
@@ -8,13 +16,16 @@ export const metadata: Metadata = {
 
 export default function CloseFriendsPage() {
   return (
-    <main className="flex flex-col gap-6">
-      <TypographyH1>Close Friends</TypographyH1>
-      <TypographyP className="transition-all duration-300">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque, corrupti numquam beatae
-        optio eum necessitatibus iusto hic tempore dolores obcaecati magni fugit nisi nostrum est
-        pariatur. Repudiandae suscipit sunt nesciunt?
-      </TypographyP>
-    </main>
+    <Empty>
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <HugeiconsIcon icon={UserCheck01Icon} />
+        </EmptyMedia>
+        <EmptyTitle>Close friends</EmptyTitle>
+        <EmptyDescription>
+          Posts shared only with your close friends will show up here.
+        </EmptyDescription>
+      </EmptyHeader>
+    </Empty>
   );
 }
