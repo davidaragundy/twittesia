@@ -5,7 +5,6 @@ import { username, magicLink, twoFactor, haveIBeenPwned } from "better-auth/plug
 // import { dash } from "@better-auth/infra";
 
 import { BASE_URL } from "@/shared/constants";
-import { redisSecondaryStorage } from "@/shared/lib/better-auth/adapters/redis-secondary-storage";
 import { sendChangeEmailConfirmation } from "@/shared/lib/better-auth/email-handlers/send-change-email-confirmation";
 import { sendExistingUserSignUpEmail } from "@/shared/lib/better-auth/email-handlers/send-existing-user-sign-up";
 import { sendMagicLink } from "@/shared/lib/better-auth/email-handlers/send-magic-link";
@@ -23,9 +22,8 @@ export const auth = betterAuth({
   logger: {
     level: "debug",
   },
-  secondaryStorage: redisSecondaryStorage,
   rateLimit: {
-    storage: "secondary-storage",
+    storage: "database",
     enabled: true,
   },
   account: {
