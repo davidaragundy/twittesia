@@ -1,18 +1,15 @@
 "use client";
 
+import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  EllipsisIcon,
-  LoaderIcon,
-  LogOutIcon,
-  MoonIcon,
-  SunIcon,
-} from "lucide-react";
+  Loading03Icon,
+  Logout01Icon,
+  Moon01Icon,
+  MoreHorizontalIcon,
+  Sun01Icon,
+} from "@hugeicons/core-free-icons";
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/shared/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 import { Button } from "@/shared/components/ui/button";
 import {
   Drawer,
@@ -25,22 +22,23 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
-import { useNavUser } from "@/shared/hooks/user-nav-user";
-import type { Session } from "@/shared/types";
+import { useNavUser } from "@/shared/hooks/use-nav-user";
+
+import type { Session } from "@/features/auth/types";
 
 interface Props {
   user: Session["user"];
 }
 
 export const NavUser = ({ user }: Props) => {
-  const { isMobile, handleSignOut, handleThemeChange, isSigningOut, theme } =
-    useNavUser();
+  const { handleSignOut, handleThemeChange, isMobile, isSigningOut, theme } = useNavUser();
 
   if (isMobile) {
     return (
@@ -58,7 +56,7 @@ export const NavUser = ({ user }: Props) => {
               </AvatarFallback>
             </Avatar>
 
-            <span className="border-background absolute -end-0.5 -bottom-0.5 size-3 rounded-full border-2 bg-emerald-500">
+            <span className="border-background absolute -inset-e-0.5 -bottom-0.5 size-3 rounded-full border-2 bg-emerald-500">
               <span className="sr-only">Online</span>
             </span>
           </div>
@@ -78,22 +76,26 @@ export const NavUser = ({ user }: Props) => {
               title="Toggle theme"
               aria-label="Toggle theme"
               variant="ghost"
-              className="w-full !p-0 justify-start"
+              className="w-full p-0! justify-start"
               onClick={() => handleThemeChange()}
             >
-              {theme === "dark" ? <MoonIcon /> : <SunIcon />}
+              {theme === "dark" ? (
+                <HugeiconsIcon icon={Moon01Icon} />
+              ) : (
+                <HugeiconsIcon icon={Sun01Icon} />
+              )}
               Toggle theme
             </Button>
 
             <Button
               variant="ghost"
-              className="w-full !p-0 text-destructive justify-start"
+              className="w-full p-0! text-destructive justify-start"
               onClick={() => handleSignOut()}
             >
               {isSigningOut ? (
-                <LoaderIcon className="animate-spin" />
+                <HugeiconsIcon icon={Loading03Icon} className="animate-spin" />
               ) : (
-                <LogOutIcon />
+                <HugeiconsIcon icon={Logout01Icon} />
               )}
               Sign out
             </Button>
@@ -115,43 +117,41 @@ export const NavUser = ({ user }: Props) => {
               .join("")}
           </AvatarFallback>
         </Avatar>
-        <span className="border-background absolute -end-0.5 -bottom-0.5 size-3 rounded-full border-2 bg-emerald-500">
+        <span className="border-background absolute -inset-e-0.5 -bottom-0.5 size-3 rounded-full border-2 bg-emerald-500">
           <span className="sr-only">Online</span>
         </span>
       </div>
 
       <div className="hidden sm:flex flex-col overflow-hidden">
         <span className="text-sm font-semibold text-ellipsis">{user.name}</span>
-        <span className="text-xs text-muted-foreground text-ellipsis">
-          @{user.displayUsername}
-        </span>
+        <span className="text-xs text-muted-foreground text-ellipsis">@{user.displayUsername}</span>
       </div>
 
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            size="icon"
-            variant="ghost"
-            className="rounded-full hidden sm:flex"
-          >
-            <EllipsisIcon />
-          </Button>
+        <DropdownMenuTrigger className="rounded-full hidden sm:flex size-9 items-center justify-center hover:bg-muted">
+          <HugeiconsIcon icon={MoreHorizontalIcon} />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          </DropdownMenuGroup>
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem onSelect={handleThemeChange}>
-            {theme === "dark" ? <MoonIcon /> : <SunIcon />}
+          <DropdownMenuItem onClick={() => handleThemeChange()}>
+            {theme === "dark" ? (
+              <HugeiconsIcon icon={Moon01Icon} />
+            ) : (
+              <HugeiconsIcon icon={Sun01Icon} />
+            )}
             Toggle theme
             <DropdownMenuShortcut>⌘⇧T</DropdownMenuShortcut>
           </DropdownMenuItem>
 
-          <DropdownMenuItem variant="destructive" onSelect={handleSignOut}>
+          <DropdownMenuItem variant="destructive" onClick={() => handleSignOut()}>
             {isSigningOut ? (
-              <LoaderIcon className="animate-spin" />
+              <HugeiconsIcon icon={Loading03Icon} className="animate-spin" />
             ) : (
-              <LogOutIcon />
+              <HugeiconsIcon icon={Logout01Icon} />
             )}
             Sign out
             <DropdownMenuShortcut>⌘O</DropdownMenuShortcut>

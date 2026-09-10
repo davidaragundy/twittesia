@@ -1,16 +1,16 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
+import type { AuthClientError } from "@/features/auth/types";
 import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants";
 import { authClient } from "@/shared/lib/better-auth/client";
-import type { AuthClientError } from "@/shared/types";
 
 import type { ForgotPasswordFormValues } from "@/features/auth/types";
 
 export const useForgotPasswordMutation = () => {
   return useMutation({
     mutationFn: async (values: ForgotPasswordFormValues) => {
-      const { error } = await authClient.forgetPassword({
+      const { error } = await authClient.requestPasswordReset({
         email: values.email,
         redirectTo: "/reset-password",
       });

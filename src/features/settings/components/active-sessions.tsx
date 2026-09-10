@@ -1,6 +1,7 @@
 "use client";
 
-import { LoaderIcon, RotateCcwIcon } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Loading03Icon, ArrowReloadHorizontalIcon } from "@hugeicons/core-free-icons";
 
 import { Button } from "@/shared/components/ui/button";
 import { TypographyH4 } from "@/shared/components/ui/typography";
@@ -26,23 +27,19 @@ export const ActiveSessions = () => {
       <TypographyH4 className="mb-4 flex items-center gap-2">
         Active sessions {isSessionsSuccess && `(${sessions?.length})`}{" "}
         {isSessionsFetching && (
-          <LoaderIcon className="animate-spin" size={18} />
+          <HugeiconsIcon icon={Loading03Icon} className="animate-spin" size={18} />
         )}
       </TypographyH4>
 
       {isSessionsLoading && <ActiveSessionCardSkeleton />}
 
       {isSessionsError && (
-        <Button
-          variant="outline"
-          type="button"
-          onClick={() => refetchSessions()}
-        >
+        <Button variant="outline" type="button" onClick={() => refetchSessions()}>
           Retry
           {isSessionsRefetching ? (
-            <LoaderIcon className="animate-spin" />
+            <HugeiconsIcon icon={Loading03Icon} className="animate-spin" />
           ) : (
-            <RotateCcwIcon />
+            <HugeiconsIcon icon={ArrowReloadHorizontalIcon} />
           )}
         </Button>
       )}

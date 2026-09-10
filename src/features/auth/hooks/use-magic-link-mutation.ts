@@ -2,9 +2,9 @@ import { UseFormReturn } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
+import type { AuthClientError } from "@/features/auth/types";
 import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants";
 import { authClient } from "@/shared/lib/better-auth/client";
-import type { AuthClientError } from "@/shared/types";
 
 import type { MagicLinkFormValues } from "@/features/auth/types";
 
@@ -34,8 +34,7 @@ export const useMagicLinkMutation = ({ form }: Props) => {
       switch (error.code) {
         case "USER_NOT_FOUND":
           form.setError("email", {
-            message:
-              "Please check your email address or sign up if you don't have an account.",
+            message: "Please check your email address or sign up if you don't have an account.",
           });
           return;
 

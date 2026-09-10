@@ -17,18 +17,15 @@ export const useSignUpForm = () => {
     },
   });
 
-  const { mutate: signUpWithEmail, isPending: isSigningUpWithEmail } =
-    useSignUpEmailMutation({
-      form,
-    });
+  const { mutate: signUpWithEmail, isPending: isSigningUpWithEmail } = useSignUpEmailMutation({
+    form,
+  });
 
-  const { mutate: signUpWithSocial, isPending: isSigningUpWithSocial } =
-    useSignUpSocialMutation();
+  const { mutate: signUpWithSocial, isPending: isSigningUpWithSocial } = useSignUpSocialMutation();
 
   const onSubmit = (values: SignUpFormValues) => signUpWithEmail(values);
 
-  const handleSignUpWithSocial = (provider: "google" | "github") =>
-    signUpWithSocial({ provider });
+  const handleSignUpWithSocial = (provider: "google" | "github") => signUpWithSocial({ provider });
 
   const handleSignUpWithGithub = () => handleSignUpWithSocial("github");
 

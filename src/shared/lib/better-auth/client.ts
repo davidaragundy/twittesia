@@ -5,6 +5,7 @@ import {
   twoFactorClient,
   inferAdditionalFields,
 } from "better-auth/client/plugins";
+// import { sentinelClient } from "@better-auth/infra/client";
 import { toast } from "sonner";
 
 import { auth } from "@/shared/lib/better-auth/server";
@@ -15,6 +16,7 @@ export const authClient = createAuthClient({
     magicLinkClient(),
     twoFactorClient(),
     inferAdditionalFields<typeof auth>(),
+    // sentinelClient(),
   ],
   fetchOptions: {
     onError: async (context) => {

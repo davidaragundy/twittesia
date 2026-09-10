@@ -1,6 +1,7 @@
 "use client";
 
-import { BellRingIcon, KeyRoundIcon, UserRoundPenIcon } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Notification01Icon, Key01Icon, UserEdit01Icon } from "@hugeicons/core-free-icons";
 
 import { SettingsNavLink } from "@/features/settings/components/settings-nav-link";
 import { useSettingsInMobile } from "@/features/settings/hooks/use-settings-in-mobile";
@@ -9,17 +10,17 @@ const items = [
   {
     label: "Account",
     href: "/settings/account",
-    icon: <UserRoundPenIcon />,
+    icon: <HugeiconsIcon icon={UserEdit01Icon} />,
   },
   {
     label: "Security",
     href: "/settings/security",
-    icon: <KeyRoundIcon />,
+    icon: <HugeiconsIcon icon={Key01Icon} />,
   },
   {
     label: "Notifications",
     href: "/settings/notifications",
-    icon: <BellRingIcon />,
+    icon: <HugeiconsIcon icon={Notification01Icon} />,
   },
 ];
 
@@ -38,9 +39,7 @@ export function SettingsSidebar() {
             key={item.href}
             href={item.href}
             additionalMatches={
-              !isMobile && item.href === "/settings/account"
-                ? ["/settings"]
-                : undefined
+              !isMobile && item.href === "/settings/account" ? ["/settings"] : undefined
             }
             label={item.label}
             icon={item.icon}

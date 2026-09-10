@@ -20,12 +20,9 @@ export const signUpFormSchema = z.object({
       message: "Username must be at most 30 characters long",
     })
     .regex(/^[a-zA-Z0-9_]+$/, {
-      message:
-        "Username should only contain alphanumeric characters and underscores",
+      message: "Username should only contain alphanumeric characters and underscores",
     }),
-  email: z.string().trim().email({
-    message: "Email must be a valid email address",
-  }),
+  email: z.email().trim(),
   password: z
     .string()
     .min(8, {

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { ThemeSwitch } from "@/shared/components/theme-switch";
 
 export const metadata: Metadata = {
-  title: "Stories",
+  title: "Twittesia",
   description: "Fuck it, we ball",
 };
 

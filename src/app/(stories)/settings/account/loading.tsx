@@ -3,12 +3,11 @@ import { Skeleton } from "@/shared/components/ui/skeleton";
 import { SettingsPageHeader } from "@/features/settings/components/settings-page-header";
 
 export default function Loading() {
+  return null;
+
   return (
     <div className="space-y-10">
-      <SettingsPageHeader
-        title="Account"
-        description="Update your account settings."
-      />
+      <SettingsPageHeader title="Account" description="Update your account settings." />
 
       <form className="space-y-8">
         <div className="space-y-2">
@@ -17,8 +16,7 @@ export default function Loading() {
             <Skeleton className="h-8 w-48" />
           </div>
           <p className="text-sm text-muted-foreground">
-            This is your public display name. It can be your real name or a
-            pseudonym.
+            This is your public display name. It can be your real name or a pseudonym.
           </p>
         </div>
 
@@ -28,8 +26,7 @@ export default function Loading() {
             <Skeleton className="h-8 w-64" />
           </div>
           <p className="text-sm text-muted-foreground">
-            This is your public display username. It can be your real name or a
-            pseudonym.
+            This is your public display username. It can be your real name or a pseudonym.
           </p>
         </div>
 
@@ -39,8 +36,7 @@ export default function Loading() {
             <Skeleton className="h-8 w-48" />
           </div>
           <p className="text-sm text-muted-foreground">
-            This is the email address we will use to contact you. It will not be
-            publicly visible.
+            This is the email address we will use to contact you. It will not be publicly visible.
           </p>
         </div>
       </form>

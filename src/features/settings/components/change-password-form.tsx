@@ -1,100 +1,101 @@
 "use client";
 
-import { LoaderIcon, RotateCcwIcon } from "lucide-react";
+import { Controller } from "react-hook-form";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Loading03Icon, ArrowReloadHorizontalIcon } from "@hugeicons/core-free-icons";
 
 import { Button } from "@/shared/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/shared/components/ui/form";
+import { Field, FieldLabel, FieldDescription, FieldError } from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
 import { TypographyH4 } from "@/shared/components/ui/typography";
-import { PasswordStrengthIndicator } from "@/shared/components/password-strength-indicator";
+import { PasswordStrengthIndicator } from "@/features/auth/components/password-strength-indicator";
 
 import { useChangePasswordForm } from "@/features/settings/hooks/use-change-password-form";
 
 export const ChangePasswordForm = () => {
-  const { form, onSubmit, isPending, isError, isSessionSuccess } =
-    useChangePasswordForm();
+  const { form, onSubmit, isPending, isError, isSessionSuccess } = useChangePasswordForm();
 
   const { errors, isDirty } = form.formState;
 
   const canSubmit = !errors.newPassword && isDirty;
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <TypographyH4>Change password</TypographyH4>
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <TypographyH4>Change password</TypographyH4>
 
-        <FormField
-          disabled={isPending || !isSessionSuccess}
+      <Controller
+        control={form.control}
+        name="newPassword"
+        disabled={isPending || !isSessionSuccess}
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <div className="flex flex-wrap gap-2 items-center justify-start">
+              <FieldLabel htmlFor={field.name}>New password</FieldLabel>
+
+              <Input
+                {...field}
+                id={field.name}
+                aria-invalid={fieldState.invalid}
+                className="w-full sm:w-fit"
+                type="password"
+                placeholder="••••••••"
+              />
+            </div>
+
+            <FieldDescription className="text-sm text-muted-foreground">
+              If you change your password, all your active sessions will be logged out.
+            </FieldDescription>
+
+            {(fieldState.isDirty || fieldState.isTouched) && (
+              <PasswordStrengthIndicator password={field.value} />
+            )}
+          </Field>
+        )}
+      />
+
+      {canSubmit && (
+        <Controller
           control={form.control}
-          name="newPassword"
+          name="currentPassword"
+          disabled={isPending}
           render={({ field, fieldState }) => (
-            <FormItem>
-              <div className="flex flex-wrap gap-2 items-center justify-start">
-                <FormLabel>New password</FormLabel>
+            <Field
+              data-invalid={fieldState.invalid}
+              className="bg-destructive/40 flex flex-col items-start rounded-lg p-4 gap-4"
+            >
+              <div className="space-y-0.5">
+                <FieldLabel htmlFor={field.name} className="text-base">
+                  Current password
+                </FieldLabel>
 
-                <FormControl className="w-full sm:w-fit">
-                  <Input type="password" placeholder="••••••••" {...field} />
-                </FormControl>
+                <FieldDescription>
+                  In order to change your password, please enter your current password.
+                </FieldDescription>
               </div>
 
-              <FormDescription className="text-sm text-muted-foreground">
-                If you change your password, all your active sessions will be
-                logged out.
-              </FormDescription>
+              <Input
+                {...field}
+                id={field.name}
+                aria-invalid={fieldState.invalid}
+                type="password"
+                placeholder="••••••••"
+              />
 
-              {/* <FormMessage /> */}
+              <FieldError errors={[fieldState.error]} />
 
-              {(fieldState.isDirty || fieldState.isTouched) && (
-                <PasswordStrengthIndicator password={field.value} />
-              )}
-            </FormItem>
+              <Button
+                variant={isError ? "destructive" : "default"}
+                disabled={isPending}
+                type="submit"
+              >
+                {isPending && <HugeiconsIcon icon={Loading03Icon} className="animate-spin" />}
+                {isError && <HugeiconsIcon icon={ArrowReloadHorizontalIcon} />}
+                Change password
+              </Button>
+            </Field>
           )}
         />
-
-        {canSubmit && (
-          <FormField
-            disabled={isPending}
-            control={form.control}
-            name="currentPassword"
-            render={({ field }) => (
-              <FormItem className="bg-destructive/40 flex flex-col items-start rounded-lg p-4 gap-4">
-                <div className="space-y-0.5">
-                  <FormLabel className="text-base">Current password</FormLabel>
-
-                  <FormDescription>
-                    In order to change your password, please enter your current
-                    password.
-                  </FormDescription>
-                </div>
-
-                <FormControl>
-                  <Input type="password" placeholder="••••••••" {...field} />
-                </FormControl>
-
-                <FormMessage />
-
-                <Button
-                  variant={isError ? "destructive" : "default"}
-                  disabled={isPending}
-                  type="submit"
-                >
-                  {isPending && <LoaderIcon className="animate-spin" />}
-                  {isError && <RotateCcwIcon />}
-                  Change password
-                </Button>
-              </FormItem>
-            )}
-          />
-        )}
-      </form>
-    </Form>
+      )}
+    </form>
   );
 };

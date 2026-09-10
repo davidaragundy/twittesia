@@ -7,12 +7,11 @@ import { SettingsPageHeader } from "@/features/settings/components/settings-page
 import { ActiveSessionCardSkeleton } from "@/features/settings/components/active-session-card-skeleton";
 
 export default function Loading() {
+  return null;
+
   return (
     <div className="space-y-8">
-      <SettingsPageHeader
-        title="Security"
-        description="Update your account's security settings."
-      />
+      <SettingsPageHeader title="Security" description="Update your account's security settings." />
 
       <div className="space-y-8">
         <TypographyH4>Change password</TypographyH4>
@@ -20,17 +19,11 @@ export default function Loading() {
         <div className="space-y-4">
           <div className="flex flex-wrap gap-2 items-center justify-start">
             <span className="text-sm font-medium">New password</span>
-            <Input
-              disabled
-              type="password"
-              placeholder="••••••••"
-              className="sm:max-w-[250px]"
-            />
+            <Input disabled type="password" placeholder="••••••••" className="sm:max-w-[250px]" />
           </div>
 
           <p className="text-sm text-muted-foreground">
-            If you change your password, all your active sessions will be logged
-            out.
+            If you change your password, all your active sessions will be logged out.
           </p>
         </div>
 
@@ -57,9 +50,8 @@ export default function Loading() {
           </div>
 
           <p className="text-sm text-muted-foreground">
-            Generate a set of backup codes to use if you lose your authenticator
-            app. If you already have backup codes, this will generate a new set
-            and invalidate the old.
+            Generate a set of backup codes to use if you lose your authenticator app. If you already
+            have backup codes, this will generate a new set and invalidate the old.
           </p>
         </div>
 

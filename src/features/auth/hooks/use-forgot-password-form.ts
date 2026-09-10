@@ -15,9 +15,7 @@ export const useForgotPasswordForm = () => {
 
   const { mutate, isPending } = useForgotPasswordMutation();
 
-  const onSubmit = (values: ForgotPasswordFormValues) => {
-    mutate(values);
-  };
+  const onSubmit = (values: ForgotPasswordFormValues) => mutate(values);
 
   return {
     form,

@@ -1,8 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useSession } from "@/shared/hooks/use-session";
-
+import { useSession } from "@/features/auth/hooks/use-session";
 import { useChangePasswordMutation } from "@/features/settings/hooks/use-change-password-mutation";
 import { changePasswordFormSchema } from "@/features/settings/schemas/change-password-form-schema";
 import type { ChangePasswordFormValues } from "@/features/settings/types";

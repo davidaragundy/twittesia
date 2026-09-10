@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const notificationsFormSchema = z.object({
   type: z.enum(["all", "mentions", "none"], {
-    required_error: "You need to select a notification type.",
+    message: "You need to select a notification type.",
   }),
   mobile: z.boolean().default(false).optional(),
   communication_emails: z.boolean().default(false).optional(),

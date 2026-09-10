@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowRightIcon } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 
 import { cn } from "@/shared/utils/cn";
 
@@ -28,7 +29,7 @@ export const SettingsNavLink = ({
 
   const matches = [href, ...(additionalMatches || [])];
   const isActive = matches.some((match) =>
-    exactMatch ? pathname === match : pathname.startsWith(match)
+    exactMatch ? pathname === match : pathname.startsWith(match),
   );
 
   return (
@@ -39,7 +40,7 @@ export const SettingsNavLink = ({
       className={cn(
         "w-fit flex flex-wrap items-center text-xl gap-2 rounded-xl px-4 py-2 transition-all duration-200",
         isActive ? "bg-accent" : "hover:bg-accent",
-        includeArrow && "w-full justify-between"
+        includeArrow && "w-full justify-between",
       )}
       {...props}
     >
@@ -47,7 +48,7 @@ export const SettingsNavLink = ({
         {icon}
         <span>{label}</span>
       </div>
-      {includeArrow && <ArrowRightIcon />}
+      {includeArrow && <HugeiconsIcon icon={ArrowRight01Icon} />}
     </Link>
   );
 };
