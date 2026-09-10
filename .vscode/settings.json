@@ -1,14 +1,25 @@
 {
+  "oxc.fmt.configPath": ".oxfmtrc.json",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.formatOnSave": true,
   "cSpell.words": [
     "Aragundy",
     "cmdk",
     "davidaragundy",
     "fghij",
-    "lukemorales",
+    "geist",
+    "hugeicons",
     "neondatabase",
+    "oxfmt",
+    "oxlint",
     "qrcode",
     "sonner",
+    "stylesheet",
     "Totp",
-    "turbopack"
+    "turbopack",
+    "twittesia",
+    "Twittesia",
+    "vaul",
+    "wittesia"
   ]
 }

@@ -2,10 +2,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
+import type { AuthClientError } from "@/features/auth/types";
+import { SESSION_QUERY_KEY } from "@/features/auth/lib/query-keys";
 import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants";
 import { authClient } from "@/shared/lib/better-auth/client";
-import { SESSION_QUERY_KEY } from "@/shared/lib/react-query/query-key-factory";
-import type { AuthClientError } from "@/shared/types";
 
 import type { ChangeEmailFormValues } from "@/features/settings/types";
 interface Props {
@@ -25,9 +25,9 @@ export const useChangeEmailMutation = ({ form }: Props) => {
       if (error) return Promise.reject(error);
     },
     onSuccess: (_data, values) => {
-      toast.success("Change email verification 💂", {
+      toast.success("Change email confirmation", {
         description:
-          "We sent a confirmation to your old email address. Please check your inbox (or spam folder) to approve the changes in order to update it.",
+          "We sent a confirmation to your current email address. Please check your inbox (or spam folder) to approve the changes in order to update it.",
         duration: 20_000,
       });
 

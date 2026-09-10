@@ -1,18 +1,18 @@
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
 
 import { useIsMobile } from "@/shared/hooks/use-mobile";
+
+const subscribe = () => () => {};
+const getSnapshot = () => true;
+const getServerSnapshot = () => false;
 
 export const useSettingsInMobile = () => {
   const isMobile = useIsMobile();
   const pathname = usePathname();
-  const [isMounted, setIsMounted] = useState(false);
+  const isMounted = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   const isSettingsPage = pathname === "/settings";
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   return {
     isMounted,

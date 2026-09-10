@@ -10,7 +10,7 @@ import {
   Section,
   Tailwind,
   Text,
-} from "@react-email/components";
+} from "react-email";
 
 interface Props {
   name: string;
@@ -23,36 +23,30 @@ export const VerifyEmail = ({ url, name }: Props) => {
       <Head />
       <Preview>bitch, we gotta be sure its really you 🧐</Preview>
       <Tailwind>
-        <Body className="bg-white my-auto mx-auto font-sans px-2">
-          <Container className="border border-solid border-[#eaeaea] rounded-2xl my-[40px] mx-auto p-[20px] max-w-[465px]">
-            <Section className="mt-[32px]">
-              <Heading className="font-extrabold">Stories</Heading>
+        <Body className="mx-auto my-auto bg-white px-2 font-sans">
+          <Container className="mx-auto my-10 max-w-116.25 rounded-2xl border border-solid border-[#eaeaea] p-5">
+            <Section className="mt-8">
+              <Heading className="font-extrabold">Twittesia</Heading>
             </Section>
-            <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
+            <Heading className="mx-0 my-7.5 p-0 text-center text-[24px] font-normal text-black">
               Verify your email address
             </Heading>
-            <Text className="text-black text-[14px] leading-[24px]">
-              Hello {name},
+            <Text className="text-[14px] leading-6 text-black">Hello {name},</Text>
+            <Text className="text-[14px] leading-6 text-black">
+              In order to start using your account, you need to verify your email address. Click the
+              button below to verify your email address (this link will expire in one hour).
             </Text>
-            <Text className="text-black text-[14px] leading-[24px]">
-              In order to start using your account, you need to verify your
-              email address. Click the button below to verify your email address
-              (this link will expire in one hour).
-            </Text>
-            <Section className="text-center mt-[32px] mb-[32px]">
+            <Section className="mt-8 mb-8 text-center">
               <Button
-                className="bg-black text-white rounded-2xl text-[12px] font-semibold no-underline text-center px-5 py-3"
+                className="rounded-2xl bg-black px-5 py-3 text-center text-[12px] font-semibold text-white no-underline"
                 href={url}
               >
                 Verify Email
               </Button>
             </Section>
-            <Text className="text-black text-[14px] leading-[24px]">
+            <Text className="text-[14px] leading-6 text-black">
               or copy and paste this URL into your browser:{" "}
-              <Link
-                href={url}
-                className="text-blue-600 no-underline text-wrap break-all"
-              >
+              <Link href={url} className="text-wrap break-all text-blue-600 no-underline">
                 {url}
               </Link>
             </Text>
@@ -64,7 +58,7 @@ export const VerifyEmail = ({ url, name }: Props) => {
 };
 
 VerifyEmail.PreviewProps = {
-  url: "https://stories.aragundy.com/api/auth/verify-email?token=eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImRhdmlkYXJhZ3VuZHlAb3V0bG9vay5jb20iLCJpYXQiOjE3NDE5Njc4NzQsImV4cCI6MTc0MTk3MTQ3NH0.9AjvRxMX1jwIw7XfagZThFe9eTBtc8utmM3VV7F8jqs&callbackURL=/",
+  url: "https://twittesia.aragundy.com/api/auth/verify-email?token=eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImRhdmlkYXJhZ3VuZHlAb3V0bG9vay5jb20iLCJpYXQiOjE3NDE5Njc4NzQsImV4cCI6MTc0MTk3MTQ3NH0.9AjvRxMX1jwIw7XfagZThFe9eTBtc8utmM3VV7F8jqs&callbackURL=/",
   name: "David Aragundy",
 } as Props;
 

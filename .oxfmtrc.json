@@ -1,0 +1,7 @@
+{
+  "sortTailwindcss": {
+    "stylesheet": "./src/shared/styles/globals.css",
+    "functions": ["clsx", "cn"],
+    "preserveWhitespace": true
+  }
+}

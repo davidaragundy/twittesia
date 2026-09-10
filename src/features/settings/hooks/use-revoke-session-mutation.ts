@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
+import type { AuthClientError, Session } from "@/features/auth/types";
 import { authClient } from "@/shared/lib/better-auth/client";
-import type { AuthClientError, Session } from "@/shared/types";
 
 import { SESSIONS_QUERY_KEY } from "@/features/settings/lib/react-query/query-keys";
 
@@ -17,29 +17,17 @@ export const useRevokeSessionMutation = () => {
 
       if (error) return Promise.reject(error);
     },
-    // When mutate is called:
     onMutate: async (token) => {
-      // Cancel any outgoing refetches
-      // (so they don't overwrite our optimistic update)
       await queryClient.cancelQueries({ queryKey: [SESSIONS_QUERY_KEY] });
 
-      // Snapshot the previous value
-      const previousSessions = queryClient.getQueryData<Session["session"][]>([
-        SESSIONS_QUERY_KEY,
-      ]);
+      const previousSessions = queryClient.getQueryData<Session["session"][]>([SESSIONS_QUERY_KEY]);
 
-      // Optimistically update to the new value
-      queryClient.setQueryData(
-        [SESSIONS_QUERY_KEY],
-        (old: Session["session"][]) =>
-          old.filter((session) => session.token !== token)
+      queryClient.setQueryData([SESSIONS_QUERY_KEY], (old: Session["session"][]) =>
+        old.filter((session) => session.token !== token),
       );
 
-      // Return a context object with the snapshotted value
       return { previousSessions };
     },
-    // If the mutation fails,
-    // use the context returned from onMutate to roll back
     onError: (error: AuthClientError, _token, context) => {
       queryClient.setQueryData([SESSIONS_QUERY_KEY], context?.previousSessions);
 
@@ -57,7 +45,6 @@ export const useRevokeSessionMutation = () => {
           return;
       }
     },
-    // Always refetch after error or success:
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: [SESSIONS_QUERY_KEY] });
     },

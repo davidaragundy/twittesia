@@ -1,15 +1,12 @@
 import { headers } from "next/headers";
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from "@tanstack/react-query";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 
-import { AppSidebar } from "@/shared/components/app-sidebar";
+import { Sidebar } from "@/shared/components/sidebar";
 import { auth } from "@/shared/lib/better-auth/server";
-import { SESSION_QUERY_KEY } from "@/shared/lib/react-query/query-key-factory";
 
-export default async function StoriesLayout({
+import { SESSION_QUERY_KEY } from "@/features/auth/lib/query-keys";
+
+export default async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -29,10 +26,10 @@ export default async function StoriesLayout({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="flex h-svh gap-6 px-2 py-4 sm:px-6 sm:py-8 md:p-10 overflow-hidden">
-        <AppSidebar />
+      <div className="flex h-svh gap-6 overflow-hidden px-2 py-4 sm:px-6 sm:py-8 md:p-10">
+        <Sidebar />
 
-        <main className="flex-1 h-full">{children}</main>
+        <main className="h-full flex-1">{children}</main>
       </div>
     </HydrationBoundary>
   );

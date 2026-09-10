@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { RotateCcwIcon } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowReloadHorizontalIcon } from "@hugeicons/core-free-icons";
 
-import { Button } from "@/shared/components/ui/button";
 import { TypographyH1 } from "@/shared/components/ui/typography";
 
 export default function NotFound() {
@@ -9,11 +9,9 @@ export default function NotFound() {
     <div className="h-full flex flex-col gap-4 items-center justify-center">
       <TypographyH1 className="text-center">Page not found</TypographyH1>
 
-      <Button asChild className="flex items-center gap-2">
-        <Link href="/home">
-          <RotateCcwIcon /> Go to home
-        </Link>
-      </Button>
+      <Link href="/home" className="flex items-center gap-2">
+        <HugeiconsIcon icon={ArrowReloadHorizontalIcon} /> Go to home
+      </Link>
     </div>
   );
 }

@@ -2,8 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
+import { SESSION_QUERY_KEY } from "@/features/auth/lib/query-keys";
 import { authClient } from "@/shared/lib/better-auth/client";
-import { SESSION_QUERY_KEY } from "@/shared/lib/react-query/query-key-factory";
 
 import { getTxtArrayBuffer } from "@/features/settings/utils/get-txt-array-buffer";
 import type { GenerateBackupCodesFormValues } from "@/features/settings/types";
@@ -33,7 +33,7 @@ export const useGenerateBackupCodesMutation = ({ form }: Props) => {
 
       const a = document.createElement("a");
       a.href = url;
-      a.download = "stories-backup-codes.txt";
+      a.download = "twittesia-backup-codes.txt";
       a.click();
 
       URL.revokeObjectURL(url);

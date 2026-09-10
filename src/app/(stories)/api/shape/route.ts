@@ -25,10 +25,7 @@ export async function GET(request: Request) {
   originUrl.searchParams.set(`source_id`, process.env.ELECTRIC_SOURCE_ID);
 
   // Set the source_secret
-  originUrl.searchParams.set(
-    `source_secret`,
-    process.env.ELECTRIC_SOURCE_SECRET
-  );
+  originUrl.searchParams.set(`source_secret`, process.env.ELECTRIC_SOURCE_SECRET);
 
   // Authentication and Authorization
   const session = await auth.api.getSession({

@@ -15,10 +15,7 @@ import { cn } from "@/shared/utils/cn";
 
 import { useSignInForm } from "@/features/auth/hooks/use-sign-in-form";
 
-export function SignInForm({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+export function SignInForm({ className, ...props }: React.ComponentProps<"div">) {
   const {
     form,
     handleSignInWithGitHub,
@@ -30,21 +27,19 @@ export function SignInForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="bg-background border-none shadow-none">
+      <Card className="border-none bg-background shadow-none">
         <CardHeader className="text-center">
           <CardTitle>
             <TypographyH1>Sign in</TypographyH1>
           </CardTitle>
 
           <CardDescription>
-            <TypographyP className="leading-normal">
-              This is us reading the stuff you post 🤮
-            </TypographyP>
+            <TypographyP className="leading-normal">We knew you would come back 😏</TypographyP>
           </CardDescription>
         </CardHeader>
 
         <CardContent className="grid gap-6">
-          <div className="flex flex-wrap items-center justify-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-2">
             <Button
               type="button"
               variant="secondary"
@@ -91,8 +86,8 @@ export function SignInForm({
             </Button>
           </div>
 
-          <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
-            <span className="bg-background text-muted-foreground relative z-10 px-2">
+          <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
+            <span className="relative z-10 bg-background px-2 text-muted-foreground">
               Or continue with
             </span>
           </div>

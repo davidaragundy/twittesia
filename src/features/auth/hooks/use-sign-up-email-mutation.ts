@@ -2,9 +2,9 @@ import { UseFormReturn } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
+import type { AuthClientError } from "@/features/auth/types";
 import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants";
 import { authClient } from "@/shared/lib/better-auth/client";
-import type { AuthClientError } from "@/shared/types";
 
 import { getHash } from "@/features/auth/utils/get-hash";
 import type { SignUpFormValues } from "@/features/auth/types";
@@ -29,39 +29,34 @@ export const useSignUpEmailMutation = ({ form }: Props) => {
         callbackURL: "/home",
       });
 
+      console.log("Client response", { data, error });
+
       if (error) return Promise.reject(error);
 
       return data;
     },
     onSuccess: () => {
       toast.success("Account created successfully 🎉", {
-        description:
-          "Check your inbox (or spam folder) for the verification email.",
+        description: "Check your inbox (or spam folder) for the verification email.",
         duration: 10_000,
       });
 
       form.reset();
     },
     onError: (error: AuthClientError, values) => {
+      console.log("Client error", { error });
       if (error.status === RATE_LIMIT_ERROR_CODE) return;
 
       switch (error.code) {
-        case "USERNAME_IS_ALREADY_TAKEN_PLEASE_TRY_ANOTHER":
+        case "USERNAME_IS_ALREADY_TAKEN":
           form.setError("username", {
             message: "Username is already taken. Please try another.",
           });
           return;
 
-        case "USER_ALREADY_EXISTS":
-          form.setError("email", {
-            message: "A user with that email already exists",
-          });
-          return;
-
         case "PASSWORD_COMPROMISED":
           form.setError("password", {
-            message:
-              "Password is compromised. Please choose a more secure password.",
+            message: "Password is compromised. Please choose a more secure password.",
           });
           return;
 
@@ -91,8 +86,7 @@ export const useSignUpEmailMutation = ({ form }: Props) => {
 
                 toast.success("Email sent successfully 🎉", {
                   id,
-                  description:
-                    "Check your inbox (or spam folder) for the verification email.",
+                  description: "Check your inbox (or spam folder) for the verification email.",
                   duration: 10_000,
                 });
               },

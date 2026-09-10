@@ -3,13 +3,10 @@ import { ChangeEmailForm } from "@/features/settings/components/change-email-for
 import { ChangeNameForm } from "@/features/settings/components/change-name-form";
 import { ChangeUsernameForm } from "@/features/settings/components/change-username-form";
 
-export async function SettingsAccountPage() {
+export function SettingsAccountPage() {
   return (
     <>
-      <SettingsPageHeader
-        title="Account"
-        description="Update your account settings."
-      />
+      <SettingsPageHeader title="Account" description="Update your account settings." />
 
       <ChangeNameForm />
       <ChangeUsernameForm />

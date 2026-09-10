@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 
-import {
-  TypographyH1,
-  TypographyMuted,
-} from "@/shared/components/ui/typography";
+import { TypographyH1, TypographyMuted } from "@/shared/components/ui/typography";
 
 export const metadata: Metadata = {
-  title: "Stories | Notifications",
+  title: "Twittesia | Notifications",
 };
 
 export default function NotificationsPage() {

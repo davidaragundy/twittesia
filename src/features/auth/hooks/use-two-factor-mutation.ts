@@ -3,9 +3,9 @@ import { useMutation } from "@tanstack/react-query";
 import { UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
+import type { AuthClientError, TwoFactorFormValues } from "@/features/auth/types";
 import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants";
 import { authClient } from "@/shared/lib/better-auth/client";
-import type { AuthClientError, TwoFactorFormValues } from "@/shared/types";
 
 interface Props {
   form: UseFormReturn<TwoFactorFormValues>;

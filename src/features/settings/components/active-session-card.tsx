@@ -1,4 +1,5 @@
-import { MinusCircleIcon } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { MinusSignCircleIcon } from "@hugeicons/core-free-icons";
 
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
@@ -10,12 +11,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
-import {
-  TypographyMuted,
-  TypographyP,
-} from "@/shared/components/ui/typography";
+import { TypographyMuted, TypographyP } from "@/shared/components/ui/typography";
 import { useActiveSessionCard } from "@/features/settings/hooks/use-active-session-card";
-import type { Session } from "@/shared/types";
+import type { Session } from "@/features/auth/types";
 
 interface Props {
   session: Omit<Session["session"], "id">;
@@ -23,11 +21,7 @@ interface Props {
   isSessionsFetching: boolean;
 }
 
-export const ActiveSessionCard = ({
-  session,
-  isCurrentSession,
-  isSessionsFetching,
-}: Props) => {
+export const ActiveSessionCard = ({ session, isCurrentSession, isSessionsFetching }: Props) => {
   const { handleRevokeSession } = useActiveSessionCard();
 
   return (
@@ -48,23 +42,17 @@ export const ActiveSessionCard = ({
 
         <div className="flex items-center gap-2">
           <TypographyP>Created At:</TypographyP>
-          <TypographyMuted>
-            {new Date(session.createdAt).toLocaleString()}
-          </TypographyMuted>
+          <TypographyMuted>{new Date(session.createdAt).toLocaleString()}</TypographyMuted>
         </div>
 
         <div className="flex items-center gap-2">
           <TypographyP>Updated At:</TypographyP>
-          <TypographyMuted>
-            {new Date(session.updatedAt).toLocaleString()}
-          </TypographyMuted>
+          <TypographyMuted>{new Date(session.updatedAt).toLocaleString()}</TypographyMuted>
         </div>
 
         <div className="flex items-center gap-2">
           <TypographyP>Expires At:</TypographyP>
-          <TypographyMuted>
-            {new Date(session.expiresAt).toLocaleString()}
-          </TypographyMuted>
+          <TypographyMuted>{new Date(session.expiresAt).toLocaleString()}</TypographyMuted>
         </div>
       </CardContent>
 
@@ -76,7 +64,7 @@ export const ActiveSessionCard = ({
             type="button"
             onClick={() => handleRevokeSession(session.token)}
           >
-            <MinusCircleIcon />
+            <HugeiconsIcon icon={MinusSignCircleIcon} />
             Revoke
           </Button>
         </CardFooter>

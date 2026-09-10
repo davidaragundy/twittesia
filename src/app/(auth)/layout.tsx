@@ -12,9 +12,7 @@ export default function AuthLayout({
           <ThemeSwitch />
         </div>
       </header>
-      <main className="flex flex-1 flex-col items-center justify-center gap-6">
-        {children}
-      </main>
+      <main className="flex flex-1 flex-col items-center justify-center gap-6">{children}</main>
     </div>
   );
 }

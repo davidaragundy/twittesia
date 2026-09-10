@@ -1,17 +1,11 @@
 "use client";
 
-import { CheckIcon, LoaderIcon, RotateCcwIcon } from "lucide-react";
+import { Controller } from "react-hook-form";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Tick02Icon, Loading03Icon, ArrowReloadHorizontalIcon } from "@hugeicons/core-free-icons";
 
 import { Button } from "@/shared/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/shared/components/ui/form";
+import { Field, FieldLabel, FieldDescription, FieldError } from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
 
 import { useChangeEmailForm } from "@/features/settings/hooks/use-change-email-form";
@@ -32,71 +26,68 @@ export function ChangeEmailForm() {
   } = useChangeEmailForm();
 
   return (
-    <Form {...form}>
-      <form
-        onKeyDown={(event) => {
-          if (event.key === "Enter" && !canSubmit) event.preventDefault();
-        }}
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6"
-      >
-        <FormField
-          disabled={isPending}
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <div className="flex flex-wrap gap-2 items-center justify-start">
-                <FormLabel>Email</FormLabel>
+    <form
+      onKeyDown={(event) => {
+        if (event.key === "Enter" && !canSubmit) event.preventDefault();
+      }}
+      onSubmit={form.handleSubmit(onSubmit)}
+      className="space-y-6"
+    >
+      <Controller
+        control={form.control}
+        name="email"
+        disabled={isPending}
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <div className="flex flex-wrap items-center justify-start gap-2">
+              <FieldLabel htmlFor={field.name}>Email</FieldLabel>
 
-                {isSessionLoading && <Skeleton className="w-[200px] h-8" />}
+              {isSessionLoading && <Skeleton className="h-8 w-50" />}
 
-                {isSessionError && (
-                  <Button
-                    variant="outline"
-                    type="button"
-                    onClick={() => refetchSession()}
-                  >
-                    Retry{" "}
-                    {isSessionRefetching ? (
-                      <LoaderIcon className="animate-spin" />
-                    ) : (
-                      <RotateCcwIcon />
-                    )}
-                  </Button>
-                )}
+              {isSessionError && (
+                <Button variant="outline" type="button" onClick={() => refetchSession()}>
+                  Retry{" "}
+                  {isSessionRefetching ? (
+                    <HugeiconsIcon icon={Loading03Icon} className="animate-spin" />
+                  ) : (
+                    <HugeiconsIcon icon={ArrowReloadHorizontalIcon} />
+                  )}
+                </Button>
+              )}
 
-                {isSessionSuccess && (
-                  <FormControl className="flex-1 sm:flex-none sm:w-fit">
-                    <Input placeholder="david@aragundy.com" {...field} />
-                  </FormControl>
-                )}
+              {isSessionSuccess && (
+                <Input
+                  {...field}
+                  id={field.name}
+                  aria-invalid={fieldState.invalid}
+                  className="flex-1 sm:w-fit sm:flex-none"
+                  placeholder="david@aragundy.com"
+                />
+              )}
 
-                {canSubmit && (
-                  <Button
-                    variant={isError ? "destructive" : "ghost"}
-                    className="rounded-full"
-                    size="icon"
-                    disabled={isPending}
-                    type="submit"
-                  >
-                    {isPending && <LoaderIcon className="animate-spin" />}
-                    {isError && <RotateCcwIcon />}
-                    {!isPending && !isError && <CheckIcon />}
-                  </Button>
-                )}
-              </div>
+              {canSubmit && (
+                <Button
+                  variant={isError ? "destructive" : "ghost"}
+                  className="rounded-full"
+                  size="icon"
+                  disabled={isPending}
+                  type="submit"
+                >
+                  {isPending && <HugeiconsIcon icon={Loading03Icon} className="animate-spin" />}
+                  {isError && <HugeiconsIcon icon={ArrowReloadHorizontalIcon} />}
+                  {!isPending && !isError && <HugeiconsIcon icon={Tick02Icon} />}
+                </Button>
+              )}
+            </div>
 
-              <FormDescription className="text-sm text-muted-foreground">
-                This is the email address we will use to contact you. It will
-                not be publicly visible.
-              </FormDescription>
+            <FieldDescription className="text-sm text-muted-foreground">
+              This is the email address we will use to contact you. It will not be publicly visible.
+            </FieldDescription>
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </form>
-    </Form>
+            <FieldError errors={[fieldState.error]} />
+          </Field>
+        )}
+      />
+    </form>
   );
 }

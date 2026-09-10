@@ -1,5 +1,4 @@
-import { useSession } from "@/shared/hooks/use-session";
-
+import { useSession } from "@/features/auth/hooks/use-session";
 import { useSessions } from "@/features/settings/hooks/use-sessions";
 
 export const useActiveSessions = () => {

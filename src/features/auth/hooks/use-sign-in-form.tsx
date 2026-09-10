@@ -1,42 +1,35 @@
 "use client";
 
 import { useState } from "react";
-import { IdCardIcon, WandSparklesIcon } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { UserIdVerificationIcon, MagicWand01Icon } from "@hugeicons/core-free-icons";
 
 import { CredentialsForm } from "@/features/auth/components/credentials-form";
 import { MagicLinkForm } from "@/features/auth/components/magic-link-form";
 import { useSignInSocialMutation } from "@/features/auth/hooks/use-sign-in-social-mutation";
 
 export const useSignInForm = () => {
-  const [signInMethod, setSignInMethod] = useState<"credentials" | "magicLink">(
-    "credentials"
-  );
+  const [signInMethod, setSignInMethod] = useState<"credentials" | "magicLink">("credentials");
 
   const { mutate, isPending } = useSignInSocialMutation();
 
-  const handleSignInWithSocial = (provider: "google" | "github") =>
-    mutate({ provider });
+  const handleSignInWithGitHub = () => mutate({ provider: "github" });
 
-  const handleSignInWithGitHub = () => handleSignInWithSocial("github");
-
-  const handleSignInWithGoogle = () => handleSignInWithSocial("google");
+  const handleSignInWithGoogle = () => mutate({ provider: "google" });
 
   const toggleSignInMethod = () =>
-    setSignInMethod(
-      signInMethod === "credentials" ? "magicLink" : "credentials"
-    );
+    setSignInMethod(signInMethod === "credentials" ? "magicLink" : "credentials");
 
-  const form =
-    signInMethod === "credentials" ? <CredentialsForm /> : <MagicLinkForm />;
+  const form = signInMethod === "credentials" ? <CredentialsForm /> : <MagicLinkForm />;
 
   const toggleSignInMethodButtonContent =
     signInMethod === "credentials" ? (
       <>
-        <WandSparklesIcon /> Magic Link
+        <HugeiconsIcon icon={MagicWand01Icon} /> Magic Link
       </>
     ) : (
       <>
-        <IdCardIcon /> Credentials
+        <HugeiconsIcon icon={UserIdVerificationIcon} /> Credentials
       </>
     );
 

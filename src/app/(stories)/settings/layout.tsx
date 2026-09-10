@@ -1,17 +1,14 @@
 import { Metadata } from "next";
 
 import { ScrollArea } from "@/shared/components/ui/scroll-area";
-import {
-  TypographyH1,
-  TypographyMuted,
-} from "@/shared/components/ui/typography";
+import { TypographyH1, TypographyMuted } from "@/shared/components/ui/typography";
 
 import { SettingsSidebar } from "@/features/settings/components/settings-sidebar";
 import { PageWrapper } from "@/features/settings/components/page-wrapper";
 import { MobileWrapper } from "@/features/settings/components/mobile-wrapper";
 
 export const metadata: Metadata = {
-  title: "Stories | Settings",
+  title: "Twittesia | Settings",
 };
 
 export default function SettingsLayout({
