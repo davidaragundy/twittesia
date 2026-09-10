@@ -125,6 +125,7 @@ groups are not kebab-case. _Review._
 | Import order                               | `pre-commit`, on staged files, autofixed |
 | Framework lint rules                       | `pre-commit` and CI                      |
 | Types                                      | CI                                       |
+| Migrations match the schema                | CI                                       |
 | Commit message format                      | `commit-msg`                             |
 | Branch name, and refusing pushes to `main` | `pre-push`                               |
 
