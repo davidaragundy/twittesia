@@ -1,14 +1,19 @@
 "use client";
 
-import { Loading03Icon, ArrowReloadHorizontalIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
-import { TypographyH4 } from "@/shared/components/typography";
 import { Button } from "@/shared/components/ui/button";
-import { Field, FieldLabel, FieldDescription, FieldError } from "@/shared/components/ui/field";
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
 import { Skeleton } from "@/shared/components/ui/skeleton";
+import { Spinner } from "@/shared/components/ui/spinner";
 import { Switch } from "@/shared/components/ui/switch";
 
 import { DownloadBackupCodesDialog } from "@/features/settings/components/download-backup-codes-dialog";
@@ -20,8 +25,6 @@ export const ToggleTwoFactorForm = () => {
     form,
     onSubmit,
     isPending,
-    isError,
-    isSessionSuccess,
     isSessionLoading,
     isSessionError,
     refetchSession,
@@ -32,6 +35,8 @@ export const ToggleTwoFactorForm = () => {
     setBackupCodes,
     isSwitchDirty,
   } = useToggleTwoFactorForm();
+
+  const action = form.watch("enableTwoFactor") ? "Enable" : "Disable";
 
   return (
     <>
@@ -46,96 +51,71 @@ export const ToggleTwoFactorForm = () => {
         backupCodes={backupCodes}
       />
 
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <TypographyH4 className="flex-1">Two-factor authentication</TypographyH4>
-
-        <Controller
-          control={form.control}
-          name="enableTwoFactor"
-          render={({ field, fieldState }) => (
-            <Field
-              data-invalid={fieldState.invalid}
-              className="flex flex-row items-center justify-between rounded-lg border p-4"
-            >
-              <div className="space-y-0.5">
-                <FieldLabel htmlFor={field.name} className="text-base">
-                  Enable TOTP
-                </FieldLabel>
-
-                <FieldDescription>
-                  Enable time-based one-time passwords (TOTP). This requires using an authenticator
-                  app.
-                </FieldDescription>
-              </div>
-
-              {isSessionLoading && <Skeleton className="h-5 w-10 rounded-full" />}
-
-              {isSessionError && (
-                <Button variant="outline" type="button" onClick={() => refetchSession()}>
-                  Retry{" "}
-                  {isSessionRefetching ? (
-                    <HugeiconsIcon icon={Loading03Icon} className="animate-spin" />
-                  ) : (
-                    <HugeiconsIcon icon={ArrowReloadHorizontalIcon} />
-                  )}
-                </Button>
-              )}
-
-              {isSessionSuccess && (
-                <Switch
-                  id={field.name}
-                  disabled={isPending}
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              )}
-            </Field>
-          )}
-        />
-
-        {isSwitchDirty && (
+      <form id="toggle-two-factor-form" onSubmit={form.handleSubmit(onSubmit)}>
+        <FieldGroup>
           <Controller
+            name="enableTwoFactor"
             control={form.control}
-            name="currentPassword"
-            disabled={isPending}
             render={({ field, fieldState }) => (
-              <Field
-                data-invalid={fieldState.invalid}
-                className="flex flex-col items-start gap-4 rounded-lg bg-destructive/40 p-4"
-              >
-                <div className="space-y-0.5">
-                  <FieldLabel htmlFor={field.name} className="text-base">
-                    Password
-                  </FieldLabel>
-
+              <Field orientation="horizontal" data-invalid={fieldState.invalid}>
+                <FieldContent>
+                  <FieldLabel htmlFor="toggle-two-factor-form-enable">Authenticator app</FieldLabel>
                   <FieldDescription>
-                    In order to {form.getValues("enableTwoFactor") ? "enable" : "disable"} 2FA,
-                    please enter your password.
+                    Ask for a one-time password from an authenticator app when you sign in.
                   </FieldDescription>
-                </div>
-
-                <Input
-                  {...field}
-                  id={field.name}
-                  aria-invalid={fieldState.invalid}
-                  type="password"
-                  placeholder="••••••••"
-                />
-                <FieldError errors={[fieldState.error]} />
-
-                <Button
-                  variant={isError ? "destructive" : "default"}
-                  disabled={isPending}
-                  type="submit"
-                >
-                  {isPending && <HugeiconsIcon icon={Loading03Icon} className="animate-spin" />}
-                  {isError && <HugeiconsIcon icon={ArrowReloadHorizontalIcon} />}
-                  {form.getValues("enableTwoFactor") ? "Enable" : "Disable"} 2FA
-                </Button>
+                </FieldContent>
+                {isSessionLoading && <Skeleton className="h-5 w-9" />}
+                {isSessionError && (
+                  <Button type="button" variant="outline" onClick={() => refetchSession()}>
+                    {isSessionRefetching && <Spinner data-icon="inline-start" />}
+                    Retry
+                  </Button>
+                )}
+                {!isSessionLoading && !isSessionError && (
+                  <Switch
+                    id="toggle-two-factor-form-enable"
+                    name={field.name}
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    disabled={isPending}
+                    aria-invalid={fieldState.invalid}
+                  />
+                )}
               </Field>
             )}
           />
-        )}
+          {isSwitchDirty && (
+            <>
+              <Controller
+                name="currentPassword"
+                control={form.control}
+                disabled={isPending}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="toggle-two-factor-form-password">Password</FieldLabel>
+                    <Input
+                      {...field}
+                      id="toggle-two-factor-form-password"
+                      type="password"
+                      aria-invalid={fieldState.invalid}
+                      autoComplete="current-password"
+                    />
+                    <FieldDescription>
+                      Enter your password to {action.toLowerCase()} two-factor authentication.
+                    </FieldDescription>
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                  </Field>
+                )}
+              />
+              <Field orientation="horizontal">
+                <Button type="submit" form="toggle-two-factor-form" disabled={isPending}>
+                  {isPending && <Spinner data-icon="inline-start" />}
+                  {action} two-factor authentication
+                </Button>
+              </Field>
+            </>
+          )}
+        </FieldGroup>
       </form>
     </>
   );

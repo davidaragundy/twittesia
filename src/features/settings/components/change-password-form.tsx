@@ -1,101 +1,76 @@
 "use client";
 
-import { Loading03Icon, ArrowReloadHorizontalIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
-import { TypographyH4 } from "@/shared/components/typography";
 import { Button } from "@/shared/components/ui/button";
-import { Field, FieldLabel, FieldDescription, FieldError } from "@/shared/components/ui/field";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
+import { Spinner } from "@/shared/components/ui/spinner";
 
 import { PasswordStrengthIndicator } from "@/features/auth/components/password-strength-indicator";
 import { useChangePasswordForm } from "@/features/settings/hooks/use-change-password-form";
 
 export const ChangePasswordForm = () => {
-  const { form, onSubmit, isPending, isError, isSessionSuccess } = useChangePasswordForm();
+  const { form, onSubmit, isPending, isSessionSuccess } = useChangePasswordForm();
 
   const { errors, isDirty } = form.formState;
-
-  const canSubmit = !errors.newPassword && isDirty;
+  const canSubmit = isSessionSuccess && isDirty && !errors.newPassword;
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-      <TypographyH4>Change password</TypographyH4>
-
-      <Controller
-        control={form.control}
-        name="newPassword"
-        disabled={isPending || !isSessionSuccess}
-        render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
-            <div className="flex flex-wrap items-center justify-start gap-2">
-              <FieldLabel htmlFor={field.name}>New password</FieldLabel>
-
-              <Input
-                {...field}
-                id={field.name}
-                aria-invalid={fieldState.invalid}
-                className="w-full sm:w-fit"
-                type="password"
-                placeholder="••••••••"
-              />
-            </div>
-
-            <FieldDescription className="text-sm text-muted-foreground">
-              If you change your password, all your active sessions will be logged out.
-            </FieldDescription>
-
-            {(fieldState.isDirty || fieldState.isTouched) && (
-              <PasswordStrengthIndicator password={field.value} />
-            )}
-          </Field>
-        )}
-      />
-
-      {canSubmit && (
+    <form id="change-password-form" onSubmit={form.handleSubmit(onSubmit)}>
+      <FieldGroup>
         <Controller
+          name="newPassword"
           control={form.control}
-          name="currentPassword"
           disabled={isPending}
           render={({ field, fieldState }) => (
-            <Field
-              data-invalid={fieldState.invalid}
-              className="flex flex-col items-start gap-4 rounded-lg bg-destructive/40 p-4"
-            >
-              <div className="space-y-0.5">
-                <FieldLabel htmlFor={field.name} className="text-base">
-                  Current password
-                </FieldLabel>
-
-                <FieldDescription>
-                  In order to change your password, please enter your current password.
-                </FieldDescription>
-              </div>
-
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="change-password-form-new">New password</FieldLabel>
               <Input
                 {...field}
-                id={field.name}
-                aria-invalid={fieldState.invalid}
+                id="change-password-form-new"
                 type="password"
-                placeholder="••••••••"
+                aria-invalid={fieldState.invalid}
+                autoComplete="new-password"
               />
-
-              <FieldError errors={[fieldState.error]} />
-
-              <Button
-                variant={isError ? "destructive" : "default"}
-                disabled={isPending}
-                type="submit"
-              >
-                {isPending && <HugeiconsIcon icon={Loading03Icon} className="animate-spin" />}
-                {isError && <HugeiconsIcon icon={ArrowReloadHorizontalIcon} />}
-                Change password
-              </Button>
+              <FieldDescription>Changing it signs you out of every other session.</FieldDescription>
+              {(fieldState.isDirty || fieldState.isTouched) && (
+                <PasswordStrengthIndicator password={field.value} />
+              )}
             </Field>
           )}
         />
-      )}
+        <Controller
+          name="currentPassword"
+          control={form.control}
+          disabled={isPending}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="change-password-form-current">Current password</FieldLabel>
+              <Input
+                {...field}
+                id="change-password-form-current"
+                type="password"
+                aria-invalid={fieldState.invalid}
+                autoComplete="current-password"
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+        <Field orientation="horizontal">
+          <Button type="submit" form="change-password-form" disabled={!canSubmit || isPending}>
+            {isPending && <Spinner data-icon="inline-start" />}
+            Change password
+          </Button>
+        </Field>
+      </FieldGroup>
     </form>
   );
 };

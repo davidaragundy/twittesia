@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 export const generateBackupCodesFormSchema = z.object({
-  generateBackupCodes: z.boolean(),
   currentPassword: z
     .string()
     .min(8, {

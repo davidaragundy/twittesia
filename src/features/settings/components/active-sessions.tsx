@@ -1,13 +1,11 @@
 "use client";
 
-import { Loading03Icon, ArrowReloadHorizontalIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-
-import { TypographyH4 } from "@/shared/components/typography";
 import { Button } from "@/shared/components/ui/button";
+import { ItemGroup } from "@/shared/components/ui/item";
+import { Spinner } from "@/shared/components/ui/spinner";
 
-import { ActiveSessionCard } from "@/features/settings/components/active-session-card";
-import { ActiveSessionCardSkeleton } from "@/features/settings/components/active-session-card-skeleton";
+import { ActiveSessionItem } from "@/features/settings/components/active-session-item";
+import { ActiveSessionItemSkeleton } from "@/features/settings/components/active-session-item-skeleton";
 import { useActiveSessions } from "@/features/settings/hooks/use-active-sessions";
 
 export const ActiveSessions = () => {
@@ -22,37 +20,27 @@ export const ActiveSessions = () => {
     session,
   } = useActiveSessions();
 
+  if (isSessionsError) {
+    return (
+      <Button type="button" variant="outline" onClick={() => refetchSessions()}>
+        {isSessionsRefetching && <Spinner data-icon="inline-start" />}
+        Retry
+      </Button>
+    );
+  }
+
   return (
-    <div className="flex flex-col gap-4">
-      <TypographyH4 className="mb-4 flex items-center gap-2">
-        Active sessions {isSessionsSuccess && `(${sessions?.length})`}{" "}
-        {isSessionsFetching && (
-          <HugeiconsIcon icon={Loading03Icon} className="animate-spin" size={18} />
-        )}
-      </TypographyH4>
-
-      {isSessionsLoading && <ActiveSessionCardSkeleton />}
-
-      {isSessionsError && (
-        <Button variant="outline" type="button" onClick={() => refetchSessions()}>
-          Retry
-          {isSessionsRefetching ? (
-            <HugeiconsIcon icon={Loading03Icon} className="animate-spin" />
-          ) : (
-            <HugeiconsIcon icon={ArrowReloadHorizontalIcon} />
-          )}
-        </Button>
-      )}
-
+    <ItemGroup>
+      {isSessionsLoading && <ActiveSessionItemSkeleton />}
       {isSessionsSuccess &&
-        sessions!.map((sessionData) => (
-          <ActiveSessionCard
+        sessions?.map((sessionData) => (
+          <ActiveSessionItem
             key={sessionData.token}
             session={sessionData}
             isCurrentSession={session?.session.token === sessionData.token}
             isSessionsFetching={isSessionsFetching}
           />
         ))}
-    </div>
+    </ItemGroup>
   );
 };

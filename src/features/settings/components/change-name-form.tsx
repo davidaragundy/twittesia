@@ -1,13 +1,18 @@
 "use client";
 
-import { Tick02Icon, Loading03Icon, ArrowReloadHorizontalIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
 import { Button } from "@/shared/components/ui/button";
-import { Field, FieldLabel, FieldDescription, FieldError } from "@/shared/components/ui/field";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
 import { Skeleton } from "@/shared/components/ui/skeleton";
+import { Spinner } from "@/shared/components/ui/spinner";
 
 import { useChangeNameForm } from "@/features/settings/hooks/use-change-name-form";
 
@@ -17,8 +22,6 @@ export function ChangeNameForm() {
     canSubmit,
     onSubmit,
     isPending,
-    isError,
-    isSessionSuccess,
     isSessionLoading,
     isSessionError,
     refetchSession,
@@ -26,68 +29,47 @@ export function ChangeNameForm() {
   } = useChangeNameForm();
 
   return (
-    <form
-      onKeyDown={(event) => {
-        if (event.key === "Enter" && !canSubmit) event.preventDefault();
-      }}
-      onSubmit={form.handleSubmit(onSubmit)}
-      className="space-y-6"
-    >
-      <Controller
-        control={form.control}
-        name="name"
-        disabled={isPending}
-        render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
-            <div className="flex flex-wrap items-center justify-start gap-2">
-              <FieldLabel htmlFor={field.name}>Name</FieldLabel>
-
-              {isSessionLoading && <Skeleton className="h-8 w-[200px]" />}
-
-              {isSessionError && (
-                <Button variant="outline" type="button" onClick={() => refetchSession()}>
-                  Retry{" "}
-                  {isSessionRefetching ? (
-                    <HugeiconsIcon icon={Loading03Icon} className="animate-spin" />
-                  ) : (
-                    <HugeiconsIcon icon={ArrowReloadHorizontalIcon} />
-                  )}
-                </Button>
-              )}
-
-              {isSessionSuccess && (
+    <form id="change-name-form" onSubmit={form.handleSubmit(onSubmit)}>
+      <FieldGroup>
+        <Controller
+          name="name"
+          control={form.control}
+          disabled={isPending}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="change-name-form-name">Name</FieldLabel>
+              {isSessionLoading ? (
+                <Skeleton className="h-10 w-full" />
+              ) : (
                 <Input
                   {...field}
-                  id={field.name}
+                  id="change-name-form-name"
                   aria-invalid={fieldState.invalid}
-                  className="flex-1 sm:w-fit sm:flex-none"
                   placeholder="David Aragundy"
+                  autoComplete="name"
                 />
               )}
-
-              {canSubmit && (
-                <Button
-                  variant={isError ? "destructive" : "ghost"}
-                  className="rounded-full"
-                  size="icon"
-                  disabled={isPending}
-                  type="submit"
-                >
-                  {isPending && <HugeiconsIcon icon={Loading03Icon} className="animate-spin" />}
-                  {isError && <HugeiconsIcon icon={ArrowReloadHorizontalIcon} />}
-                  {!isPending && !isError && <HugeiconsIcon icon={Tick02Icon} />}
-                </Button>
-              )}
-            </div>
-
-            <FieldDescription className="text-sm text-muted-foreground">
-              This is your public display name. It can be your real name or a pseudonym.
-            </FieldDescription>
-
-            <FieldError errors={[fieldState.error]} />
-          </Field>
-        )}
-      />
+              <FieldDescription>
+                This is your public display name. It can be your real name or a pseudonym.
+              </FieldDescription>
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+        <Field orientation="horizontal">
+          {isSessionError ? (
+            <Button type="button" variant="outline" onClick={() => refetchSession()}>
+              {isSessionRefetching && <Spinner data-icon="inline-start" />}
+              Retry
+            </Button>
+          ) : (
+            <Button type="submit" form="change-name-form" disabled={!canSubmit || isPending}>
+              {isPending && <Spinner data-icon="inline-start" />}
+              Save name
+            </Button>
+          )}
+        </Field>
+      </FieldGroup>
     </form>
   );
 }
