@@ -18,10 +18,18 @@ Requirements:
 - **pnpm** — the version pinned in the `packageManager` field of
   [package.json](./package.json). Enable it with `corepack enable`.
 
-Copy the environment template and fill in each value:
+Copy the environment template and fill in each value. `DATABASE_URL` is the
+pooled connection the app uses, and `DATABASE_URL_UNPOOLED` the direct
+connection migrations run over:
 
 ```bash
 cp .env.example .env.local
+```
+
+Bring your database up to the current schema:
+
+```bash
+pnpm exec drizzle-kit migrate
 ```
 
 Install dependencies and start the dev server:

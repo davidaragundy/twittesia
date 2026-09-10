@@ -120,11 +120,24 @@ A merge that does not satisfy all of this is not acceptable:
 
 ## CI/CD
 
-**GitHub Actions** (`.github/workflows/ci.yml`) runs `pnpm lint` and `pnpm typecheck` on every pull request. Both must pass before review.
+**GitHub Actions** (`.github/workflows/ci.yml`) runs `pnpm lint` and `pnpm typecheck` on every pull request, and checks that the committed migrations match `schema.ts`. All three must pass before review.
 
-The production build is not run in CI. Nothing else builds it either, so a change
-that breaks `pnpm build` is caught only by whoever runs it — run it yourself when
-you touch configuration or anything that renders at the root.
+**Vercel** deploys every pull request as a preview and `main` to production. Each deployment runs `drizzle-kit migrate` against its own database and then `pnpm build`, as `vercel.json` sets out. A change that breaks `pnpm build` fails its preview deployment; run the build yourself when you touch configuration or anything that renders at the root.
+
+## Database migrations
+
+The schema lives in `src/shared/lib/drizzle/schema.ts`. Every change to it ships with a migration generated from it, committed in `drizzle/` in the same pull request:
+
+```bash
+pnpm exec drizzle-kit generate --name <what-changed>
+pnpm exec drizzle-kit migrate
+```
+
+Read the generated SQL before committing it, and never edit a migration that has reached `main`. `drizzle-kit push` is not used: every schema change is a reviewed migration.
+
+**Every migration is compatible with the code already deployed.** A deployment migrates before it takes traffic, and rolling a deployment back leaves the schema where it is. So a migration only adds: a new table, or a column that is nullable or has a default. Removing or renaming takes two pull requests — the first stops the code using the old column, the second drops it.
+
+**Regenerate after rebasing.** Drizzle applies only migrations newer than the last one a database has run, so a migration generated before another one reached `main` is skipped without an error. When `main` gains a migration while your branch has one, delete yours, rebase, and generate it again.
 
 ## Local enforcement
 
