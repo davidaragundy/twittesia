@@ -9,8 +9,13 @@ is then gone for good.
 ### People
 
 **User**:
-A person registered on Twittesia.
+A person using Twittesia, whether or not they have linked an account.
 _Avoid_: member
+
+**Guest**:
+A user who has not linked any account yet, so has given no email address,
+password or social login.
+_Avoid_: anonymous user, visitor
 
 **Account**:
 One way a user signs in, such as a password or a Google login. A user may have
