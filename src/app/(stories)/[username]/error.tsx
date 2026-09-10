@@ -4,8 +4,8 @@ import { ArrowReloadHorizontalIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useEffect } from "react";
 
+import { TypographyH1 } from "@/shared/components/typography";
 import { Button } from "@/shared/components/ui/button";
-import { TypographyH1 } from "@/shared/components/ui/typography";
 
 interface Props {
   reset: () => void;

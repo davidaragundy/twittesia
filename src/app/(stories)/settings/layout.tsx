@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
+import { TypographyH1, TypographyMuted } from "@/shared/components/typography";
 import { ScrollArea } from "@/shared/components/ui/scroll-area";
-import { TypographyH1, TypographyMuted } from "@/shared/components/ui/typography";
 
 import { MobileWrapper } from "@/features/settings/components/mobile-wrapper";
 import { PageWrapper } from "@/features/settings/components/page-wrapper";

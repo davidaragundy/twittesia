@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { TypographyH1, TypographyP } from "@/shared/components/ui/typography";
+import { TypographyH1, TypographyP } from "@/shared/components/typography";
 
 export const metadata: Metadata = {
   title: "Twittesia | Chat",

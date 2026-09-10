@@ -4,12 +4,12 @@ import { Loading03Icon, ArrowReloadHorizontalIcon } from "@hugeicons/core-free-i
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
+import { TypographyH4 } from "@/shared/components/typography";
 import { Button } from "@/shared/components/ui/button";
 import { Field, FieldLabel, FieldDescription, FieldError } from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Switch } from "@/shared/components/ui/switch";
-import { TypographyH4 } from "@/shared/components/ui/typography";
 
 import { DownloadBackupCodesDialog } from "@/features/settings/components/download-backup-codes-dialog";
 import { SetupTwoFactorDialog } from "@/features/settings/components/setup-two-factor-dialog";

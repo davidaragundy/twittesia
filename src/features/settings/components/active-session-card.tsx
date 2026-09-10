@@ -1,6 +1,7 @@
 import { MinusSignCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
+import { TypographyMuted, TypographyP } from "@/shared/components/typography";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import {
@@ -11,7 +12,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
-import { TypographyMuted, TypographyP } from "@/shared/components/ui/typography";
 
 import type { Session } from "@/features/auth/types";
 import { useActiveSessionCard } from "@/features/settings/hooks/use-active-session-card";

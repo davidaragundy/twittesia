@@ -4,12 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { Controller } from "react-hook-form";
 
+import { TypographyMuted } from "@/shared/components/typography";
 import { Button } from "@/shared/components/ui/button";
 import { Checkbox } from "@/shared/components/ui/checkbox";
 import { Field, FieldLabel, FieldDescription, FieldError } from "@/shared/components/ui/field";
 import { RadioGroup, RadioGroupItem } from "@/shared/components/ui/radio-group";
 import { Switch } from "@/shared/components/ui/switch";
-import { TypographyMuted } from "@/shared/components/ui/typography";
 
 import { useNotificationsForm } from "@/features/settings/hooks/use-notifications-form";
 

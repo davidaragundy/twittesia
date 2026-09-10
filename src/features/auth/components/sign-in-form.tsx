@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import { TypographyH1, TypographyP } from "@/shared/components/typography";
 import { Button } from "@/shared/components/ui/button";
 import {
   Card,
@@ -10,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
-import { TypographyH1, TypographyP } from "@/shared/components/ui/typography";
 import { cn } from "@/shared/utils/cn";
 
 import { useSignInForm } from "@/features/auth/hooks/use-sign-in-form";

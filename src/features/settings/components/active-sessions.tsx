@@ -3,8 +3,8 @@
 import { Loading03Icon, ArrowReloadHorizontalIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
+import { TypographyH4 } from "@/shared/components/typography";
 import { Button } from "@/shared/components/ui/button";
-import { TypographyH4 } from "@/shared/components/ui/typography";
 
 import { ActiveSessionCard } from "@/features/settings/components/active-session-card";
 import { ActiveSessionCardSkeleton } from "@/features/settings/components/active-session-card-skeleton";

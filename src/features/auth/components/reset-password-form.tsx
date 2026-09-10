@@ -5,6 +5,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { Controller } from "react-hook-form";
 
+import { TypographyH1, TypographyP } from "@/shared/components/typography";
 import { Button } from "@/shared/components/ui/button";
 import {
   Card,
@@ -15,7 +16,6 @@ import {
 } from "@/shared/components/ui/card";
 import { Field, FieldLabel, FieldError } from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
-import { TypographyH1, TypographyP } from "@/shared/components/ui/typography";
 import { cn } from "@/shared/utils/cn";
 
 import { PasswordStrengthIndicator } from "@/features/auth/components/password-strength-indicator";
@@ -53,7 +53,7 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentProps<
                       {...field}
                       id={field.name}
                       aria-invalid={fieldState.invalid}
-                      className="peer ps-9 shadow-none not-aria-invalid:border-none aria-invalid:text-destructive-foreground"
+                      className="peer aria-invalid:text-destructive-foreground ps-9 shadow-none not-aria-invalid:border-none"
                       disabled={isPending}
                       type="password"
                       placeholder={fieldState.invalid ? undefined : "••••••••"}
@@ -89,7 +89,7 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentProps<
                       {...field}
                       id={field.name}
                       aria-invalid={fieldState.invalid}
-                      className="peer ps-9 shadow-none not-aria-invalid:border-none aria-invalid:text-destructive-foreground"
+                      className="peer aria-invalid:text-destructive-foreground ps-9 shadow-none not-aria-invalid:border-none"
                       disabled={isPending}
                       type="password"
                       placeholder={fieldState.invalid ? undefined : "••••••••"}
