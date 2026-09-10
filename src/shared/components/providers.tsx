@@ -1,12 +1,12 @@
 "use client";
 
-import { FC, PropsWithChildren } from "react";
-import dynamic from "next/dynamic";
 import { QueryClientProvider } from "@tanstack/react-query";
+import dynamic from "next/dynamic";
+import { FC, PropsWithChildren } from "react";
 
+import { ThemeProvider } from "@/shared/components/theme-provider";
 import { Toaster } from "@/shared/components/ui/sonner";
 import { TooltipProvider } from "@/shared/components/ui/tooltip";
-import { ThemeProvider } from "@/shared/components/theme-provider";
 import { getQueryClient } from "@/shared/lib/react-query/get-query-client";
 
 const ReactQueryDevtools =

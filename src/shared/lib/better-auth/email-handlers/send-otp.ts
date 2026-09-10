@@ -1,8 +1,8 @@
 import { APIError } from "better-auth";
 import { type UserWithTwoFactor } from "better-auth/plugins";
 
-import { resend } from "@/shared/lib/resend/server";
 import TwoFactorOTP from "@/shared/lib/react-email/two-factor-otp";
+import { resend } from "@/shared/lib/resend/server";
 
 export const sendOTP = async ({
   user,

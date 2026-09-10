@@ -1,14 +1,12 @@
 import { z } from "zod";
 
-import { notificationsFormSchema } from "@/features/settings/schemas/notifications-form-schema";
-
-import { changeNameFormSchema } from "@/features/settings/schemas/change-name-form-schema";
-import { changeUsernameFormSchema } from "@/features/settings/schemas/change-username-form-schema";
 import { changeEmailFormSchema } from "@/features/settings/schemas/change-email-form-schema";
-
+import { changeNameFormSchema } from "@/features/settings/schemas/change-name-form-schema";
 import { changePasswordFormSchema } from "@/features/settings/schemas/change-password-form-schema";
-import { toggleTwoFactorFormSchema } from "@/features/settings/schemas/toggle-two-factor-form-schema";
+import { changeUsernameFormSchema } from "@/features/settings/schemas/change-username-form-schema";
 import { generateBackupCodesFormSchema } from "@/features/settings/schemas/generate-backup-codes-form-schema";
+import { notificationsFormSchema } from "@/features/settings/schemas/notifications-form-schema";
+import { toggleTwoFactorFormSchema } from "@/features/settings/schemas/toggle-two-factor-form-schema";
 
 export type NotificationsFormValues = z.infer<typeof notificationsFormSchema>;
 

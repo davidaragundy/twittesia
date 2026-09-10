@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Suspense, use } from "react";
 
 import { ResetPasswordForm } from "@/features/auth/components/reset-password-form";

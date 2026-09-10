@@ -1,9 +1,9 @@
 "use client";
 
+import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 
 import { cn } from "@/shared/utils/cn";
 
@@ -38,7 +38,7 @@ export const SettingsNavLink = ({
       aria-label={label}
       href={href}
       className={cn(
-        "w-fit flex flex-wrap items-center text-xl gap-2 rounded-xl px-4 py-2 transition-all duration-200",
+        "flex w-fit flex-wrap items-center gap-2 rounded-xl px-4 py-2 text-xl transition-all duration-200",
         isActive ? "bg-accent" : "hover:bg-accent",
         includeArrow && "w-full justify-between",
       )}

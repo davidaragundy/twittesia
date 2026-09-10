@@ -1,13 +1,13 @@
-import { UseFormReturn } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
+import { UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
-import type { AuthClientError } from "@/features/auth/types";
 import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants";
 import { authClient } from "@/shared/lib/better-auth/client";
 
-import { getHash } from "@/features/auth/utils/get-hash";
+import type { AuthClientError } from "@/features/auth/types";
 import type { SignUpFormValues } from "@/features/auth/types";
+import { getHash } from "@/features/auth/utils/get-hash";
 
 interface Props {
   form: UseFormReturn<SignUpFormValues>;

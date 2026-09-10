@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 
 import { Providers } from "@/shared/components/providers";
 import { cn } from "@/shared/utils/cn";
+
 import "@/shared/styles/globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });

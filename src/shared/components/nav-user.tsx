@@ -1,6 +1,5 @@
 "use client";
 
-import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Loading03Icon,
   Logout01Icon,
@@ -8,6 +7,7 @@ import {
   MoreHorizontalIcon,
   Sun01Icon,
 } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 import { Button } from "@/shared/components/ui/button";
@@ -56,7 +56,7 @@ export const NavUser = ({ user }: Props) => {
               </AvatarFallback>
             </Avatar>
 
-            <span className="border-background absolute -inset-e-0.5 -bottom-0.5 size-3 rounded-full border-2 bg-emerald-500">
+            <span className="absolute -inset-e-0.5 -bottom-0.5 size-3 rounded-full border-2 border-background bg-emerald-500">
               <span className="sr-only">Online</span>
             </span>
           </div>
@@ -76,7 +76,7 @@ export const NavUser = ({ user }: Props) => {
               title="Toggle theme"
               aria-label="Toggle theme"
               variant="ghost"
-              className="w-full p-0! justify-start"
+              className="w-full justify-start p-0!"
               onClick={() => handleThemeChange()}
             >
               {theme === "dark" ? (
@@ -89,7 +89,7 @@ export const NavUser = ({ user }: Props) => {
 
             <Button
               variant="ghost"
-              className="w-full p-0! text-destructive justify-start"
+              className="w-full justify-start p-0! text-destructive"
               onClick={() => handleSignOut()}
             >
               {isSigningOut ? (
@@ -106,7 +106,7 @@ export const NavUser = ({ user }: Props) => {
   }
 
   return (
-    <div className="w-full flex items-center gap-4">
+    <div className="flex w-full items-center gap-4">
       <div className="relative">
         <Avatar className="size-10">
           <AvatarImage src={user.image || undefined} alt={user.name} />
@@ -117,18 +117,18 @@ export const NavUser = ({ user }: Props) => {
               .join("")}
           </AvatarFallback>
         </Avatar>
-        <span className="border-background absolute -inset-e-0.5 -bottom-0.5 size-3 rounded-full border-2 bg-emerald-500">
+        <span className="absolute -inset-e-0.5 -bottom-0.5 size-3 rounded-full border-2 border-background bg-emerald-500">
           <span className="sr-only">Online</span>
         </span>
       </div>
 
-      <div className="hidden sm:flex flex-col overflow-hidden">
+      <div className="hidden flex-col overflow-hidden sm:flex">
         <span className="text-sm font-semibold text-ellipsis">{user.name}</span>
-        <span className="text-xs text-muted-foreground text-ellipsis">@{user.displayUsername}</span>
+        <span className="text-xs text-ellipsis text-muted-foreground">@{user.displayUsername}</span>
       </div>
 
       <DropdownMenu>
-        <DropdownMenuTrigger className="rounded-full hidden sm:flex size-9 items-center justify-center hover:bg-muted">
+        <DropdownMenuTrigger className="hidden size-9 items-center justify-center rounded-full hover:bg-muted sm:flex">
           <HugeiconsIcon icon={MoreHorizontalIcon} />
         </DropdownMenuTrigger>
         <DropdownMenuContent>

@@ -1,16 +1,16 @@
 "use client";
 
-import { REGEXP_ONLY_DIGITS } from "input-otp";
-import { Controller } from "react-hook-form";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { Loading03Icon, ArrowReloadHorizontalIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { QRCodeSVG } from "qrcode.react";
+import { Controller } from "react-hook-form";
 
+import { CopyToClipboard } from "@/shared/components/copy-to-clipboard";
 import { Button } from "@/shared/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/shared/components/ui/dialog";
 import { Field, FieldLabel, FieldDescription, FieldError } from "@/shared/components/ui/field";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/shared/components/ui/input-otp";
-import { CopyToClipboard } from "@/shared/components/copy-to-clipboard";
 
 import { useSetupTwoFactorDialog } from "@/features/settings/hooks/use-setup-two-factor-dialog";
 

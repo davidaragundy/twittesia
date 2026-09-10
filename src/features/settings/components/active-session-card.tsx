@@ -1,5 +1,5 @@
-import { HugeiconsIcon } from "@hugeicons/react";
 import { MinusSignCircleIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
@@ -12,8 +12,9 @@ import {
   CardTitle,
 } from "@/shared/components/ui/card";
 import { TypographyMuted, TypographyP } from "@/shared/components/ui/typography";
-import { useActiveSessionCard } from "@/features/settings/hooks/use-active-session-card";
+
 import type { Session } from "@/features/auth/types";
+import { useActiveSessionCard } from "@/features/settings/hooks/use-active-session-card";
 
 interface Props {
   session: Omit<Session["session"], "id">;
@@ -27,14 +28,14 @@ export const ActiveSessionCard = ({ session, isCurrentSession, isSessionsFetchin
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex justify-between items-center gap-2">
+        <CardTitle className="flex items-center justify-between gap-2">
           User Agent {isCurrentSession && <Badge>Current</Badge>}
         </CardTitle>
 
         <CardDescription>{session.userAgent}</CardDescription>
       </CardHeader>
 
-      <CardContent className="text-sm flex flex-col gap-0">
+      <CardContent className="flex flex-col gap-0 text-sm">
         <div className="flex items-center gap-2">
           <TypographyP>IP Address:</TypographyP>
           <TypographyMuted>{session.ipAddress}</TypographyMuted>

@@ -1,12 +1,12 @@
-import { UseFormReturn } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
-import { SESSION_QUERY_KEY } from "@/features/auth/lib/query-keys";
-import type { AuthClientError, Session } from "@/features/auth/types";
 import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants";
 import { authClient } from "@/shared/lib/better-auth/client";
 
+import { SESSION_QUERY_KEY } from "@/features/auth/lib/query-keys";
+import type { AuthClientError, Session } from "@/features/auth/types";
 import type { ChangeNameFormValues } from "@/features/settings/types";
 
 interface Props {

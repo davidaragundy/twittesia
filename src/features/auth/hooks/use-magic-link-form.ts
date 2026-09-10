@@ -1,8 +1,8 @@
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
-import { magicLinkFormSchema } from "@/features/auth/schemas/magic-link-form-schema";
 import { useMagicLinkMutation } from "@/features/auth/hooks/use-magic-link-mutation";
+import { magicLinkFormSchema } from "@/features/auth/schemas/magic-link-form-schema";
 import type { MagicLinkFormValues } from "@/features/auth/types";
 
 export const useMagicLinkForm = () => {

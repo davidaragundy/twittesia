@@ -1,7 +1,7 @@
 import { APIError, type User } from "better-auth";
 
-import { resend } from "@/shared/lib/resend/server";
 import ExistingUserSignUpEmail from "@/shared/lib/react-email/existing-user-sign-up";
+import { resend } from "@/shared/lib/resend/server";
 
 export const sendExistingUserSignUpEmail = async (
   data: {

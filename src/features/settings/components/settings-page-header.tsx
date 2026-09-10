@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowLeft01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import Link from "next/link";
 
 import { TypographyH3, TypographyMuted } from "@/shared/components/ui/typography";
 
@@ -11,7 +11,7 @@ type Props = {
 
 export const SettingsPageHeader = ({ title, description }: Props) => {
   return (
-    <div className="sticky top-0 backdrop-blur-sm pb-2 md:static md:backdrop-blur-none md:pb-0">
+    <div className="sticky top-0 pb-2 backdrop-blur-sm md:static md:pb-0 md:backdrop-blur-none">
       <TypographyH3 className="flex items-center gap-2">
         <Link href="/settings" className="md:hidden">
           <HugeiconsIcon icon={ArrowLeft01Icon} />

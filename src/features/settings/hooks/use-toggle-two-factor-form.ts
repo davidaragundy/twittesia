@@ -1,10 +1,10 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useSession } from "@/features/auth/hooks/use-session";
-import { useEnableTwoFactorMutation } from "@/features/settings/hooks/use-enable-two-factor-mutation";
 import { useDisableTwoFactorMutation } from "@/features/settings/hooks/use-disable-two-factor-mutation";
+import { useEnableTwoFactorMutation } from "@/features/settings/hooks/use-enable-two-factor-mutation";
 import { toggleTwoFactorFormSchema } from "@/features/settings/schemas/toggle-two-factor-form-schema";
 import type { ToggleTwoFactorFormValues } from "@/features/settings/types";
 

@@ -1,9 +1,10 @@
 "use client";
 
-import * as React from "react";
+import { SearchIcon, Tick02Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Command as CommandPrimitive } from "cmdk";
+import * as React from "react";
 
-import { cn } from "@/shared/utils/cn";
 import {
   Dialog,
   DialogContent,
@@ -12,8 +13,7 @@ import {
   DialogTitle,
 } from "@/shared/components/ui/dialog";
 import { InputGroup, InputGroupAddon } from "@/shared/components/ui/input-group";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { SearchIcon, Tick02Icon } from "@hugeicons/core-free-icons";
+import { cn } from "@/shared/utils/cn";
 
 function Command({ className, ...props }: React.ComponentProps<typeof CommandPrimitive>) {
   return (

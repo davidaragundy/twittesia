@@ -1,11 +1,12 @@
-import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
-import type { AuthClientError, TwoFactorFormValues } from "@/features/auth/types";
 import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants";
 import { authClient } from "@/shared/lib/better-auth/client";
+
+import type { AuthClientError, TwoFactorFormValues } from "@/features/auth/types";
 
 interface Props {
   form: UseFormReturn<TwoFactorFormValues>;

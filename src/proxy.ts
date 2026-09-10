@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
 import { getSessionCookie } from "better-auth/cookies";
+import { NextRequest, NextResponse } from "next/server";
 
 import { resolveAuthRouteAccess } from "@/features/auth/utils/resolve-auth-route-access";
 

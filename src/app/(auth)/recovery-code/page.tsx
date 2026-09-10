@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 
 import { RecoveryCodeForm } from "@/features/auth/components/recovery-code-form";
 

@@ -1,8 +1,8 @@
 "use client";
 
-import { Controller } from "react-hook-form";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { Tick02Icon, Loading03Icon, ArrowReloadHorizontalIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Controller } from "react-hook-form";
 
 import { Button } from "@/shared/components/ui/button";
 import { Field, FieldLabel, FieldDescription, FieldError } from "@/shared/components/ui/field";
@@ -39,10 +39,10 @@ export function ChangeUsernameForm() {
         disabled={isPending}
         render={({ field, fieldState }) => (
           <Field data-invalid={fieldState.invalid}>
-            <div className="flex flex-wrap gap-2 items-center justify-start">
+            <div className="flex flex-wrap items-center justify-start gap-2">
               <FieldLabel htmlFor={field.name}>Username</FieldLabel>
 
-              {isSessionLoading && <Skeleton className="w-[200px] h-8" />}
+              {isSessionLoading && <Skeleton className="h-8 w-[200px]" />}
 
               {isSessionError && (
                 <Button variant="outline" type="button" onClick={() => refetchSession()}>
@@ -60,7 +60,7 @@ export function ChangeUsernameForm() {
                   {...field}
                   id={field.name}
                   aria-invalid={fieldState.invalid}
-                  className="flex-1 sm:flex-none sm:w-fit"
+                  className="flex-1 sm:w-fit sm:flex-none"
                   placeholder="davidaragundy"
                 />
               )}

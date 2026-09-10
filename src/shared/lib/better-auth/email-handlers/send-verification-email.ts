@@ -1,7 +1,7 @@
 import { APIError, type User } from "better-auth";
 
-import { resend } from "@/shared/lib/resend/server";
 import VerifyEmail from "@/shared/lib/react-email/verify-email";
+import { resend } from "@/shared/lib/resend/server";
 
 export const sendVerificationEmail = async ({
   user,

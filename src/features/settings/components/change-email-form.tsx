@@ -1,15 +1,15 @@
 "use client";
 
-import { Controller } from "react-hook-form";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { Tick02Icon, Loading03Icon, ArrowReloadHorizontalIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Controller } from "react-hook-form";
 
 import { Button } from "@/shared/components/ui/button";
 import { Field, FieldLabel, FieldDescription, FieldError } from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
+import { Skeleton } from "@/shared/components/ui/skeleton";
 
 import { useChangeEmailForm } from "@/features/settings/hooks/use-change-email-form";
-import { Skeleton } from "@/shared/components/ui/skeleton";
 
 export function ChangeEmailForm() {
   const {

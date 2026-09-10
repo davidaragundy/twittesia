@@ -1,8 +1,8 @@
 "use client";
 
-import { Controller } from "react-hook-form";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { Loading03Icon, ArrowReloadHorizontalIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Controller } from "react-hook-form";
 
 import { Button } from "@/shared/components/ui/button";
 import { Field, FieldLabel, FieldDescription, FieldError } from "@/shared/components/ui/field";
@@ -11,8 +11,8 @@ import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Switch } from "@/shared/components/ui/switch";
 import { TypographyH4 } from "@/shared/components/ui/typography";
 
-import { SetupTwoFactorDialog } from "@/features/settings/components/setup-two-factor-dialog";
 import { DownloadBackupCodesDialog } from "@/features/settings/components/download-backup-codes-dialog";
+import { SetupTwoFactorDialog } from "@/features/settings/components/setup-two-factor-dialog";
 import { useToggleTwoFactorForm } from "@/features/settings/hooks/use-toggle-two-factor-form";
 
 export const ToggleTwoFactorForm = () => {

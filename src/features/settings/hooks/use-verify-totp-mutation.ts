@@ -2,11 +2,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
-import { SESSION_QUERY_KEY } from "@/features/auth/lib/query-keys";
-import type { AuthClientError, TwoFactorFormValues } from "@/features/auth/types";
 import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants";
 import { authClient } from "@/shared/lib/better-auth/client";
 
+import { SESSION_QUERY_KEY } from "@/features/auth/lib/query-keys";
+import type { AuthClientError, TwoFactorFormValues } from "@/features/auth/types";
 import { SESSIONS_QUERY_KEY } from "@/features/settings/lib/react-query/query-keys";
 
 interface Props {

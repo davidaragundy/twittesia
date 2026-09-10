@@ -11,7 +11,7 @@ export default function Loading() {
 
       <form className="space-y-8">
         <div className="space-y-2">
-          <div className="flex gap-2 items-center justify-start">
+          <div className="flex items-center justify-start gap-2">
             <label className="text-sm font-medium">Username</label>
             <Skeleton className="h-8 w-48" />
           </div>
@@ -21,7 +21,7 @@ export default function Loading() {
         </div>
 
         <div className="space-y-2">
-          <div className="flex gap-2 items-center justify-start">
+          <div className="flex items-center justify-start gap-2">
             <label className="text-sm font-medium">Username</label>
             <Skeleton className="h-8 w-64" />
           </div>
@@ -31,7 +31,7 @@ export default function Loading() {
         </div>
 
         <div className="space-y-2">
-          <div className="flex gap-2 items-center justify-start">
+          <div className="flex items-center justify-start gap-2">
             <label className="text-sm font-medium">Email</label>
             <Skeleton className="h-8 w-48" />
           </div>
