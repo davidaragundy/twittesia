@@ -4,7 +4,9 @@
     ".agents/",
     ".claude/",
     "skills-lock.json",
-    "src/shared/lib/drizzle/migrations/"
+    "src/shared/lib/drizzle/migrations/",
+    "src/shared/components/ui/",
+    "src/shared/hooks/use-mobile.ts"
   ],
   "sortImports": {
     "groups": [
@@ -17,14 +19,23 @@
       "stylesheets"
     ],
     "customGroups": [
-      { "groupName": "stylesheets", "elementNamePattern": ["**/*.css", "**/*.scss"] },
-      { "groupName": "shared", "elementNamePattern": ["@/shared/**"] },
-      { "groupName": "features", "elementNamePattern": ["@/features/**"] }
+      {
+        "groupName": "stylesheets",
+        "elementNamePattern": ["**/*.css", "**/*.scss"]
+      },
+      {
+        "groupName": "shared",
+        "elementNamePattern": ["@/shared/**"]
+      },
+      {
+        "groupName": "features",
+        "elementNamePattern": ["@/features/**"]
+      }
     ]
   },
   "sortTailwindcss": {
     "stylesheet": "./src/shared/styles/globals.css",
-    "functions": ["clsx", "cn"],
+    "functions": ["cn"],
     "preserveWhitespace": true
   }
 }
