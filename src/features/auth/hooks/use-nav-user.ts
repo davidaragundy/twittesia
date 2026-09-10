@@ -3,11 +3,9 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
-import { useIsMobile } from "@/shared/hooks/use-mobile";
 import { authClient } from "@/shared/lib/better-auth/client";
 
 export const useNavUser = () => {
-  const isMobile = useIsMobile();
   const router = useRouter();
   const { theme, setTheme } = useTheme();
   const [isSigningOut, setIsSigningOut] = useState(false);
@@ -64,7 +62,6 @@ export const useNavUser = () => {
   return {
     handleSignOut,
     handleThemeChange,
-    isMobile,
     isSigningOut,
     theme,
   };
