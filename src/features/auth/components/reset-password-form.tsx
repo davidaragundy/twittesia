@@ -1,11 +1,8 @@
 "use client";
 
-import { Loading03Icon, LockPasswordIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { Controller } from "react-hook-form";
 
-import { TypographyH1, TypographyP } from "@/shared/components/typography";
 import { Button } from "@/shared/components/ui/button";
 import {
   Card,
@@ -14,8 +11,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
-import { Field, FieldLabel, FieldError } from "@/shared/components/ui/field";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
+import { Spinner } from "@/shared/components/ui/spinner";
 import { cn } from "@/shared/utils/cn";
 
 import { PasswordStrengthIndicator } from "@/features/auth/components/password-strength-indicator";
@@ -26,103 +30,62 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentProps<
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="border-none bg-background shadow-none">
+      <Card>
         <CardHeader className="text-center">
-          <CardTitle>
-            <TypographyH1>Reset password</TypographyH1>
-          </CardTitle>
-
-          <CardDescription>
-            <TypographyP className="leading-normal">
-              You better remember it this time 🫵
-            </TypographyP>
-          </CardDescription>
+          <CardTitle className="text-xl">Reset your password</CardTitle>
+          <CardDescription>Pick a new password for your account.</CardDescription>
         </CardHeader>
-
-        <CardContent className="grid gap-6">
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <Controller
-              control={form.control}
-              name="password"
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={field.name}>Password</FieldLabel>
-
-                  <div className="relative">
+        <CardContent>
+          <form id="reset-password-form" onSubmit={form.handleSubmit(onSubmit)}>
+            <FieldGroup>
+              <Controller
+                name="password"
+                control={form.control}
+                disabled={isPending}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="reset-password-form-password">New password</FieldLabel>
                     <Input
                       {...field}
-                      id={field.name}
-                      aria-invalid={fieldState.invalid}
-                      className="peer aria-invalid:text-destructive-foreground ps-9 shadow-none not-aria-invalid:border-none"
-                      disabled={isPending}
+                      id="reset-password-form-password"
                       type="password"
-                      placeholder={fieldState.invalid ? undefined : "••••••••"}
+                      aria-invalid={fieldState.invalid}
+                      autoComplete="new-password"
                     />
-
-                    <div
-                      className={cn(
-                        "pointer-events-none absolute inset-y-0 inset-s-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50",
-                        fieldState.invalid && "text-destructive-foreground",
-                        fieldState.isDirty && !fieldState.invalid && "text-foreground",
-                      )}
-                    >
-                      <HugeiconsIcon icon={LockPasswordIcon} size={16} aria-hidden="true" />
-                    </div>
-                  </div>
-
-                  <FieldError errors={[fieldState.error]} />
-
-                  {fieldState.isDirty && <PasswordStrengthIndicator password={field.value} />}
-                </Field>
-              )}
-            />
-
-            <Controller
-              control={form.control}
-              name="confirmPassword"
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={field.name}>Confirm password</FieldLabel>
-
-                  <div className="relative">
+                    {fieldState.isDirty && <PasswordStrengthIndicator password={field.value} />}
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="confirmPassword"
+                control={form.control}
+                disabled={isPending}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="reset-password-form-confirm">Confirm password</FieldLabel>
                     <Input
                       {...field}
-                      id={field.name}
-                      aria-invalid={fieldState.invalid}
-                      className="peer aria-invalid:text-destructive-foreground ps-9 shadow-none not-aria-invalid:border-none"
-                      disabled={isPending}
+                      id="reset-password-form-confirm"
                       type="password"
-                      placeholder={fieldState.invalid ? undefined : "••••••••"}
+                      aria-invalid={fieldState.invalid}
+                      autoComplete="new-password"
                     />
-
-                    <div
-                      className={cn(
-                        "pointer-events-none absolute inset-y-0 inset-s-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50",
-                        fieldState.invalid && "text-destructive-foreground",
-                        fieldState.isDirty && !fieldState.invalid && "text-foreground",
-                      )}
-                    >
-                      <HugeiconsIcon icon={LockPasswordIcon} size={16} aria-hidden="true" />
-                    </div>
-                  </div>
-
-                  <FieldError errors={[fieldState.error]} />
-                </Field>
-              )}
-            />
-
-            <Button disabled={isPending} type="submit" className="mt-2 w-full">
-              {isPending && <HugeiconsIcon icon={Loading03Icon} className="animate-spin" />}
-              Reset password
-            </Button>
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                  </Field>
+                )}
+              />
+              <Field>
+                <Button type="submit" form="reset-password-form" disabled={isPending}>
+                  {isPending && <Spinner data-icon="inline-start" />}
+                  Reset password
+                </Button>
+                <FieldDescription className="text-center">
+                  Remember it now? <Link href="/sign-in">Sign in</Link>
+                </FieldDescription>
+              </Field>
+            </FieldGroup>
           </form>
-
-          <div className="text-center text-sm">
-            Do you remember now?{" "}
-            <Link href="/sign-in" className="underline underline-offset-4">
-              Sign in
-            </Link>
-          </div>
         </CardContent>
       </Card>
     </div>
