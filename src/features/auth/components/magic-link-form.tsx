@@ -28,7 +28,7 @@ export function MagicLinkForm() {
                 {...field}
                 id={field.name}
                 aria-invalid={fieldState.invalid}
-                className="peer ps-9 shadow-none not-aria-invalid:border-none aria-invalid:text-destructive-foreground"
+                className="peer aria-invalid:text-destructive-foreground ps-9 shadow-none not-aria-invalid:border-none"
                 type="email"
                 disabled={isPending}
                 placeholder={fieldState.invalid ? undefined : "david@aragundy.com"}
