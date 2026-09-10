@@ -48,8 +48,8 @@ jobs:
         if: ${{ !cancelled() }}
         run: |
           pnpm exec drizzle-kit generate
-          if [ -n "$(git status --porcelain -- drizzle)" ]; then
-            echo "::error::schema.ts has changes without a migration. Run 'pnpm exec drizzle-kit generate' and commit drizzle/."
-            git status --porcelain -- drizzle
+          if [ -n "$(git status --porcelain -- src/shared/lib/drizzle/migrations)" ]; then
+            echo "::error::schema.ts has changes without a migration. Run 'pnpm exec drizzle-kit generate' and commit src/shared/lib/drizzle/migrations/."
+            git status --porcelain -- src/shared/lib/drizzle/migrations
             exit 1
           fi

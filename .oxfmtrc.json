@@ -1,6 +1,11 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": [".agents/", ".claude/", "skills-lock.json", "drizzle/"],
+  "ignorePatterns": [
+    ".agents/",
+    ".claude/",
+    "skills-lock.json",
+    "src/shared/lib/drizzle/migrations/"
+  ],
   "sortImports": {
     "groups": [
       "side_effect",

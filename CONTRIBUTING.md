@@ -126,7 +126,7 @@ A merge that does not satisfy all of this is not acceptable:
 
 ## Database migrations
 
-The schema lives in `src/shared/lib/drizzle/schema.ts`. Every change to it ships with a migration generated from it, committed in `drizzle/` in the same pull request:
+The schema lives in `src/shared/lib/drizzle/schema.ts`. Every change to it ships with a migration generated from it, committed in `src/shared/lib/drizzle/migrations/` in the same pull request:
 
 ```bash
 pnpm exec drizzle-kit generate --name <what-changed>
