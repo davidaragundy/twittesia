@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
-import { TypographyH1, TypographyMuted, TypographyP } from "@/shared/components/typography";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
+import { Badge } from "@/shared/components/ui/badge";
 
 import { getProfile } from "@/features/profile/actions/get-profile";
 
@@ -19,10 +19,10 @@ export const ProfilePage = async ({ username }: Props) => {
   }
 
   return (
-    <main className="flex flex-col items-center gap-6">
-      <Avatar className="size-42 sm:size-52">
-        <AvatarImage src={data?.image ?? undefined} />
-        <AvatarFallback className="text-6xl">
+    <div className="flex flex-col items-center gap-4 text-center">
+      <Avatar size="lg">
+        <AvatarImage src={data?.image ?? undefined} alt={data?.name} />
+        <AvatarFallback>
           {data?.name
             ?.split(" ")
             .map((name: string) => name.charAt(0))
@@ -30,22 +30,15 @@ export const ProfilePage = async ({ username }: Props) => {
         </AvatarFallback>
       </Avatar>
 
-      <div className="flex flex-col items-center gap-1">
-        <TypographyH1 className="text-center">{data?.name}</TypographyH1>
-        <TypographyMuted className="text-center">@{data?.username}</TypographyMuted>
+      <div className="flex flex-col gap-1">
+        <h1 className="text-2xl font-semibold tracking-tight">{data?.name}</h1>
+        <p className="text-muted-foreground">@{data?.username}</p>
       </div>
 
-      <div className="flex gap-3">
-        <div className="flex w-1/2 flex-col items-center justify-center rounded-xl border px-3 py-2">
-          <TypographyP className="text-xl font-bold">{data?.followerCount}</TypographyP>
-          <TypographyMuted>Followers</TypographyMuted>
-        </div>
-
-        <div className="flex w-1/2 flex-col items-center justify-center rounded-xl border px-3 py-2">
-          <TypographyP className="text-xl font-bold">{data?.followingCount}</TypographyP>
-          <TypographyMuted>Following</TypographyMuted>
-        </div>
+      <div className="flex gap-2">
+        <Badge variant="outline">{data?.followerCount} followers</Badge>
+        <Badge variant="outline">{data?.followingCount} following</Badge>
       </div>
-    </main>
+    </div>
   );
 };
