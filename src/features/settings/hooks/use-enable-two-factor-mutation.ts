@@ -23,9 +23,13 @@ export const useEnableTwoFactorMutation = ({ form, setBackupCodes, setTotpURI }:
     mutationFn: async ({ password }: { password: string }) => {
       const { data, error } = await authClient.twoFactor.enable({
         password,
+        method: "totp",
       });
 
       if (error) return Promise.reject(error);
+
+      // Only TOTP enrolment returns the URI and backup codes this dialog shows
+      if (data.method !== "totp") return Promise.reject(new Error("Expected TOTP enrolment"));
 
       return data;
     },
