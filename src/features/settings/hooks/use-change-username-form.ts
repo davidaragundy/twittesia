@@ -1,24 +1,22 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
-import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants/rate-limit-error-code";
+import { toastRateLimited } from "@/shared/utils/toast-rate-limited";
 
 import { useSession } from "@/features/auth/hooks/use-session";
-import { authClient } from "@/features/auth/lib/auth-client";
-import type { AuthClientError } from "@/features/auth/types/auth-client-error";
-import { getAuthErrorCode } from "@/features/auth/utils/get-auth-error-code";
+import { changeUsername } from "@/features/settings/actions/change-username";
 import { changeUsernameFormSchema } from "@/features/settings/schemas/change-username-form-schema";
 import type { ChangeUsernameFormValues } from "@/features/settings/types/change-username-form-values";
 
 export const useChangeUsernameForm = () => {
-  const router = useRouter();
   const session = useSession();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<ChangeUsernameFormValues>({
+    // Validates as you type, so a disabled Save button always comes with the reason
+    mode: "onChange",
     resolver: zodResolver(changeUsernameFormSchema),
     values: {
       username: session?.user.displayUsername ?? "",
@@ -30,33 +28,36 @@ export const useChangeUsernameForm = () => {
 
   const canSubmit = isDirty && isValid && username?.trim() !== session?.user.displayUsername;
 
-  const handleError = (error: AuthClientError) => {
-    if (error.status === RATE_LIMIT_ERROR_CODE) return;
-
-    switch (getAuthErrorCode(error)) {
-      case "USERNAME_IS_ALREADY_TAKEN":
-        form.setError("username", { message: "Username is already taken. Please try another." });
-        return;
-
-      default:
-        toast.error("Failed to change username 😢", {
-          description: "Please try again later",
-          duration: 10_000,
-        });
-        return;
-    }
-  };
-
-  const onSubmit = ({ username }: ChangeUsernameFormValues) =>
+  const onSubmit = (values: ChangeUsernameFormValues) =>
     startTransition(async () => {
-      const { error } = await authClient.updateUser({ username, displayUsername: username });
+      const { error } = await changeUsername(values);
 
-      if (error) return handleError(error);
+      switch (error?.code) {
+        case undefined:
+          toast.success("Username updated successfully 🎉", { duration: 10_000 });
+          form.reset(values);
+          return;
 
-      toast.success("Username updated successfully 🎉", { duration: 10_000 });
-      form.reset({ username });
+        case "USERNAME_IS_ALREADY_TAKEN":
+          form.setError("username", { message: "Username is already taken. Please try another." });
+          return;
 
-      startTransition(() => router.refresh());
+        case "RATE_LIMITED":
+          toastRateLimited();
+          return;
+
+        // Client validation normally stops this first; show why the server refused
+        case "INVALID_INPUT":
+          toast.error(error.message, { duration: 10_000 });
+          return;
+
+        default:
+          toast.error("Failed to change username 😢", {
+            description: "Please try again later",
+            duration: 10_000,
+          });
+          return;
+      }
     });
 
   return { form, canSubmit, onSubmit, isPending };

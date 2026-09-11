@@ -22,7 +22,7 @@ export const signUpFormSchema = z.object({
     .regex(/^[a-zA-Z0-9_]+$/, {
       message: "Username should only contain alphanumeric characters and underscores",
     }),
-  email: z.email().trim(),
+  email: z.email({ message: "Email must be a valid email address" }).trim(),
   password: z
     .string()
     .min(8, {

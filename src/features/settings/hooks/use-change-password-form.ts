@@ -1,19 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants/rate-limit-error-code";
+import { toastRateLimited } from "@/shared/utils/toast-rate-limited";
 
-import { authClient } from "@/features/auth/lib/auth-client";
-import type { AuthClientError } from "@/features/auth/types/auth-client-error";
-import { getAuthErrorCode } from "@/features/auth/utils/get-auth-error-code";
+import { changePassword } from "@/features/settings/actions/change-password";
 import { changePasswordFormSchema } from "@/features/settings/schemas/change-password-form-schema";
 import type { ChangePasswordFormValues } from "@/features/settings/types/change-password-form-values";
 
 export const useChangePasswordForm = () => {
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<ChangePasswordFormValues>({
@@ -25,45 +21,44 @@ export const useChangePasswordForm = () => {
     },
   });
 
-  const handleError = (error: AuthClientError) => {
-    if (error.status === RATE_LIMIT_ERROR_CODE) return;
-
-    switch (getAuthErrorCode(error)) {
-      case "INVALID_PASSWORD":
-        form.setError("currentPassword", { message: "Invalid password" });
-        return;
-
-      case "PASSWORD_COMPROMISED":
-        form.setError("newPassword", {
-          message:
-            "The password you entered has been compromised. Please choose a different password.",
-        });
-        return;
-
-      default:
-        toast.error("Failed to change password 😢", {
-          description: "Please try again later",
-          duration: 10_000,
-        });
-        return;
-    }
-  };
-
-  const onSubmit = ({ currentPassword, newPassword }: ChangePasswordFormValues) =>
+  // Other sessions are revoked with the change; the action's refresh updates the list
+  const onSubmit = (values: ChangePasswordFormValues) =>
     startTransition(async () => {
-      const { error } = await authClient.changePassword({
-        currentPassword,
-        newPassword,
-        revokeOtherSessions: true,
-      });
+      const { error } = await changePassword(values);
 
-      if (error) return handleError(error);
+      switch (error?.code) {
+        case undefined:
+          toast.success("Password changed successfully 🎉", { duration: 10_000 });
+          form.reset();
+          return;
 
-      toast.success("Password changed successfully 🎉", { duration: 10_000 });
-      form.reset();
+        case "INVALID_PASSWORD":
+          form.setError("currentPassword", { message: "Invalid password" });
+          return;
 
-      // Other sessions were revoked, so the session list needs fresh data too
-      startTransition(() => router.refresh());
+        case "PASSWORD_COMPROMISED":
+          form.setError("newPassword", {
+            message:
+              "The password you entered has been compromised. Please choose a different password.",
+          });
+          return;
+
+        case "RATE_LIMITED":
+          toastRateLimited();
+          return;
+
+        // Client validation normally stops this first; show why the server refused
+        case "INVALID_INPUT":
+          toast.error(error.message, { duration: 10_000 });
+          return;
+
+        default:
+          toast.error("Failed to change password 😢", {
+            description: "Please try again later",
+            duration: 10_000,
+          });
+          return;
+      }
     });
 
   return { form, onSubmit, isPending };

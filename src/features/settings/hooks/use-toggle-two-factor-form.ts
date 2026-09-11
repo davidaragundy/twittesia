@@ -1,20 +1,17 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants/rate-limit-error-code";
+import { toastRateLimited } from "@/shared/utils/toast-rate-limited";
 
 import { useSession } from "@/features/auth/hooks/use-session";
-import { authClient } from "@/features/auth/lib/auth-client";
-import type { AuthClientError } from "@/features/auth/types/auth-client-error";
-import { getAuthErrorCode } from "@/features/auth/utils/get-auth-error-code";
+import { disableTwoFactor } from "@/features/settings/actions/disable-two-factor";
+import { enableTwoFactor } from "@/features/settings/actions/enable-two-factor";
 import { toggleTwoFactorFormSchema } from "@/features/settings/schemas/toggle-two-factor-form-schema";
 import type { ToggleTwoFactorFormValues } from "@/features/settings/types/toggle-two-factor-form-values";
 
 export const useToggleTwoFactorForm = () => {
-  const router = useRouter();
   const session = useSession();
   const [isPending, startTransition] = useTransition();
 
@@ -35,61 +32,53 @@ export const useToggleTwoFactorForm = () => {
 
   const isSwitchDirty = form.watch("enableTwoFactor") !== isEnabled;
 
-  const handleError = (error: AuthClientError, action: "enable" | "disable") => {
-    if (error.status === RATE_LIMIT_ERROR_CODE) return;
-
-    switch (getAuthErrorCode(error)) {
-      case "INVALID_PASSWORD":
-        form.setError("currentPassword", { message: "Invalid password" });
-        return;
-
-      default:
-        toast.error(`Failed to ${action} two-factor authentication 😢`, {
-          description: "Please try again later",
-          duration: 10_000,
-        });
-        return;
-    }
-  };
-
-  const enable = (password: string) =>
+  const onSubmit = ({ enableTwoFactor: enable, currentPassword }: ToggleTwoFactorFormValues) =>
     startTransition(async () => {
-      const { data, error } = await authClient.twoFactor.enable({ password, method: "totp" });
+      const action = enable ? "enable" : "disable";
+      const { data, error } = enable
+        ? await enableTwoFactor({ currentPassword })
+        : await disableTwoFactor({ currentPassword });
 
-      if (error) return handleError(error, "enable");
+      switch (error?.code) {
+        case undefined:
+          break;
 
-      // Only TOTP enrolment returns the URI and backup codes the setup dialog shows
-      if (data.method !== "totp") {
-        toast.error("Failed to enable two-factor authentication 😢", {
-          description: "Please try again later",
+        case "INVALID_PASSWORD":
+          form.setError("currentPassword", { message: "Invalid password" });
+          return;
+
+        case "RATE_LIMITED":
+          toastRateLimited();
+          return;
+
+        // Client validation normally stops this first; show why the server refused
+        case "INVALID_INPUT":
+          toast.error(error.message, { duration: 10_000 });
+          return;
+
+        default:
+          toast.error(`Failed to ${action} two-factor authentication 😢`, {
+            description: "Please try again later",
+            duration: 10_000,
+          });
+          return;
+      }
+
+      form.reset({ enableTwoFactor: enable, currentPassword: "" });
+
+      if (!data) {
+        toast.success("Two-factor authentication has been disabled successfully 🎉", {
           duration: 10_000,
         });
         return;
       }
 
+      // The setup dialog opens with what enrolment returned
       startTransition(() => {
         setTotpURI(data.totpURI);
         setBackupCodes(data.backupCodes);
       });
-      form.reset({ enableTwoFactor: true, currentPassword: "" });
     });
-
-  const disable = (password: string) =>
-    startTransition(async () => {
-      const { error } = await authClient.twoFactor.disable({ password });
-
-      if (error) return handleError(error, "disable");
-
-      toast.success("Two-factor authentication has been disabled successfully 🎉", {
-        duration: 10_000,
-      });
-      form.reset({ enableTwoFactor: false, currentPassword: "" });
-
-      startTransition(() => router.refresh());
-    });
-
-  const onSubmit = ({ enableTwoFactor, currentPassword }: ToggleTwoFactorFormValues) =>
-    enableTwoFactor ? enable(currentPassword) : disable(currentPassword);
 
   return {
     form,

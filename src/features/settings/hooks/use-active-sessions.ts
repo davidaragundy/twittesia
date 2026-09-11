@@ -2,8 +2,10 @@ import { useRouter } from "next/navigation";
 import { use, useOptimistic, useTransition } from "react";
 import { toast } from "sonner";
 
+import { toastRateLimited } from "@/shared/utils/toast-rate-limited";
+
 import { useSession } from "@/features/auth/hooks/use-session";
-import { authClient } from "@/features/auth/lib/auth-client";
+import { revokeSession as revokeSessionAction } from "@/features/settings/actions/revoke-session";
 import type { getSessions } from "@/features/settings/queries/get-sessions";
 
 interface Props {
@@ -16,33 +18,42 @@ export const useActiveSessions = ({ sessions: sessionsPromise }: Props) => {
   const { data: sessions, error } = use(sessionsPromise);
   const [isPending, startTransition] = useTransition();
 
-  // A revoked session leaves the list immediately; the refresh settles the real state
+  // A revoked session leaves the list immediately; the action's refresh settles the real state
   const [optimisticSessions, removeSession] = useOptimistic(
     sessions ?? [],
-    (current, token: string) => current.filter((item) => item.token !== token),
+    (current, sessionId: string) => current.filter((item) => item.id !== sessionId),
   );
 
-  const revokeSession = (token: string) =>
+  const revokeSession = (sessionId: string) =>
     startTransition(async () => {
-      removeSession(token);
+      removeSession(sessionId);
 
-      // Revoking a session that is already gone succeeds too, so any error here is unexpected
-      const { error } = await authClient.revokeSession({ token });
+      const { error } = await revokeSessionAction(sessionId);
 
-      if (error) {
-        toast.error("Failed to revoke session, please try again later 😢", { duration: 5_000 });
+      switch (error?.code) {
+        case undefined:
+        // Already closed somewhere else: the refreshed list simply no longer has it
+        case "SESSION_NOT_FOUND":
+          return;
+
+        case "RATE_LIMITED":
+          toastRateLimited();
+          return;
+
+        default:
+          toast.error("Failed to revoke session, please try again later 😢", { duration: 5_000 });
+          return;
       }
-
-      startTransition(() => router.refresh());
     });
 
+  // The list failed to load; nothing changed on the server, so refetching the route is enough
   const retry = () => startTransition(() => router.refresh());
 
   return {
     sessions: optimisticSessions,
     isError: error !== null,
     isPending,
-    currentToken: session?.session.token,
+    currentSessionId: session?.session.id,
     revokeSession,
     retry,
   };

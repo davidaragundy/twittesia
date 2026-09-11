@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const credentialsFormSchema = z.object({
-  email: z.email().trim(),
+  email: z.email({ message: "Email must be a valid email address" }).trim(),
   password: z
     .string()
     .min(8, {

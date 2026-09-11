@@ -12,23 +12,19 @@ import { NavUser } from "@/features/auth/components/nav-user";
 import { NavUserSkeleton } from "@/features/auth/components/nav-user-skeleton";
 import { SessionProvider } from "@/features/auth/components/session-provider";
 import { SignOutNavButton } from "@/features/auth/components/sign-out-nav-button";
-import { getSession } from "@/features/auth/queries/get-session";
 import { ProfileNavLink } from "@/features/profiles/components/profile-nav-link";
-import { SettingsDialog } from "@/features/settings/components/settings-dialog";
+import { SettingsDialogWithSessions } from "@/features/settings/components/settings-dialog-with-sessions";
 import { SettingsMenuItem } from "@/features/settings/components/settings-menu-item";
 import { SettingsNavButton } from "@/features/settings/components/settings-nav-button";
-import { getSessions } from "@/features/settings/queries/get-sessions";
 
-// Not async: nothing here waits for the request, so the whole shell prerenders.
-// The session and active sessions start loading now and stream into the parts that need them.
+// Not async: nothing here waits for the request, so the whole shell prerenders. Each part
+// that needs the session reads it inside its own <Suspense> boundary; the reads share one
+// private cache entry, which the App Shell of every route carries per session.
 export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = getSession();
-  const sessions = getSessions();
-
   const profileLink = (
     <Suspense
       fallback={
@@ -38,12 +34,14 @@ export default function Layout({
         </NavButton>
       }
     >
-      <ProfileNavLink />
+      <SessionProvider>
+        <ProfileNavLink />
+      </SessionProvider>
     </Suspense>
   );
 
   return (
-    <SessionProvider session={session}>
+    <>
       <div className="mx-auto flex h-svh w-full max-w-7xl flex-col px-6 sm:px-10 lg:px-16">
         <SiteHeader
           leading={
@@ -65,7 +63,9 @@ export default function Layout({
           <aside className="hidden w-60 shrink-0 flex-col justify-between pt-4 pb-12 md:flex">
             <AppNav links={APP_NAV_LINKS}>{profileLink}</AppNav>
             <Suspense fallback={<NavUserSkeleton />}>
-              <NavUser menuItems={<SettingsMenuItem />} />
+              <SessionProvider>
+                <NavUser menuItems={<SettingsMenuItem />} />
+              </SessionProvider>
             </Suspense>
           </aside>
 
@@ -76,8 +76,10 @@ export default function Layout({
       </div>
 
       <Suspense>
-        <SettingsDialog sessions={sessions} />
+        <SessionProvider>
+          <SettingsDialogWithSessions />
+        </SessionProvider>
       </Suspense>
-    </SessionProvider>
+    </>
   );
 }

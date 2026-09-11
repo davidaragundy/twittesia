@@ -3,12 +3,10 @@ import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants/rate-limit-error-code";
+import { toastRateLimited } from "@/shared/utils/toast-rate-limited";
 
 import { useSession } from "@/features/auth/hooks/use-session";
-import { authClient } from "@/features/auth/lib/auth-client";
-import type { AuthClientError } from "@/features/auth/types/auth-client-error";
-import { getAuthErrorCode } from "@/features/auth/utils/get-auth-error-code";
+import { generateBackupCodes } from "@/features/settings/actions/generate-backup-codes";
 import { generateBackupCodesFormSchema } from "@/features/settings/schemas/generate-backup-codes-form-schema";
 import type { GenerateBackupCodesFormValues } from "@/features/settings/types/generate-backup-codes-form-values";
 import { downloadBackupCodes } from "@/features/settings/utils/download-backup-codes";
@@ -24,32 +22,36 @@ export const useGenerateBackupCodesForm = () => {
     },
   });
 
-  const handleError = (error: AuthClientError) => {
-    if (error.status === RATE_LIMIT_ERROR_CODE) return;
-
-    switch (getAuthErrorCode(error)) {
-      case "INVALID_PASSWORD":
-        form.setError("currentPassword", { message: "Invalid password" });
-        return;
-
-      default:
-        toast.error("Failed to generate backup codes 😢", {
-          description: "Please try again later",
-          duration: 10_000,
-        });
-        return;
-    }
-  };
-
-  const onSubmit = ({ currentPassword }: GenerateBackupCodesFormValues) =>
+  const onSubmit = (values: GenerateBackupCodesFormValues) =>
     startTransition(async () => {
-      const { data, error } = await authClient.twoFactor.generateBackupCodes({
-        password: currentPassword,
-      });
+      const { data, error } = await generateBackupCodes(values);
 
-      if (error) return handleError(error);
+      switch (error?.code) {
+        case undefined:
+          break;
 
-      downloadBackupCodes(data.backupCodes);
+        case "INVALID_PASSWORD":
+          form.setError("currentPassword", { message: "Invalid password" });
+          return;
+
+        case "RATE_LIMITED":
+          toastRateLimited();
+          return;
+
+        // Client validation normally stops this first; show why the server refused
+        case "INVALID_INPUT":
+          toast.error(error.message, { duration: 10_000 });
+          return;
+
+        default:
+          toast.error("Failed to generate backup codes 😢", {
+            description: "Please try again later",
+            duration: 10_000,
+          });
+          return;
+      }
+
+      if (data) downloadBackupCodes(data.backupCodes);
 
       toast.success("Backup codes generated successfully 🎉", { duration: 10_000 });
       form.reset();
