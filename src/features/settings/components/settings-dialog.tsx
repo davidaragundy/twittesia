@@ -123,14 +123,14 @@ export function SettingsDialog({ sessions }: Props) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-3xl">
+      <DialogContent className="gap-10 p-10 sm:max-w-4xl">
         <DialogHeader>
           <DialogTitle>{SETTINGS_DIALOG_TITLE}</DialogTitle>
           <DialogDescription>{SETTINGS_DIALOG_DESCRIPTION}</DialogDescription>
         </DialogHeader>
-        <div className="flex gap-14">
+        <div className="flex gap-20">
           <div className="w-44 shrink-0">{navigation}</div>
-          <div className="-mr-6 no-scrollbar max-h-[70vh] min-w-0 flex-1 overflow-y-auto pr-6">
+          <div className="-mr-10 no-scrollbar max-h-[70vh] min-w-0 flex-1 overflow-y-auto pr-10">
             <Suspense fallback={<Spinner />}>{content}</Suspense>
           </div>
         </div>
