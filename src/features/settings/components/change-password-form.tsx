@@ -42,6 +42,7 @@ export const ChangePasswordForm = () => {
                   {...field}
                   id="change-password-form-new"
                   type="password"
+                  placeholder="********"
                   aria-invalid={fieldState.invalid}
                   autoComplete="new-password"
                 />
@@ -68,6 +69,7 @@ export const ChangePasswordForm = () => {
                   {...field}
                   id="change-password-form-current"
                   type="password"
+                  placeholder="********"
                   aria-invalid={fieldState.invalid}
                   autoComplete="current-password"
                 />

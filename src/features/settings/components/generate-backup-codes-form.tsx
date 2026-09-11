@@ -40,6 +40,7 @@ export const GenerateBackupCodesForm = () => {
                   {...field}
                   id="generate-backup-codes-form-password"
                   type="password"
+                  placeholder="********"
                   aria-invalid={fieldState.invalid}
                   autoComplete="current-password"
                 />

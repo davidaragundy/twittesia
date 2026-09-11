@@ -122,6 +122,7 @@ export function SignUpForm({ className, ...props }: React.ComponentProps<"div">)
                     {...field}
                     id="sign-up-form-password"
                     type="password"
+                    placeholder="********"
                     aria-invalid={fieldState.invalid}
                     autoComplete="new-password"
                   />
