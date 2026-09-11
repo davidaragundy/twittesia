@@ -14,12 +14,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/shared/components/ui/drawer";
-import {
-  FieldContent,
-  FieldDescription,
-  FieldSeparator,
-  FieldTitle,
-} from "@/shared/components/ui/field";
+import { FieldContent, FieldDescription, FieldTitle } from "@/shared/components/ui/field";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/components/ui/tabs";
 
 import { ActiveSessions } from "@/features/settings/components/active-sessions";
@@ -37,33 +32,26 @@ const DESCRIPTION = "Manage your account and how you sign in.";
 export function SettingsDialog() {
   const { isMobile, isOpen, tab, onOpenChange, onTabChange } = useSettingsDialog();
 
-  const content = (
-    <Tabs value={tab} onValueChange={onTabChange}>
-      <TabsList>
-        <TabsTrigger value="account">Account</TabsTrigger>
-        <TabsTrigger value="security">Security</TabsTrigger>
-      </TabsList>
+  const sections = (
+    <>
       <TabsContent value="account">
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-10">
           <SettingsSection title="Name" description="How you appear to other people.">
             <ChangeNameForm />
           </SettingsSection>
-          <FieldSeparator />
           <SettingsSection title="Username" description="Your unique handle.">
             <ChangeUsernameForm />
           </SettingsSection>
-          <FieldSeparator />
           <SettingsSection title="Email" description="Where we send account emails.">
             <ChangeEmailForm />
           </SettingsSection>
         </div>
       </TabsContent>
       <TabsContent value="security">
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-10">
           <SettingsSection title="Password" description="Change the password you sign in with.">
             <ChangePasswordForm />
           </SettingsSection>
-          <FieldSeparator />
           <SettingsSection
             title="Two-factor authentication"
             description="Add a second step when you sign in."
@@ -71,13 +59,19 @@ export function SettingsDialog() {
             <ToggleTwoFactorForm />
             <GenerateBackupCodesForm />
           </SettingsSection>
-          <FieldSeparator />
           <SettingsSection title="Active sessions" description="Devices signed in to your account.">
             <ActiveSessions />
           </SettingsSection>
         </div>
       </TabsContent>
-    </Tabs>
+    </>
+  );
+
+  const triggers = (
+    <>
+      <TabsTrigger value="account">Account</TabsTrigger>
+      <TabsTrigger value="security">Security</TabsTrigger>
+    </>
   );
 
   if (isMobile) {
@@ -88,7 +82,12 @@ export function SettingsDialog() {
             <DrawerTitle>{TITLE}</DrawerTitle>
             <DrawerDescription>{DESCRIPTION}</DrawerDescription>
           </DrawerHeader>
-          <div className="overflow-y-auto p-4">{content}</div>
+          <Tabs value={tab} onValueChange={onTabChange} className="min-h-0 gap-6 px-4">
+            <TabsList variant="line" className="w-full">
+              {triggers}
+            </TabsList>
+            <div className="min-h-0 overflow-y-auto pb-6">{sections}</div>
+          </Tabs>
         </DrawerContent>
       </Drawer>
     );
@@ -96,12 +95,19 @@ export function SettingsDialog() {
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-2xl">
+      <DialogContent className="sm:max-w-3xl">
         <DialogHeader>
           <DialogTitle>{TITLE}</DialogTitle>
           <DialogDescription>{DESCRIPTION}</DialogDescription>
         </DialogHeader>
-        <div className="-mx-6 no-scrollbar max-h-[70vh] overflow-y-auto px-6">{content}</div>
+        <Tabs value={tab} onValueChange={onTabChange} orientation="vertical" className="gap-8">
+          <TabsList variant="line" className="w-40 shrink-0">
+            {triggers}
+          </TabsList>
+          <div className="-mr-6 no-scrollbar max-h-[70vh] min-w-0 flex-1 overflow-y-auto pr-6">
+            {sections}
+          </div>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );
