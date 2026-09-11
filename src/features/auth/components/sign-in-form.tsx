@@ -28,13 +28,13 @@ export function SignInForm({ className, ...props }: React.ComponentProps<"div">)
           aria-label="Sign-in method"
           value={[method]}
           onValueChange={onMethodChange}
-          className="w-full"
+          className="self-center"
         >
-          <ToggleGroupItem value="password" className="flex-1">
+          <ToggleGroupItem value="password">
             <HugeiconsIcon icon={LockPasswordIcon} />
             Password
           </ToggleGroupItem>
-          <ToggleGroupItem value="magic-link" className="flex-1">
+          <ToggleGroupItem value="magic-link">
             <HugeiconsIcon icon={MagicWand01Icon} />
             Magic link
           </ToggleGroupItem>
