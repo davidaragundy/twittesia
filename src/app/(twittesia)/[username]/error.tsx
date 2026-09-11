@@ -1,28 +1,36 @@
 "use client";
 
-import { ArrowReloadHorizontalIcon } from "@hugeicons/core-free-icons";
+import { Alert02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useEffect } from "react";
 
-import { TypographyH1 } from "@/shared/components/typography";
 import { Button } from "@/shared/components/ui/button";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/shared/components/ui/empty";
 
 interface Props {
-  reset: () => void;
+  retry: () => void;
 }
 
-export default function Error({ reset }: Props) {
-  useEffect(() => {
-    document.title = "Twittesia | Error";
-  }, []);
-
+export default function Error({ retry }: Props) {
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-4">
-      <TypographyH1 className="text-center">Something went wrong!</TypographyH1>
-
-      <Button onClick={reset} className="flex items-center gap-2">
-        <HugeiconsIcon icon={ArrowReloadHorizontalIcon} /> Reload page
-      </Button>
-    </div>
+    <Empty>
+      <title>Twittesia | Error</title>
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <HugeiconsIcon icon={Alert02Icon} />
+        </EmptyMedia>
+        <EmptyTitle>Something went wrong</EmptyTitle>
+        <EmptyDescription>We couldn&apos;t load this profile. Try again.</EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <Button onClick={() => retry()}>Try again</Button>
+      </EmptyContent>
+    </Empty>
   );
 }

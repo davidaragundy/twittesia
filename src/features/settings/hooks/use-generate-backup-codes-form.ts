@@ -12,7 +12,6 @@ export const useGenerateBackupCodesForm = () => {
   const form = useForm<GenerateBackupCodesFormValues>({
     resolver: zodResolver(generateBackupCodesFormSchema),
     defaultValues: {
-      generateBackupCodes: false,
       currentPassword: "",
     },
   });
@@ -26,15 +25,11 @@ export const useGenerateBackupCodesForm = () => {
       password: values.currentPassword,
     });
 
-  const isGenerateBackupCodesDirty =
-    form.watch("generateBackupCodes") && session?.user.twoFactorEnabled;
-
   return {
     form,
     onSubmit,
     isPending,
     isError,
     isTwoFactorEnabled: !!session?.user.twoFactorEnabled,
-    isGenerateBackupCodesDirty,
   };
 };

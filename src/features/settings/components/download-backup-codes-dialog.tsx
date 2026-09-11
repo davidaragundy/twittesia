@@ -5,6 +5,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/shared/components/ui/dialog";
@@ -18,24 +19,21 @@ interface Props {
 }
 
 export const DownloadBackupCodesDialog = ({ isOpen, closeDialog, backupCodes }: Props) => {
-  const { handleDownloadBackupCodes } = useDownloadBackupCodesDialog({
-    backupCodes,
-    closeDialog,
-  });
+  const { handleDownloadBackupCodes } = useDownloadBackupCodesDialog({ backupCodes, closeDialog });
 
   return (
     <Dialog open={isOpen}>
-      <DialogContent showCloseButton={false} className="flex flex-col gap-8">
+      <DialogContent showCloseButton={false}>
         <DialogHeader>
           <DialogTitle>Download backup codes</DialogTitle>
           <DialogDescription>
-            Please download your backup codes and keep them in a safe place.
+            Each code signs you in once if you lose your authenticator app. Keep them somewhere
+            safe.
           </DialogDescription>
         </DialogHeader>
-
-        <Button onClick={handleDownloadBackupCodes} className="mx-auto">
-          Download backup codes
-        </Button>
+        <DialogFooter>
+          <Button onClick={handleDownloadBackupCodes}>Download backup codes</Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

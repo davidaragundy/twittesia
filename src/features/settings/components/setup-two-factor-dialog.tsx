@@ -1,16 +1,28 @@
 "use client";
 
-import { Loading03Icon, ArrowReloadHorizontalIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { QRCodeSVG } from "qrcode.react";
 import { Controller } from "react-hook-form";
 
 import { CopyToClipboard } from "@/shared/components/copy-to-clipboard";
 import { Button } from "@/shared/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/shared/components/ui/dialog";
-import { Field, FieldLabel, FieldDescription, FieldError } from "@/shared/components/ui/field";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/shared/components/ui/dialog";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/shared/components/ui/field";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/shared/components/ui/input-otp";
+import { Spinner } from "@/shared/components/ui/spinner";
 
 import { useSetupTwoFactorDialog } from "@/features/settings/hooks/use-setup-two-factor-dialog";
 
@@ -21,48 +33,42 @@ interface Props {
 }
 
 export const SetupTwoFactorDialog = ({ totpURI, isOpen, closeDialog }: Props) => {
-  const { form, onSubmit, isPending, isError, key } = useSetupTwoFactorDialog({
-    totpURI,
-    closeDialog,
-  });
+  const { form, onSubmit, isPending, key } = useSetupTwoFactorDialog({ totpURI, closeDialog });
 
   return (
     <Dialog disablePointerDismissal open={isOpen}>
-      <DialogContent showCloseButton={false} className="flex flex-col gap-8">
+      <DialogContent showCloseButton={false}>
         <DialogHeader>
-          <DialogTitle>Scan the QR in your authenticator app</DialogTitle>
+          <DialogTitle>Set up your authenticator app</DialogTitle>
+          <DialogDescription>
+            Scan the QR code with your authenticator app, then enter the code it shows.
+          </DialogDescription>
         </DialogHeader>
 
-        <QRCodeSVG
-          className="mx-auto rounded-xl"
-          size={256}
-          bgColor="#0b0809"
-          fgColor="#ffffff"
-          value={totpURI}
-        />
-
-        <div className="flex flex-col gap-2">
-          <span className="text-sm text-muted-foreground">Or enter your secret key manually:</span>
-          <CopyToClipboard value={key} />
+        <div className="flex justify-center">
+          <QRCodeSVG size={192} value={totpURI} />
         </div>
 
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <Controller
-            control={form.control}
-            name="code"
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid} className="flex flex-col">
-                <FieldLabel htmlFor={field.name}>One-Time Password</FieldLabel>
-                <FieldDescription>
-                  Please enter the one-time password from your authenticator app.
-                </FieldDescription>
-                <div className="flex items-center gap-4">
+        <form id="setup-two-factor-form" onSubmit={form.handleSubmit(onSubmit)}>
+          <FieldGroup>
+            <Field>
+              <FieldLabel htmlFor="setup-two-factor-form-key">Secret key</FieldLabel>
+              <CopyToClipboard id="setup-two-factor-form-key" value={key} />
+              <FieldDescription>Can&apos;t scan it? Enter this key instead.</FieldDescription>
+            </Field>
+            <Controller
+              name="code"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="setup-two-factor-form-code">One-time password</FieldLabel>
                   <InputOTP
                     {...field}
-                    id={field.name}
-                    pattern={REGEXP_ONLY_DIGITS}
+                    id="setup-two-factor-form-code"
                     maxLength={6}
+                    pattern={REGEXP_ONLY_DIGITS}
                     onComplete={form.handleSubmit(onSubmit)}
+                    aria-invalid={fieldState.invalid}
                   >
                     <InputOTPGroup>
                       <InputOTPSlot index={0} />
@@ -73,22 +79,19 @@ export const SetupTwoFactorDialog = ({ totpURI, isOpen, closeDialog }: Props) =>
                       <InputOTPSlot index={5} />
                     </InputOTPGroup>
                   </InputOTP>
-
-                  <Button
-                    variant={isError ? "destructive" : "default"}
-                    disabled={isPending}
-                    type="submit"
-                  >
-                    {isPending && <HugeiconsIcon icon={Loading03Icon} className="animate-spin" />}
-                    {isError && <HugeiconsIcon icon={ArrowReloadHorizontalIcon} />}
-                    Verify
-                  </Button>
-                </div>
-                <FieldError errors={[fieldState.error]} />
-              </Field>
-            )}
-          />
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+              )}
+            />
+          </FieldGroup>
         </form>
+
+        <DialogFooter>
+          <Button type="submit" form="setup-two-factor-form" disabled={isPending}>
+            {isPending && <Spinner data-icon="inline-start" />}
+            Verify
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

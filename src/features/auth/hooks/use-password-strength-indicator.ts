@@ -27,15 +27,6 @@ export const usePasswordStrengthIndicator = ({ password }: Props) => {
     [strength],
   );
 
-  const getStrengthColor = (score: number) => {
-    if (score === 0) return "bg-border";
-    if (score <= 1) return "bg-red-500";
-    if (score <= 2) return "bg-orange-500";
-    if (score <= 3) return "bg-amber-500";
-    if (score <= 4) return "bg-lime-500";
-    return "bg-emerald-500";
-  };
-
   const getStrengthText = (score: number) => {
     if (score === 0) return "Enter a password";
     if (score <= 2) return "Weak password";
@@ -47,7 +38,6 @@ export const usePasswordStrengthIndicator = ({ password }: Props) => {
   return {
     strength,
     strengthScore,
-    getStrengthColor,
     getStrengthText,
   };
 };

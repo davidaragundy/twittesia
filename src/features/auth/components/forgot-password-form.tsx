@@ -1,11 +1,8 @@
 "use client";
 
-import { Loading03Icon, Mail01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { Controller } from "react-hook-form";
 
-import { TypographyH1, TypographyP } from "@/shared/components/typography";
 import { Button } from "@/shared/components/ui/button";
 import {
   Card,
@@ -14,8 +11,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
-import { Field, FieldLabel, FieldError } from "@/shared/components/ui/field";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
+import { Spinner } from "@/shared/components/ui/spinner";
 import { cn } from "@/shared/utils/cn";
 
 import { useForgotPasswordForm } from "@/features/auth/hooks/use-forgot-password-form";
@@ -25,66 +29,47 @@ export function ForgotPasswordForm({ className, ...props }: React.ComponentProps
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="border-none bg-background shadow-none">
+      <Card>
         <CardHeader className="text-center">
-          <CardTitle>
-            <TypographyH1>Forgot password</TypographyH1>
-          </CardTitle>
-
+          <CardTitle className="text-xl">Forgot your password?</CardTitle>
           <CardDescription>
-            <TypographyP className="leading-normal">
-              Have you ever thought about using a password manager? 😒
-            </TypographyP>
+            Have you ever thought about using a password manager? 😒
           </CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-6">
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <Controller
-              control={form.control}
-              name="email"
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={field.name}>Email</FieldLabel>
-
-                  <div className="relative">
+        <CardContent>
+          <form id="forgot-password-form" onSubmit={form.handleSubmit(onSubmit)}>
+            <FieldGroup>
+              <Controller
+                name="email"
+                control={form.control}
+                disabled={isPending}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="forgot-password-form-email">Email</FieldLabel>
                     <Input
                       {...field}
-                      id={field.name}
-                      aria-invalid={fieldState.invalid}
-                      className="peer aria-invalid:text-destructive-foreground ps-9 shadow-none not-aria-invalid:border-none"
+                      id="forgot-password-form-email"
                       type="email"
-                      disabled={isPending}
-                      placeholder={fieldState.invalid ? undefined : "david@aragundy.com"}
+                      aria-invalid={fieldState.invalid}
+                      placeholder="david@aragundy.com"
+                      autoComplete="email"
                     />
-
-                    <div
-                      className={cn(
-                        "pointer-events-none absolute inset-y-0 inset-s-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50",
-                        fieldState.invalid && "text-destructive-foreground",
-                        fieldState.isDirty && !fieldState.invalid && "text-foreground",
-                      )}
-                    >
-                      <HugeiconsIcon icon={Mail01Icon} size={16} aria-hidden="true" />
-                    </div>
-                  </div>
-
-                  <FieldError errors={[fieldState.error]} />
-                </Field>
-              )}
-            />
-
-            <Button disabled={isPending} type="submit" className="mt-2 w-full">
-              {isPending && <HugeiconsIcon icon={Loading03Icon} className="animate-spin" />}
-              Send reset link
-            </Button>
+                    <FieldDescription>We&apos;ll email you a link to reset it.</FieldDescription>
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                  </Field>
+                )}
+              />
+              <Field>
+                <Button type="submit" form="forgot-password-form" disabled={isPending}>
+                  {isPending && <Spinner data-icon="inline-start" />}
+                  Send reset link
+                </Button>
+                <FieldDescription className="text-center">
+                  Remember it now? <Link href="/sign-in">Sign in</Link>
+                </FieldDescription>
+              </Field>
+            </FieldGroup>
           </form>
-
-          <div className="text-center text-sm">
-            Do you remember now?{" "}
-            <Link href="/sign-in" className="font-bold hover:underline hover:underline-offset-4">
-              Sign in
-            </Link>
-          </div>
         </CardContent>
       </Card>
     </div>

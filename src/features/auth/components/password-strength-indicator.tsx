@@ -3,6 +3,8 @@
 import { Cancel01Icon, Tick02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
+import { Progress, ProgressLabel } from "@/shared/components/ui/progress";
+
 import { usePasswordStrengthIndicator } from "@/features/auth/hooks/use-password-strength-indicator";
 
 interface Props {
@@ -10,54 +12,25 @@ interface Props {
 }
 
 export const PasswordStrengthIndicator = ({ password }: Props) => {
-  const { strength, strengthScore, getStrengthColor, getStrengthText } =
-    usePasswordStrengthIndicator({ password });
+  const { strength, strengthScore, getStrengthText } = usePasswordStrengthIndicator({
+    password,
+  });
 
   return (
     <>
-      <div
-        className="mt-3 mb-4 h-1 w-full overflow-hidden rounded-full bg-border"
-        role="progressbar"
-        aria-valuenow={strengthScore}
-        aria-valuemin={0}
-        aria-valuemax={5}
-        aria-label="Password strength"
+      <Progress value={(strengthScore / strength.length) * 100}>
+        <ProgressLabel>{getStrengthText(strengthScore)}</ProgressLabel>
+      </Progress>
+      <ul
+        aria-label="Password requirements"
+        className="flex flex-col gap-1 text-sm text-muted-foreground"
       >
-        <div
-          className={`h-full ${getStrengthColor(strengthScore)} transition-all duration-500 ease-out`}
-          style={{ width: `${(strengthScore / 5) * 100}%` }}
-        />
-      </div>
-
-      <p className="mb-2 text-sm font-medium text-foreground">
-        {getStrengthText(strengthScore)}. Must contain:
-      </p>
-
-      <ul className="space-y-1.5" aria-label="Password requirements">
-        {strength.map((requirement, index) => (
-          <li key={index} className="flex items-center gap-2">
-            {requirement.met ? (
-              <HugeiconsIcon
-                icon={Tick02Icon}
-                size={16}
-                className="text-emerald-500"
-                aria-hidden="true"
-              />
-            ) : (
-              <HugeiconsIcon
-                icon={Cancel01Icon}
-                size={16}
-                className="text-muted-foreground/80"
-                aria-hidden="true"
-              />
-            )}
-            <span
-              className={`text-xs ${requirement.met ? "text-emerald-600" : "text-muted-foreground"}`}
-            >
-              {requirement.text}
-              <span className="sr-only">
-                {requirement.met ? " - Requirement met" : " - Requirement not met"}
-              </span>
+        {strength.map((requirement) => (
+          <li key={requirement.text} className="flex items-center gap-2">
+            <HugeiconsIcon icon={requirement.met ? Tick02Icon : Cancel01Icon} aria-hidden="true" />
+            {requirement.text}
+            <span className="sr-only">
+              {requirement.met ? " - Requirement met" : " - Requirement not met"}
             </span>
           </li>
         ))}

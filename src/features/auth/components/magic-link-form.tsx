@@ -1,13 +1,17 @@
 "use client";
 
-import { Loading03Icon, Mail01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
 import { Button } from "@/shared/components/ui/button";
-import { Field, FieldLabel, FieldError } from "@/shared/components/ui/field";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
-import { cn } from "@/shared/utils/cn";
+import { Spinner } from "@/shared/components/ui/spinner";
 
 import { useMagicLinkForm } from "@/features/auth/hooks/use-magic-link-form";
 
@@ -15,45 +19,35 @@ export function MagicLinkForm() {
   const { form, onSubmit, isPending } = useMagicLinkForm();
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-      <Controller
-        control={form.control}
-        name="email"
-        render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
-            <FieldLabel htmlFor={field.name}>Email</FieldLabel>
-
-            <div className="relative">
+    <form id="magic-link-form" onSubmit={form.handleSubmit(onSubmit)}>
+      <FieldGroup>
+        <Controller
+          name="email"
+          control={form.control}
+          disabled={isPending}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="magic-link-form-email">Email</FieldLabel>
               <Input
                 {...field}
-                id={field.name}
-                aria-invalid={fieldState.invalid}
-                className="peer aria-invalid:text-destructive-foreground ps-9 shadow-none not-aria-invalid:border-none"
+                id="magic-link-form-email"
                 type="email"
-                disabled={isPending}
-                placeholder={fieldState.invalid ? undefined : "david@aragundy.com"}
+                aria-invalid={fieldState.invalid}
+                placeholder="david@aragundy.com"
+                autoComplete="email"
               />
-
-              <div
-                className={cn(
-                  "pointer-events-none absolute inset-y-0 inset-s-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50",
-                  fieldState.invalid && "text-destructive-foreground",
-                  fieldState.isDirty && !fieldState.invalid && "text-foreground",
-                )}
-              >
-                <HugeiconsIcon icon={Mail01Icon} size={16} aria-hidden="true" />
-              </div>
-            </div>
-
-            <FieldError errors={[fieldState.error]} />
-          </Field>
-        )}
-      />
-
-      <Button disabled={isPending} type="submit" className="mt-2 w-full">
-        {isPending && <HugeiconsIcon icon={Loading03Icon} className="animate-spin" />}
-        Send Magic Link
-      </Button>
+              <FieldDescription>We&apos;ll email you a link that signs you in.</FieldDescription>
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+        <Field>
+          <Button type="submit" form="magic-link-form" disabled={isPending}>
+            {isPending && <Spinner data-icon="inline-start" />}
+            Send magic link
+          </Button>
+        </Field>
+      </FieldGroup>
     </form>
   );
 }

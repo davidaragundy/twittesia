@@ -6,12 +6,17 @@ import { useState } from "react";
 
 import {
   InputGroup,
-  InputGroupInput,
   InputGroupAddon,
   InputGroupButton,
+  InputGroupInput,
 } from "@/shared/components/ui/input-group";
 
-export const CopyToClipboard = ({ value }: { value: string }) => {
+type Props = {
+  id?: string;
+  value: string;
+};
+
+export const CopyToClipboard = ({ id, value }: Props) => {
   const [isCopied, setCopied] = useState(false);
 
   const handleCopyToClipboard = () => {
@@ -22,7 +27,7 @@ export const CopyToClipboard = ({ value }: { value: string }) => {
 
   return (
     <InputGroup>
-      <InputGroupInput placeholder={value} readOnly />
+      <InputGroupInput id={id} value={value} readOnly />
       <InputGroupAddon align="inline-end">
         <InputGroupButton
           aria-label="Copy"
@@ -30,7 +35,7 @@ export const CopyToClipboard = ({ value }: { value: string }) => {
           size="icon-xs"
           onClick={handleCopyToClipboard}
         >
-          {isCopied ? <HugeiconsIcon icon={Tick02Icon} /> : <HugeiconsIcon icon={Copy02Icon} />}
+          <HugeiconsIcon icon={isCopied ? Tick02Icon : Copy02Icon} />
         </InputGroupButton>
       </InputGroupAddon>
     </InputGroup>

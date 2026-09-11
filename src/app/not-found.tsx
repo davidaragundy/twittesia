@@ -1,17 +1,32 @@
-import { ArrowReloadHorizontalIcon } from "@hugeicons/core-free-icons";
+import { Search01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 
-import { TypographyH1 } from "@/shared/components/typography";
+import { Button } from "@/shared/components/ui/button";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/shared/components/ui/empty";
 
 export default function NotFound() {
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-4">
-      <TypographyH1 className="text-center">Page not found</TypographyH1>
-
-      <Link href="/home" className="flex items-center gap-2">
-        <HugeiconsIcon icon={ArrowReloadHorizontalIcon} /> Go to home
-      </Link>
-    </div>
+    <Empty>
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <HugeiconsIcon icon={Search01Icon} />
+        </EmptyMedia>
+        <EmptyTitle>Page not found</EmptyTitle>
+        <EmptyDescription>It may have reached its expiry, or it never existed.</EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <Button render={<Link href="/home" />} nativeButton={false}>
+          Go home
+        </Button>
+      </EmptyContent>
+    </Empty>
   );
 }
