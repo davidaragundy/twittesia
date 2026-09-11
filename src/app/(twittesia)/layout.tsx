@@ -18,6 +18,7 @@ import { auth } from "@/shared/lib/better-auth/server";
 import { NavUser } from "@/features/auth/components/nav-user";
 import { SESSION_QUERY_KEY } from "@/features/auth/lib/query-keys";
 import { SettingsDialog } from "@/features/settings/components/settings-dialog";
+import { SettingsMenuItem } from "@/features/settings/components/settings-menu-item";
 
 export default async function Layout({
   children,
@@ -51,7 +52,7 @@ export default async function Layout({
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <SidebarProvider>
-        <AppSidebar links={links} footer={<NavUser />} />
+        <AppSidebar links={links} footer={<NavUser menuItems={<SettingsMenuItem />} />} />
 
         <SidebarInset>
           <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
