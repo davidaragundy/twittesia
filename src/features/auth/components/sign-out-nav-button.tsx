@@ -12,7 +12,11 @@ export function SignOutNavButton() {
   const { handleSignOut, isSigningOut } = useNavUser();
 
   return (
-    <NavButton onClick={() => handleSignOut()} disabled={isSigningOut}>
+    <NavButton
+      onClick={() => handleSignOut()}
+      disabled={isSigningOut}
+      className="text-destructive hover:bg-destructive/10 hover:text-destructive dark:hover:bg-destructive/20"
+    >
       {isSigningOut ? <Spinner /> : <HugeiconsIcon icon={Logout01Icon} />}
       Sign out
     </NavButton>
