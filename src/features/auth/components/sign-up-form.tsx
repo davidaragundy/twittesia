@@ -60,7 +60,7 @@ export function SignUpForm({ className, ...props }: React.ComponentProps<"div">)
             </FieldSeparator>
             <form id="sign-up-form" onSubmit={form.handleSubmit(onSubmit)}>
               <FieldGroup>
-                <Field className="grid grid-cols-2 gap-4">
+                <Field className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <Controller
                     name="name"
                     control={form.control}
