@@ -22,7 +22,7 @@ export function ForgotPasswordForm({ className, ...props }: React.ComponentProps
   const { form, onSubmit, isPending } = useForgotPasswordForm();
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-10", className)} {...props}>
       <AuthHeading
         title="Forgot your password?"
         description="Have you ever thought about using a password manager? 😒"

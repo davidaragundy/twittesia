@@ -23,7 +23,7 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentProps<
   const { form, onSubmit, isPending } = useResetPasswordForm();
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-10", className)} {...props}>
       <AuthHeading
         title="Reset your password"
         description="Pick a new password for your account."
