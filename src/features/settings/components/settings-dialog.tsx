@@ -1,5 +1,8 @@
 "use client";
 
+import { SecurityLockIcon, UserIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+
 import {
   Dialog,
   DialogContent,
@@ -15,7 +18,7 @@ import {
   DrawerTitle,
 } from "@/shared/components/ui/drawer";
 import { FieldContent, FieldDescription, FieldTitle } from "@/shared/components/ui/field";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/components/ui/tabs";
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/shared/components/ui/sidebar";
 
 import { ActiveSessions } from "@/features/settings/components/active-sessions";
 import { ChangeEmailForm } from "@/features/settings/components/change-email-form";
@@ -29,50 +32,64 @@ import { useSettingsDialog } from "@/features/settings/hooks/use-settings-dialog
 const TITLE = "Settings";
 const DESCRIPTION = "Manage your account and how you sign in.";
 
+const SECTIONS = [
+  { value: "account", label: "Account", icon: UserIcon },
+  { value: "security", label: "Security", icon: SecurityLockIcon },
+] as const;
+
 export function SettingsDialog() {
   const { isMobile, isOpen, tab, onOpenChange, onTabChange } = useSettingsDialog();
 
-  const sections = (
-    <>
-      <TabsContent value="account">
-        <div className="flex flex-col gap-10">
-          <SettingsSection title="Name" description="How you appear to other people.">
-            <ChangeNameForm />
-          </SettingsSection>
-          <SettingsSection title="Username" description="Your unique handle.">
-            <ChangeUsernameForm />
-          </SettingsSection>
-          <SettingsSection title="Email" description="Where we send account emails.">
-            <ChangeEmailForm />
-          </SettingsSection>
-        </div>
-      </TabsContent>
-      <TabsContent value="security">
-        <div className="flex flex-col gap-10">
-          <SettingsSection title="Password" description="Change the password you sign in with.">
-            <ChangePasswordForm />
-          </SettingsSection>
-          <SettingsSection
-            title="Two-factor authentication"
-            description="Add a second step when you sign in."
-          >
-            <ToggleTwoFactorForm />
-            <GenerateBackupCodesForm />
-          </SettingsSection>
-          <SettingsSection title="Active sessions" description="Devices signed in to your account.">
-            <ActiveSessions />
-          </SettingsSection>
-        </div>
-      </TabsContent>
-    </>
+  // The same menu buttons as the app sidebar, so active and hover look identical
+  const navigation = (
+    <nav aria-label="Settings sections">
+      <SidebarMenu>
+        {SECTIONS.map((section) => (
+          <SidebarMenuItem key={section.value}>
+            <SidebarMenuButton
+              isActive={tab === section.value}
+              aria-current={tab === section.value ? "page" : undefined}
+              onClick={() => onTabChange(section.value)}
+            >
+              <HugeiconsIcon icon={section.icon} />
+              <span>{section.label}</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        ))}
+      </SidebarMenu>
+    </nav>
   );
 
-  const triggers = (
-    <>
-      <TabsTrigger value="account">Account</TabsTrigger>
-      <TabsTrigger value="security">Security</TabsTrigger>
-    </>
-  );
+  const content =
+    tab === "account" ? (
+      <div className="flex flex-col gap-12">
+        <SettingsSection title="Name" description="How you appear to other people.">
+          <ChangeNameForm />
+        </SettingsSection>
+        <SettingsSection title="Username" description="Your unique handle.">
+          <ChangeUsernameForm />
+        </SettingsSection>
+        <SettingsSection title="Email" description="Where we send account emails.">
+          <ChangeEmailForm />
+        </SettingsSection>
+      </div>
+    ) : (
+      <div className="flex flex-col gap-12">
+        <SettingsSection title="Password" description="Change the password you sign in with.">
+          <ChangePasswordForm />
+        </SettingsSection>
+        <SettingsSection
+          title="Two-factor authentication"
+          description="Add a second step when you sign in."
+        >
+          <ToggleTwoFactorForm />
+          <GenerateBackupCodesForm />
+        </SettingsSection>
+        <SettingsSection title="Active sessions" description="Devices signed in to your account.">
+          <ActiveSessions />
+        </SettingsSection>
+      </div>
+    );
 
   if (isMobile) {
     return (
@@ -82,12 +99,10 @@ export function SettingsDialog() {
             <DrawerTitle>{TITLE}</DrawerTitle>
             <DrawerDescription>{DESCRIPTION}</DrawerDescription>
           </DrawerHeader>
-          <Tabs value={tab} onValueChange={onTabChange} className="min-h-0 gap-6 px-4">
-            <TabsList variant="line" className="w-full">
-              {triggers}
-            </TabsList>
-            <div className="min-h-0 overflow-y-auto pb-6">{sections}</div>
-          </Tabs>
+          <div className="flex min-h-0 flex-col gap-8 overflow-y-auto px-4 pb-10">
+            {navigation}
+            {content}
+          </div>
         </DrawerContent>
       </Drawer>
     );
@@ -100,14 +115,12 @@ export function SettingsDialog() {
           <DialogTitle>{TITLE}</DialogTitle>
           <DialogDescription>{DESCRIPTION}</DialogDescription>
         </DialogHeader>
-        <Tabs value={tab} onValueChange={onTabChange} orientation="vertical" className="gap-8">
-          <TabsList variant="line" className="w-40 shrink-0">
-            {triggers}
-          </TabsList>
+        <div className="flex gap-10">
+          <div className="w-44 shrink-0">{navigation}</div>
           <div className="-mr-6 no-scrollbar max-h-[70vh] min-w-0 flex-1 overflow-y-auto pr-6">
-            {sections}
+            {content}
           </div>
-        </Tabs>
+        </div>
       </DialogContent>
     </Dialog>
   );
@@ -121,7 +134,7 @@ type SettingsSectionProps = {
 
 function SettingsSection({ title, description, children }: SettingsSectionProps) {
   return (
-    <section className="flex flex-col gap-4">
+    <section className="flex flex-col gap-6">
       <FieldContent>
         <FieldTitle>{title}</FieldTitle>
         <FieldDescription>{description}</FieldDescription>

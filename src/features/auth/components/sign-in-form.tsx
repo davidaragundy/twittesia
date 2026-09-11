@@ -17,16 +17,9 @@ export function SignInForm({ className, ...props }: React.ComponentProps<"div">)
   const { isPending, handleSignInWithGitHub, handleSignInWithGoogle } = useSignInForm();
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-10", className)} {...props}>
       <AuthHeading title="Welcome back" description="We knew you would come back 😏" />
       <FieldGroup>
-        <SocialButtons
-          action="Sign in"
-          disabled={isPending}
-          onGitHub={handleSignInWithGitHub}
-          onGoogle={handleSignInWithGoogle}
-        />
-        <FieldDescription className="text-center">Or continue with email</FieldDescription>
         <Tabs defaultValue="password">
           <TabsList variant="line" className="w-full">
             <TabsTrigger value="password">Password</TabsTrigger>
@@ -39,6 +32,13 @@ export function SignInForm({ className, ...props }: React.ComponentProps<"div">)
             <MagicLinkForm />
           </TabsContent>
         </Tabs>
+        <FieldDescription className="text-center">Or continue with</FieldDescription>
+        <SocialButtons
+          action="Sign in"
+          disabled={isPending}
+          onGitHub={handleSignInWithGitHub}
+          onGoogle={handleSignInWithGoogle}
+        />
         <FieldDescription className="text-center">
           Don&apos;t have an account? <Link href="/sign-up">Sign up</Link>
         </FieldDescription>

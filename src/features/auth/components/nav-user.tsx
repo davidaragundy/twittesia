@@ -3,8 +3,6 @@
 import {
   ArrowReloadHorizontalIcon,
   Logout01Icon,
-  Moon01Icon,
-  Sun01Icon,
   UnfoldMoreIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -39,7 +37,7 @@ type Props = {
 
 export function NavUser({ menuItems }: Props) {
   const { isMobile } = useSidebar();
-  const { handleSignOut, handleThemeChange, isSigningOut, theme } = useNavUser();
+  const { handleSignOut, isSigningOut } = useNavUser();
   const { data: session, isLoading, isError, isRefetching, refetch } = useSession();
 
   if (isLoading) {
@@ -105,14 +103,7 @@ export function NavUser({ menuItems }: Props) {
               </DropdownMenuLabel>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              {menuItems}
-              <DropdownMenuItem onClick={() => handleThemeChange()}>
-                <HugeiconsIcon icon={theme === "dark" ? Moon01Icon : Sun01Icon} />
-                Toggle theme
-                <DropdownMenuShortcut>⌘⇧T</DropdownMenuShortcut>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
+            <DropdownMenuGroup>{menuItems}</DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem variant="destructive" onClick={() => handleSignOut()}>
               {isSigningOut ? <Spinner /> : <HugeiconsIcon icon={Logout01Icon} />}

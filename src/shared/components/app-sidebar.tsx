@@ -3,13 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { Logo } from "@/shared/components/logo";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -25,18 +23,7 @@ export function AppSidebar({ links, footer, ...props }: Props) {
   const pathname = usePathname();
 
   return (
-    <Sidebar collapsible="icon" className="border-r-0" {...props}>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton size="lg" render={<Link href="/home" />}>
-              <Logo />
-              <span className="truncate font-medium">Twittesia</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
-
+    <Sidebar collapsible="icon" className="group-data-[side=left]:border-r-0" {...props}>
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>

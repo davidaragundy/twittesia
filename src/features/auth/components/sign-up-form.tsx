@@ -32,22 +32,15 @@ export function SignUpForm({ className, ...props }: React.ComponentProps<"div">)
     useSignUpForm();
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-10", className)} {...props}>
       <AuthHeading
         title="Create your account"
         description="Here you can say whatever you want, nobody will give a f*ck 🌴"
       />
       <FieldGroup>
-        <SocialButtons
-          action="Sign up"
-          disabled={isPending}
-          onGitHub={handleSignUpWithGithub}
-          onGoogle={handleSignUpWithGoogle}
-        />
-        <FieldDescription className="text-center">Or continue with email</FieldDescription>
         <form id="sign-up-form" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
-            <Field className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <Field className="grid grid-cols-1 gap-7 sm:grid-cols-2 sm:gap-4">
               <Controller
                 name="name"
                 control={form.control}
@@ -133,12 +126,19 @@ export function SignUpForm({ className, ...props }: React.ComponentProps<"div">)
                 {isPending && <Spinner data-icon="inline-start" />}
                 Create account
               </Button>
-              <FieldDescription className="text-center">
-                Already have an account? <Link href="/sign-in">Sign in</Link>
-              </FieldDescription>
             </Field>
           </FieldGroup>
         </form>
+        <FieldDescription className="text-center">Or continue with</FieldDescription>
+        <SocialButtons
+          action="Sign up"
+          disabled={isPending}
+          onGitHub={handleSignUpWithGithub}
+          onGoogle={handleSignUpWithGoogle}
+        />
+        <FieldDescription className="text-center">
+          Already have an account? <Link href="/sign-in">Sign in</Link>
+        </FieldDescription>
       </FieldGroup>
       <TermsNotice />
     </div>

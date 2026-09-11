@@ -22,7 +22,7 @@ export function RecoveryCodeForm({ className, ...props }: React.ComponentProps<"
   const { form, onSubmit, isPending } = useRecoveryCodeForm();
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-10", className)} {...props}>
       <AuthHeading
         title="Use a recovery code"
         description="Each code from your list works only once 🔐"

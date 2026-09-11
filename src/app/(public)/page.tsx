@@ -80,13 +80,13 @@ const lifespan = [
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col gap-24 py-16 sm:gap-32 sm:py-24">
+    <div className="flex flex-col gap-32 py-20 sm:gap-40 sm:py-32">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
 
-      <section className="flex flex-col items-center gap-6 text-center">
+      <section className="flex flex-col items-center gap-8 text-center">
         <Badge variant="ghost">Open source</Badge>
         <h1 className="max-w-2xl text-4xl font-semibold tracking-tight text-balance sm:text-6xl">
           Say it. In 24 hours, it&apos;s gone.
@@ -104,11 +104,11 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section aria-labelledby="features-title" className="flex flex-col gap-6">
+      <section aria-labelledby="features-title" className="flex flex-col gap-8">
         <h2 id="features-title" className="text-sm font-medium text-muted-foreground">
           What you can share
         </h2>
-        <ItemGroup className="grid sm:grid-cols-2">
+        <ItemGroup className="grid gap-6 sm:grid-cols-2">
           {features.map((feature) => (
             <Item key={feature.title}>
               <ItemMedia variant="icon">
@@ -125,11 +125,11 @@ export default function LandingPage() {
         </ItemGroup>
       </section>
 
-      <section aria-labelledby="lifespan-title" className="flex flex-col gap-6">
+      <section aria-labelledby="lifespan-title" className="flex flex-col gap-8">
         <h2 id="lifespan-title" className="text-sm font-medium text-muted-foreground">
           The lifespan of everything
         </h2>
-        <ol className="grid gap-8 sm:grid-cols-3">
+        <ol className="grid gap-10 sm:grid-cols-3">
           {lifespan.map((step) => (
             <li key={step.time} className="flex flex-col gap-1">
               <span className="text-2xl font-semibold tracking-tight">{step.time}</span>

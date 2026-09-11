@@ -23,7 +23,7 @@ export function TwoFactorForm({ className, ...props }: React.ComponentProps<"div
   const { form, onSubmit, isPending } = useTwoFactorForm();
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-10", className)} {...props}>
       <AuthHeading
         title="Two-factor authentication"
         description="Enter the code from your authenticator app 🧍"
