@@ -1,143 +1,133 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
-import {
-  TypographyH1,
-  TypographyH2,
-  TypographyMuted,
-  TypographyP,
-} from "@/shared/components/typography";
+import { LegalPage } from "@/shared/components/legal-page";
+import { LegalSection } from "@/shared/components/legal-section";
 
 export const metadata: Metadata = {
-  title: "Twittesia | Terms and Conditions",
-  description: "Twittesia Terms and Conditions",
+  title: "Twittesia | Terms of Service",
+  description: "The terms that apply when you use Twittesia.",
+  alternates: { canonical: "/terms" },
 };
 
-export default function Terms() {
+const CONTACT_EMAIL = "davidaragundy@outlook.com";
+
+export default function TermsPage() {
   return (
-    <div className="mx-auto w-full max-w-3xl py-16">
-      <TypographyH1>Terms and Conditions</TypographyH1>
+    <LegalPage
+      title="Terms of Service"
+      effectiveDate="September 10, 2026"
+      intro={
+        <>
+          These terms govern your use of Twittesia, a social network where everything you share
+          lasts 24 hours. By creating an account or using Twittesia, you agree to them and to our{" "}
+          <Link href="/privacy">Privacy Policy</Link>.
+        </>
+      }
+    >
+      <LegalSection title="1. Your account">
+        <ul>
+          <li>
+            <strong>Accurate information.</strong> Give accurate details when you create your
+            account, and keep them up to date.
+          </li>
+          <li>
+            <strong>Security.</strong> You are responsible for your password, your authenticator app
+            and backup codes if you use two-factor authentication, and everything that happens under
+            your account.
+          </li>
+        </ul>
+      </LegalSection>
 
-      <TypographyMuted>Effective Date: March 21, 2025</TypographyMuted>
+      <LegalSection title="2. Your content">
+        <ul>
+          <li>
+            <strong>You own it.</strong> By posting, you give Twittesia a worldwide, royalty-free
+            licence to host, display and distribute your content within Twittesia for as long as it
+            exists.
+          </li>
+          <li>
+            <strong>It expires.</strong> Posts, comments and messages are deleted for good 24 hours
+            after they are created. We cannot restore them afterwards.
+          </li>
+          <li>
+            <strong>Ghosts.</strong> A ghost hides your profile from other users. It is still your
+            content, and these terms still apply to it.
+          </li>
+          <li>
+            <strong>Others can still copy it.</strong> Anyone who sees your content before it
+            expires can copy or screenshot it. Only share what you are comfortable with.
+          </li>
+        </ul>
+      </LegalSection>
 
-      <TypographyP className="mb-6">
-        Welcome to Twittesia, an open-source social media platform designed for sharing short-lived
-        content. By accessing or using our application, you agree to comply with and be bound by the
-        following Terms and Conditions. Please read them carefully.
-      </TypographyP>
+      <LegalSection title="3. Acceptable use">
+        <p>When you use Twittesia, you agree not to:</p>
+        <ul>
+          <li>Break any applicable law or regulation.</li>
+          <li>Post content that is unlawful, harmful, abusive or harassing.</li>
+          <li>Infringe the intellectual property or other rights of others.</li>
+          <li>Send malware or anything else designed to cause harm.</li>
+          <li>Interfere with Twittesia or disrupt other people&apos;s use of it.</li>
+        </ul>
+      </LegalSection>
 
-      <TypographyH2>1. Acceptance of Terms</TypographyH2>
+      <LegalSection title="4. Moderation and termination">
+        <p>
+          We may remove content, or suspend or terminate accounts, that break these terms. You can
+          ask us to delete your account at any time by writing to{" "}
+          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+        </p>
+      </LegalSection>
 
-      <TypographyP className="mb-6">
-        By creating an account or using Twittesia, you agree to these Terms and Conditions and our
-        Privacy Policy. If you do not agree with any part of these terms, you must not use our
-        services.
-      </TypographyP>
+      <LegalSection title="5. Source code">
+        <p>
+          Twittesia&apos;s source code is public on{" "}
+          <a href="https://github.com/davidaragundy/twittesia" target="_blank" rel="noreferrer">
+            GitHub
+          </a>
+          . These terms cover your use of the service, not the code.
+        </p>
+      </LegalSection>
 
-      <TypographyH2>2. User Account Responsibilities</TypographyH2>
+      <LegalSection title="6. Disclaimers and limitation of liability">
+        <ul>
+          <li>
+            <strong>As is.</strong> Twittesia is provided as is. We aim for it to be available at
+            all times, but we cannot guarantee that it will be.
+          </li>
+          <li>
+            <strong>Expired content.</strong> Content is deleted at expiry by design. We are not
+            responsible for content lost that way.
+          </li>
+          <li>
+            <strong>Liability.</strong> To the fullest extent permitted by law, Twittesia is not
+            liable for indirect, incidental or consequential damages arising from your use of it.
+          </li>
+        </ul>
+      </LegalSection>
 
-      <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
-        <li>
-          <b>Account Creation:</b> To access certain features, you must register for an account,
-          providing accurate and complete information.
-        </li>
+      <LegalSection title="7. Changes to these terms">
+        <p>
+          We may update these terms. When we do, we will publish the new version here and update the
+          effective date. For significant changes, we will also tell you by email or with a notice
+          on Twittesia.
+        </p>
+      </LegalSection>
 
-        <li>
-          <b>Account Security:</b> You are responsible for maintaining the confidentiality of your
-          account credentials and for all activities under your account.
-        </li>
-      </ul>
+      <LegalSection title="8. Governing law">
+        <p>
+          These terms are governed by the laws of Ecuador. Any disputes will be resolved in the
+          competent courts of Ecuador.
+        </p>
+      </LegalSection>
 
-      <TypographyH2>3. User-Generated Content</TypographyH2>
-
-      <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
-        <li>
-          <b>Content Ownership:</b> You retain ownership of the content you post. By posting, you
-          grant Twittesia a worldwide, royalty-free license to use, display, and distribute your
-          content within the app.
-        </li>
-
-        <li>
-          <b>Content Guidelines:</b> You agree not to post content that is unlawful, harmful,
-          abusive, or violates any third-party rights. Twittesia reserves the right to remove
-          content that violates these guidelines.
-        </li>
-
-        <li>
-          <b>Content Deletion:</b> All user-generated content is automatically deleted 24 hours
-          after posting. This temporary nature is core to our platform&apos;s design.
-        </li>
-      </ul>
-
-      <TypographyH2>4. Acceptable Use</TypographyH2>
-
-      <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
-        <li>Violate any applicable laws or regulations.</li>
-
-        <li>Infringe on the intellectual property rights of others.</li>
-
-        <li>Transmit harmful or malicious software.</li>
-
-        <li>Interfere with the operation of Twittesia or disrupt other users&apos; experience.</li>
-      </ul>
-
-      <TypographyH2>5. Termination of Account</TypographyH2>
-
-      <TypographyP className="mb-6">
-        Twittesia reserves the right to suspend or terminate your account if you violate these Terms
-        and Conditions. Upon termination, your access to the app will be revoked, and your data may
-        be deleted.
-      </TypographyP>
-
-      <TypographyH2>6. Disclaimers and Limitations of Liability</TypographyH2>
-
-      <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
-        <li>
-          <b>Service Availability:</b> While we strive for uninterrupted service, Twittesia does not
-          guarantee continuous availability and may experience downtime.
-        </li>
-
-        <li>
-          <b>Data Loss:</b> Given our content deletion policy, all user-generated content is deleted
-          24 hours after posting. We are not responsible for any loss of data.
-        </li>
-
-        <li>
-          <b>Limitation of Liability:</b> To the fullest extent permitted by law, Twittesia
-          disclaims liability for any indirect, incidental, or consequential damages arising from
-          your use of the app.
-        </li>
-      </ul>
-
-      <TypographyH2>7. Modifications to Terms</TypographyH2>
-
-      <TypographyP className="mb-6">
-        Twittesia may update these Terms and Conditions periodically. Users will be notified of
-        significant changes through in-app notifications or other communication channels.
-      </TypographyP>
-
-      <TypographyH2>8. Governing Law</TypographyH2>
-
-      <TypographyP className="mb-6">
-        These Terms and Conditions are governed by the laws of Ecuador. Any disputes will be
-        resolved in the competent courts of Ecuador.
-      </TypographyP>
-
-      <TypographyH2>9. Contact Information</TypographyH2>
-
-      <TypographyP className="mb-6">
-        For questions or concerns regarding these Terms and Conditions, please contact us at:
-      </TypographyP>
-
-      <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
-        <li>
-          <b>Email</b> davidaragundy@outlook.com
-        </li>
-      </ul>
-
-      <TypographyP className="mb-6">
-        Thank you for being part of the Twittesia community. We aim to provide a unique and secure
-        platform for sharing ephemeral content.
-      </TypographyP>
-    </div>
+      <LegalSection title="9. Contact">
+        <p>
+          Questions about these terms? Write to{" "}
+          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+        </p>
+      </LegalSection>
+    </LegalPage>
   );
 }
