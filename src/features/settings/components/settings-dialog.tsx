@@ -3,6 +3,7 @@
 import { SecurityLockIcon, UserIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
+import { NavButton } from "@/shared/components/nav-button";
 import {
   Dialog,
   DialogContent,
@@ -18,7 +19,6 @@ import {
   DrawerTitle,
 } from "@/shared/components/ui/drawer";
 import { FieldContent, FieldDescription, FieldTitle } from "@/shared/components/ui/field";
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/shared/components/ui/sidebar";
 
 import { ActiveSessions } from "@/features/settings/components/active-sessions";
 import { ChangeEmailForm } from "@/features/settings/components/change-email-form";
@@ -40,23 +40,19 @@ const SECTIONS = [
 export function SettingsDialog() {
   const { isMobile, isOpen, tab, onOpenChange, onTabChange } = useSettingsDialog();
 
-  // The same menu buttons as the app sidebar, so active and hover look identical
+  // The same buttons as the app navigation, so active and hover look identical
   const navigation = (
-    <nav aria-label="Settings sections">
-      <SidebarMenu>
-        {SECTIONS.map((section) => (
-          <SidebarMenuItem key={section.value}>
-            <SidebarMenuButton
-              isActive={tab === section.value}
-              aria-current={tab === section.value ? "page" : undefined}
-              onClick={() => onTabChange(section.value)}
-            >
-              <HugeiconsIcon icon={section.icon} />
-              <span>{section.label}</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        ))}
-      </SidebarMenu>
+    <nav aria-label="Settings sections" className="flex flex-col gap-1">
+      {SECTIONS.map((section) => (
+        <NavButton
+          key={section.value}
+          isActive={tab === section.value}
+          onClick={() => onTabChange(section.value)}
+        >
+          <HugeiconsIcon icon={section.icon} />
+          {section.label}
+        </NavButton>
+      ))}
     </nav>
   );
 
@@ -115,7 +111,7 @@ export function SettingsDialog() {
           <DialogTitle>{TITLE}</DialogTitle>
           <DialogDescription>{DESCRIPTION}</DialogDescription>
         </DialogHeader>
-        <div className="flex gap-10">
+        <div className="flex gap-12">
           <div className="w-44 shrink-0">{navigation}</div>
           <div className="-mr-6 no-scrollbar max-h-[70vh] min-w-0 flex-1 overflow-y-auto pr-6">
             {content}

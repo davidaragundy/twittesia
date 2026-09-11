@@ -7,6 +7,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
+import { NavButton } from "@/shared/components/nav-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 import {
   DropdownMenu,
@@ -18,13 +19,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSkeleton,
-  useSidebar,
-} from "@/shared/components/ui/sidebar";
+import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Spinner } from "@/shared/components/ui/spinner";
 
 import { useNavUser } from "@/features/auth/hooks/use-nav-user";
@@ -36,84 +31,66 @@ type Props = {
 };
 
 export function NavUser({ menuItems }: Props) {
-  const { isMobile } = useSidebar();
   const { handleSignOut, isSigningOut } = useNavUser();
   const { data: session, isLoading, isError, isRefetching, refetch } = useSession();
 
   if (isLoading) {
     return (
-      <SidebarMenu>
-        <SidebarMenuItem>
-          <SidebarMenuSkeleton showIcon />
-        </SidebarMenuItem>
-      </SidebarMenu>
+      <div className="flex items-center gap-3 px-4">
+        <Skeleton className="size-8 rounded-full" />
+        <div className="flex flex-1 flex-col gap-1.5">
+          <Skeleton className="h-3.5 w-24" />
+          <Skeleton className="h-3 w-16" />
+        </div>
+      </div>
     );
   }
 
   if (isError || !session) {
     return (
-      <SidebarMenu>
-        <SidebarMenuItem>
-          <SidebarMenuButton onClick={() => refetch()} disabled={isRefetching}>
-            {isRefetching ? <Spinner /> : <HugeiconsIcon icon={ArrowReloadHorizontalIcon} />}
-            <span>Retry</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-      </SidebarMenu>
+      <NavButton onClick={() => refetch()} disabled={isRefetching}>
+        {isRefetching ? <Spinner /> : <HugeiconsIcon icon={ArrowReloadHorizontalIcon} />}
+        Retry
+      </NavButton>
     );
   }
 
   const { user } = session;
-  const avatar = (
-    <Avatar>
-      <AvatarImage src={user.image ?? undefined} alt={user.name} />
-      <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
-    </Avatar>
-  );
   const identity = (
-    <div className="grid flex-1 text-left text-sm leading-tight">
-      <span className="truncate font-medium">{user.name}</span>
-      <span className="truncate text-xs">@{user.displayUsername}</span>
-    </div>
+    <>
+      <Avatar size="sm">
+        <AvatarImage src={user.image ?? undefined} alt={user.name} />
+        <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+      </Avatar>
+      <div className="grid flex-1 text-left text-sm leading-tight">
+        <span className="truncate font-medium">{user.name}</span>
+        <span className="truncate text-xs text-muted-foreground">@{user.displayUsername}</span>
+      </div>
+    </>
   );
 
   return (
-    <SidebarMenu>
-      <SidebarMenuItem>
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            render={<SidebarMenuButton size="lg" className="aria-expanded:bg-muted" />}
-          >
-            {avatar}
-            {identity}
-            <HugeiconsIcon icon={UnfoldMoreIcon} className="ml-auto size-4" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="w-fit"
-            side={isMobile ? "bottom" : "right"}
-            align="end"
-            sideOffset={4}
-          >
-            <DropdownMenuGroup>
-              <DropdownMenuLabel className="p-0 font-normal">
-                <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                  {avatar}
-                  {identity}
-                </div>
-              </DropdownMenuLabel>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>{menuItems}</DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive" onClick={() => handleSignOut()}>
-              {isSigningOut ? <Spinner /> : <HugeiconsIcon icon={Logout01Icon} />}
-              Sign out
-              <DropdownMenuShortcut>⌘O</DropdownMenuShortcut>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </SidebarMenuItem>
-    </SidebarMenu>
+    <DropdownMenu>
+      <DropdownMenuTrigger render={<NavButton />}>
+        {identity}
+        <HugeiconsIcon icon={UnfoldMoreIcon} />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent side="top" align="start" sideOffset={8} className="min-w-56">
+        <DropdownMenuGroup>
+          <DropdownMenuLabel className="p-0 font-normal">
+            <div className="flex items-center gap-2 px-1 py-1.5">{identity}</div>
+          </DropdownMenuLabel>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>{menuItems}</DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem variant="destructive" onClick={() => handleSignOut()}>
+          {isSigningOut ? <Spinner /> : <HugeiconsIcon icon={Logout01Icon} />}
+          Sign out
+          <DropdownMenuShortcut>⌘O</DropdownMenuShortcut>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 
