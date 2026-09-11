@@ -1,18 +1,17 @@
 import "server-only";
 
 import { headers } from "next/headers";
+import { cache } from "react";
 
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import { auth } from "@/features/auth/lib/auth";
 import type { Session } from "@/features/auth/types/session";
 
-// Cached in the browser only, per session, so each route's App Shell carries the signed-in UI
-// and navigations don't wait for it. Server actions call `refresh()` after a change, which
-// clears it. A failed lookup reads as signed out rather than breaking the signed-in layout.
-export const getSession = async (): Promise<Session | null> => {
-  "use cache: private";
-
+// Read per request, never cached across navigations, so a change made through `authClient`
+// shows on the next render. `cache` shares one lookup between every boundary that asks.
+// A failed lookup reads as signed out rather than breaking the signed-in layout.
+export const getSession = cache(async (): Promise<Session | null> => {
   const { data, error } = await tryCatch(auth.api.getSession({ headers: await headers() }));
 
   if (error || !data) return null;
@@ -31,4 +30,4 @@ export const getSession = async (): Promise<Session | null> => {
     },
     session: { id: session.id },
   };
-};
+});

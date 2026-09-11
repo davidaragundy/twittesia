@@ -1,13 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-
-import { toastRateLimited } from "@/shared/utils/toast-rate-limited";
 
 import { twoFactorSchema } from "@/features/auth/schemas/two-factor-schema";
 import type { TwoFactorFormValues } from "@/features/auth/types/two-factor-form-values";
-import { verifyTwoFactor } from "@/features/settings/actions/verify-two-factor";
+import { useVerifyTotpMutation } from "@/features/settings/hooks/use-verify-totp-mutation";
 
 interface Props {
   totpURI: string;
@@ -15,8 +11,6 @@ interface Props {
 }
 
 export const useSetupTwoFactorDialog = ({ totpURI, closeDialog }: Props) => {
-  const [isPending, startTransition] = useTransition();
-
   const form = useForm<TwoFactorFormValues>({
     resolver: zodResolver(twoFactorSchema),
     defaultValues: {
@@ -27,40 +21,9 @@ export const useSetupTwoFactorDialog = ({ totpURI, closeDialog }: Props) => {
   // URL.parse returns null instead of throwing on a malformed URI
   const key = URL.parse(totpURI)?.searchParams.get("secret") ?? "";
 
-  const onSubmit = (values: TwoFactorFormValues) =>
-    startTransition(async () => {
-      const { error } = await verifyTwoFactor(values);
+  const { mutate, isPending } = useVerifyTotpMutation({ form, closeDialog });
 
-      switch (error?.code) {
-        case undefined:
-          toast.success("Two-factor authentication enabled successfully 🎉", {
-            duration: 10_000,
-          });
-          form.reset();
-          startTransition(() => closeDialog());
-          return;
-
-        case "INVALID_CODE":
-          form.setError("code", { message: "Invalid one-time password" });
-          return;
-
-        case "RATE_LIMITED":
-          toastRateLimited();
-          return;
-
-        // Client validation normally stops this first; show why the server refused
-        case "INVALID_INPUT":
-          toast.error(error.message, { duration: 10_000 });
-          return;
-
-        default:
-          toast.error("An error occurred 😢", {
-            description: "Please try again later",
-            duration: 10_000,
-          });
-          return;
-      }
-    });
+  const onSubmit = (values: TwoFactorFormValues) => mutate(values);
 
   return { form, onSubmit, isPending, key };
 };

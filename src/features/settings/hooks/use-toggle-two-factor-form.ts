@@ -1,19 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-
-import { toastRateLimited } from "@/shared/utils/toast-rate-limited";
 
 import { useSession } from "@/features/auth/hooks/use-session";
-import { disableTwoFactor } from "@/features/settings/actions/disable-two-factor";
-import { enableTwoFactor } from "@/features/settings/actions/enable-two-factor";
+import { useDisableTwoFactorMutation } from "@/features/settings/hooks/use-disable-two-factor-mutation";
+import { useEnableTwoFactorMutation } from "@/features/settings/hooks/use-enable-two-factor-mutation";
 import { toggleTwoFactorFormSchema } from "@/features/settings/schemas/toggle-two-factor-form-schema";
 import type { ToggleTwoFactorFormValues } from "@/features/settings/types/toggle-two-factor-form-values";
 
 export const useToggleTwoFactorForm = () => {
   const session = useSession();
-  const [isPending, startTransition] = useTransition();
 
   const [totpURI, setTotpURI] = useState("");
   const [backupCodes, setBackupCodes] = useState<string[]>([]);
@@ -30,60 +26,27 @@ export const useToggleTwoFactorForm = () => {
     },
   });
 
-  const isSwitchDirty = form.watch("enableTwoFactor") !== isEnabled;
+  const { mutate: enableTwoFactor, isPending: isEnabling } = useEnableTwoFactorMutation({
+    form,
+    onEnrolled: (enrolment) => {
+      setTotpURI(enrolment.totpURI);
+      setBackupCodes(enrolment.backupCodes);
+    },
+  });
+
+  const { mutate: disableTwoFactor, isPending: isDisabling } = useDisableTwoFactorMutation({
+    form,
+  });
 
   const onSubmit = ({ enableTwoFactor: enable, currentPassword }: ToggleTwoFactorFormValues) =>
-    startTransition(async () => {
-      const action = enable ? "enable" : "disable";
-      const { data, error } = enable
-        ? await enableTwoFactor({ currentPassword })
-        : await disableTwoFactor({ currentPassword });
+    enable ? enableTwoFactor({ currentPassword }) : disableTwoFactor({ currentPassword });
 
-      switch (error?.code) {
-        case undefined:
-          break;
-
-        case "INVALID_PASSWORD":
-          form.setError("currentPassword", { message: "Invalid password" });
-          return;
-
-        case "RATE_LIMITED":
-          toastRateLimited();
-          return;
-
-        // Client validation normally stops this first; show why the server refused
-        case "INVALID_INPUT":
-          toast.error(error.message, { duration: 10_000 });
-          return;
-
-        default:
-          toast.error(`Failed to ${action} two-factor authentication 😢`, {
-            description: "Please try again later",
-            duration: 10_000,
-          });
-          return;
-      }
-
-      form.reset({ enableTwoFactor: enable, currentPassword: "" });
-
-      if (!data) {
-        toast.success("Two-factor authentication has been disabled successfully 🎉", {
-          duration: 10_000,
-        });
-        return;
-      }
-
-      // The setup dialog opens with what enrolment returned
-      startTransition(() => {
-        setTotpURI(data.totpURI);
-        setBackupCodes(data.backupCodes);
-      });
-    });
+  const isSwitchDirty = form.watch("enableTwoFactor") !== isEnabled;
 
   return {
     form,
     onSubmit,
-    isPending,
+    isPending: isEnabling || isDisabling,
     totpURI,
     setTotpURI,
     backupCodes,
