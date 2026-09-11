@@ -1,136 +1,144 @@
 import type { Metadata } from "next";
 
-import {
-  TypographyH1,
-  TypographyH2,
-  TypographyMuted,
-  TypographyP,
-} from "@/shared/components/typography";
+import { LegalPage } from "@/shared/components/legal-page";
+import { LegalSection } from "@/shared/components/legal-section";
 
 export const metadata: Metadata = {
   title: "Twittesia | Privacy Policy",
-  description: "Twittesia Privacy Policy",
+  description: "What Twittesia collects, why, who processes it and how long it is kept.",
+  alternates: { canonical: "/privacy" },
 };
 
-export default function Privacy() {
+const CONTACT_EMAIL = "davidaragundy@outlook.com";
+
+export default function PrivacyPage() {
   return (
-    <div className="mx-auto w-full max-w-3xl py-16">
-      <TypographyH1>Privacy Policy</TypographyH1>
+    <LegalPage
+      title="Privacy Policy"
+      effectiveDate="September 10, 2026"
+      intro="Twittesia is built to keep as little as possible for as short a time as possible. This policy explains what we collect, why, who helps us process it and how long we keep it."
+    >
+      <LegalSection title="1. What we collect">
+        <ul>
+          <li>
+            <strong>Account details.</strong> Your name, username and email address. If you set a
+            password, we store only a salted hash of it, never the password itself.
+          </li>
+          <li>
+            <strong>Sign-in providers.</strong> If you sign in with GitHub or Google, we receive
+            your name, email address and profile picture from them, and store the tokens they issue.
+          </li>
+          <li>
+            <strong>Security data.</strong> For each session, the IP address and browser or device
+            it was created from, which you can see and revoke in your settings. If you turn on
+            two-factor authentication, your authenticator secret and backup codes.
+          </li>
+          <li>
+            <strong>Your content.</strong> The posts, comments and messages you create.
+          </li>
+          <li>
+            <strong>Usage and performance.</strong> Page views and loading performance, measured
+            with Vercel Analytics and Speed Insights, which do not use cookies.
+          </li>
+        </ul>
+      </LegalSection>
 
-      <TypographyMuted>Effective Date: March 21, 2025</TypographyMuted>
+      <LegalSection title="2. How we use it">
+        <ul>
+          <li>To run Twittesia and show your content to the people you share it with.</li>
+          <li>
+            To sign you in and protect your account, including sessions, two-factor authentication
+            and limiting repeated attempts.
+          </li>
+          <li>
+            To send the emails the service needs: address verification, magic links, password resets
+            and sign-in codes.
+          </li>
+          <li>To find and fix problems, and make Twittesia faster.</li>
+        </ul>
+      </LegalSection>
 
-      <TypographyP className="mb-6">
-        At Twittesia, we value your privacy and are committed to protecting your personal
-        information. This Privacy Policy outlines how we collect, use, and safeguard your data when
-        you use our social media application.
-      </TypographyP>
+      <LegalSection title="3. How long we keep it">
+        <ul>
+          <li>
+            <strong>Content.</strong> Posts, comments and messages are deleted for good 24 hours
+            after they are created.
+          </li>
+          <li>
+            <strong>Sessions.</strong> Until they expire, you sign out or you revoke them.
+          </li>
+          <li>
+            <strong>Links and codes.</strong> Verification links, magic links and sign-in codes last
+            until they are used or expire.
+          </li>
+          <li>
+            <strong>Account details.</strong> For as long as you have an account.
+          </li>
+        </ul>
+      </LegalSection>
 
-      <TypographyH2>1. Information We Collect</TypographyH2>
+      <LegalSection title="4. Who processes it">
+        <p>
+          We do not sell, rent or trade your personal information. These services process it on our
+          behalf, only to provide Twittesia:
+        </p>
+        <ul>
+          <li>
+            <strong>Vercel</strong> hosts Twittesia and provides Analytics and Speed Insights.
+          </li>
+          <li>
+            <strong>Neon</strong> hosts the database.
+          </li>
+          <li>
+            <strong>Resend</strong> delivers our emails.
+          </li>
+          <li>
+            <strong>GitHub</strong> and <strong>Google</strong>, only if you use them to sign in.
+          </li>
+          <li>
+            <strong>Have I Been Pwned</strong> checks new passwords against known breaches. Only the
+            first five characters of the password&apos;s hash are sent, never the password.
+          </li>
+        </ul>
+        <p>We may also disclose information when the law requires it.</p>
+      </LegalSection>
 
-      <TypographyP className="mb-6">
-        When you use Twittesia, we may collect the following types of information:
-      </TypographyP>
+      <LegalSection title="5. Cookies and local storage">
+        <p>
+          We use a cookie only to keep you signed in. Your light or dark theme choice is saved in
+          your browser&apos;s local storage. We do not use advertising or tracking cookies.
+        </p>
+      </LegalSection>
 
-      <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
-        <li>
-          <b>Personal Information:</b> Details such as your name, email address, and profile
-          information that you provide during account creation.
-        </li>
+      <LegalSection title="6. Security">
+        <p>
+          We protect your data with encryption in transit, hashed passwords and optional two-factor
+          authentication. No system is perfectly secure, so we cannot guarantee absolute security.
+        </p>
+      </LegalSection>
 
-        <li>
-          <b>Usage Data:</b> Information about your interactions with the app, including posts,
-          comments, and engagement metrics.
-        </li>
+      <LegalSection title="7. Your rights">
+        <p>
+          You can change your name, username, email and password, and revoke sessions, in your
+          settings. To get a copy of your information, correct it or delete your account, write to{" "}
+          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+        </p>
+      </LegalSection>
 
-        <li>
-          <b>Device Information:</b> Data about the device you use to access Twittesia, such as IP
-          address, browser type, and operating system.
-        </li>
-      </ul>
+      <LegalSection title="8. Changes to this policy">
+        <p>
+          We may update this policy. When we do, we will publish the new version here and update the
+          effective date. For significant changes, we will also tell you by email or with a notice
+          on Twittesia.
+        </p>
+      </LegalSection>
 
-      <TypographyH2>2. Use of Information</TypographyH2>
-
-      <TypographyP className="mb-6">
-        We use the collected information for the following purposes:
-      </TypographyP>
-
-      <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
-        <li>
-          Service Provision: To operate and maintain the Twittesia app, including displaying posts
-          and facilitating interactions.
-        </li>
-
-        <li>
-          Improvement of Services: To analyze usage patterns and enhance app functionality and user
-          experience.
-        </li>
-
-        <li>Communication: To send updates, notifications, and respond to your inquiries.</li>
-      </ul>
-
-      <TypographyH2>3. Data Retention</TypographyH2>
-
-      <TypographyP className="mb-6">
-        In alignment with our commitment to user privacy, all user-generated content, including
-        posts and comments, is automatically deleted 24 hours after posting. This ensures that your
-        shared content is not stored indefinitely.
-      </TypographyP>
-
-      <TypographyH2>4. Sharing of Information</TypographyH2>
-
-      <TypographyP className="mb-6">
-        We do not sell, trade, or rent your personal information to third parties. However, we may
-        share non-personal, aggregated data with partners to analyze trends and improve our
-        services.
-      </TypographyP>
-
-      <TypographyH2>5. Security Measures</TypographyH2>
-
-      <TypographyP className="mb-6">
-        We implement industry-standard security protocols to protect your data from unauthorized
-        access, alteration, or destruction. Despite our efforts, no method of electronic storage is
-        entirely secure, and we cannot guarantee absolute security.
-      </TypographyP>
-
-      <TypographyH2>6. Your Rights</TypographyH2>
-
-      <TypographyP className="mb-6">
-        You have the right to access, correct, or delete your personal information stored with us.
-        Given our data retention policy, user-generated content is deleted 24 hours after posting.
-        To manage your account information or exercise your rights, please contact us at
-        davidaragundy@outlook.com
-      </TypographyP>
-
-      <TypographyH2>7. Third-Party Links</TypographyH2>
-
-      <TypographyP className="mb-6">
-        Twittesia may contain links to external websites or services not operated by us. We are not
-        responsible for the privacy practices of these third parties. We encourage you to review the
-        privacy policies of any external sites you visit.
-      </TypographyP>
-
-      <TypographyH2>8. Changes to This Privacy Policy</TypographyH2>
-
-      <TypographyP className="mb-6">
-        We may update this Privacy Policy periodically to reflect changes in our practices or legal
-        requirements. We will notify users of significant changes by posting the updated policy
-        within the app or through other communication channels.
-      </TypographyP>
-
-      <TypographyH2>9. Contact Us</TypographyH2>
-
-      <TypographyP className="mb-6">
-        If you have any questions or concerns about this Privacy Policy, please contact us at:
-      </TypographyP>
-
-      <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
-        <li>Email: davidaragundy@outlook.com</li>
-      </ul>
-
-      <TypographyP className="mb-6">
-        Thank you for trusting Twittesia with your personal information. We are dedicated to
-        providing a secure and enjoyable social media experience.
-      </TypographyP>
-    </div>
+      <LegalSection title="9. Contact">
+        <p>
+          Questions about your privacy? Write to{" "}
+          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+        </p>
+      </LegalSection>
+    </LegalPage>
   );
 }
