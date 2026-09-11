@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { SETTINGS_TABS } from "@/features/settings/constants";
+import type { getSessions } from "@/features/settings/queries/get-sessions";
 import { changeEmailFormSchema } from "@/features/settings/schemas/change-email-form-schema";
 import { changeNameFormSchema } from "@/features/settings/schemas/change-name-form-schema";
 import { changePasswordFormSchema } from "@/features/settings/schemas/change-password-form-schema";
@@ -9,6 +10,8 @@ import { generateBackupCodesFormSchema } from "@/features/settings/schemas/gener
 import { toggleTwoFactorFormSchema } from "@/features/settings/schemas/toggle-two-factor-form-schema";
 
 export type SettingsTab = (typeof SETTINGS_TABS)[number];
+
+export type Sessions = NonNullable<Awaited<ReturnType<typeof getSessions>>>;
 
 export type ChangeNameFormValues = z.infer<typeof changeNameFormSchema>;
 export type ChangeUsernameFormValues = z.infer<typeof changeUsernameFormSchema>;

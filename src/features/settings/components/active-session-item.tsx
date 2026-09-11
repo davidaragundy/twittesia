@@ -14,18 +14,16 @@ import {
   ItemTitle,
 } from "@/shared/components/ui/item";
 
-import type { Session } from "@/features/auth/types";
-import { useActiveSessionItem } from "@/features/settings/hooks/use-active-session-item";
+import type { Sessions } from "@/features/settings/types";
 
 interface Props {
-  session: Omit<Session["session"], "id">;
+  session: Sessions[number];
   isCurrentSession: boolean;
-  isSessionsFetching: boolean;
+  onRevoke: () => void;
+  disabled: boolean;
 }
 
-export const ActiveSessionItem = ({ session, isCurrentSession, isSessionsFetching }: Props) => {
-  const { handleRevokeSession } = useActiveSessionItem();
-
+export const ActiveSessionItem = ({ session, isCurrentSession, onRevoke, disabled }: Props) => {
   return (
     <Item>
       <ItemMedia variant="icon">
@@ -43,13 +41,7 @@ export const ActiveSessionItem = ({ session, isCurrentSession, isSessionsFetchin
       </ItemContent>
       {!isCurrentSession && (
         <ItemActions>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            disabled={isSessionsFetching}
-            onClick={() => handleRevokeSession(session.token)}
-          >
+          <Button type="button" variant="ghost" size="sm" disabled={disabled} onClick={onRevoke}>
             Revoke
           </Button>
         </ItemActions>

@@ -1,33 +1,30 @@
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useEffectEvent, useTransition } from "react";
 import { toast } from "sonner";
 
 import { authClient } from "@/shared/lib/better-auth/client";
 
 export const useNavUser = () => {
   const router = useRouter();
-  const [isSigningOut, setIsSigningOut] = useState(false);
+  const [isSigningOut, startTransition] = useTransition();
 
-  const handleSignOut = useCallback(
-    async (event?: Event) => {
-      event?.preventDefault();
+  const handleSignOut = () => {
+    if (isSigningOut) return;
 
-      if (isSigningOut) return;
-
-      setIsSigningOut(true);
-
+    startTransition(async () => {
       const { error } = await authClient.signOut();
 
       if (error) {
-        setIsSigningOut(false);
         toast.error("Failed to sign out. Please try again later.");
         return;
       }
 
-      router.push("/sign-in");
-    },
-    [isSigningOut, router],
-  );
+      startTransition(() => router.push("/sign-in"));
+    });
+  };
+
+  // Always calls the latest handler without re-subscribing the listener on every render
+  const onSignOutShortcut = useEffectEvent(() => handleSignOut());
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -35,17 +32,14 @@ export const useNavUser = () => {
 
       if (event.key === "o") {
         event.preventDefault();
-        handleSignOut();
+        onSignOutShortcut();
       }
     };
 
     document.addEventListener("keydown", onKeyDown);
 
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [handleSignOut]);
+  }, []);
 
-  return {
-    handleSignOut,
-    isSigningOut,
-  };
+  return { handleSignOut, isSigningOut };
 };

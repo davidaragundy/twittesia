@@ -5,25 +5,23 @@ import { ItemGroup } from "@/shared/components/ui/item";
 import { Spinner } from "@/shared/components/ui/spinner";
 
 import { ActiveSessionItem } from "@/features/settings/components/active-session-item";
-import { ActiveSessionItemSkeleton } from "@/features/settings/components/active-session-item-skeleton";
 import { useActiveSessions } from "@/features/settings/hooks/use-active-sessions";
+import type { Sessions } from "@/features/settings/types";
 
-export const ActiveSessions = () => {
-  const {
-    sessions,
-    isSessionsSuccess,
-    isSessionsLoading,
-    isSessionsFetching,
-    isSessionsError,
-    refetchSessions,
-    isSessionsRefetching,
-    session,
-  } = useActiveSessions();
+interface Props {
+  sessions: Promise<Sessions | null>;
+}
 
-  if (isSessionsError) {
+// Suspends until the sessions resolve; the settings dialog shows a skeleton meanwhile
+export const ActiveSessions = ({ sessions: sessionsPromise }: Props) => {
+  const { sessions, isError, isPending, currentToken, revokeSession, retry } = useActiveSessions({
+    sessions: sessionsPromise,
+  });
+
+  if (isError) {
     return (
-      <Button type="button" variant="outline" onClick={() => refetchSessions()}>
-        {isSessionsRefetching && <Spinner data-icon="inline-start" />}
+      <Button type="button" variant="outline" onClick={retry} disabled={isPending}>
+        {isPending && <Spinner data-icon="inline-start" />}
         Retry
       </Button>
     );
@@ -31,16 +29,15 @@ export const ActiveSessions = () => {
 
   return (
     <ItemGroup>
-      {isSessionsLoading && <ActiveSessionItemSkeleton />}
-      {isSessionsSuccess &&
-        sessions?.map((sessionData) => (
-          <ActiveSessionItem
-            key={sessionData.token}
-            session={sessionData}
-            isCurrentSession={session?.session.token === sessionData.token}
-            isSessionsFetching={isSessionsFetching}
-          />
-        ))}
+      {sessions.map((item) => (
+        <ActiveSessionItem
+          key={item.token}
+          session={item}
+          isCurrentSession={item.token === currentToken}
+          onRevoke={() => revokeSession(item.token)}
+          disabled={isPending}
+        />
+      ))}
     </ItemGroup>
   );
 };

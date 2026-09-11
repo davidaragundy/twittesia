@@ -1,8 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { tryCatch } from "@/shared/utils/try-catch";
-
 import { useCredentialsMutation } from "@/features/auth/hooks/use-credentials-mutation";
 import { credentialsFormSchema } from "@/features/auth/schemas/credentials-form-schema";
 import type { CredentialsFormValues } from "@/features/auth/types";
@@ -16,13 +14,9 @@ export const useCredentialsForm = () => {
     },
   });
 
-  const { mutateAsync: signIn, isPending } = useCredentialsMutation({
-    form,
-  });
+  const { mutate, isPending } = useCredentialsMutation({ form });
 
-  const onSubmit = async (values: CredentialsFormValues) => {
-    await tryCatch(signIn(values));
-  };
+  const onSubmit = (values: CredentialsFormValues) => mutate(values);
 
   return { form, onSubmit, isPending };
 };

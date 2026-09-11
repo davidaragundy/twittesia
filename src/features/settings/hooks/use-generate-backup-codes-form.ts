@@ -7,7 +7,7 @@ import { generateBackupCodesFormSchema } from "@/features/settings/schemas/gener
 import type { GenerateBackupCodesFormValues } from "@/features/settings/types";
 
 export const useGenerateBackupCodesForm = () => {
-  const { data: session } = useSession();
+  const session = useSession();
 
   const form = useForm<GenerateBackupCodesFormValues>({
     resolver: zodResolver(generateBackupCodesFormSchema),
@@ -16,7 +16,7 @@ export const useGenerateBackupCodesForm = () => {
     },
   });
 
-  const { mutate, isPending, isError } = useGenerateBackupCodesMutation({
+  const { mutate, isPending } = useGenerateBackupCodesMutation({
     form,
   });
 
@@ -29,7 +29,6 @@ export const useGenerateBackupCodesForm = () => {
     form,
     onSubmit,
     isPending,
-    isError,
     isTwoFactorEnabled: !!session?.user.twoFactorEnabled,
   };
 };

@@ -9,68 +9,46 @@ import { toggleTwoFactorFormSchema } from "@/features/settings/schemas/toggle-tw
 import type { ToggleTwoFactorFormValues } from "@/features/settings/types";
 
 export const useToggleTwoFactorForm = () => {
-  const {
-    data: session,
-    isSuccess: isSessionSuccess,
-    isLoading: isSessionLoading,
-    isError: isSessionError,
-    refetch: refetchSession,
-    isRefetching: isSessionRefetching,
-  } = useSession();
-
-  const form = useForm<ToggleTwoFactorFormValues>({
-    resolver: zodResolver(toggleTwoFactorFormSchema),
-    values: {
-      enableTwoFactor: !!session?.user.twoFactorEnabled,
-      currentPassword: "",
-    },
-  });
+  const session = useSession();
 
   const [totpURI, setTotpURI] = useState<string>("");
   const [backupCodes, setBackupCodes] = useState<string[]>([]);
 
-  const {
-    mutate: enableTwoFactor,
-    isPending: isEnableTwoFactorPending,
-    isError: isEnableTwoFactorError,
-  } = useEnableTwoFactorMutation({
-    form,
-    setTotpURI,
-    setBackupCodes,
+  // Two-factor turns on server-side only once the code is verified,
+  // so it counts as enabled while the setup dialog is waiting for that code
+  const isEnabled = !!session?.user.twoFactorEnabled || !!totpURI;
+
+  const form = useForm<ToggleTwoFactorFormValues>({
+    resolver: zodResolver(toggleTwoFactorFormSchema),
+    values: {
+      enableTwoFactor: isEnabled,
+      currentPassword: "",
+    },
   });
 
-  const {
-    mutate: disableTwoFactor,
-    isPending: isDisableTwoFactorPending,
-    isError: isDisableTwoFactorError,
-  } = useDisableTwoFactorMutation({
+  const { mutate: enableTwoFactor, isPending: isEnablePending } = useEnableTwoFactorMutation({
+    form,
+    onEnrolled: (enrolment) => {
+      setTotpURI(enrolment.totpURI);
+      setBackupCodes(enrolment.backupCodes);
+    },
+  });
+
+  const { mutate: disableTwoFactor, isPending: isDisablePending } = useDisableTwoFactorMutation({
     form,
   });
 
-  const onSubmit = (values: ToggleTwoFactorFormValues) => {
-    if (values.enableTwoFactor)
-      return enableTwoFactor({
-        password: values.currentPassword,
-      });
+  const onSubmit = (values: ToggleTwoFactorFormValues) =>
+    values.enableTwoFactor
+      ? enableTwoFactor({ password: values.currentPassword })
+      : disableTwoFactor({ password: values.currentPassword });
 
-    if (!values.enableTwoFactor)
-      return disableTwoFactor({
-        password: values.currentPassword,
-      });
-  };
-
-  const isSwitchDirty = form.watch("enableTwoFactor") !== !!session?.user.twoFactorEnabled;
+  const isSwitchDirty = form.watch("enableTwoFactor") !== isEnabled;
 
   return {
     form,
     onSubmit,
-    isPending: isEnableTwoFactorPending || isDisableTwoFactorPending,
-    isError: isEnableTwoFactorError || isDisableTwoFactorError,
-    isSessionSuccess,
-    isSessionLoading,
-    isSessionError,
-    refetchSession,
-    isSessionRefetching,
+    isPending: isEnablePending || isDisablePending,
     totpURI,
     setTotpURI,
     backupCodes,

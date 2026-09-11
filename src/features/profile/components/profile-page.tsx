@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 import { Badge } from "@/shared/components/ui/badge";
 
-import { getProfile } from "@/features/profile/actions/get-profile";
+import { getProfile } from "@/features/profile/queries/get-profile";
 
 interface Props {
   username: string;

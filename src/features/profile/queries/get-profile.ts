@@ -1,4 +1,4 @@
-"use server";
+import "server-only";
 
 import { eq, or } from "drizzle-orm";
 

@@ -1,10 +1,9 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTransition } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
 import { authClient } from "@/shared/lib/better-auth/client";
 
-import { SESSION_QUERY_KEY } from "@/features/auth/lib/query-keys";
 import type { GenerateBackupCodesFormValues } from "@/features/settings/types";
 import { getTxtArrayBuffer } from "@/features/settings/utils/get-txt-array-buffer";
 
@@ -13,45 +12,32 @@ interface Props {
 }
 
 export const useGenerateBackupCodesMutation = ({ form }: Props) => {
-  const queryClient = useQueryClient();
+  const [isPending, startTransition] = useTransition();
 
-  return useMutation({
-    mutationFn: async ({ password }: { password: string }) => {
-      const { data, error } = await authClient.twoFactor.generateBackupCodes({
-        password,
-      });
+  const mutate = ({ password }: { password: string }) =>
+    startTransition(async () => {
+      const { data, error } = await authClient.twoFactor.generateBackupCodes({ password });
 
-      if (error) return Promise.reject(error);
+      if (error) {
+        toast.error("Failed to generate backup codes 😢", {
+          description: "Please try again later",
+          duration: 10_000,
+        });
+        return;
+      }
 
-      return data;
-    },
-    onSuccess: (data) => {
       const buffer = getTxtArrayBuffer(data.backupCodes);
-
       const blob = new Blob([buffer], { type: "text/plain" });
       const url = URL.createObjectURL(blob);
-
       const a = document.createElement("a");
       a.href = url;
       a.download = "twittesia-backup-codes.txt";
       a.click();
-
       URL.revokeObjectURL(url);
 
-      toast.success("Backup codes generated successfully 🎉", {
-        duration: 10_000,
-      });
-
+      toast.success("Backup codes generated successfully 🎉", { duration: 10_000 });
       form.reset();
-    },
-    onError: () => {
-      toast.error("Failed to generate backup codes 😢", {
-        description: "Please try again later",
-        duration: 10_000,
-      });
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: [SESSION_QUERY_KEY] });
-    },
-  });
+    });
+
+  return { mutate, isPending };
 };

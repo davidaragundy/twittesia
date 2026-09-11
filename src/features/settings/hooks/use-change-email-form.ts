@@ -7,14 +7,7 @@ import { changeEmailFormSchema } from "@/features/settings/schemas/change-email-
 import type { ChangeEmailFormValues } from "@/features/settings/types";
 
 export const useChangeEmailForm = () => {
-  const {
-    data: session,
-    isSuccess: isSessionSuccess,
-    isLoading: isSessionLoading,
-    isError: isSessionError,
-    refetch: refetchSession,
-    isRefetching: isSessionRefetching,
-  } = useSession();
+  const session = useSession();
 
   const form = useForm<ChangeEmailFormValues>({
     resolver: zodResolver(changeEmailFormSchema),
@@ -23,7 +16,7 @@ export const useChangeEmailForm = () => {
     },
   });
 
-  const { mutate, isPending, isError } = useChangeEmailMutation({
+  const { mutate, isPending } = useChangeEmailMutation({
     form,
   });
 
@@ -39,11 +32,5 @@ export const useChangeEmailForm = () => {
     canSubmit,
     onSubmit,
     isPending,
-    isError,
-    isSessionSuccess,
-    isSessionLoading,
-    isSessionError,
-    refetchSession,
-    isSessionRefetching,
   };
 };
