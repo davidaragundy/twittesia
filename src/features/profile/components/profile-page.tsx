@@ -19,7 +19,7 @@ export const ProfilePage = async ({ username }: Props) => {
   }
 
   return (
-    <div className="flex flex-col items-center gap-4 text-center">
+    <div className="flex flex-col items-center gap-8 py-8 text-center">
       <Avatar size="lg">
         <AvatarImage src={data?.image ?? undefined} alt={data?.name} />
         <AvatarFallback>

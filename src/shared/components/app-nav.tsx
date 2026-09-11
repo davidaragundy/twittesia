@@ -15,7 +15,7 @@ export function AppNav({ links, onNavigate }: Props) {
   const pathname = usePathname();
 
   return (
-    <nav aria-label="Main" className="flex flex-col gap-1">
+    <nav aria-label="Main" className="flex flex-col gap-2">
       {links.map((link) => (
         <NavButton
           key={link.href}

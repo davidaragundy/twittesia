@@ -108,7 +108,7 @@ export default function LandingPage() {
         <h2 id="features-title" className="text-sm font-medium text-muted-foreground">
           What you can share
         </h2>
-        <ItemGroup className="grid gap-6 sm:grid-cols-2">
+        <ItemGroup className="grid gap-8 sm:grid-cols-2">
           {features.map((feature) => (
             <Item key={feature.title}>
               <ItemMedia variant="icon">

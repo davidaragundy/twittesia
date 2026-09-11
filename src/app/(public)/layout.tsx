@@ -11,7 +11,7 @@ export default function PublicLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="mx-auto flex min-h-svh w-full max-w-5xl flex-col px-6 md:px-10">
+    <div className="mx-auto flex min-h-svh w-full max-w-6xl flex-col px-6 sm:px-10 lg:px-16">
       <SiteHeader>
         <Button variant="ghost" render={<Link href="/sign-in" />} nativeButton={false}>
           Sign in
@@ -27,7 +27,7 @@ export default function PublicLayout({
 
       <main className="flex flex-1 flex-col">{children}</main>
 
-      <footer className="py-12">
+      <footer className="py-16">
         <div className="flex flex-col-reverse items-center justify-between gap-4 text-sm text-muted-foreground sm:flex-row">
           <p>© {new Date().getFullYear()} Twittesia. Open source.</p>
           <nav aria-label="Legal and source" className="flex items-center gap-1">
