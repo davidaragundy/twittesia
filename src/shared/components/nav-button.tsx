@@ -12,7 +12,7 @@ export function NavButton({ isActive = false, className, ...props }: Props) {
       variant={isActive ? "secondary" : "ghost"}
       size="lg"
       className={cn(
-        "h-12 w-full justify-start gap-3 px-4 text-base [&_svg:not([class*='size-'])]:size-5",
+        "h-12 w-full justify-start gap-3 px-4 text-lg [&_svg:not([class*='size-'])]:size-6",
         className,
       )}
       aria-current={isActive ? "page" : undefined}
