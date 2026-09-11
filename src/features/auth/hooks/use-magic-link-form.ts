@@ -13,7 +13,7 @@ export const useMagicLinkForm = () => {
     },
   });
 
-  const { mutate, isPending } = useMagicLinkMutation();
+  const { mutate, isPending } = useMagicLinkMutation({ form });
 
   const onSubmit = (values: MagicLinkFormValues) => mutate(values);
 
