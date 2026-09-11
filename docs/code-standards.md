@@ -47,7 +47,10 @@ who depends on it. _Review._
 a folder is created when its first file is, never upfront.
 
 `auth`, `settings`, `profiles`, `follows`, `posts`, `comments`, `chats`,
-`close-friends`
+`close-friends`, `landing`
+
+`landing` owns how Twittesia presents itself to people who have not signed up:
+the landing page's copy, highlights and structured data.
 
 Adding a name is a decision worth making deliberately, because it asserts that a
 new area of the domain exists. _Review._
@@ -56,11 +59,17 @@ new area of the domain exists. _Review._
 kinds:
 
 `components`, `hooks`, `schemas`, `types`, `constants`, `queries`, `actions`,
-`utils`, `styles`
+`utils`, `styles`, `context`, `lib`, `emails`
+
+- `context` holds React contexts, created with `createContext`.
+- `lib` holds configured instances of third-party libraries — the better-auth
+  server and client, the database, the email provider — and nothing else.
+- `emails` holds React Email templates, each the default export of its file, so
+  `pnpm dev:email` can preview the folder.
 
 The list may grow, but only for a concept that does not already have a word —
-one word per concept. `lib/`, `services/` and `helpers/` are therefore excluded:
-they are `utils/` under another name, and they become the folder where things go
+one word per concept. `services/` and `helpers/` are therefore excluded: they
+are `utils/` under another name, and they become the folder where things go
 when nobody knows where they go. _Review._
 
 **CS-9.** Kind folders are flat. A feature large enough to want subdivision puts
@@ -99,14 +108,17 @@ so you will never see it fail.
 
 ## Files and names
 
-**CS-16.** One exported concept per file: a function, a component, or a schema.
-Private helpers inside the file are fine, and preferable to exporting something
-only so it can live elsewhere. _Review._
+**CS-16.** One exported concept per file: a function, a component, a schema, a
+constant or a type. A component's props type may sit beside it. There are no
+`index.ts` files. Private helpers inside the file are fine, and preferable to
+exporting something only so it can live elsewhere — until a second file needs
+one, at which point it moves to `utils/`. _Review._
 
 **CS-17.** A component that has real logic — state, effects, data fetching,
-non-trivial computation — moves that logic into a hook named after it:
-`<PostForm>` and `usePostForm`. A component without logic does not get a
-hook that returns its props unchanged. _Review._
+requests, non-trivial computation — moves that logic into a hook named after
+it: `<PostForm>` and `usePostForm`. The requests a component makes live in that
+hook, not in a separate hook per request. A component without logic does not get
+a hook that returns its props unchanged. _Review._
 
 **CS-18.** Files and folders under `features/` and `shared/` are kebab-case.
 `app/` is exempt: Next dictates those names, and its dynamic segments and route
@@ -116,6 +128,25 @@ groups are not kebab-case. _Review._
 `camelCase`. Module-level exported constants holding a literal are
 `UPPER_SNAKE_CASE` — this last one applies to `LIFESPAN_HOURS`, not to every
 `const`. _Review._
+
+**CS-20.** Constants live in the `constants/` folder of their owner. A route or a
+component declares none at module level, and a value is declared once, however
+many files use it. Route exports Next.js reads by name, such as `metadata`, are
+the exception. _Review._
+
+## Errors
+
+**CS-21.** A server action or query that can fail returns
+`ActionResponse<Data, Code>` from `@/shared/types/action-response`, listing in
+`Code` every error code it can return. Callers branch on `error.code`, never on
+`error.message`, which is for people to read. _Review._
+
+**CS-22.** A call that can throw — a database query, a server-side `auth.api`
+call, a browser API such as the clipboard — goes through `tryCatch` from
+`@/shared/utils/try-catch`, and its failure is handled where it happens.
+`authClient` calls resolve with an error instead of throwing, and their codes are
+read with `getAuthErrorCode`, which types them to the codes the auth server can
+return. _Review._
 
 ## What the tooling actually does
 
