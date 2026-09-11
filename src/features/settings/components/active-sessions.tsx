@@ -14,9 +14,10 @@ interface Props {
 
 // Suspends until the sessions resolve; the settings dialog shows a skeleton meanwhile
 export const ActiveSessions = ({ sessions: sessionsPromise }: Props) => {
-  const { sessions, isError, isPending, currentToken, revokeSession, retry } = useActiveSessions({
-    sessions: sessionsPromise,
-  });
+  const { sessions, isError, isPending, currentSessionId, revokeSession, retry } =
+    useActiveSessions({
+      sessions: sessionsPromise,
+    });
 
   if (isError) {
     return (
@@ -31,10 +32,10 @@ export const ActiveSessions = ({ sessions: sessionsPromise }: Props) => {
     <ItemGroup>
       {sessions.map((item) => (
         <ActiveSessionItem
-          key={item.token}
+          key={item.id}
           session={item}
-          isCurrentSession={item.token === currentToken}
-          onRevoke={() => revokeSession(item.token)}
+          isCurrentSession={item.id === currentSessionId}
+          onRevoke={() => revokeSession(item.id)}
           disabled={isPending}
         />
       ))}

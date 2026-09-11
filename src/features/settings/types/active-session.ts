@@ -1,3 +1,7 @@
-import type { auth } from "@/features/auth/lib/auth";
-
-export type ActiveSession = Awaited<ReturnType<typeof auth.api.listSessions>>[number];
+// What the browser gets of each active session: enough to show and revoke it, never the token
+export type ActiveSession = {
+  id: string;
+  userAgent: string | null;
+  ipAddress: string | null;
+  updatedAt: Date;
+};

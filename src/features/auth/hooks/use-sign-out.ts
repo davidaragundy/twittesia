@@ -1,25 +1,19 @@
-import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
-import { authClient } from "@/features/auth/lib/auth-client";
+import { signOut as signOutAction } from "@/features/auth/actions/sign-out";
 
 export const useSignOut = () => {
-  const router = useRouter();
   const [isSigningOut, startTransition] = useTransition();
 
+  // On success the action redirects to /sign-in, so only a failure comes back
   const signOut = () => {
     if (isSigningOut) return;
 
     startTransition(async () => {
-      const { error } = await authClient.signOut();
+      const { error } = await signOutAction();
 
-      if (error) {
-        toast.error("Failed to sign out. Please try again later.");
-        return;
-      }
-
-      startTransition(() => router.push("/sign-in"));
+      if (error) toast.error("Failed to sign out. Please try again later.");
     });
   };
 

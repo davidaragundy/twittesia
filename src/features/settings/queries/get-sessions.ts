@@ -21,5 +21,13 @@ export const getSessions = async (): Promise<
     };
   }
 
-  return { data, error: null };
+  return {
+    data: data.map(({ id, userAgent, ipAddress, updatedAt }) => ({
+      id,
+      userAgent: userAgent ?? null,
+      ipAddress: ipAddress ?? null,
+      updatedAt,
+    })),
+    error: null,
+  };
 };

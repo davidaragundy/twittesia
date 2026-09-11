@@ -1,19 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
-import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants/rate-limit-error-code";
+import { toastRateLimited } from "@/shared/utils/toast-rate-limited";
 
 import { useSession } from "@/features/auth/hooks/use-session";
-import { authClient } from "@/features/auth/lib/auth-client";
-import type { AuthClientError } from "@/features/auth/types/auth-client-error";
+import { changeName } from "@/features/settings/actions/change-name";
 import { changeNameFormSchema } from "@/features/settings/schemas/change-name-form-schema";
 import type { ChangeNameFormValues } from "@/features/settings/types/change-name-form-values";
 
 export const useChangeNameForm = () => {
-  const router = useRouter();
   const session = useSession();
   const [isPending, startTransition] = useTransition();
 
@@ -29,26 +26,23 @@ export const useChangeNameForm = () => {
 
   const canSubmit = isDirty && isValid && name?.trim() !== session?.user.name;
 
-  const handleError = (error: AuthClientError) => {
-    if (error.status === RATE_LIMIT_ERROR_CODE) return;
-
-    toast.error("Something went wrong 😢", {
-      description: "Please try again later",
-      duration: 10_000,
-    });
-  };
-
-  const onSubmit = ({ name }: ChangeNameFormValues) =>
+  // The action refreshes the page in the same response, so the new name shows everywhere
+  const onSubmit = (values: ChangeNameFormValues) =>
     startTransition(async () => {
-      const { error } = await authClient.updateUser({ name });
+      const { error } = await changeName(values);
 
-      if (error) return handleError(error);
+      if (error?.code === "RATE_LIMITED") return void toastRateLimited();
+
+      if (error) {
+        toast.error("Something went wrong 😢", {
+          description: "Please try again later",
+          duration: 10_000,
+        });
+        return;
+      }
 
       toast.success("Name updated successfully 🎉", { duration: 10_000 });
-      form.reset({ name });
-
-      // Re-renders the server parts with the new name, inside this transition
-      startTransition(() => router.refresh());
+      form.reset(values);
     });
 
   return { form, canSubmit, onSubmit, isPending };

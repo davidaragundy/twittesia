@@ -6,9 +6,9 @@ import {
 } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
 // import { sentinelClient } from "@better-auth/infra/client";
-import { toast } from "sonner";
 
 import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants/rate-limit-error-code";
+import { toastRateLimited } from "@/shared/utils/toast-rate-limited";
 
 import type { auth } from "@/features/auth/lib/auth";
 
@@ -25,12 +25,7 @@ export const authClient = createAuthClient({
     // instead of throwing out of the transition that made it
     catchAllError: true,
     onError: async (context) => {
-      if (context.response.status === RATE_LIMIT_ERROR_CODE) {
-        toast.error("Rate limit exceeded 🚫", {
-          duration: 10_000,
-          description: "Try again later, take a break!",
-        });
-      }
+      if (context.response.status === RATE_LIMIT_ERROR_CODE) toastRateLimited();
     },
   },
 });
