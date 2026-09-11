@@ -16,8 +16,7 @@ import { TermsNotice } from "@/features/auth/components/terms-notice";
 import { useSignInForm } from "@/features/auth/hooks/use-sign-in-form";
 
 export function SignInForm({ className, ...props }: React.ComponentProps<"div">) {
-  const { method, onMethodChange, isPending, handleSignInWithGitHub, handleSignInWithGoogle } =
-    useSignInForm();
+  const { method, onMethodChange } = useSignInForm();
 
   return (
     <div className={cn("flex flex-col gap-12", className)} {...props}>
@@ -45,12 +44,7 @@ export function SignInForm({ className, ...props }: React.ComponentProps<"div">)
 
       <div className="flex flex-col gap-8">
         <FieldDescription className="text-center">Or continue with</FieldDescription>
-        <SocialButtons
-          action="Sign in"
-          disabled={isPending}
-          onGitHub={handleSignInWithGitHub}
-          onGoogle={handleSignInWithGoogle}
-        />
+        <SocialButtons action="Sign in" />
       </div>
 
       <FieldDescription className="text-center">

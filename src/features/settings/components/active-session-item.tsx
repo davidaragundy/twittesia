@@ -14,10 +14,10 @@ import {
   ItemTitle,
 } from "@/shared/components/ui/item";
 
-import type { Sessions } from "@/features/settings/types";
+import type { ActiveSession } from "@/features/settings/types/active-session";
 
 interface Props {
-  session: Sessions[number];
+  session: ActiveSession;
   isCurrentSession: boolean;
   onRevoke: () => void;
   disabled: boolean;

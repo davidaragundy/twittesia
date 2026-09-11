@@ -1,7 +1,7 @@
 "use client";
 
-import type { Session } from "@/features/auth/types";
-import { SessionContext } from "@/features/auth/utils/session-context";
+import { SessionContext } from "@/features/auth/context/session-context";
+import type { Session } from "@/features/auth/types/session";
 
 type Props = {
   session: Promise<Session | null>;

@@ -1,4 +1,3 @@
-import { BubbleChatIcon, Edit02Icon, FavouriteIcon, GhostIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -13,77 +12,39 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/shared/components/ui/item";
-import { BASE_URL } from "@/shared/constants";
 
-const TITLE = "Twittesia — say it, and in 24 hours it's gone";
-const DESCRIPTION =
-  "Twittesia is an open-source social network where every post, comment and message has a lifespan of 24 hours, then is deleted for good.";
+import { LANDING_DESCRIPTION } from "@/features/landing/constants/landing-description";
+import { LANDING_HIGHLIGHTS } from "@/features/landing/constants/landing-highlights";
+import { LANDING_JSON_LD } from "@/features/landing/constants/landing-json-ld";
+import { LANDING_TITLE } from "@/features/landing/constants/landing-title";
+import { LIFESPAN_STEPS } from "@/features/landing/constants/lifespan-steps";
 
 export const metadata: Metadata = {
-  title: { absolute: TITLE },
-  description: DESCRIPTION,
+  title: { absolute: LANDING_TITLE },
+  description: LANDING_DESCRIPTION,
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: "/",
     siteName: "Twittesia",
-    title: TITLE,
-    description: DESCRIPTION,
+    title: LANDING_TITLE,
+    description: LANDING_DESCRIPTION,
   },
   twitter: {
     card: "summary_large_image",
-    title: TITLE,
-    description: DESCRIPTION,
+    title: LANDING_TITLE,
+    description: LANDING_DESCRIPTION,
   },
 };
-
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  name: "Twittesia",
-  url: BASE_URL,
-  description: DESCRIPTION,
-  applicationCategory: "SocialNetworkingApplication",
-  operatingSystem: "Any",
-  isAccessibleForFree: true,
-  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-};
-
-const features = [
-  {
-    icon: Edit02Icon,
-    title: "Posts",
-    description: "Share what's on your mind with the people who follow you.",
-  },
-  {
-    icon: GhostIcon,
-    title: "Ghosts",
-    description: "Post anonymously. No profile, just the words.",
-  },
-  {
-    icon: FavouriteIcon,
-    title: "Close friends",
-    description: "Share some posts with only the people closest to you.",
-  },
-  {
-    icon: BubbleChatIcon,
-    title: "Chats",
-    description: "Talk in private, with messages that expire too.",
-  },
-];
-
-const lifespan = [
-  { time: "0h", label: "You post, comment or send a message." },
-  { time: "24h", label: "It lives. People read and reply." },
-  { time: "Expiry", label: "It's deleted for good. No archive." },
-];
 
 export default function LandingPage() {
   return (
     <div className="flex flex-col gap-32 py-20 sm:gap-40 sm:py-32">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(LANDING_JSON_LD).replace(/</g, "\\u003c"),
+        }}
       />
 
       <section className="flex flex-col items-center gap-8 text-center">
@@ -109,16 +70,16 @@ export default function LandingPage() {
           What you can share
         </h2>
         <ItemGroup className="grid gap-8 sm:grid-cols-2">
-          {features.map((feature) => (
-            <Item key={feature.title}>
+          {LANDING_HIGHLIGHTS.map((highlight) => (
+            <Item key={highlight.title}>
               <ItemMedia variant="icon">
-                <HugeiconsIcon icon={feature.icon} />
+                <HugeiconsIcon icon={highlight.icon} />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>
-                  <h3>{feature.title}</h3>
+                  <h3>{highlight.title}</h3>
                 </ItemTitle>
-                <ItemDescription>{feature.description}</ItemDescription>
+                <ItemDescription>{highlight.description}</ItemDescription>
               </ItemContent>
             </Item>
           ))}
@@ -130,7 +91,7 @@ export default function LandingPage() {
           The lifespan of everything
         </h2>
         <ol className="grid gap-10 sm:grid-cols-3">
-          {lifespan.map((step) => (
+          {LIFESPAN_STEPS.map((step) => (
             <li key={step.time} className="flex flex-col gap-1">
               <span className="text-2xl font-semibold tracking-tight">{step.time}</span>
               <span className="text-muted-foreground">{step.label}</span>

@@ -1,11 +1,12 @@
 "use client";
 
+import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense } from "react";
 
 import { NavButton } from "@/shared/components/nav-button";
-import type { NavLink } from "@/shared/types";
+import type { NavLink } from "@/shared/types/nav-link";
 
 type Props = {
   links: NavLink[];
@@ -45,7 +46,7 @@ function NavLinks({
       render={<Link href={link.href} onClick={onNavigate} />}
       nativeButton={false}
     >
-      {link.icon}
+      <HugeiconsIcon icon={link.icon} />
       {link.label}
     </NavButton>
   ));

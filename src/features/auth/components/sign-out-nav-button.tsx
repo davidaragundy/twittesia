@@ -6,14 +6,14 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { NavButton } from "@/shared/components/nav-button";
 import { Spinner } from "@/shared/components/ui/spinner";
 
-import { useNavUser } from "@/features/auth/hooks/use-nav-user";
+import { useSignOut } from "@/features/auth/hooks/use-sign-out";
 
 export function SignOutNavButton() {
-  const { handleSignOut, isSigningOut } = useNavUser();
+  const { signOut, isSigningOut } = useSignOut();
 
   return (
     <NavButton
-      onClick={() => handleSignOut()}
+      onClick={signOut}
       disabled={isSigningOut}
       className="text-destructive hover:bg-destructive/10 hover:text-destructive dark:hover:bg-destructive/20"
     >

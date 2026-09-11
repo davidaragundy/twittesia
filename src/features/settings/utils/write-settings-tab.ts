@@ -1,5 +1,5 @@
-import { SETTINGS_SEARCH_PARAM } from "@/features/settings/constants";
-import type { SettingsTab } from "@/features/settings/types";
+import { SETTINGS_SEARCH_PARAM } from "@/features/settings/constants/settings-search-param";
+import type { SettingsTab } from "@/features/settings/types/settings-tab";
 
 // Shallow URL update through the native History API: Next.js syncs it with useSearchParams
 // without a server round trip, so the settings dialog reacts instantly

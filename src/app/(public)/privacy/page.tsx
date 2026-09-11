@@ -2,14 +2,13 @@ import type { Metadata } from "next";
 
 import { LegalPage } from "@/shared/components/legal-page";
 import { LegalSection } from "@/shared/components/legal-section";
+import { CONTACT_EMAIL } from "@/shared/constants/contact-email";
 
 export const metadata: Metadata = {
   title: "Twittesia | Privacy Policy",
   description: "What Twittesia collects, why, who processes it and how long it is kept.",
   alternates: { canonical: "/privacy" },
 };
-
-const CONTACT_EMAIL = "davidaragundy@outlook.com";
 
 export default function PrivacyPage() {
   return (

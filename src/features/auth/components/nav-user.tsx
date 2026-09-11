@@ -16,9 +16,9 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
 import { Spinner } from "@/shared/components/ui/spinner";
+import { getInitials } from "@/shared/utils/get-initials";
 
 import { useNavUser } from "@/features/auth/hooks/use-nav-user";
-import { useSession } from "@/features/auth/hooks/use-session";
 
 type Props = {
   // Account menu entries owned by other features, composed by the route
@@ -26,12 +26,10 @@ type Props = {
 };
 
 export function NavUser({ menuItems }: Props) {
-  const { handleSignOut, isSigningOut } = useNavUser();
-  const session = useSession();
+  const { user, signOut, isSigningOut } = useNavUser();
 
-  if (!session) return null;
+  if (!user) return null;
 
-  const { user } = session;
   const identity = (
     <>
       <Avatar size="sm">
@@ -60,7 +58,7 @@ export function NavUser({ menuItems }: Props) {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>{menuItems}</DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive" onClick={() => handleSignOut()}>
+        <DropdownMenuItem variant="destructive" onClick={signOut}>
           {isSigningOut ? <Spinner /> : <HugeiconsIcon icon={Logout01Icon} />}
           Sign out
           <DropdownMenuShortcut>⌘O</DropdownMenuShortcut>
@@ -68,11 +66,4 @@ export function NavUser({ menuItems }: Props) {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
-
-function getInitials(name: string) {
-  return name
-    .split(" ")
-    .map((part) => part[0])
-    .join("");
 }

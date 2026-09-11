@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
-    "dev:email": "email dev --dir src/shared/lib/react-email",
+    "dev:email": "email dev --dir src/features/auth/emails",
     "build": "next build",
     "start": "next start",
     "lint": "oxlint",

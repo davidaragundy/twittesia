@@ -1,10 +1,10 @@
-import { cacheLife } from "next/cache";
 import Link from "next/link";
+import { Suspense } from "react";
 
+import { CurrentYear } from "@/shared/components/current-year";
 import { SiteHeader } from "@/shared/components/site-header";
 import { Button } from "@/shared/components/ui/button";
-
-const REPOSITORY_URL = "https://github.com/davidaragundy/twittesia";
+import { REPOSITORY_URL } from "@/shared/constants/repository-url";
 
 export default function PublicLayout({
   children,
@@ -31,7 +31,11 @@ export default function PublicLayout({
       <footer className="py-16">
         <div className="flex flex-col-reverse items-center justify-between gap-4 text-sm text-muted-foreground sm:flex-row">
           <p>
-            © <CurrentYear /> Twittesia. Open source.
+            ©{" "}
+            <Suspense>
+              <CurrentYear />
+            </Suspense>{" "}
+            Twittesia. Open source.
           </p>
           <nav aria-label="Legal and source" className="flex items-center gap-1">
             <Button variant="link" size="sm" render={<Link href="/terms" />} nativeButton={false}>
@@ -53,12 +57,4 @@ export default function PublicLayout({
       </footer>
     </div>
   );
-}
-
-// Part of the static shell, refreshed daily so the year rolls over on its own
-async function CurrentYear() {
-  "use cache";
-  cacheLife("days");
-
-  return new Date().getFullYear();
 }

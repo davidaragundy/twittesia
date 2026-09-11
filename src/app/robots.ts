@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-import { BASE_URL } from "@/shared/constants";
+import { BASE_URL } from "@/shared/constants/base-url";
 
 export default function robots(): MetadataRoute.Robots {
   return {

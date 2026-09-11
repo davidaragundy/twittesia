@@ -1,30 +1,14 @@
-import { useRouter } from "next/navigation";
-import { useEffect, useEffectEvent, useTransition } from "react";
-import { toast } from "sonner";
+import { useEffect, useEffectEvent } from "react";
 
-import { authClient } from "@/shared/lib/better-auth/client";
+import { useSession } from "@/features/auth/hooks/use-session";
+import { useSignOut } from "@/features/auth/hooks/use-sign-out";
 
 export const useNavUser = () => {
-  const router = useRouter();
-  const [isSigningOut, startTransition] = useTransition();
-
-  const handleSignOut = () => {
-    if (isSigningOut) return;
-
-    startTransition(async () => {
-      const { error } = await authClient.signOut();
-
-      if (error) {
-        toast.error("Failed to sign out. Please try again later.");
-        return;
-      }
-
-      startTransition(() => router.push("/sign-in"));
-    });
-  };
+  const session = useSession();
+  const { signOut, isSigningOut } = useSignOut();
 
   // Always calls the latest handler without re-subscribing the listener on every render
-  const onSignOutShortcut = useEffectEvent(() => handleSignOut());
+  const onSignOutShortcut = useEffectEvent(() => signOut());
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -41,5 +25,5 @@ export const useNavUser = () => {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  return { handleSignOut, isSigningOut };
+  return { user: session?.user, signOut, isSigningOut };
 };

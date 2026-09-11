@@ -1,13 +1,18 @@
+"use client";
+
 import { Button } from "@/shared/components/ui/button";
+
+import { useSocialButtons } from "@/features/auth/hooks/use-social-buttons";
 
 type Props = {
   action: "Sign in" | "Sign up";
-  disabled: boolean;
-  onGitHub: () => void;
-  onGoogle: () => void;
+  // Set while another sign-in method on the page is in flight
+  disabled?: boolean;
 };
 
-export function SocialButtons({ action, disabled, onGitHub, onGoogle }: Props) {
+export function SocialButtons({ action, disabled = false }: Props) {
+  const { isPending, continueWith } = useSocialButtons({ action });
+
   return (
     <div className="flex justify-center gap-4">
       <Button
@@ -16,8 +21,8 @@ export function SocialButtons({ action, disabled, onGitHub, onGoogle }: Props) {
         type="button"
         aria-label={`${action} with GitHub`}
         title={`${action} with GitHub`}
-        disabled={disabled}
-        onClick={onGitHub}
+        disabled={disabled || isPending}
+        onClick={() => continueWith("github")}
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
           <path
@@ -32,8 +37,8 @@ export function SocialButtons({ action, disabled, onGitHub, onGoogle }: Props) {
         type="button"
         aria-label={`${action} with Google`}
         title={`${action} with Google`}
-        disabled={disabled}
-        onClick={onGoogle}
+        disabled={disabled || isPending}
+        onClick={() => continueWith("google")}
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
           <path

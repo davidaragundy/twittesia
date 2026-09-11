@@ -3,7 +3,9 @@ import { join } from "node:path";
 
 import { ImageResponse } from "next/og";
 
-export const alt = "Twittesia — say it, and in 24 hours it's gone";
+import { LANDING_TITLE } from "@/features/landing/constants/landing-title";
+
+export const alt = LANDING_TITLE;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
