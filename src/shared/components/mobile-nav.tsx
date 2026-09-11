@@ -18,14 +18,16 @@ import type { NavLink } from "@/shared/types";
 
 type Props = {
   links: NavLink[];
-  footer: React.ReactNode;
+  // Extra menu entries, such as Settings and Sign out, composed by the route
+  actions: React.ReactNode;
 };
 
-export function MobileNav({ links, footer }: Props) {
+export function MobileNav({ links, actions }: Props) {
   const [isOpen, setIsOpen] = useState(false);
+  const close = () => setIsOpen(false);
 
   return (
-    <Drawer open={isOpen} onOpenChange={setIsOpen} swipeDirection="left">
+    <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger
         render={<Button variant="ghost" size="icon" className="md:hidden" aria-label="Open menu" />}
       >
@@ -36,9 +38,12 @@ export function MobileNav({ links, footer }: Props) {
           <DrawerTitle>Menu</DrawerTitle>
           <DrawerDescription className="sr-only">Go to a page of Twittesia.</DrawerDescription>
         </DrawerHeader>
-        <div className="flex flex-1 flex-col gap-12 px-6 pb-10">
-          <AppNav links={links} onNavigate={() => setIsOpen(false)} />
-          <div className="mt-auto">{footer}</div>
+        <div className="overflow-y-auto px-4 pt-2 pb-10">
+          <AppNav links={links} onNavigate={close}>
+            <div className="contents" onClick={close}>
+              {actions}
+            </div>
+          </AppNav>
         </div>
       </DrawerContent>
     </Drawer>
