@@ -83,7 +83,11 @@ importing one from a client component fails at build time rather than leaking
 data access to the browser. _Review._
 
 **CS-11.** `actions/` writes. Every file in it is a server action, marked
-`"use server"`. _Review._
+`"use server"`. An action is a public endpoint: it validates its input with a
+schema from `schemas/`, authorizes and rate-limits the caller with
+`authorizeAction`, and returns only what the UI renders. Better-auth does not
+rate-limit its server API, so the limit in `authorizeAction` is the only one an
+action gets. _Review._
 
 **CS-12.** An action may call a query. A query may never write. A query runs
 while a page renders, so a render that is repeated, prerendered or later cached
