@@ -1,5 +1,7 @@
 "use client";
 
+import { LockPasswordIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
 import { Button } from "@/shared/components/ui/button";
@@ -10,7 +12,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/shared/components/ui/field";
-import { Input } from "@/shared/components/ui/input";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/shared/components/ui/input-group";
 import { Spinner } from "@/shared/components/ui/spinner";
 
 import { PasswordStrengthIndicator } from "@/features/auth/components/password-strength-indicator";
@@ -32,13 +34,18 @@ export const ChangePasswordForm = () => {
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="change-password-form-new">New password</FieldLabel>
-              <Input
-                {...field}
-                id="change-password-form-new"
-                type="password"
-                aria-invalid={fieldState.invalid}
-                autoComplete="new-password"
-              />
+              <InputGroup>
+                <InputGroupAddon>
+                  <HugeiconsIcon icon={LockPasswordIcon} />
+                </InputGroupAddon>
+                <InputGroupInput
+                  {...field}
+                  id="change-password-form-new"
+                  type="password"
+                  aria-invalid={fieldState.invalid}
+                  autoComplete="new-password"
+                />
+              </InputGroup>
               <FieldDescription>Changing it signs you out of every other session.</FieldDescription>
               {(fieldState.isDirty || fieldState.isTouched) && (
                 <PasswordStrengthIndicator password={field.value} />
@@ -53,13 +60,18 @@ export const ChangePasswordForm = () => {
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="change-password-form-current">Current password</FieldLabel>
-              <Input
-                {...field}
-                id="change-password-form-current"
-                type="password"
-                aria-invalid={fieldState.invalid}
-                autoComplete="current-password"
-              />
+              <InputGroup>
+                <InputGroupAddon>
+                  <HugeiconsIcon icon={LockPasswordIcon} />
+                </InputGroupAddon>
+                <InputGroupInput
+                  {...field}
+                  id="change-password-form-current"
+                  type="password"
+                  aria-invalid={fieldState.invalid}
+                  autoComplete="current-password"
+                />
+              </InputGroup>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}

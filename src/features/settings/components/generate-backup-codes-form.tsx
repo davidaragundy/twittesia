@@ -1,5 +1,7 @@
 "use client";
 
+import { LockPasswordIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
 import { Button } from "@/shared/components/ui/button";
@@ -10,7 +12,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/shared/components/ui/field";
-import { Input } from "@/shared/components/ui/input";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/shared/components/ui/input-group";
 import { Spinner } from "@/shared/components/ui/spinner";
 
 import { useGenerateBackupCodesForm } from "@/features/settings/hooks/use-generate-backup-codes-form";
@@ -30,13 +32,18 @@ export const GenerateBackupCodesForm = () => {
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="generate-backup-codes-form-password">Password</FieldLabel>
-              <Input
-                {...field}
-                id="generate-backup-codes-form-password"
-                type="password"
-                aria-invalid={fieldState.invalid}
-                autoComplete="current-password"
-              />
+              <InputGroup>
+                <InputGroupAddon>
+                  <HugeiconsIcon icon={LockPasswordIcon} />
+                </InputGroupAddon>
+                <InputGroupInput
+                  {...field}
+                  id="generate-backup-codes-form-password"
+                  type="password"
+                  aria-invalid={fieldState.invalid}
+                  autoComplete="current-password"
+                />
+              </InputGroup>
               <FieldDescription>
                 New codes replace the old ones. Use one to sign in if you lose your authenticator
                 app.
