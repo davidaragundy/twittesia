@@ -72,3 +72,7 @@ than the `packageManager` field pins.
 ## Author
 
 David Aragundy
+
+## License
+
+[MIT](./LICENSE)

@@ -50,7 +50,8 @@ Content a user publishes to their followers or to their close friends.
 _Avoid_: tweet, story
 
 **Ghost**:
-A post published anonymously, showing no profile.
+A post published anonymously: it is stored without any link to the user who wrote it, so it
+shows no profile and cannot be traced back to one.
 _Avoid_: anonymous post, secret
 
 **Comment**:

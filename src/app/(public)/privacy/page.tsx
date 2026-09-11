@@ -34,7 +34,8 @@ export default function PrivacyPage() {
             two-factor authentication, your authenticator secret and backup codes.
           </li>
           <li>
-            <strong>Your content.</strong> The posts, comments and messages you create.
+            <strong>Your content.</strong> The posts, comments and messages you create. Ghosts are
+            stored without any link to your account.
           </li>
           <li>
             <strong>Usage and performance.</strong> Page views and loading performance, measured
