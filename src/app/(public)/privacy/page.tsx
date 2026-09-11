@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function Privacy() {
   return (
-    <main className="p-10">
+    <div className="mx-auto w-full max-w-3xl py-10">
       <TypographyH1>Privacy Policy</TypographyH1>
 
       <TypographyMuted>Effective Date: March 21, 2025</TypographyMuted>
@@ -131,6 +131,6 @@ export default function Privacy() {
         Thank you for trusting Twittesia with your personal information. We are dedicated to
         providing a secure and enjoyable social media experience.
       </TypographyP>
-    </main>
+    </div>
   );
 }

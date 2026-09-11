@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function Terms() {
   return (
-    <main className="p-10">
+    <div className="mx-auto w-full max-w-3xl py-10">
       <TypographyH1>Terms and Conditions</TypographyH1>
 
       <TypographyMuted>Effective Date: March 21, 2025</TypographyMuted>
@@ -138,6 +138,6 @@ export default function Terms() {
         Thank you for being part of the Twittesia community. We aim to provide a unique and secure
         platform for sharing ephemeral content.
       </TypographyP>
-    </main>
+    </div>
   );
 }
