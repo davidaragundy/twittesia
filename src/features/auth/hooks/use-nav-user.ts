@@ -1,4 +1,3 @@
-import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -7,7 +6,6 @@ import { authClient } from "@/shared/lib/better-auth/client";
 
 export const useNavUser = () => {
   const router = useRouter();
-  const { theme, setTheme } = useTheme();
   const [isSigningOut, setIsSigningOut] = useState(false);
 
   const handleSignOut = useCallback(
@@ -31,22 +29,9 @@ export const useNavUser = () => {
     [isSigningOut, router],
   );
 
-  const handleThemeChange = useCallback(
-    (event?: Event) => {
-      event?.preventDefault();
-      setTheme(theme === "dark" ? "light" : "dark");
-    },
-    [setTheme, theme],
-  );
-
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (!event.metaKey && !event.ctrlKey) return;
-
-      if (event.shiftKey && event.key === "T") {
-        event.preventDefault();
-        handleThemeChange();
-      }
 
       if (event.key === "o") {
         event.preventDefault();
@@ -57,12 +42,10 @@ export const useNavUser = () => {
     document.addEventListener("keydown", onKeyDown);
 
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [handleSignOut, handleThemeChange]);
+  }, [handleSignOut]);
 
   return {
     handleSignOut,
-    handleThemeChange,
     isSigningOut,
-    theme,
   };
 };
