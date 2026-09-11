@@ -36,7 +36,7 @@ export function MobileNav({ links, footer }: Props) {
           <DrawerTitle>Menu</DrawerTitle>
           <DrawerDescription className="sr-only">Go to a page of Twittesia.</DrawerDescription>
         </DrawerHeader>
-        <div className="flex flex-1 flex-col gap-10 px-4 pb-8">
+        <div className="flex flex-1 flex-col gap-12 px-6 pb-10">
           <AppNav links={links} onNavigate={() => setIsOpen(false)} />
           <div className="mt-auto">{footer}</div>
         </div>

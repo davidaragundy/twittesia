@@ -1,5 +1,7 @@
 "use client";
 
+import { Mail01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { Controller } from "react-hook-form";
 
@@ -11,7 +13,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/shared/components/ui/field";
-import { Input } from "@/shared/components/ui/input";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/shared/components/ui/input-group";
 import { Spinner } from "@/shared/components/ui/spinner";
 import { cn } from "@/shared/utils/cn";
 
@@ -36,14 +38,19 @@ export function ForgotPasswordForm({ className, ...props }: React.ComponentProps
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="forgot-password-form-email">Email</FieldLabel>
-                <Input
-                  {...field}
-                  id="forgot-password-form-email"
-                  type="email"
-                  aria-invalid={fieldState.invalid}
-                  placeholder="david@aragundy.com"
-                  autoComplete="email"
-                />
+                <InputGroup>
+                  <InputGroupAddon>
+                    <HugeiconsIcon icon={Mail01Icon} />
+                  </InputGroupAddon>
+                  <InputGroupInput
+                    {...field}
+                    id="forgot-password-form-email"
+                    type="email"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="david@aragundy.com"
+                    autoComplete="email"
+                  />
+                </InputGroup>
                 <FieldDescription>We&apos;ll email you a link to reset it.</FieldDescription>
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>

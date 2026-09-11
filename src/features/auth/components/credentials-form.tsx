@@ -1,11 +1,13 @@
 "use client";
 
+import { LockPasswordIcon, Mail01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { Controller } from "react-hook-form";
 
 import { Button } from "@/shared/components/ui/button";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/shared/components/ui/field";
-import { Input } from "@/shared/components/ui/input";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/shared/components/ui/input-group";
 import { Spinner } from "@/shared/components/ui/spinner";
 
 import { useCredentialsForm } from "@/features/auth/hooks/use-credentials-form";
@@ -23,14 +25,19 @@ export function CredentialsForm() {
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="credentials-form-email">Email</FieldLabel>
-              <Input
-                {...field}
-                id="credentials-form-email"
-                type="email"
-                aria-invalid={fieldState.invalid}
-                placeholder="david@aragundy.com"
-                autoComplete="email"
-              />
+              <InputGroup>
+                <InputGroupAddon>
+                  <HugeiconsIcon icon={Mail01Icon} />
+                </InputGroupAddon>
+                <InputGroupInput
+                  {...field}
+                  id="credentials-form-email"
+                  type="email"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="david@aragundy.com"
+                  autoComplete="email"
+                />
+              </InputGroup>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
@@ -50,13 +57,18 @@ export function CredentialsForm() {
                   Forgot your password?
                 </Link>
               </div>
-              <Input
-                {...field}
-                id="credentials-form-password"
-                type="password"
-                aria-invalid={fieldState.invalid}
-                autoComplete="current-password"
-              />
+              <InputGroup>
+                <InputGroupAddon>
+                  <HugeiconsIcon icon={LockPasswordIcon} />
+                </InputGroupAddon>
+                <InputGroupInput
+                  {...field}
+                  id="credentials-form-password"
+                  type="password"
+                  aria-invalid={fieldState.invalid}
+                  autoComplete="current-password"
+                />
+              </InputGroup>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}

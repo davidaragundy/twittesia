@@ -1,5 +1,7 @@
 "use client";
 
+import { LockPasswordIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
 import { Button } from "@/shared/components/ui/button";
@@ -11,7 +13,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/shared/components/ui/field";
-import { Input } from "@/shared/components/ui/input";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/shared/components/ui/input-group";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Spinner } from "@/shared/components/ui/spinner";
 import { Switch } from "@/shared/components/ui/switch";
@@ -93,13 +95,18 @@ export const ToggleTwoFactorForm = () => {
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="toggle-two-factor-form-password">Password</FieldLabel>
-                    <Input
-                      {...field}
-                      id="toggle-two-factor-form-password"
-                      type="password"
-                      aria-invalid={fieldState.invalid}
-                      autoComplete="current-password"
-                    />
+                    <InputGroup>
+                      <InputGroupAddon>
+                        <HugeiconsIcon icon={LockPasswordIcon} />
+                      </InputGroupAddon>
+                      <InputGroupInput
+                        {...field}
+                        id="toggle-two-factor-form-password"
+                        type="password"
+                        aria-invalid={fieldState.invalid}
+                        autoComplete="current-password"
+                      />
+                    </InputGroup>
                     <FieldDescription>
                       Enter your password to {action.toLowerCase()} two-factor authentication.
                     </FieldDescription>

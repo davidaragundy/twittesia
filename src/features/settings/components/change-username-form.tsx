@@ -1,5 +1,7 @@
 "use client";
 
+import { AtIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
 import { Button } from "@/shared/components/ui/button";
@@ -10,12 +12,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/shared/components/ui/field";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-  InputGroupText,
-} from "@/shared/components/ui/input-group";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/shared/components/ui/input-group";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Spinner } from "@/shared/components/ui/spinner";
 
@@ -48,7 +45,7 @@ export function ChangeUsernameForm() {
               ) : (
                 <InputGroup>
                   <InputGroupAddon>
-                    <InputGroupText>@</InputGroupText>
+                    <HugeiconsIcon icon={AtIcon} />
                   </InputGroupAddon>
                   <InputGroupInput
                     {...field}

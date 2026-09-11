@@ -1,5 +1,7 @@
 "use client";
 
+import { Key01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { Controller } from "react-hook-form";
 
@@ -11,7 +13,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/shared/components/ui/field";
-import { Input } from "@/shared/components/ui/input";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/shared/components/ui/input-group";
 import { Spinner } from "@/shared/components/ui/spinner";
 import { cn } from "@/shared/utils/cn";
 
@@ -36,13 +38,18 @@ export function RecoveryCodeForm({ className, ...props }: React.ComponentProps<"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="recovery-code-form-code">Recovery code</FieldLabel>
-                <Input
-                  {...field}
-                  id="recovery-code-form-code"
-                  aria-invalid={fieldState.invalid}
-                  placeholder="abcde-fghij"
-                  autoComplete="one-time-code"
-                />
+                <InputGroup>
+                  <InputGroupAddon>
+                    <HugeiconsIcon icon={Key01Icon} />
+                  </InputGroupAddon>
+                  <InputGroupInput
+                    {...field}
+                    id="recovery-code-form-code"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="abcde-fghij"
+                    autoComplete="one-time-code"
+                  />
+                </InputGroup>
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}

@@ -1,5 +1,7 @@
 "use client";
 
+import { LockPasswordIcon, MagicWand01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 
 import { FieldDescription } from "@/shared/components/ui/field";
@@ -18,10 +20,10 @@ export function SignInForm({ className, ...props }: React.ComponentProps<"div">)
     useSignInForm();
 
   return (
-    <div className={cn("flex flex-col gap-10", className)} {...props}>
+    <div className={cn("flex flex-col gap-12", className)} {...props}>
       <AuthHeading title="Welcome back" description="We knew you would come back 😏" />
 
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-10">
         <ToggleGroup
           aria-label="Sign-in method"
           value={[method]}
@@ -29,9 +31,11 @@ export function SignInForm({ className, ...props }: React.ComponentProps<"div">)
           className="w-full"
         >
           <ToggleGroupItem value="password" className="flex-1">
+            <HugeiconsIcon icon={LockPasswordIcon} />
             Password
           </ToggleGroupItem>
           <ToggleGroupItem value="magic-link" className="flex-1">
+            <HugeiconsIcon icon={MagicWand01Icon} />
             Magic link
           </ToggleGroupItem>
         </ToggleGroup>
@@ -39,7 +43,7 @@ export function SignInForm({ className, ...props }: React.ComponentProps<"div">)
         {method === "password" ? <CredentialsForm /> : <MagicLinkForm />}
       </div>
 
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-8">
         <FieldDescription className="text-center">Or continue with</FieldDescription>
         <SocialButtons
           action="Sign in"

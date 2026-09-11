@@ -1,5 +1,7 @@
 "use client";
 
+import { UserIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
 import { Button } from "@/shared/components/ui/button";
@@ -10,7 +12,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/shared/components/ui/field";
-import { Input } from "@/shared/components/ui/input";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/shared/components/ui/input-group";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Spinner } from "@/shared/components/ui/spinner";
 
@@ -41,13 +43,18 @@ export function ChangeNameForm() {
               {isSessionLoading ? (
                 <Skeleton className="h-10 w-full" />
               ) : (
-                <Input
-                  {...field}
-                  id="change-name-form-name"
-                  aria-invalid={fieldState.invalid}
-                  placeholder="David Aragundy"
-                  autoComplete="name"
-                />
+                <InputGroup>
+                  <InputGroupAddon>
+                    <HugeiconsIcon icon={UserIcon} />
+                  </InputGroupAddon>
+                  <InputGroupInput
+                    {...field}
+                    id="change-name-form-name"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="David Aragundy"
+                    autoComplete="name"
+                  />
+                </InputGroup>
               )}
               <FieldDescription>
                 This is your public display name. It can be your real name or a pseudonym.

@@ -42,7 +42,7 @@ export function SettingsDialog() {
 
   // The same buttons as the app navigation, so active and hover look identical
   const navigation = (
-    <nav aria-label="Settings sections" className="flex flex-col gap-1">
+    <nav aria-label="Settings sections" className="flex flex-col gap-2">
       {SECTIONS.map((section) => (
         <NavButton
           key={section.value}
@@ -58,7 +58,7 @@ export function SettingsDialog() {
 
   const content =
     tab === "account" ? (
-      <div className="flex flex-col gap-12">
+      <div className="flex flex-col gap-14">
         <SettingsSection title="Name" description="How you appear to other people.">
           <ChangeNameForm />
         </SettingsSection>
@@ -70,7 +70,7 @@ export function SettingsDialog() {
         </SettingsSection>
       </div>
     ) : (
-      <div className="flex flex-col gap-12">
+      <div className="flex flex-col gap-14">
         <SettingsSection title="Password" description="Change the password you sign in with.">
           <ChangePasswordForm />
         </SettingsSection>
@@ -95,7 +95,7 @@ export function SettingsDialog() {
             <DrawerTitle>{TITLE}</DrawerTitle>
             <DrawerDescription>{DESCRIPTION}</DrawerDescription>
           </DrawerHeader>
-          <div className="flex min-h-0 flex-col gap-8 overflow-y-auto px-4 pb-10">
+          <div className="flex min-h-0 flex-col gap-10 overflow-y-auto px-6 pb-12">
             {navigation}
             {content}
           </div>
@@ -111,7 +111,7 @@ export function SettingsDialog() {
           <DialogTitle>{TITLE}</DialogTitle>
           <DialogDescription>{DESCRIPTION}</DialogDescription>
         </DialogHeader>
-        <div className="flex gap-12">
+        <div className="flex gap-14">
           <div className="w-44 shrink-0">{navigation}</div>
           <div className="-mr-6 no-scrollbar max-h-[70vh] min-w-0 flex-1 overflow-y-auto pr-6">
             {content}
@@ -130,7 +130,7 @@ type SettingsSectionProps = {
 
 function SettingsSection({ title, description, children }: SettingsSectionProps) {
   return (
-    <section className="flex flex-col gap-6">
+    <section className="flex flex-col gap-8">
       <FieldContent>
         <FieldTitle>{title}</FieldTitle>
         <FieldDescription>{description}</FieldDescription>

@@ -55,16 +55,16 @@ export default async function Layout({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="mx-auto flex h-svh w-full max-w-6xl flex-col px-6 md:px-10">
+      <div className="mx-auto flex h-svh w-full max-w-7xl flex-col px-6 sm:px-10 lg:px-16">
         <SiteHeader leading={<MobileNav links={links} footer={navUser} />} logoHref="/home" />
 
-        <div className="flex min-h-0 flex-1 gap-16">
-          <aside className="hidden w-56 shrink-0 flex-col justify-between pt-2 pb-10 md:flex">
+        <div className="flex min-h-0 flex-1 gap-20">
+          <aside className="hidden w-60 shrink-0 flex-col justify-between pt-4 pb-12 md:flex">
             <AppNav links={links} />
             {navUser}
           </aside>
 
-          <main className="no-scrollbar flex min-w-0 flex-1 flex-col gap-10 overflow-y-auto pt-2 pb-16">
+          <main className="no-scrollbar flex min-w-0 flex-1 flex-col gap-12 overflow-y-auto pt-4 pb-24">
             <AppBreadcrumb links={links} />
             {children}
           </main>

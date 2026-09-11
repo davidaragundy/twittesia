@@ -1,5 +1,7 @@
 "use client";
 
+import { Mail01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
 import { Button } from "@/shared/components/ui/button";
@@ -10,7 +12,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/shared/components/ui/field";
-import { Input } from "@/shared/components/ui/input";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/shared/components/ui/input-group";
 import { Spinner } from "@/shared/components/ui/spinner";
 
 import { useMagicLinkForm } from "@/features/auth/hooks/use-magic-link-form";
@@ -28,14 +30,19 @@ export function MagicLinkForm() {
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="magic-link-form-email">Email</FieldLabel>
-              <Input
-                {...field}
-                id="magic-link-form-email"
-                type="email"
-                aria-invalid={fieldState.invalid}
-                placeholder="david@aragundy.com"
-                autoComplete="email"
-              />
+              <InputGroup>
+                <InputGroupAddon>
+                  <HugeiconsIcon icon={Mail01Icon} />
+                </InputGroupAddon>
+                <InputGroupInput
+                  {...field}
+                  id="magic-link-form-email"
+                  type="email"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="david@aragundy.com"
+                  autoComplete="email"
+                />
+              </InputGroup>
               <FieldDescription>We&apos;ll email you a link that signs you in.</FieldDescription>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
