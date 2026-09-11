@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 
-import { FieldDescription, FieldGroup } from "@/shared/components/ui/field";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/components/ui/tabs";
+import { FieldDescription } from "@/shared/components/ui/field";
+import { ToggleGroup, ToggleGroupItem } from "@/shared/components/ui/toggle-group";
 import { cn } from "@/shared/utils/cn";
 
 import { AuthHeading } from "@/features/auth/components/auth-heading";
@@ -14,24 +14,32 @@ import { TermsNotice } from "@/features/auth/components/terms-notice";
 import { useSignInForm } from "@/features/auth/hooks/use-sign-in-form";
 
 export function SignInForm({ className, ...props }: React.ComponentProps<"div">) {
-  const { isPending, handleSignInWithGitHub, handleSignInWithGoogle } = useSignInForm();
+  const { method, onMethodChange, isPending, handleSignInWithGitHub, handleSignInWithGoogle } =
+    useSignInForm();
 
   return (
     <div className={cn("flex flex-col gap-10", className)} {...props}>
       <AuthHeading title="Welcome back" description="We knew you would come back 😏" />
-      <FieldGroup>
-        <Tabs defaultValue="password">
-          <TabsList variant="line" className="w-full">
-            <TabsTrigger value="password">Password</TabsTrigger>
-            <TabsTrigger value="magic-link">Magic link</TabsTrigger>
-          </TabsList>
-          <TabsContent value="password">
-            <CredentialsForm />
-          </TabsContent>
-          <TabsContent value="magic-link">
-            <MagicLinkForm />
-          </TabsContent>
-        </Tabs>
+
+      <div className="flex flex-col gap-8">
+        <ToggleGroup
+          aria-label="Sign-in method"
+          value={[method]}
+          onValueChange={onMethodChange}
+          className="w-full"
+        >
+          <ToggleGroupItem value="password" className="flex-1">
+            Password
+          </ToggleGroupItem>
+          <ToggleGroupItem value="magic-link" className="flex-1">
+            Magic link
+          </ToggleGroupItem>
+        </ToggleGroup>
+
+        {method === "password" ? <CredentialsForm /> : <MagicLinkForm />}
+      </div>
+
+      <div className="flex flex-col gap-6">
         <FieldDescription className="text-center">Or continue with</FieldDescription>
         <SocialButtons
           action="Sign in"
@@ -39,10 +47,12 @@ export function SignInForm({ className, ...props }: React.ComponentProps<"div">)
           onGitHub={handleSignInWithGitHub}
           onGoogle={handleSignInWithGoogle}
         />
-        <FieldDescription className="text-center">
-          Don&apos;t have an account? <Link href="/sign-up">Sign up</Link>
-        </FieldDescription>
-      </FieldGroup>
+      </div>
+
+      <FieldDescription className="text-center">
+        Don&apos;t have an account? <Link href="/sign-up">Sign up</Link>
+      </FieldDescription>
+
       <TermsNotice />
     </div>
   );
