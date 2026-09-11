@@ -19,6 +19,7 @@ import {
   DrawerTitle,
 } from "@/shared/components/ui/drawer";
 import { FieldContent, FieldDescription, FieldTitle } from "@/shared/components/ui/field";
+import { ToggleGroup, ToggleGroupItem } from "@/shared/components/ui/toggle-group";
 
 import { ActiveSessions } from "@/features/settings/components/active-sessions";
 import { ChangeEmailForm } from "@/features/settings/components/change-email-form";
@@ -95,8 +96,20 @@ export function SettingsDialog() {
             <DrawerTitle>{TITLE}</DrawerTitle>
             <DrawerDescription>{DESCRIPTION}</DrawerDescription>
           </DrawerHeader>
-          <div className="flex min-h-0 flex-col gap-10 overflow-y-auto px-6 pb-12">
-            {navigation}
+          <div className="flex min-h-0 flex-col gap-10 overflow-y-auto px-4 pt-4 pb-12">
+            <ToggleGroup
+              aria-label="Settings sections"
+              value={[tab]}
+              onValueChange={(value) => onTabChange(value[0])}
+              className="self-center"
+            >
+              {SECTIONS.map((section) => (
+                <ToggleGroupItem key={section.value} value={section.value}>
+                  <HugeiconsIcon icon={section.icon} />
+                  {section.label}
+                </ToggleGroupItem>
+              ))}
+            </ToggleGroup>
             {content}
           </div>
         </DrawerContent>
