@@ -23,9 +23,9 @@ export const useChangeEmailMutation = ({ form }: Props) => {
         authClient.changeEmail({ newEmail: email, callbackURL: "/home?settings=account" }),
       ),
     onSuccess: (_data, values) => {
-      toast.success("Change email confirmation", {
+      toast.success("Confirm the change from your current email", {
         description:
-          "We sent a confirmation to your current email address. Please check your inbox (or spam folder) to approve the changes in order to update it.",
+          "We sent a link to your current address. Your email changes once you approve it.",
         duration: 20_000,
       });
       form.reset(values);
@@ -36,9 +36,8 @@ export const useChangeEmailMutation = ({ form }: Props) => {
     onError: (error: AuthClientError) => {
       if (error.status === RATE_LIMIT_ERROR_CODE) return;
 
-      toast.error("Something went wrong 😢", {
-        description: "Please try again later",
-        duration: 10_000,
+      toast.error("Something went wrong", {
+        description: "Please try again in a moment.",
       });
     },
   });

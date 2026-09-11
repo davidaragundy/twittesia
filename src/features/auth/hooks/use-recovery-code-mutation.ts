@@ -22,18 +22,16 @@ export const useRecoveryCodeMutation = ({ form }: Props) => {
     mutationFn: ({ code }: RecoveryCodeFormValues) =>
       unwrapAuthResponse(authClient.twoFactor.verifyBackupCode({ code })),
     onSuccess: () => {
-      toast.info(
-        "Please note that each recovery code can only be used once. If you have used all your recovery codes, you can generate new ones in your account settings. If you don't remember your password, this is a good time to reset it.",
-        {
-          dismissible: false,
-          closeButton: true,
-          duration: 20_000,
-          action: {
-            label: "Go to settings",
-            onClick: () => router.push("/home?settings=security"),
-          },
+      toast.info("Recovery code used", {
+        description:
+          "Each code works only once. Generate new ones in settings, and reset your password if you've forgotten it.",
+        duration: 20_000,
+        closeButton: true,
+        action: {
+          label: "Go to settings",
+          onClick: () => router.push("/home?settings=security"),
         },
-      );
+      });
 
       router.push("/home");
     },
@@ -46,7 +44,7 @@ export const useRecoveryCodeMutation = ({ form }: Props) => {
           return;
 
         default:
-          toast.error("Something went wrong, please try again later 😢");
+          toast.error("Something went wrong", { description: "Please try again in a moment." });
           return;
       }
     },

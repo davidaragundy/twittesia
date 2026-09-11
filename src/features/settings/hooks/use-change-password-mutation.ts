@@ -24,7 +24,7 @@ export const useChangePasswordMutation = ({ form }: Props) => {
         authClient.changePassword({ currentPassword, newPassword, revokeOtherSessions: true }),
       ),
     onSuccess: () => {
-      toast.success("Password changed successfully 🎉", { duration: 10_000 });
+      toast.success("Password changed");
       form.reset();
 
       // Every other session was revoked with the change
@@ -46,9 +46,8 @@ export const useChangePasswordMutation = ({ form }: Props) => {
           return;
 
         default:
-          toast.error("Failed to change password 😢", {
-            description: "Please try again later",
-            duration: 10_000,
+          toast.error("Couldn't change your password", {
+            description: "Please try again in a moment.",
           });
           return;
       }

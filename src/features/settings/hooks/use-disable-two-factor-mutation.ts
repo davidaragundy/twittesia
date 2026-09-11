@@ -22,9 +22,7 @@ export const useDisableTwoFactorMutation = ({ form }: Props) => {
     mutationFn: ({ currentPassword }: Pick<ToggleTwoFactorFormValues, "currentPassword">) =>
       unwrapAuthResponse(authClient.twoFactor.disable({ password: currentPassword })),
     onSuccess: () => {
-      toast.success("Two-factor authentication has been disabled successfully 🎉", {
-        duration: 10_000,
-      });
+      toast.success("Two-factor authentication turned off", {});
       form.reset({ enableTwoFactor: false, currentPassword: "" });
       router.refresh();
     },
@@ -37,9 +35,8 @@ export const useDisableTwoFactorMutation = ({ form }: Props) => {
           return;
 
         default:
-          toast.error("Failed to disable two-factor authentication 😢", {
-            description: "Please try again later",
-            duration: 10_000,
+          toast.error("Couldn't turn off two-factor authentication", {
+            description: "Please try again in a moment.",
           });
           return;
       }

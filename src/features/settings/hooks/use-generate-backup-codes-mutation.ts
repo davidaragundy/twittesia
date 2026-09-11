@@ -22,7 +22,7 @@ export const useGenerateBackupCodesMutation = ({ form }: Props) =>
     onSuccess: (data) => {
       downloadBackupCodes(data.backupCodes);
 
-      toast.success("Backup codes generated successfully 🎉", { duration: 10_000 });
+      toast.success("New backup codes downloaded");
       form.reset();
     },
     onError: (error: AuthClientError) => {
@@ -34,9 +34,8 @@ export const useGenerateBackupCodesMutation = ({ form }: Props) =>
           return;
 
         default:
-          toast.error("Failed to generate backup codes 😢", {
-            description: "Please try again later",
-            duration: 10_000,
+          toast.error("Couldn't generate backup codes", {
+            description: "Please try again in a moment.",
           });
           return;
       }

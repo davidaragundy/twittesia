@@ -14,9 +14,8 @@ export const useMagicLinkMutation = () =>
     mutationFn: ({ email }: MagicLinkFormValues) =>
       unwrapAuthResponse(authClient.signIn.magicLink({ email, callbackURL: "/home" })),
     onSuccess: () => {
-      toast.success("Magic link sent successfully 🎉", {
-        description: "Check your inbox (or spam folder) for the link.",
-        duration: 10_000,
+      toast.success("Magic link sent", {
+        description: "Check your inbox, or your spam folder, for the link.",
       });
     },
     onError: (error: AuthClientError) => {
@@ -24,16 +23,14 @@ export const useMagicLinkMutation = () =>
 
       switch (getAuthErrorCode(error)) {
         case "FAILED_TO_SEND_MAGIC_LINK":
-          toast.error("Failed to send magic link 😢", {
-            duration: 10_000,
-            description: "Try again later or use another method to sign in.",
+          toast.error("Couldn't send the magic link", {
+            description: "Try again in a moment, or sign in another way.",
           });
           return;
 
         default:
-          toast.error("Something went wrong 😢", {
-            description: "Please try again later",
-            duration: 10_000,
+          toast.error("Something went wrong", {
+            description: "Please try again in a moment.",
           });
           return;
       }

@@ -17,7 +17,7 @@ export const useSignOutMutation = () => {
       router.push("/sign-in");
     },
     onError: () => {
-      toast.error("Failed to sign out. Please try again later.");
+      toast.error("Couldn't sign out", { description: "Please try again in a moment." });
     },
   });
 };

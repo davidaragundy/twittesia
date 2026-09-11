@@ -22,7 +22,7 @@ export const useChangeUsernameMutation = ({ form }: Props) => {
     mutationFn: ({ username }: ChangeUsernameFormValues) =>
       unwrapAuthResponse(authClient.updateUser({ username, displayUsername: username })),
     onSuccess: (_data, values) => {
-      toast.success("Username updated successfully 🎉", { duration: 10_000 });
+      toast.success("Username updated");
       form.reset(values);
       router.refresh();
     },
@@ -35,9 +35,8 @@ export const useChangeUsernameMutation = ({ form }: Props) => {
           return;
 
         default:
-          toast.error("Failed to change username 😢", {
-            description: "Please try again later",
-            duration: 10_000,
+          toast.error("Couldn't change your username", {
+            description: "Please try again in a moment.",
           });
           return;
       }

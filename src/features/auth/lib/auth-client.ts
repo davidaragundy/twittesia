@@ -26,9 +26,8 @@ export const authClient = createAuthClient({
     catchAllError: true,
     onError: async (context) => {
       if (context.response.status === RATE_LIMIT_ERROR_CODE) {
-        toast.error("Rate limit exceeded 🚫", {
-          duration: 10_000,
-          description: "Try again later, take a break!",
+        toast.error("Too many attempts", {
+          description: "Wait a moment and try again.",
         });
       }
     },

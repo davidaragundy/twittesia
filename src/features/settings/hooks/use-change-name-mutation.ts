@@ -21,7 +21,7 @@ export const useChangeNameMutation = ({ form }: Props) => {
     mutationFn: ({ name }: ChangeNameFormValues) =>
       unwrapAuthResponse(authClient.updateUser({ name })),
     onSuccess: (_data, values) => {
-      toast.success("Name updated successfully 🎉", { duration: 10_000 });
+      toast.success("Name updated");
       form.reset(values);
 
       // The session is read per request, so a refresh shows the new name right away
@@ -30,9 +30,8 @@ export const useChangeNameMutation = ({ form }: Props) => {
     onError: (error: AuthClientError) => {
       if (error.status === RATE_LIMIT_ERROR_CODE) return;
 
-      toast.error("Something went wrong 😢", {
-        description: "Please try again later",
-        duration: 10_000,
+      toast.error("Something went wrong", {
+        description: "Please try again in a moment.",
       });
     },
   });

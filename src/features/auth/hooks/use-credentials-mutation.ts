@@ -37,13 +37,12 @@ export const useCredentialsMutation = ({ form }: Props) => {
 
         case "EMAIL_NOT_VERIFIED":
           toast.error("Verify your email to sign in", {
-            description: "Check your inbox (or spam folder) for the verification email 📧",
-            duration: 10_000,
+            description: "Check your inbox, or your spam folder, for the verification email.",
           });
           return;
 
         default:
-          toast.error("Something went wrong, please try again later 😢");
+          toast.error("Something went wrong", { description: "Please try again in a moment." });
           return;
       }
     },

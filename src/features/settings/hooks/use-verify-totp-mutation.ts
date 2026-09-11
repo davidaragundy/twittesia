@@ -23,7 +23,7 @@ export const useVerifyTotpMutation = ({ form, closeDialog }: Props) => {
     mutationFn: ({ code }: TwoFactorFormValues) =>
       unwrapAuthResponse(authClient.twoFactor.verifyTotp({ code })),
     onSuccess: () => {
-      toast.success("Two-factor authentication enabled successfully 🎉", { duration: 10_000 });
+      toast.success("Two-factor authentication turned on");
       form.reset();
       closeDialog();
 
@@ -39,9 +39,8 @@ export const useVerifyTotpMutation = ({ form, closeDialog }: Props) => {
           return;
 
         default:
-          toast.error("An error occurred 😢", {
-            description: "Please try again later",
-            duration: 10_000,
+          toast.error("Something went wrong", {
+            description: "Please try again in a moment.",
           });
           return;
       }

@@ -21,9 +21,8 @@ export const useResetPasswordMutation = ({ token }: Props) => {
     mutationFn: ({ password }: ResetPasswordFormValues) =>
       unwrapAuthResponse(authClient.resetPassword({ newPassword: password, token })),
     onSuccess: () => {
-      toast.success("Password reset successfully 🎉", {
-        description: "You can now sign in with your new password.",
-        duration: 10_000,
+      toast.success("Password reset", {
+        description: "Sign in with your new password.",
       });
 
       router.push("/sign-in");
@@ -33,9 +32,8 @@ export const useResetPasswordMutation = ({ token }: Props) => {
 
       switch (getAuthErrorCode(error)) {
         case "INVALID_TOKEN":
-          toast.error("Invalid token 😢", {
-            description: "Please request a new password reset link.",
-            duration: 10_000,
+          toast.error("This reset link has expired", {
+            description: "Request a new one to reset your password.",
             action: {
               label: "Request new link",
               onClick: () => router.push("/forgot-password"),
@@ -44,9 +42,8 @@ export const useResetPasswordMutation = ({ token }: Props) => {
           return;
 
         default:
-          toast.error("Something went wrong 😢", {
-            description: "Please try again later",
-            duration: 10_000,
+          toast.error("Something went wrong", {
+            description: "Please try again in a moment.",
           });
           return;
       }

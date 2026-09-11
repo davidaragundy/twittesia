@@ -25,9 +25,8 @@ export const useEnableTwoFactorMutation = ({ form, onEnrolled }: Props) =>
     onSuccess: (data) => {
       // Only TOTP enrolment returns the URI and backup codes the setup dialog shows
       if (data.method !== "totp") {
-        toast.error("Failed to enable two-factor authentication 😢", {
-          description: "Please try again later",
-          duration: 10_000,
+        toast.error("Couldn't turn on two-factor authentication", {
+          description: "Please try again in a moment.",
         });
         return;
       }
@@ -44,9 +43,8 @@ export const useEnableTwoFactorMutation = ({ form, onEnrolled }: Props) =>
           return;
 
         default:
-          toast.error("Failed to enable two-factor authentication 😢", {
-            description: "Please try again later",
-            duration: 10_000,
+          toast.error("Couldn't turn on two-factor authentication", {
+            description: "Please try again in a moment.",
           });
           return;
       }

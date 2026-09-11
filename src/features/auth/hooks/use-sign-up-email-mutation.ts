@@ -17,7 +17,7 @@ interface Props {
 }
 
 const resendVerificationEmail = async (email: string, failedToastId: string | number) => {
-  const id = toast.loading("Resending email...");
+  const id = toast.loading("Resending the verification email…");
 
   const { error } = await authClient.sendVerificationEmail({ email, callbackURL: "/home" });
 
@@ -25,14 +25,13 @@ const resendVerificationEmail = async (email: string, failedToastId: string | nu
     toast.dismiss(id);
     if (error.status === RATE_LIMIT_ERROR_CODE) return;
 
-    toast.error("Failed to resend email 😢", { id: failedToastId, duration: 10_000 });
+    toast.error("Couldn't resend the email", { id: failedToastId, duration: 10_000 });
     return;
   }
 
-  toast.success("Email sent successfully 🎉", {
+  toast.success("Verification email sent", {
     id,
-    description: "Check your inbox (or spam folder) for the verification email.",
-    duration: 10_000,
+    description: "Check your inbox, or your spam folder, for the verification email.",
   });
 };
 
@@ -55,9 +54,8 @@ export const useSignUpEmailMutation = ({ form }: Props) =>
       );
     },
     onSuccess: () => {
-      toast.success("Account created successfully 🎉", {
-        description: "Check your inbox (or spam folder) for the verification email.",
-        duration: 10_000,
+      toast.success("Account created", {
+        description: "Check your inbox, or your spam folder, for the verification email.",
       });
 
       form.reset();
@@ -77,8 +75,7 @@ export const useSignUpEmailMutation = ({ form }: Props) =>
           return;
 
         case "FAILED_TO_SEND_VERIFICATION_EMAIL": {
-          const toastId = toast.error("Failed to send verification email 😢", {
-            duration: 10_000,
+          const toastId = toast.error("Couldn't send the verification email", {
             action: {
               label: "Resend email",
               onClick: () => resendVerificationEmail(values.email, toastId),
@@ -88,9 +85,8 @@ export const useSignUpEmailMutation = ({ form }: Props) =>
         }
 
         default:
-          toast.error("Something went wrong 😢", {
-            description: "Please try again later",
-            duration: 10_000,
+          toast.error("Something went wrong", {
+            description: "Please try again in a moment.",
           });
           return;
       }

@@ -12,6 +12,8 @@ const Toaster = ({ ...props }: ToasterProps) => {
     <Sonner
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
+      // Top center keeps toasts clear of the bottom drawers and form buttons on mobile
+      position="top-center"
       icons={{
         success: (
           <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className="size-4" />
@@ -33,13 +35,18 @@ const Toaster = ({ ...props }: ToasterProps) => {
         {
           "--normal-bg": "var(--popover)",
           "--normal-text": "var(--popover-foreground)",
-          "--normal-border": "var(--border)",
-          "--border-radius": "var(--radius)",
+          "--normal-border": "transparent",
+          "--border-radius": "var(--radius-4xl)",
         } as React.CSSProperties
       }
+      // Same surface as the dialogs: no border, a faint ring, a soft shadow and generous padding
       toastOptions={{
+        duration: 5_000,
         classNames: {
-          toast: "cn-toast",
+          toast:
+            "cn-toast gap-3! px-5! py-4! shadow-xl! ring-1 ring-foreground/5 dark:ring-foreground/10",
+          title: "font-medium",
+          description: "text-muted-foreground!",
         },
       }}
       {...props}

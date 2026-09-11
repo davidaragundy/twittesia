@@ -26,7 +26,12 @@ export const useSocialSignInMutation = ({ action }: Props) => {
     onError: (error: AuthClientError, provider) => {
       if (error.status === RATE_LIMIT_ERROR_CODE) return;
 
-      toast.error(`Failed to ${action.toLowerCase()} with ${provider} 😢`);
+      toast.error(
+        `Couldn't ${action.toLowerCase()} with ${provider === "github" ? "GitHub" : "Google"}`,
+        {
+          description: "Please try again in a moment.",
+        },
+      );
     },
   });
 };

@@ -31,7 +31,7 @@ export const useTwoFactorMutation = ({ form }: Props) => {
           return;
 
         default:
-          toast.error("An error occurred, please try again later 😢");
+          toast.error("Something went wrong", { description: "Please try again in a moment." });
           return;
       }
     },

@@ -14,9 +14,8 @@ export const useForgotPasswordMutation = () =>
     mutationFn: ({ email }: ForgotPasswordFormValues) =>
       unwrapAuthResponse(authClient.requestPasswordReset({ email, redirectTo: "/reset-password" })),
     onSuccess: () => {
-      toast.success("Reset link sent successfully 🎉", {
-        description: "Check your inbox (or spam folder) for the link.",
-        duration: 10_000,
+      toast.success("Reset link sent", {
+        description: "Check your inbox, or your spam folder, for the link.",
       });
     },
     onError: (error: AuthClientError) => {
@@ -24,16 +23,14 @@ export const useForgotPasswordMutation = () =>
 
       switch (getAuthErrorCode(error)) {
         case "FAILED_TO_SEND_RESET_PASSWORD_EMAIL":
-          toast.error("Failed to send reset password email 😢", {
-            description: "Please try again later",
-            duration: 10_000,
+          toast.error("Couldn't send the reset link", {
+            description: "Please try again in a moment.",
           });
           return;
 
         default:
-          toast.error("Something went wrong 😢", {
-            description: "Please try again later",
-            duration: 10_000,
+          toast.error("Something went wrong", {
+            description: "Please try again in a moment.",
           });
           return;
       }

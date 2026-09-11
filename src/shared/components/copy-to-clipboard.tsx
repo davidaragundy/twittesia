@@ -26,7 +26,7 @@ export const CopyToClipboard = ({ id, value }: Props) => {
     const { error } = await tryCatch(navigator.clipboard.writeText(value));
 
     if (error) {
-      toast.error("Couldn't copy, select the text and copy it instead");
+      toast.error("Couldn't copy", { description: "Select the text and copy it instead." });
       return;
     }
 

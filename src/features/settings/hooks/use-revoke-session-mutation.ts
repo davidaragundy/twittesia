@@ -31,7 +31,7 @@ export const useRevokeSessionMutation = () => {
 
       if (error.status === RATE_LIMIT_ERROR_CODE) return;
 
-      toast.error("Failed to revoke session, please try again later 😢", { duration: 5_000 });
+      toast.error("Couldn't revoke the session", { description: "Please try again in a moment." });
     },
     onSettled: () => queryClient.invalidateQueries({ queryKey: ACTIVE_SESSIONS_QUERY_KEY }),
   });
