@@ -9,9 +9,11 @@ import type { NavLink } from "@/shared/types";
 type Props = {
   links: NavLink[];
   onNavigate?: () => void;
+  // Entries after the links that aren't pages, such as Settings or Sign out
+  children?: React.ReactNode;
 };
 
-export function AppNav({ links, onNavigate }: Props) {
+export function AppNav({ links, onNavigate, children }: Props) {
   const pathname = usePathname();
 
   return (
@@ -27,6 +29,7 @@ export function AppNav({ links, onNavigate }: Props) {
           {link.label}
         </NavButton>
       ))}
+      {children}
     </nav>
   );
 }

@@ -71,7 +71,7 @@ export function NavUser({ menuItems }: Props) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<NavButton />}>
+      <DropdownMenuTrigger render={<NavButton className="h-auto py-3" />}>
         {identity}
         <HugeiconsIcon icon={UnfoldMoreIcon} />
       </DropdownMenuTrigger>

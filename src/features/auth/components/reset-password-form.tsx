@@ -47,6 +47,7 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentProps<
                     {...field}
                     id="reset-password-form-password"
                     type="password"
+                    placeholder="********"
                     aria-invalid={fieldState.invalid}
                     autoComplete="new-password"
                   />
@@ -71,6 +72,7 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentProps<
                     {...field}
                     id="reset-password-form-confirm"
                     type="password"
+                    placeholder="********"
                     aria-invalid={fieldState.invalid}
                     autoComplete="new-password"
                   />

@@ -103,6 +103,7 @@ export const ToggleTwoFactorForm = () => {
                         {...field}
                         id="toggle-two-factor-form-password"
                         type="password"
+                        placeholder="********"
                         aria-invalid={fieldState.invalid}
                         autoComplete="current-password"
                       />

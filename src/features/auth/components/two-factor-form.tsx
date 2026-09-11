@@ -35,10 +35,13 @@ export function TwoFactorForm({ className, ...props }: React.ComponentProps<"div
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="two-factor-form-code">One-time password</FieldLabel>
+                <FieldLabel htmlFor="two-factor-form-code" className="justify-center">
+                  One-time password
+                </FieldLabel>
                 <InputOTP
                   {...field}
                   id="two-factor-form-code"
+                  containerClassName="justify-center"
                   maxLength={6}
                   pattern={REGEXP_ONLY_DIGITS}
                   onComplete={form.handleSubmit(onSubmit)}
