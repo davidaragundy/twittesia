@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function Privacy() {
   return (
-    <div className="mx-auto w-full max-w-3xl py-10">
+    <div className="mx-auto w-full max-w-3xl py-16">
       <TypographyH1>Privacy Policy</TypographyH1>
 
       <TypographyMuted>Effective Date: March 21, 2025</TypographyMuted>
