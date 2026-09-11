@@ -10,6 +10,7 @@ import { APP_NAV_LINKS } from "@/shared/constants/app-nav-links";
 
 import { NavUser } from "@/features/auth/components/nav-user";
 import { NavUserSkeleton } from "@/features/auth/components/nav-user-skeleton";
+import { SessionGuard } from "@/features/auth/components/session-guard";
 import { SessionProvider } from "@/features/auth/components/session-provider";
 import { SignOutNavButton } from "@/features/auth/components/sign-out-nav-button";
 import { ProfileNavLink } from "@/features/profiles/components/profile-nav-link";
@@ -74,6 +75,10 @@ export default function Layout({
           </main>
         </div>
       </div>
+
+      <Suspense>
+        <SessionGuard />
+      </Suspense>
 
       <Suspense>
         <SessionProvider>
