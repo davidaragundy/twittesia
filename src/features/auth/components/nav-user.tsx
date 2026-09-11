@@ -4,12 +4,10 @@ import {
   ArrowReloadHorizontalIcon,
   Logout01Icon,
   Moon01Icon,
-  Settings01Icon,
   Sun01Icon,
   UnfoldMoreIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import Link from "next/link";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 import {
@@ -34,7 +32,12 @@ import { Spinner } from "@/shared/components/ui/spinner";
 import { useNavUser } from "@/features/auth/hooks/use-nav-user";
 import { useSession } from "@/features/auth/hooks/use-session";
 
-export function NavUser() {
+type Props = {
+  // Account menu entries owned by other features, composed by the route
+  menuItems?: React.ReactNode;
+};
+
+export function NavUser({ menuItems }: Props) {
   const { isMobile } = useSidebar();
   const { handleSignOut, handleThemeChange, isSigningOut, theme } = useNavUser();
   const { data: session, isLoading, isError, isRefetching, refetch } = useSession();
@@ -103,10 +106,7 @@ export function NavUser() {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem render={<Link href="?settings=account" scroll={false} />}>
-                <HugeiconsIcon icon={Settings01Icon} />
-                Settings
-              </DropdownMenuItem>
+              {menuItems}
               <DropdownMenuItem onClick={() => handleThemeChange()}>
                 <HugeiconsIcon icon={theme === "dark" ? Moon01Icon : Sun01Icon} />
                 Toggle theme
