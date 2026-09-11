@@ -8,7 +8,7 @@ import { createAuthClient } from "better-auth/react";
 // import { sentinelClient } from "@better-auth/infra/client";
 import { toast } from "sonner";
 
-import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants/rate-limit-error-code";
+import { TOO_MANY_REQUESTS_STATUS } from "@/shared/constants/too-many-requests-status";
 
 import type { auth } from "@/features/auth/lib/auth";
 
@@ -21,15 +21,23 @@ export const authClient = createAuthClient({
     // sentinelClient(),
   ],
   fetchOptions: {
-    // A failed request (offline, DNS, CORS) resolves with an error like any other,
-    // instead of throwing out of the transition that made it
+    // A failed request (offline, DNS, CORS) resolves with an error like any other response,
+    // so callers handle it the same way instead of catching a throw
     catchAllError: true,
-    onError: async (context) => {
-      if (context.response.status === RATE_LIMIT_ERROR_CODE) {
-        toast.error("Too many attempts", {
-          description: "Wait a moment and try again.",
-        });
-      }
+    // better-auth's recommended place for 429s: shown once here for every request, so no hook
+    // handles them. The fixed id makes a burst of 429s update one toast instead of stacking.
+    onError: async ({ response }) => {
+      if (response?.status !== TOO_MANY_REQUESTS_STATUS) return;
+
+      const retryAfter = Number(response.headers.get("X-Retry-After"));
+
+      toast.error("Too many attempts", {
+        id: "too-many-requests",
+        description:
+          retryAfter > 0
+            ? `Try again in ${retryAfter} ${retryAfter === 1 ? "second" : "seconds"}.`
+            : "Wait a moment and try again.",
+      });
     },
   },
 });

@@ -2,14 +2,13 @@ import { useMutation } from "@tanstack/react-query";
 import type { UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
-import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants/rate-limit-error-code";
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import { authClient } from "@/features/auth/lib/auth-client";
 import type { AuthClientError } from "@/features/auth/types/auth-client-error";
 import type { SignUpFormValues } from "@/features/auth/types/sign-up-form-values";
-import { getAuthErrorCode } from "@/features/auth/utils/get-auth-error-code";
 import { getHash } from "@/features/auth/utils/get-hash";
+import { handleAuthError } from "@/features/auth/utils/handle-auth-error";
 import { unwrapAuthResponse } from "@/features/auth/utils/unwrap-auth-response";
 
 interface Props {
@@ -23,9 +22,9 @@ const resendVerificationEmail = async (email: string, failedToastId: string | nu
 
   if (error) {
     toast.dismiss(id);
-    if (error.status === RATE_LIMIT_ERROR_CODE) return;
-
-    toast.error("Couldn't resend the email", { id: failedToastId, duration: 10_000 });
+    handleAuthError(error, {
+      fallback: () => toast.error("Couldn't resend the email", { id: failedToastId }),
+    });
     return;
   }
 
@@ -61,34 +60,28 @@ export const useSignUpEmailMutation = ({ form }: Props) =>
       form.reset();
     },
     onError: (error: AuthClientError, values) => {
-      if (error.status === RATE_LIMIT_ERROR_CODE) return;
-
-      switch (getAuthErrorCode(error)) {
-        case "USERNAME_IS_ALREADY_TAKEN":
+      handleAuthError(error, {
+        USERNAME_IS_ALREADY_TAKEN: () => {
           form.setError("username", { message: "Username is already taken. Please try another." });
-          return;
-
-        case "PASSWORD_COMPROMISED":
+        },
+        PASSWORD_COMPROMISED: () => {
           form.setError("password", {
             message: "Password is compromised. Please choose a more secure password.",
           });
-          return;
-
-        case "FAILED_TO_SEND_VERIFICATION_EMAIL": {
+        },
+        FAILED_TO_SEND_VERIFICATION_EMAIL: () => {
           const toastId = toast.error("Couldn't send the verification email", {
             action: {
               label: "Resend email",
               onClick: () => resendVerificationEmail(values.email, toastId),
             },
           });
-          return;
-        }
-
-        default:
+        },
+        fallback: () => {
           toast.error("Something went wrong", {
             description: "Please try again in a moment.",
           });
-          return;
-      }
+        },
+      });
     },
   });

@@ -3,10 +3,9 @@ import { useRouter } from "next/navigation";
 import type { UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
-import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants/rate-limit-error-code";
-
 import { authClient } from "@/features/auth/lib/auth-client";
 import type { AuthClientError } from "@/features/auth/types/auth-client-error";
+import { handleAuthError } from "@/features/auth/utils/handle-auth-error";
 import { unwrapAuthResponse } from "@/features/auth/utils/unwrap-auth-response";
 import type { ChangeNameFormValues } from "@/features/settings/types/change-name-form-values";
 
@@ -28,10 +27,12 @@ export const useChangeNameMutation = ({ form }: Props) => {
       router.refresh();
     },
     onError: (error: AuthClientError) => {
-      if (error.status === RATE_LIMIT_ERROR_CODE) return;
-
-      toast.error("Something went wrong", {
-        description: "Please try again in a moment.",
+      handleAuthError(error, {
+        fallback: () => {
+          toast.error("Something went wrong", {
+            description: "Please try again in a moment.",
+          });
+        },
       });
     },
   });
