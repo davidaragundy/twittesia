@@ -11,9 +11,10 @@ import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query
 import { headers } from "next/headers";
 import { Suspense } from "react";
 
-import { AppSidebar } from "@/shared/components/app-sidebar";
+import { AppBreadcrumb } from "@/shared/components/app-breadcrumb";
+import { AppNav } from "@/shared/components/app-nav";
+import { MobileNav } from "@/shared/components/mobile-nav";
 import { SiteHeader } from "@/shared/components/site-header";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/shared/components/ui/sidebar";
 import { auth } from "@/shared/lib/better-auth/server";
 
 import { NavUser } from "@/features/auth/components/nav-user";
@@ -50,23 +51,29 @@ export default async function Layout({
     },
   ];
 
+  const navUser = <NavUser menuItems={<SettingsMenuItem />} />;
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <SidebarProvider>
-        <AppSidebar links={links} footer={<NavUser menuItems={<SettingsMenuItem />} />} />
+      <div className="mx-auto flex h-svh w-full max-w-6xl flex-col px-6 md:px-10">
+        <SiteHeader leading={<MobileNav links={links} footer={navUser} />} logoHref="/home" />
 
-        <SidebarInset>
-          <div className="px-6 md:px-10">
-            <SiteHeader leading={<SidebarTrigger className="-ml-1" />} logoHref="/home" />
-          </div>
+        <div className="flex min-h-0 flex-1 gap-16">
+          <aside className="hidden w-56 shrink-0 flex-col justify-between pt-2 pb-10 md:flex">
+            <AppNav links={links} />
+            {navUser}
+          </aside>
 
-          <div className="flex flex-1 flex-col gap-10 px-6 pb-10 md:px-10">{children}</div>
-        </SidebarInset>
+          <main className="no-scrollbar flex min-w-0 flex-1 flex-col gap-10 overflow-y-auto pt-2 pb-16">
+            <AppBreadcrumb links={links} />
+            {children}
+          </main>
+        </div>
+      </div>
 
-        <Suspense>
-          <SettingsDialog />
-        </Suspense>
-      </SidebarProvider>
+      <Suspense>
+        <SettingsDialog />
+      </Suspense>
     </HydrationBoundary>
   );
 }
