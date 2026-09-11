@@ -20,6 +20,7 @@ export const useRecoveryCodeMutation = ({ form }: Props) => {
     mutationFn: ({ code }: RecoveryCodeFormValues) =>
       unwrapAuthResponse(authClient.twoFactor.verifyBackupCode({ code })),
     onSuccess: () => {
+      form.reset();
       toast.info("Recovery code used", {
         description:
           "Each code works only once. Generate new ones in settings, and reset your password if you've forgotten it.",

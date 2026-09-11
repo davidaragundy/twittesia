@@ -58,7 +58,13 @@ export function NavUser({ menuItems }: Props) {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>{menuItems}</DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive" onClick={signOut}>
+        {/* Stays open so the spinner shows until the sign-out lands */}
+        <DropdownMenuItem
+          variant="destructive"
+          closeOnClick={false}
+          disabled={isSigningOut}
+          onClick={signOut}
+        >
           {isSigningOut ? <Spinner /> : <HugeiconsIcon icon={Logout01Icon} />}
           Sign out
           <DropdownMenuShortcut>⌘O</DropdownMenuShortcut>

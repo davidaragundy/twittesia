@@ -19,7 +19,10 @@ export const useTwoFactorMutation = ({ form }: Props) => {
   return useMutation({
     mutationFn: ({ code }: TwoFactorFormValues) =>
       unwrapAuthResponse(authClient.twoFactor.verifyTotp({ code })),
-    onSuccess: () => router.push("/home"),
+    onSuccess: () => {
+      form.reset();
+      router.push("/home");
+    },
     onError: (error: AuthClientError) => {
       handleAuthError(error, {
         INVALID_CODE: () => {

@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+import type { UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
 import { authClient } from "@/features/auth/lib/auth-client";
@@ -7,11 +8,16 @@ import type { MagicLinkFormValues } from "@/features/auth/types/magic-link-form-
 import { handleAuthError } from "@/features/auth/utils/handle-auth-error";
 import { unwrapAuthResponse } from "@/features/auth/utils/unwrap-auth-response";
 
-export const useMagicLinkMutation = () =>
+interface Props {
+  form: UseFormReturn<MagicLinkFormValues>;
+}
+
+export const useMagicLinkMutation = ({ form }: Props) =>
   useMutation({
     mutationFn: ({ email }: MagicLinkFormValues) =>
       unwrapAuthResponse(authClient.signIn.magicLink({ email, callbackURL: "/home" })),
     onSuccess: () => {
+      form.reset();
       toast.success("Magic link sent", {
         description: "Check your inbox, or your spam folder, for the link.",
       });

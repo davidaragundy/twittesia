@@ -22,6 +22,7 @@ export const useCredentialsMutation = ({ form }: Props) => {
     onSuccess: (data) => {
       const needsTwoFactor = "twoFactorRedirect" in data && data.twoFactorRedirect;
 
+      form.reset();
       router.push(needsTwoFactor ? "/two-factor" : "/home");
     },
     onError: (error: AuthClientError) => {
