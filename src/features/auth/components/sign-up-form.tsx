@@ -1,5 +1,7 @@
 "use client";
 
+import { AtIcon, LockPasswordIcon, Mail01Icon, UserIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { Controller } from "react-hook-form";
 
@@ -11,13 +13,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/shared/components/ui/field";
-import { Input } from "@/shared/components/ui/input";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-  InputGroupText,
-} from "@/shared/components/ui/input-group";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/shared/components/ui/input-group";
 import { Spinner } from "@/shared/components/ui/spinner";
 import { cn } from "@/shared/utils/cn";
 
@@ -32,7 +28,7 @@ export function SignUpForm({ className, ...props }: React.ComponentProps<"div">)
     useSignUpForm();
 
   return (
-    <div className={cn("flex flex-col gap-10", className)} {...props}>
+    <div className={cn("flex flex-col gap-12", className)} {...props}>
       <AuthHeading
         title="Create your account"
         description="Here you can say whatever you want, nobody will give a f*ck 🌴"
@@ -47,13 +43,18 @@ export function SignUpForm({ className, ...props }: React.ComponentProps<"div">)
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="sign-up-form-name">Name</FieldLabel>
-                  <Input
-                    {...field}
-                    id="sign-up-form-name"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="David Aragundy"
-                    autoComplete="name"
-                  />
+                  <InputGroup>
+                    <InputGroupAddon>
+                      <HugeiconsIcon icon={UserIcon} />
+                    </InputGroupAddon>
+                    <InputGroupInput
+                      {...field}
+                      id="sign-up-form-name"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="David Aragundy"
+                      autoComplete="name"
+                    />
+                  </InputGroup>
                   {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                 </Field>
               )}
@@ -67,7 +68,7 @@ export function SignUpForm({ className, ...props }: React.ComponentProps<"div">)
                   <FieldLabel htmlFor="sign-up-form-username">Username</FieldLabel>
                   <InputGroup>
                     <InputGroupAddon>
-                      <InputGroupText>@</InputGroupText>
+                      <HugeiconsIcon icon={AtIcon} />
                     </InputGroupAddon>
                     <InputGroupInput
                       {...field}
@@ -89,14 +90,19 @@ export function SignUpForm({ className, ...props }: React.ComponentProps<"div">)
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="sign-up-form-email">Email</FieldLabel>
-                <Input
-                  {...field}
-                  id="sign-up-form-email"
-                  type="email"
-                  aria-invalid={fieldState.invalid}
-                  placeholder="david@aragundy.com"
-                  autoComplete="email"
-                />
+                <InputGroup>
+                  <InputGroupAddon>
+                    <HugeiconsIcon icon={Mail01Icon} />
+                  </InputGroupAddon>
+                  <InputGroupInput
+                    {...field}
+                    id="sign-up-form-email"
+                    type="email"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="david@aragundy.com"
+                    autoComplete="email"
+                  />
+                </InputGroup>
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
@@ -108,13 +114,18 @@ export function SignUpForm({ className, ...props }: React.ComponentProps<"div">)
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="sign-up-form-password">Password</FieldLabel>
-                <Input
-                  {...field}
-                  id="sign-up-form-password"
-                  type="password"
-                  aria-invalid={fieldState.invalid}
-                  autoComplete="new-password"
-                />
+                <InputGroup>
+                  <InputGroupAddon>
+                    <HugeiconsIcon icon={LockPasswordIcon} />
+                  </InputGroupAddon>
+                  <InputGroupInput
+                    {...field}
+                    id="sign-up-form-password"
+                    type="password"
+                    aria-invalid={fieldState.invalid}
+                    autoComplete="new-password"
+                  />
+                </InputGroup>
                 {fieldState.isDirty && <PasswordStrengthIndicator password={field.value} />}
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
@@ -128,7 +139,7 @@ export function SignUpForm({ className, ...props }: React.ComponentProps<"div">)
           </Field>
         </FieldGroup>
       </form>
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-8">
         <FieldDescription className="text-center">Or continue with</FieldDescription>
         <SocialButtons
           action="Sign up"
