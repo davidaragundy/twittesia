@@ -15,6 +15,8 @@ export const useChangeUsernameForm = () => {
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<ChangeUsernameFormValues>({
+    // Validates as you type, so a disabled Save button always comes with the reason
+    mode: "onChange",
     resolver: zodResolver(changeUsernameFormSchema),
     values: {
       username: session?.user.displayUsername ?? "",
@@ -42,6 +44,11 @@ export const useChangeUsernameForm = () => {
 
         case "RATE_LIMITED":
           toastRateLimited();
+          return;
+
+        // Client validation normally stops this first; show why the server refused
+        case "INVALID_INPUT":
+          toast.error(error.message, { duration: 10_000 });
           return;
 
         default:

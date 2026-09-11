@@ -48,6 +48,11 @@ export const useSetupTwoFactorDialog = ({ totpURI, closeDialog }: Props) => {
           toastRateLimited();
           return;
 
+        // Client validation normally stops this first; show why the server refused
+        case "INVALID_INPUT":
+          toast.error(error.message, { duration: 10_000 });
+          return;
+
         default:
           toast.error("An error occurred 😢", {
             description: "Please try again later",

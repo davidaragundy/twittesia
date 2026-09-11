@@ -15,6 +15,8 @@ export const useChangeEmailForm = () => {
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<ChangeEmailFormValues>({
+    // Validates as you type, so a disabled Save button always comes with the reason
+    mode: "onChange",
     resolver: zodResolver(changeEmailFormSchema),
     values: {
       email: session?.user.email ?? "",
@@ -33,6 +35,9 @@ export const useChangeEmailForm = () => {
       const { error } = await changeEmail(values);
 
       if (error?.code === "RATE_LIMITED") return void toastRateLimited();
+
+      // Client validation normally stops this first; show why the server refused
+      if (error?.code === "INVALID_INPUT") return void toast.error(error.message);
 
       if (error) {
         toast.error("Something went wrong 😢", {

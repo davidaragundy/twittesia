@@ -51,6 +51,11 @@ export const useToggleTwoFactorForm = () => {
           toastRateLimited();
           return;
 
+        // Client validation normally stops this first; show why the server refused
+        case "INVALID_INPUT":
+          toast.error(error.message, { duration: 10_000 });
+          return;
+
         default:
           toast.error(`Failed to ${action} two-factor authentication 😢`, {
             description: "Please try again later",

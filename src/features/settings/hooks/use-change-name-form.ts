@@ -15,6 +15,8 @@ export const useChangeNameForm = () => {
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<ChangeNameFormValues>({
+    // Validates as you type, so a disabled Save button always comes with the reason
+    mode: "onChange",
     resolver: zodResolver(changeNameFormSchema),
     values: {
       name: session?.user.name ?? "",
@@ -32,6 +34,9 @@ export const useChangeNameForm = () => {
       const { error } = await changeName(values);
 
       if (error?.code === "RATE_LIMITED") return void toastRateLimited();
+
+      // Client validation normally stops this first; show why the server refused
+      if (error?.code === "INVALID_INPUT") return void toast.error(error.message);
 
       if (error) {
         toast.error("Something went wrong 😢", {
