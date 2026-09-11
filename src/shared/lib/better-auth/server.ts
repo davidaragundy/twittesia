@@ -36,7 +36,6 @@ export const auth = betterAuth({
     cookiePrefix: "twittesia",
   },
   plugins: [
-    nextCookies(),
     username(),
     magicLink({
       disableSignUp: true,
@@ -52,6 +51,8 @@ export const auth = betterAuth({
       enabled: process.env.NODE_ENV === "production",
     }),
     // dash(),
+    // Must stay last, so the Set-Cookie headers of every plugin before it reach Next.js
+    nextCookies(),
   ],
   user: {
     additionalFields: {
