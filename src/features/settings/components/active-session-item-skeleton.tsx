@@ -3,7 +3,7 @@ import { Skeleton } from "@/shared/components/ui/skeleton";
 
 export const ActiveSessionItemSkeleton = () => {
   return (
-    <Item variant="outline">
+    <Item>
       <ItemMedia variant="icon">
         <Skeleton className="size-4" />
       </ItemMedia>

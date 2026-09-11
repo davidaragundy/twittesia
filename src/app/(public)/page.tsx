@@ -87,7 +87,7 @@ export default function LandingPage() {
       />
 
       <section className="flex flex-col items-center gap-6 text-center">
-        <Badge variant="outline">Open source</Badge>
+        <Badge variant="ghost">Open source</Badge>
         <h1 className="max-w-2xl text-4xl font-semibold tracking-tight text-balance sm:text-6xl">
           Say it. In 24 hours, it&apos;s gone.
         </h1>
@@ -98,12 +98,7 @@ export default function LandingPage() {
           <Button size="lg" render={<Link href="/sign-up" />} nativeButton={false}>
             Get started
           </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            render={<Link href="/sign-in" />}
-            nativeButton={false}
-          >
+          <Button size="lg" variant="ghost" render={<Link href="/sign-in" />} nativeButton={false}>
             Sign in
           </Button>
         </div>
@@ -115,7 +110,7 @@ export default function LandingPage() {
         </h2>
         <ItemGroup className="grid sm:grid-cols-2">
           {features.map((feature) => (
-            <Item key={feature.title} variant="outline">
+            <Item key={feature.title}>
               <ItemMedia variant="icon">
                 <HugeiconsIcon icon={feature.icon} />
               </ItemMedia>

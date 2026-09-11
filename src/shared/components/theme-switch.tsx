@@ -11,7 +11,7 @@ export function ThemeSwitch() {
 
   return (
     <Button
-      variant="outline"
+      variant="ghost"
       size="icon"
       aria-label="Toggle theme"
       title="Toggle theme"
