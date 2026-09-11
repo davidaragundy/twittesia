@@ -22,7 +22,6 @@ import { FieldContent, FieldDescription, FieldTitle } from "@/shared/components/
 import { Spinner } from "@/shared/components/ui/spinner";
 import { ToggleGroup, ToggleGroupItem } from "@/shared/components/ui/toggle-group";
 
-import { ActiveSessionItemSkeleton } from "@/features/settings/components/active-session-item-skeleton";
 import { ActiveSessions } from "@/features/settings/components/active-sessions";
 import { ChangeEmailForm } from "@/features/settings/components/change-email-form";
 import { ChangeNameForm } from "@/features/settings/components/change-name-form";
@@ -34,13 +33,8 @@ import { SETTINGS_DIALOG_DESCRIPTION } from "@/features/settings/constants/setti
 import { SETTINGS_DIALOG_TITLE } from "@/features/settings/constants/settings-dialog-title";
 import { SETTINGS_SECTIONS } from "@/features/settings/constants/settings-sections";
 import { useSettingsDialog } from "@/features/settings/hooks/use-settings-dialog";
-import type { getSessions } from "@/features/settings/queries/get-sessions";
 
-type Props = {
-  sessions: ReturnType<typeof getSessions>;
-};
-
-export function SettingsDialog({ sessions }: Props) {
+export function SettingsDialog() {
   const { isMobile, isOpen, tab, onOpenChange, onTabChange } = useSettingsDialog();
 
   // The same buttons as the app navigation, so active and hover look identical
@@ -80,9 +74,7 @@ export function SettingsDialog({ sessions }: Props) {
           <GenerateBackupCodesForm />
         </SettingsSection>
         <SettingsSection title="Active sessions" description="Devices signed in to your account.">
-          <Suspense fallback={<ActiveSessionItemSkeleton />}>
-            <ActiveSessions sessions={sessions} />
-          </Suspense>
+          <ActiveSessions />
         </SettingsSection>
       </div>
     );

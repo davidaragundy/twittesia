@@ -2,7 +2,7 @@
 
 import { Button } from "@/shared/components/ui/button";
 
-import { useSocialButtons } from "@/features/auth/hooks/use-social-buttons";
+import { useSocialSignInMutation } from "@/features/auth/hooks/use-social-sign-in-mutation";
 
 type Props = {
   action: "Sign in" | "Sign up";
@@ -11,7 +11,7 @@ type Props = {
 };
 
 export function SocialButtons({ action, disabled = false }: Props) {
-  const { isPending, continueWith } = useSocialButtons({ action });
+  const { mutate: continueWith, isPending } = useSocialSignInMutation({ action });
 
   return (
     <div className="flex justify-center gap-4">

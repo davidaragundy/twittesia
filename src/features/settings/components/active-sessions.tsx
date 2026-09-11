@@ -5,24 +5,27 @@ import { ItemGroup } from "@/shared/components/ui/item";
 import { Spinner } from "@/shared/components/ui/spinner";
 
 import { ActiveSessionItem } from "@/features/settings/components/active-session-item";
+import { ActiveSessionItemSkeleton } from "@/features/settings/components/active-session-item-skeleton";
 import { useActiveSessions } from "@/features/settings/hooks/use-active-sessions";
-import type { getSessions } from "@/features/settings/queries/get-sessions";
 
-interface Props {
-  sessions: ReturnType<typeof getSessions>;
-}
+export const ActiveSessions = () => {
+  const {
+    sessions,
+    isPending,
+    isError,
+    isRevoking,
+    isRetrying,
+    currentSessionId,
+    revokeSession,
+    retry,
+  } = useActiveSessions();
 
-// Suspends until the sessions resolve; the settings dialog shows a skeleton meanwhile
-export const ActiveSessions = ({ sessions: sessionsPromise }: Props) => {
-  const { sessions, isError, isPending, currentSessionId, revokeSession, retry } =
-    useActiveSessions({
-      sessions: sessionsPromise,
-    });
+  if (isPending) return <ActiveSessionItemSkeleton />;
 
   if (isError) {
     return (
-      <Button type="button" variant="outline" onClick={retry} disabled={isPending}>
-        {isPending && <Spinner data-icon="inline-start" />}
+      <Button type="button" variant="outline" onClick={retry} disabled={isRetrying}>
+        {isRetrying && <Spinner data-icon="inline-start" />}
         Retry
       </Button>
     );
@@ -35,8 +38,8 @@ export const ActiveSessions = ({ sessions: sessionsPromise }: Props) => {
           key={item.id}
           session={item}
           isCurrentSession={item.id === currentSessionId}
-          onRevoke={() => revokeSession(item.id)}
-          disabled={isPending}
+          onRevoke={() => revokeSession(item.token)}
+          disabled={isRevoking}
         />
       ))}
     </ItemGroup>

@@ -84,10 +84,9 @@ data access to the browser. _Review._
 
 **CS-11.** `actions/` writes. Every file in it is a server action, marked
 `"use server"`. An action is a public endpoint: it validates its input with a
-schema from `schemas/`, authorizes and rate-limits the caller with
-`authorizeAction`, and returns only what the UI renders. Better-auth does not
-rate-limit its server API, so the limit in `authorizeAction` is the only one an
-action gets. _Review._
+schema from `schemas/`, authenticates and rate-limits the caller, and returns
+only what the UI renders. Authentication and settings changes go through
+`authClient` instead, which better-auth rate-limits. _Review._
 
 **CS-12.** An action may call a query. A query may never write. A query runs
 while a page renders, so a render that is repeated, prerendered or later cached
@@ -119,10 +118,12 @@ exporting something only so it can live elsewhere — until a second file needs
 one, at which point it moves to `utils/`. _Review._
 
 **CS-17.** A component that has real logic — state, effects, data fetching,
-requests, non-trivial computation — moves that logic into a hook named after
-it: `<PostForm>` and `usePostForm`. The requests a component makes live in that
-hook, not in a separate hook per request. A component without logic does not get
-a hook that returns its props unchanged. _Review._
+non-trivial computation — moves that logic into a hook named after it:
+`<PostForm>` and `usePostForm`. Each request the browser makes lives in its own
+TanStack Query hook, `use<Name>Mutation` or `use<Name>Query`, which owns its
+pending state, errors, optimistic updates and cache invalidation; the
+component's hook uses it. A component without logic does not get a hook that
+returns its props unchanged. _Review._
 
 **CS-18.** Files and folders under `features/` and `shared/` are kebab-case.
 `app/` is exempt: Next dictates those names, and its dynamic segments and route
@@ -148,9 +149,10 @@ the exception. _Review._
 **CS-22.** A call that can throw — a database query, a server-side `auth.api`
 call, a browser API such as the clipboard — goes through `tryCatch` from
 `@/shared/utils/try-catch`, and its failure is handled where it happens.
-`authClient` calls resolve with an error instead of throwing, and their codes are
-read with `getAuthErrorCode`, which types them to the codes the auth server can
-return. _Review._
+`authClient` calls resolve with an error instead of throwing: a mutation or query
+function passes them through `unwrapAuthResponse`, so TanStack Query sees the
+failure, and reads the code with `getAuthErrorCode`, which types it to the codes
+the auth server can return. _Review._
 
 ## What the tooling actually does
 

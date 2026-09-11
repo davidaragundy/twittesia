@@ -10,16 +10,17 @@ import { APP_NAV_LINKS } from "@/shared/constants/app-nav-links";
 
 import { NavUser } from "@/features/auth/components/nav-user";
 import { NavUserSkeleton } from "@/features/auth/components/nav-user-skeleton";
+import { SessionGuard } from "@/features/auth/components/session-guard";
 import { SessionProvider } from "@/features/auth/components/session-provider";
 import { SignOutNavButton } from "@/features/auth/components/sign-out-nav-button";
 import { ProfileNavLink } from "@/features/profiles/components/profile-nav-link";
-import { SettingsDialogWithSessions } from "@/features/settings/components/settings-dialog-with-sessions";
+import { SettingsDialog } from "@/features/settings/components/settings-dialog";
 import { SettingsMenuItem } from "@/features/settings/components/settings-menu-item";
 import { SettingsNavButton } from "@/features/settings/components/settings-nav-button";
 
 // Not async: nothing here waits for the request, so the whole shell prerenders. Each part
 // that needs the session reads it inside its own <Suspense> boundary; the reads share one
-// private cache entry, which the App Shell of every route carries per session.
+// lookup per request.
 export default function Layout({
   children,
 }: Readonly<{
@@ -76,8 +77,12 @@ export default function Layout({
       </div>
 
       <Suspense>
+        <SessionGuard />
+      </Suspense>
+
+      <Suspense>
         <SessionProvider>
-          <SettingsDialogWithSessions />
+          <SettingsDialog />
         </SessionProvider>
       </Suspense>
     </>

@@ -1,21 +1,11 @@
-import { useTransition } from "react";
-import { toast } from "sonner";
-
-import { signOut as signOutAction } from "@/features/auth/actions/sign-out";
+import { useSignOutMutation } from "@/features/auth/hooks/use-sign-out-mutation";
 
 export const useSignOut = () => {
-  const [isSigningOut, startTransition] = useTransition();
+  const { mutate, isPending } = useSignOutMutation();
 
-  // On success the action redirects to /sign-in, so only a failure comes back
   const signOut = () => {
-    if (isSigningOut) return;
-
-    startTransition(async () => {
-      const { error } = await signOutAction();
-
-      if (error) toast.error("Failed to sign out. Please try again later.");
-    });
+    if (!isPending) mutate();
   };
 
-  return { signOut, isSigningOut };
+  return { signOut, isSigningOut: isPending };
 };
