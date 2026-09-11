@@ -151,8 +151,10 @@ call, a browser API such as the clipboard — goes through `tryCatch` from
 `@/shared/utils/try-catch`, and its failure is handled where it happens.
 `authClient` calls resolve with an error instead of throwing: a mutation or query
 function passes them through `unwrapAuthResponse`, so TanStack Query sees the
-failure, and reads the code with `getAuthErrorCode`, which types it to the codes
-the auth server can return. _Review._
+failure, and every `authClient` error is dispatched with `handleAuthError`, whose
+handlers are keyed by the codes the auth server can return. A rate-limited
+request (429) is shown once, by `authClient`'s global handler, and nothing else
+handles it; queries don't retry a 4xx response. _Review._
 
 ## What the tooling actually does
 

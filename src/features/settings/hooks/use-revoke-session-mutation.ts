@@ -1,10 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants/rate-limit-error-code";
-
 import { authClient } from "@/features/auth/lib/auth-client";
 import type { AuthClientError } from "@/features/auth/types/auth-client-error";
+import { handleAuthError } from "@/features/auth/utils/handle-auth-error";
 import { unwrapAuthResponse } from "@/features/auth/utils/unwrap-auth-response";
 import { ACTIVE_SESSIONS_QUERY_KEY } from "@/features/settings/constants/active-sessions-query-key";
 import type { ActiveSession } from "@/features/settings/types/active-session";
@@ -29,9 +28,13 @@ export const useRevokeSessionMutation = () => {
     onError: (error: AuthClientError, _token, context) => {
       queryClient.setQueryData(ACTIVE_SESSIONS_QUERY_KEY, context?.previous);
 
-      if (error.status === RATE_LIMIT_ERROR_CODE) return;
-
-      toast.error("Couldn't revoke the session", { description: "Please try again in a moment." });
+      handleAuthError(error, {
+        fallback: () => {
+          toast.error("Couldn't revoke the session", {
+            description: "Please try again in a moment.",
+          });
+        },
+      });
     },
     onSettled: () => queryClient.invalidateQueries({ queryKey: ACTIVE_SESSIONS_QUERY_KEY }),
   });

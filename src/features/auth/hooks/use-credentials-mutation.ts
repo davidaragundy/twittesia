@@ -3,12 +3,10 @@ import { useRouter } from "next/navigation";
 import type { UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
-import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants/rate-limit-error-code";
-
 import { authClient } from "@/features/auth/lib/auth-client";
 import type { AuthClientError } from "@/features/auth/types/auth-client-error";
 import type { CredentialsFormValues } from "@/features/auth/types/credentials-form-values";
-import { getAuthErrorCode } from "@/features/auth/utils/get-auth-error-code";
+import { handleAuthError } from "@/features/auth/utils/handle-auth-error";
 import { unwrapAuthResponse } from "@/features/auth/utils/unwrap-auth-response";
 
 interface Props {
@@ -27,24 +25,20 @@ export const useCredentialsMutation = ({ form }: Props) => {
       router.push(needsTwoFactor ? "/two-factor" : "/home");
     },
     onError: (error: AuthClientError) => {
-      if (error.status === RATE_LIMIT_ERROR_CODE) return;
-
-      switch (getAuthErrorCode(error)) {
-        case "INVALID_EMAIL_OR_PASSWORD":
+      handleAuthError(error, {
+        INVALID_EMAIL_OR_PASSWORD: () => {
           form.setError("email", { message: "Invalid email or password." });
           form.setError("password", { message: "Invalid email or password." });
-          return;
-
-        case "EMAIL_NOT_VERIFIED":
+        },
+        EMAIL_NOT_VERIFIED: () => {
           toast.error("Verify your email to sign in", {
             description: "Check your inbox, or your spam folder, for the verification email.",
           });
-          return;
-
-        default:
+        },
+        fallback: () => {
           toast.error("Something went wrong", { description: "Please try again in a moment." });
-          return;
-      }
+        },
+      });
     },
   });
 };

@@ -2,11 +2,9 @@ import { useMutation } from "@tanstack/react-query";
 import type { UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
-import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants/rate-limit-error-code";
-
 import { authClient } from "@/features/auth/lib/auth-client";
 import type { AuthClientError } from "@/features/auth/types/auth-client-error";
-import { getAuthErrorCode } from "@/features/auth/utils/get-auth-error-code";
+import { handleAuthError } from "@/features/auth/utils/handle-auth-error";
 import { unwrapAuthResponse } from "@/features/auth/utils/unwrap-auth-response";
 import type { GenerateBackupCodesFormValues } from "@/features/settings/types/generate-backup-codes-form-values";
 import { downloadBackupCodes } from "@/features/settings/utils/download-backup-codes";
@@ -26,18 +24,15 @@ export const useGenerateBackupCodesMutation = ({ form }: Props) =>
       form.reset();
     },
     onError: (error: AuthClientError) => {
-      if (error.status === RATE_LIMIT_ERROR_CODE) return;
-
-      switch (getAuthErrorCode(error)) {
-        case "INVALID_PASSWORD":
+      handleAuthError(error, {
+        INVALID_PASSWORD: () => {
           form.setError("currentPassword", { message: "Invalid password" });
-          return;
-
-        default:
+        },
+        fallback: () => {
           toast.error("Couldn't generate backup codes", {
             description: "Please try again in a moment.",
           });
-          return;
-      }
+        },
+      });
     },
   });
