@@ -52,7 +52,7 @@ export function CredentialsForm() {
                 <FieldLabel htmlFor="credentials-form-password">Password</FieldLabel>
                 <Link
                   href="/forgot-password"
-                  className="ml-auto text-sm underline-offset-4 hover:underline"
+                  className="ml-auto text-xs underline-offset-4 hover:underline"
                 >
                   Forgot your password?
                 </Link>
@@ -65,6 +65,7 @@ export function CredentialsForm() {
                   {...field}
                   id="credentials-form-password"
                   type="password"
+                  placeholder="********"
                   aria-invalid={fieldState.invalid}
                   autoComplete="current-password"
                 />
