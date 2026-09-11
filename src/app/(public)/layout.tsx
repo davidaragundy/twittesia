@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import Link from "next/link";
 
 import { SiteHeader } from "@/shared/components/site-header";
@@ -29,7 +30,9 @@ export default function PublicLayout({
 
       <footer className="py-16">
         <div className="flex flex-col-reverse items-center justify-between gap-4 text-sm text-muted-foreground sm:flex-row">
-          <p>© {new Date().getFullYear()} Twittesia. Open source.</p>
+          <p>
+            © <CurrentYear /> Twittesia. Open source.
+          </p>
           <nav aria-label="Legal and source" className="flex items-center gap-1">
             <Button variant="link" size="sm" render={<Link href="/terms" />} nativeButton={false}>
               Terms
@@ -50,4 +53,12 @@ export default function PublicLayout({
       </footer>
     </div>
   );
+}
+
+// Part of the static shell, refreshed daily so the year rolls over on its own
+async function CurrentYear() {
+  "use cache";
+  cacheLife("days");
+
+  return new Date().getFullYear();
 }
