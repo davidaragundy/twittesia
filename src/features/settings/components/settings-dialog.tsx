@@ -61,16 +61,11 @@ export function SettingsDialog({ sessions }: Props) {
 
   const content =
     tab === "account" ? (
+      // Each of these forms is a single field, so its own label and description head it
       <div className="flex flex-col gap-14">
-        <SettingsSection title="Name" description="How you appear to other people.">
-          <ChangeNameForm />
-        </SettingsSection>
-        <SettingsSection title="Username" description="Your unique handle.">
-          <ChangeUsernameForm />
-        </SettingsSection>
-        <SettingsSection title="Email" description="Where we send account emails.">
-          <ChangeEmailForm />
-        </SettingsSection>
+        <ChangeNameForm />
+        <ChangeUsernameForm />
+        <ChangeEmailForm />
       </div>
     ) : (
       <div className="flex flex-col gap-14">
