@@ -27,7 +27,7 @@ export const ActiveSessionItem = ({ session, isCurrentSession, isSessionsFetchin
   const { handleRevokeSession } = useActiveSessionItem();
 
   return (
-    <Item variant="outline">
+    <Item>
       <ItemMedia variant="icon">
         <HugeiconsIcon icon={ComputerIcon} />
       </ItemMedia>
@@ -45,7 +45,7 @@ export const ActiveSessionItem = ({ session, isCurrentSession, isSessionsFetchin
         <ItemActions>
           <Button
             type="button"
-            variant="outline"
+            variant="ghost"
             size="sm"
             disabled={isSessionsFetching}
             onClick={() => handleRevokeSession(session.token)}
