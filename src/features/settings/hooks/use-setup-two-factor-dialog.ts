@@ -20,7 +20,7 @@ export const useSetupTwoFactorDialog = ({ totpURI, closeDialog }: Props) => {
 
   const key = totpURI ? new URL(totpURI).searchParams.get("secret")! : "";
 
-  const { mutate, isPending, isError } = useVerifyTotpMutation({
+  const { mutate, isPending } = useVerifyTotpMutation({
     form,
     closeDialog,
   });
@@ -34,7 +34,6 @@ export const useSetupTwoFactorDialog = ({ totpURI, closeDialog }: Props) => {
     form,
     onSubmit,
     isPending,
-    isError,
     key,
   };
 };

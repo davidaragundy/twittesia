@@ -19,10 +19,10 @@ import { PasswordStrengthIndicator } from "@/features/auth/components/password-s
 import { useChangePasswordForm } from "@/features/settings/hooks/use-change-password-form";
 
 export const ChangePasswordForm = () => {
-  const { form, onSubmit, isPending, isSessionSuccess } = useChangePasswordForm();
+  const { form, onSubmit, isPending } = useChangePasswordForm();
 
   const { errors, isDirty } = form.formState;
-  const canSubmit = isSessionSuccess && isDirty && !errors.newPassword;
+  const canSubmit = isDirty && !errors.newPassword;
 
   return (
     <form id="change-password-form" onSubmit={form.handleSubmit(onSubmit)}>

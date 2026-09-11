@@ -13,22 +13,12 @@ import {
   FieldLabel,
 } from "@/shared/components/ui/field";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/shared/components/ui/input-group";
-import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Spinner } from "@/shared/components/ui/spinner";
 
 import { useChangeUsernameForm } from "@/features/settings/hooks/use-change-username-form";
 
 export function ChangeUsernameForm() {
-  const {
-    form,
-    canSubmit,
-    onSubmit,
-    isPending,
-    isSessionLoading,
-    isSessionError,
-    refetchSession,
-    isSessionRefetching,
-  } = useChangeUsernameForm();
+  const { form, canSubmit, onSubmit, isPending } = useChangeUsernameForm();
 
   return (
     <form id="change-username-form" onSubmit={form.handleSubmit(onSubmit)}>
@@ -40,22 +30,18 @@ export function ChangeUsernameForm() {
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="change-username-form-username">Username</FieldLabel>
-              {isSessionLoading ? (
-                <Skeleton className="h-10 w-full" />
-              ) : (
-                <InputGroup>
-                  <InputGroupAddon>
-                    <HugeiconsIcon icon={AtIcon} />
-                  </InputGroupAddon>
-                  <InputGroupInput
-                    {...field}
-                    id="change-username-form-username"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="davidaragundy"
-                    autoComplete="username"
-                  />
-                </InputGroup>
-              )}
+              <InputGroup>
+                <InputGroupAddon>
+                  <HugeiconsIcon icon={AtIcon} />
+                </InputGroupAddon>
+                <InputGroupInput
+                  {...field}
+                  id="change-username-form-username"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="davidaragundy"
+                  autoComplete="username"
+                />
+              </InputGroup>
               <FieldDescription>
                 Letters, numbers and underscores. It is how people find and mention you.
               </FieldDescription>
@@ -64,17 +50,10 @@ export function ChangeUsernameForm() {
           )}
         />
         <Field orientation="horizontal">
-          {isSessionError ? (
-            <Button type="button" variant="outline" onClick={() => refetchSession()}>
-              {isSessionRefetching && <Spinner data-icon="inline-start" />}
-              Retry
-            </Button>
-          ) : (
-            <Button type="submit" form="change-username-form" disabled={!canSubmit || isPending}>
-              {isPending && <Spinner data-icon="inline-start" />}
-              Save username
-            </Button>
-          )}
+          <Button type="submit" form="change-username-form" disabled={!canSubmit || isPending}>
+            {isPending && <Spinner data-icon="inline-start" />}
+            Save username
+          </Button>
         </Field>
       </FieldGroup>
     </form>

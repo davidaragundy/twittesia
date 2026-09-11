@@ -1,14 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { useSession } from "@/features/auth/hooks/use-session";
 import { useChangePasswordMutation } from "@/features/settings/hooks/use-change-password-mutation";
 import { changePasswordFormSchema } from "@/features/settings/schemas/change-password-form-schema";
 import type { ChangePasswordFormValues } from "@/features/settings/types";
 
 export const useChangePasswordForm = () => {
-  const { isSuccess: isSessionSuccess } = useSession();
-
   const form = useForm<ChangePasswordFormValues>({
     mode: "onChange",
     resolver: zodResolver(changePasswordFormSchema),
@@ -18,7 +15,7 @@ export const useChangePasswordForm = () => {
     },
   });
 
-  const { mutate, isPending, isError } = useChangePasswordMutation({
+  const { mutate, isPending } = useChangePasswordMutation({
     form,
   });
 
@@ -28,7 +25,5 @@ export const useChangePasswordForm = () => {
     form,
     onSubmit,
     isPending,
-    isError,
-    isSessionSuccess,
   };
 };

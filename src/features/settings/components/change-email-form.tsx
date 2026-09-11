@@ -13,22 +13,12 @@ import {
   FieldLabel,
 } from "@/shared/components/ui/field";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/shared/components/ui/input-group";
-import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Spinner } from "@/shared/components/ui/spinner";
 
 import { useChangeEmailForm } from "@/features/settings/hooks/use-change-email-form";
 
 export function ChangeEmailForm() {
-  const {
-    form,
-    canSubmit,
-    onSubmit,
-    isPending,
-    isSessionLoading,
-    isSessionError,
-    refetchSession,
-    isSessionRefetching,
-  } = useChangeEmailForm();
+  const { form, canSubmit, onSubmit, isPending } = useChangeEmailForm();
 
   return (
     <form id="change-email-form" onSubmit={form.handleSubmit(onSubmit)}>
@@ -40,23 +30,19 @@ export function ChangeEmailForm() {
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="change-email-form-email">Email</FieldLabel>
-              {isSessionLoading ? (
-                <Skeleton className="h-10 w-full" />
-              ) : (
-                <InputGroup>
-                  <InputGroupAddon>
-                    <HugeiconsIcon icon={Mail01Icon} />
-                  </InputGroupAddon>
-                  <InputGroupInput
-                    {...field}
-                    id="change-email-form-email"
-                    type="email"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="david@aragundy.com"
-                    autoComplete="email"
-                  />
-                </InputGroup>
-              )}
+              <InputGroup>
+                <InputGroupAddon>
+                  <HugeiconsIcon icon={Mail01Icon} />
+                </InputGroupAddon>
+                <InputGroupInput
+                  {...field}
+                  id="change-email-form-email"
+                  type="email"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="david@aragundy.com"
+                  autoComplete="email"
+                />
+              </InputGroup>
               <FieldDescription>
                 We use it to contact you. It is never shown publicly.
               </FieldDescription>
@@ -65,17 +51,10 @@ export function ChangeEmailForm() {
           )}
         />
         <Field orientation="horizontal">
-          {isSessionError ? (
-            <Button type="button" variant="outline" onClick={() => refetchSession()}>
-              {isSessionRefetching && <Spinner data-icon="inline-start" />}
-              Retry
-            </Button>
-          ) : (
-            <Button type="submit" form="change-email-form" disabled={!canSubmit || isPending}>
-              {isPending && <Spinner data-icon="inline-start" />}
-              Save email
-            </Button>
-          )}
+          <Button type="submit" form="change-email-form" disabled={!canSubmit || isPending}>
+            {isPending && <Spinner data-icon="inline-start" />}
+            Save email
+          </Button>
         </Field>
       </FieldGroup>
     </form>

@@ -7,14 +7,7 @@ import { changeUsernameFormSchema } from "@/features/settings/schemas/change-use
 import type { ChangeUsernameFormValues } from "@/features/settings/types";
 
 export const useChangeUsernameForm = () => {
-  const {
-    data: session,
-    isSuccess: isSessionSuccess,
-    isLoading: isSessionLoading,
-    isError: isSessionError,
-    refetch: refetchSession,
-    isRefetching: isSessionRefetching,
-  } = useSession();
+  const session = useSession();
 
   const form = useForm<ChangeUsernameFormValues>({
     resolver: zodResolver(changeUsernameFormSchema),
@@ -23,7 +16,7 @@ export const useChangeUsernameForm = () => {
     },
   });
 
-  const { mutate, isPending, isError } = useChangeUsernameMutation({
+  const { mutate, isPending } = useChangeUsernameMutation({
     form,
   });
 
@@ -39,12 +32,5 @@ export const useChangeUsernameForm = () => {
     canSubmit,
     onSubmit,
     isPending,
-    isError,
-    session,
-    isSessionSuccess,
-    isSessionLoading,
-    isSessionError,
-    refetchSession,
-    isSessionRefetching,
   };
 };

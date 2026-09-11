@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { Suspense, use } from "react";
+import { Suspense } from "react";
 
 import { ResetPasswordForm } from "@/features/auth/components/reset-password-form";
 
@@ -9,18 +9,21 @@ export const metadata: Metadata = {
   description: "Reset your password",
 };
 
-export default function ResetPasswordPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}) {
-  const { token } = use(searchParams);
-
-  if (!token) return redirect("/forgot-password");
-
+// The page itself prerenders; only the token check waits for the request
+export default function ResetPasswordPage({ searchParams }: PageProps<"/reset-password">) {
   return (
     <Suspense>
-      <ResetPasswordForm />
+      <ResetPasswordGate searchParams={searchParams} />
     </Suspense>
   );
+}
+
+async function ResetPasswordGate({
+  searchParams,
+}: Pick<PageProps<"/reset-password">, "searchParams">) {
+  const { token } = await searchParams;
+
+  if (!token) redirect("/forgot-password");
+
+  return <ResetPasswordForm />;
 }

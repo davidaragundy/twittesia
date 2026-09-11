@@ -7,14 +7,7 @@ import { changeNameFormSchema } from "@/features/settings/schemas/change-name-fo
 import type { ChangeNameFormValues } from "@/features/settings/types";
 
 export const useChangeNameForm = () => {
-  const {
-    data: session,
-    isSuccess: isSessionSuccess,
-    isLoading: isSessionLoading,
-    isError: isSessionError,
-    refetch: refetchSession,
-    isRefetching: isSessionRefetching,
-  } = useSession();
+  const session = useSession();
 
   const form = useForm<ChangeNameFormValues>({
     resolver: zodResolver(changeNameFormSchema),
@@ -23,7 +16,7 @@ export const useChangeNameForm = () => {
     },
   });
 
-  const { mutate, isPending, isError } = useChangeNameMutation({ form });
+  const { mutate, isPending } = useChangeNameMutation({ form });
 
   const { isDirty, isValid } = form.formState;
   const name = useWatch({ control: form.control, name: "name" });
@@ -37,11 +30,5 @@ export const useChangeNameForm = () => {
     canSubmit,
     onSubmit,
     isPending,
-    isError,
-    isSessionSuccess,
-    isSessionLoading,
-    isSessionError,
-    refetchSession,
-    isSessionRefetching,
   };
 };

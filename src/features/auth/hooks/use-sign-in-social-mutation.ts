@@ -1,33 +1,29 @@
-import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { toast } from "sonner";
 
 import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants";
 import { authClient } from "@/shared/lib/better-auth/client";
 
-import type { AuthClientError } from "@/features/auth/types";
+type Provider = "google" | "github";
 
 export const useSignInSocialMutation = () => {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
-  return useMutation({
-    mutationFn: async ({ provider }: { provider: "google" | "github" }) => {
-      const { data, error } = await authClient.signIn.social({
-        provider,
-        callbackURL: "/home",
-      });
+  const mutate = ({ provider }: { provider: Provider }) =>
+    startTransition(async () => {
+      const { data, error } = await authClient.signIn.social({ provider, callbackURL: "/home" });
 
-      if (error) return Promise.reject(error);
+      if (error) {
+        if (error.status === RATE_LIMIT_ERROR_CODE) return;
 
-      return data;
-    },
-    onSuccess: (data) => {
-      if (data?.redirect) router.push(data.url as string);
-    },
-    onError: (error: AuthClientError, { provider }) => {
-      if (error.status === RATE_LIMIT_ERROR_CODE) return;
+        toast.error(`Failed to sign in with ${provider} 😢`);
+        return;
+      }
 
-      toast.error(`Failed to sign in with ${provider} 😢`);
-    },
-  });
+      if (data?.redirect) startTransition(() => router.push(data.url as string));
+    });
+
+  return { mutate, isPending };
 };

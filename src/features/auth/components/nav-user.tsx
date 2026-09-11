@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  ArrowReloadHorizontalIcon,
-  Logout01Icon,
-  UnfoldMoreIcon,
-} from "@hugeicons/core-free-icons";
+import { Logout01Icon, UnfoldMoreIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
 import { NavButton } from "@/shared/components/nav-button";
@@ -19,7 +15,6 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
-import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Spinner } from "@/shared/components/ui/spinner";
 
 import { useNavUser } from "@/features/auth/hooks/use-nav-user";
@@ -32,28 +27,9 @@ type Props = {
 
 export function NavUser({ menuItems }: Props) {
   const { handleSignOut, isSigningOut } = useNavUser();
-  const { data: session, isLoading, isError, isRefetching, refetch } = useSession();
+  const session = useSession();
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center gap-3 px-4">
-        <Skeleton className="size-8 rounded-full" />
-        <div className="flex flex-1 flex-col gap-1.5">
-          <Skeleton className="h-3.5 w-24" />
-          <Skeleton className="h-3 w-16" />
-        </div>
-      </div>
-    );
-  }
-
-  if (isError || !session) {
-    return (
-      <NavButton onClick={() => refetch()} disabled={isRefetching}>
-        {isRefetching ? <Spinner /> : <HugeiconsIcon icon={ArrowReloadHorizontalIcon} />}
-        Retry
-      </NavButton>
-    );
-  }
+  if (!session) return null;
 
   const { user } = session;
   const identity = (

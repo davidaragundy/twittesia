@@ -14,7 +14,6 @@ import {
   FieldLabel,
 } from "@/shared/components/ui/field";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/shared/components/ui/input-group";
-import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Spinner } from "@/shared/components/ui/spinner";
 import { Switch } from "@/shared/components/ui/switch";
 
@@ -27,10 +26,6 @@ export const ToggleTwoFactorForm = () => {
     form,
     onSubmit,
     isPending,
-    isSessionLoading,
-    isSessionError,
-    refetchSession,
-    isSessionRefetching,
     totpURI,
     setTotpURI,
     backupCodes,
@@ -66,23 +61,14 @@ export const ToggleTwoFactorForm = () => {
                     Ask for a one-time password from an authenticator app when you sign in.
                   </FieldDescription>
                 </FieldContent>
-                {isSessionLoading && <Skeleton className="h-5 w-9" />}
-                {isSessionError && (
-                  <Button type="button" variant="outline" onClick={() => refetchSession()}>
-                    {isSessionRefetching && <Spinner data-icon="inline-start" />}
-                    Retry
-                  </Button>
-                )}
-                {!isSessionLoading && !isSessionError && (
-                  <Switch
-                    id="toggle-two-factor-form-enable"
-                    name={field.name}
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    disabled={isPending}
-                    aria-invalid={fieldState.invalid}
-                  />
-                )}
+                <Switch
+                  id="toggle-two-factor-form-enable"
+                  name={field.name}
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  disabled={isPending}
+                  aria-invalid={fieldState.invalid}
+                />
               </Field>
             )}
           />

@@ -1,17 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
+import { use } from "react";
 
-import { authClient } from "@/shared/lib/better-auth/client";
+import { SessionContext } from "@/features/auth/utils/session-context";
 
-import { SESSION_QUERY_KEY } from "@/features/auth/lib/query-keys";
+// Suspends until the session resolves: call it below a <Suspense> boundary
+export const useSession = () => {
+  const session = use(SessionContext);
 
-export const useSession = () =>
-  useQuery({
-    queryKey: [SESSION_QUERY_KEY],
-    queryFn: async () => {
-      const { data, error } = await authClient.getSession();
+  if (!session) throw new Error("useSession must be used within a SessionProvider.");
 
-      if (error) return Promise.reject(error);
-
-      return data;
-    },
-  });
+  return use(session);
+};

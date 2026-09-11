@@ -1,12 +1,12 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
 import { RATE_LIMIT_ERROR_CODE } from "@/shared/constants";
 import { authClient } from "@/shared/lib/better-auth/client";
 
-import { SESSION_QUERY_KEY } from "@/features/auth/lib/query-keys";
-import type { AuthClientError, Session } from "@/features/auth/types";
+import type { AuthClientError } from "@/features/auth/types";
 import type { ChangeNameFormValues } from "@/features/settings/types";
 
 interface Props {
@@ -14,45 +14,30 @@ interface Props {
 }
 
 export const useChangeNameMutation = ({ form }: Props) => {
-  const queryClient = useQueryClient();
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
-  return useMutation({
-    mutationFn: async (values: ChangeNameFormValues) => {
-      const { error } = await authClient.updateUser({
-        name: values.name,
-      });
+  const handleError = (error: AuthClientError) => {
+    if (error.status === RATE_LIMIT_ERROR_CODE) return;
 
-      if (error) return Promise.reject(error);
-    },
-    onSuccess: (_data, values) => {
-      toast.success("Name updated successfully 🎉", {
-        duration: 10_000,
-      });
+    toast.error("Something went wrong 😢", {
+      description: "Please try again later",
+      duration: 10_000,
+    });
+  };
 
-      queryClient.setQueryData([SESSION_QUERY_KEY], (old: Session) => ({
-        ...old,
-        user: {
-          ...old.user,
-          name: values.name,
-        },
-      }));
+  const mutate = (values: ChangeNameFormValues) =>
+    startTransition(async () => {
+      const { error } = await authClient.updateUser({ name: values.name });
 
+      if (error) return handleError(error);
+
+      toast.success("Name updated successfully 🎉", { duration: 10_000 });
       form.reset({ name: values.name });
-    },
-    onError: (error: AuthClientError) => {
-      if (error.status === RATE_LIMIT_ERROR_CODE) return;
 
-      switch (error.code) {
-        default:
-          toast.error("Something went wrong 😢", {
-            description: "Please try again later",
-            duration: 10_000,
-          });
-          return;
-      }
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: [SESSION_QUERY_KEY] });
-    },
-  });
+      // Re-renders the server parts with the new name, inside this transition
+      startTransition(() => router.refresh());
+    });
+
+  return { mutate, isPending };
 };

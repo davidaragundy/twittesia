@@ -1,5 +1,5 @@
-import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -14,32 +14,30 @@ interface Props {
 
 export const useTwoFactorMutation = ({ form }: Props) => {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
-  return useMutation({
-    mutationFn: async (values: TwoFactorFormValues) => {
-      const { error } = await authClient.twoFactor.verifyTotp({
-        code: values.code,
-      });
+  const handleError = (error: AuthClientError) => {
+    if (error.status === RATE_LIMIT_ERROR_CODE) return;
 
-      if (error) return Promise.reject(error);
-    },
-    onSuccess: () => {
-      router.push("/home");
-    },
-    onError: (error: AuthClientError) => {
-      if (error.status === RATE_LIMIT_ERROR_CODE) return;
+    switch (error.code) {
+      case "INVALID_TWO_FACTOR_AUTHENTICATION":
+        form.setError("code", { message: "Invalid one-time password" });
+        return;
 
-      switch (error.code) {
-        case "INVALID_TWO_FACTOR_AUTHENTICATION":
-          form.setError("code", {
-            message: "Invalid one-time password",
-          });
-          return;
+      default:
+        toast.error("An error occurred, please try again later 😢");
+        return;
+    }
+  };
 
-        default:
-          toast.error("An error occurred, please try again later 😢");
-          return;
-      }
-    },
-  });
+  const mutate = (values: TwoFactorFormValues) =>
+    startTransition(async () => {
+      const { error } = await authClient.twoFactor.verifyTotp({ code: values.code });
+
+      if (error) return handleError(error);
+
+      startTransition(() => router.push("/home"));
+    });
+
+  return { mutate, isPending };
 };

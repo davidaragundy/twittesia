@@ -1,13 +1,27 @@
-import { ProfilePage } from "@/features/profile/components/profile-page";
+import type { Metadata } from "next";
+import { Suspense } from "react";
 
-export async function generateMetadata({ params }: { params: Promise<{ username: string }> }) {
+import { ProfilePage } from "@/features/profile/components/profile-page";
+import { ProfilePageSkeleton } from "@/features/profile/components/profile-page-skeleton";
+
+export async function generateMetadata({ params }: PageProps<"/[username]">): Promise<Metadata> {
   const { username } = await params;
+
   return {
     title: `Twittesia | Profile (@${username})`,
   };
 }
 
-export default async function ProfileRoute({ params }: { params: Promise<{ username: string }> }) {
+// The username is only known per request, so the profile streams in behind a skeleton
+export default function ProfileRoute({ params }: PageProps<"/[username]">) {
+  return (
+    <Suspense fallback={<ProfilePageSkeleton />}>
+      <ProfileGate params={params} />
+    </Suspense>
+  );
+}
+
+async function ProfileGate({ params }: Pick<PageProps<"/[username]">, "params">) {
   const { username } = await params;
 
   return <ProfilePage username={username} />;
