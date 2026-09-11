@@ -51,6 +51,7 @@ export const ChangePasswordForm = () => {
               {(fieldState.isDirty || fieldState.isTouched) && (
                 <PasswordStrengthIndicator password={field.value} />
               )}
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
