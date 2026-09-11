@@ -1,6 +1,5 @@
 "use client";
 
-import { SecurityLockIcon, UserIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Suspense } from "react";
 
@@ -31,19 +30,14 @@ import { ChangePasswordForm } from "@/features/settings/components/change-passwo
 import { ChangeUsernameForm } from "@/features/settings/components/change-username-form";
 import { GenerateBackupCodesForm } from "@/features/settings/components/generate-backup-codes-form";
 import { ToggleTwoFactorForm } from "@/features/settings/components/toggle-two-factor-form";
+import { SETTINGS_DIALOG_DESCRIPTION } from "@/features/settings/constants/settings-dialog-description";
+import { SETTINGS_DIALOG_TITLE } from "@/features/settings/constants/settings-dialog-title";
+import { SETTINGS_SECTIONS } from "@/features/settings/constants/settings-sections";
 import { useSettingsDialog } from "@/features/settings/hooks/use-settings-dialog";
-import type { Sessions } from "@/features/settings/types";
-
-const TITLE = "Settings";
-const DESCRIPTION = "Manage your account and how you sign in.";
-
-const SECTIONS = [
-  { value: "account", label: "Account", icon: UserIcon },
-  { value: "security", label: "Security", icon: SecurityLockIcon },
-] as const;
+import type { getSessions } from "@/features/settings/queries/get-sessions";
 
 type Props = {
-  sessions: Promise<Sessions | null>;
+  sessions: ReturnType<typeof getSessions>;
 };
 
 export function SettingsDialog({ sessions }: Props) {
@@ -52,7 +46,7 @@ export function SettingsDialog({ sessions }: Props) {
   // The same buttons as the app navigation, so active and hover look identical
   const navigation = (
     <nav aria-label="Settings sections" className="flex flex-col gap-2">
-      {SECTIONS.map((section) => (
+      {SETTINGS_SECTIONS.map((section) => (
         <NavButton
           key={section.value}
           isActive={tab === section.value}
@@ -103,8 +97,8 @@ export function SettingsDialog({ sessions }: Props) {
       <Drawer open={isOpen} onOpenChange={onOpenChange}>
         <DrawerContent>
           <DrawerHeader>
-            <DrawerTitle>{TITLE}</DrawerTitle>
-            <DrawerDescription>{DESCRIPTION}</DrawerDescription>
+            <DrawerTitle>{SETTINGS_DIALOG_TITLE}</DrawerTitle>
+            <DrawerDescription>{SETTINGS_DIALOG_DESCRIPTION}</DrawerDescription>
           </DrawerHeader>
           <div className="flex min-h-0 flex-col gap-10 overflow-y-auto px-4 pt-4 pb-12">
             <ToggleGroup
@@ -113,7 +107,7 @@ export function SettingsDialog({ sessions }: Props) {
               onValueChange={(value) => onTabChange(value[0])}
               className="self-center"
             >
-              {SECTIONS.map((section) => (
+              {SETTINGS_SECTIONS.map((section) => (
                 <ToggleGroupItem key={section.value} value={section.value}>
                   <HugeiconsIcon icon={section.icon} />
                   {section.label}
@@ -131,8 +125,8 @@ export function SettingsDialog({ sessions }: Props) {
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-3xl">
         <DialogHeader>
-          <DialogTitle>{TITLE}</DialogTitle>
-          <DialogDescription>{DESCRIPTION}</DialogDescription>
+          <DialogTitle>{SETTINGS_DIALOG_TITLE}</DialogTitle>
+          <DialogDescription>{SETTINGS_DIALOG_DESCRIPTION}</DialogDescription>
         </DialogHeader>
         <div className="flex gap-14">
           <div className="w-44 shrink-0">{navigation}</div>

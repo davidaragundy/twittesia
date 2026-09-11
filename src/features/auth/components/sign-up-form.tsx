@@ -24,8 +24,7 @@ import { TermsNotice } from "@/features/auth/components/terms-notice";
 import { useSignUpForm } from "@/features/auth/hooks/use-sign-up-form";
 
 export function SignUpForm({ className, ...props }: React.ComponentProps<"div">) {
-  const { form, onSubmit, isPending, handleSignUpWithGithub, handleSignUpWithGoogle } =
-    useSignUpForm();
+  const { form, onSubmit, isPending } = useSignUpForm();
 
   return (
     <div className={cn("flex flex-col gap-12", className)} {...props}>
@@ -142,12 +141,7 @@ export function SignUpForm({ className, ...props }: React.ComponentProps<"div">)
       </form>
       <div className="flex flex-col gap-8">
         <FieldDescription className="text-center">Or continue with</FieldDescription>
-        <SocialButtons
-          action="Sign up"
-          disabled={isPending}
-          onGitHub={handleSignUpWithGithub}
-          onGoogle={handleSignUpWithGoogle}
-        />
+        <SocialButtons action="Sign up" disabled={isPending} />
       </div>
       <FieldDescription className="text-center">
         Already have an account? <Link href="/sign-in">Sign in</Link>

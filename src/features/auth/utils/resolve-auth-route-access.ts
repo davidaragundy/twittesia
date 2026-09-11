@@ -1,15 +1,5 @@
-// Signed-out visitors only: a session redirects to /home
-const AUTH_ROUTE_PATHS = new Set([
-  "/",
-  "/sign-in",
-  "/sign-up",
-  "/forgot-password",
-  "/reset-password",
-  "/two-factor",
-  "/recovery-code",
-]);
-
-const PUBLIC_ROUTE_PATHS = new Set(["/terms", "/privacy"]);
+import { AUTH_ROUTE_PATHS } from "@/features/auth/constants/auth-route-paths";
+import { PUBLIC_ROUTE_PATHS } from "@/features/auth/constants/public-route-paths";
 
 interface Props {
   pathname: string;

@@ -6,10 +6,10 @@ import { Spinner } from "@/shared/components/ui/spinner";
 
 import { ActiveSessionItem } from "@/features/settings/components/active-session-item";
 import { useActiveSessions } from "@/features/settings/hooks/use-active-sessions";
-import type { Sessions } from "@/features/settings/types";
+import type { getSessions } from "@/features/settings/queries/get-sessions";
 
 interface Props {
-  sessions: Promise<Sessions | null>;
+  sessions: ReturnType<typeof getSessions>;
 }
 
 // Suspends until the sessions resolve; the settings dialog shows a skeleton meanwhile

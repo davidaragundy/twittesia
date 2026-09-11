@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import { ProfilePage } from "@/features/profile/components/profile-page";
-import { ProfilePageSkeleton } from "@/features/profile/components/profile-page-skeleton";
+import { ProfilePage } from "@/features/profiles/components/profile-page";
+import { ProfilePageSkeleton } from "@/features/profiles/components/profile-page-skeleton";
 
 export async function generateMetadata({ params }: PageProps<"/[username]">): Promise<Metadata> {
   const { username } = await params;

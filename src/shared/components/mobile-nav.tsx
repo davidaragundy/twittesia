@@ -14,7 +14,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/shared/components/ui/drawer";
-import type { NavLink } from "@/shared/types";
+import type { NavLink } from "@/shared/types/nav-link";
 
 type Props = {
   links: NavLink[];

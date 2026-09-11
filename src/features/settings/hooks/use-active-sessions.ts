@@ -2,19 +2,18 @@ import { useRouter } from "next/navigation";
 import { use, useOptimistic, useTransition } from "react";
 import { toast } from "sonner";
 
-import { authClient } from "@/shared/lib/better-auth/client";
-
 import { useSession } from "@/features/auth/hooks/use-session";
-import type { Sessions } from "@/features/settings/types";
+import { authClient } from "@/features/auth/lib/auth-client";
+import type { getSessions } from "@/features/settings/queries/get-sessions";
 
 interface Props {
-  sessions: Promise<Sessions | null>;
+  sessions: ReturnType<typeof getSessions>;
 }
 
 export const useActiveSessions = ({ sessions: sessionsPromise }: Props) => {
   const router = useRouter();
   const session = useSession();
-  const sessions = use(sessionsPromise);
+  const { data: sessions, error } = use(sessionsPromise);
   const [isPending, startTransition] = useTransition();
 
   // A revoked session leaves the list immediately; the refresh settles the real state
@@ -27,11 +26,10 @@ export const useActiveSessions = ({ sessions: sessionsPromise }: Props) => {
     startTransition(async () => {
       removeSession(token);
 
+      // Revoking a session that is already gone succeeds too, so any error here is unexpected
       const { error } = await authClient.revokeSession({ token });
 
-      if (error?.code === "SESSION_NOT_FOUND") {
-        toast.info("The session you tried to revoke was already closed 🤓", { duration: 5_000 });
-      } else if (error) {
+      if (error) {
         toast.error("Failed to revoke session, please try again later 😢", { duration: 5_000 });
       }
 
@@ -42,7 +40,7 @@ export const useActiveSessions = ({ sessions: sessionsPromise }: Props) => {
 
   return {
     sessions: optimisticSessions,
-    isError: sessions === null,
+    isError: error !== null,
     isPending,
     currentToken: session?.session.token,
     revokeSession,

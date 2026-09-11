@@ -1,6 +1,6 @@
 import { use } from "react";
 
-import { SessionContext } from "@/features/auth/utils/session-context";
+import { SessionContext } from "@/features/auth/context/session-context";
 
 // Suspends until the session resolves: call it below a <Suspense> boundary
 export const useSession = () => {

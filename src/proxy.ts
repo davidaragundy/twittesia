@@ -1,11 +1,12 @@
 import { getSessionCookie } from "better-auth/cookies";
 import { NextRequest, NextResponse } from "next/server";
 
+import { AUTH_COOKIE_PREFIX } from "@/features/auth/constants/auth-cookie-prefix";
 import { resolveAuthRouteAccess } from "@/features/auth/utils/resolve-auth-route-access";
 
 export function proxy(request: NextRequest) {
   const sessionCookie = getSessionCookie(request, {
-    cookiePrefix: "twittesia",
+    cookiePrefix: AUTH_COOKIE_PREFIX,
   });
 
   const decision = resolveAuthRouteAccess({

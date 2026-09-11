@@ -3,14 +3,14 @@ import Link from "next/link";
 
 import { LegalPage } from "@/shared/components/legal-page";
 import { LegalSection } from "@/shared/components/legal-section";
+import { CONTACT_EMAIL } from "@/shared/constants/contact-email";
+import { REPOSITORY_URL } from "@/shared/constants/repository-url";
 
 export const metadata: Metadata = {
   title: "Twittesia | Terms of Service",
   description: "The terms that apply when you use Twittesia.",
   alternates: { canonical: "/terms" },
 };
-
-const CONTACT_EMAIL = "davidaragundy@outlook.com";
 
 export default function TermsPage() {
   return (
@@ -100,7 +100,7 @@ export default function TermsPage() {
       <LegalSection title="6. Source code">
         <p>
           Twittesia&apos;s source code is available on{" "}
-          <a href="https://github.com/davidaragundy/twittesia" target="_blank" rel="noreferrer">
+          <a href={REPOSITORY_URL} target="_blank" rel="noreferrer">
             GitHub
           </a>{" "}
           under the MIT License. These terms cover your use of the service; the licence covers the

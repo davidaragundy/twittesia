@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
 import { Providers } from "@/shared/components/providers";
-import { BASE_URL } from "@/shared/constants";
+import { BASE_URL } from "@/shared/constants/base-url";
 import { cn } from "@/shared/utils/cn";
 
 import "@/shared/styles/globals.css";
