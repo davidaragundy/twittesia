@@ -29,6 +29,13 @@
       "when": 1789176512232,
       "tag": "0003_user_is_anonymous",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1789178076438,
+      "tag": "0004_drop_two_factor_and_counts",
+      "breakpoints": true
     }
   ]
 }
