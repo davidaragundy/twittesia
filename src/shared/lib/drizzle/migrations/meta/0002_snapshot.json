@@ -1,6 +1,6 @@
 {
-  "id": "ffbd7bd2-fd14-4bc4-9c67-cfe472d887a9",
-  "prevId": "ff312bfd-7a79-496b-aed8-081dba4879c7",
+  "id": "e7587ef8-a507-40d0-9d33-41406684ba4e",
+  "prevId": "ffbd7bd2-fd14-4bc4-9c67-cfe472d887a9",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -150,14 +150,14 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
         },
         "expires_at": {
           "name": "expires_at",
-          "type": "timestamp",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true
         }

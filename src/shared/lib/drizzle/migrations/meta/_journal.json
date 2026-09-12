@@ -12,8 +12,15 @@
     {
       "idx": 1,
       "version": "7",
-      "when": 1789173133285,
+      "when": 1789171429359,
       "tag": "0001_post",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1789173549986,
+      "tag": "0002_post_timestamptz",
       "breakpoints": true
     }
   ]
