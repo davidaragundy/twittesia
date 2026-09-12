@@ -16,25 +16,29 @@ export default function TermsPage() {
   return (
     <LegalPage
       title="Terms of Service"
-      effectiveDate="September 10, 2026"
+      effectiveDate="September 11, 2026"
       intro={
         <>
           These terms govern your use of Twittesia, a social network where everything you share
-          lasts 24 hours. By creating an account or using Twittesia, you agree to them and to our{" "}
-          <Link href="/privacy">Privacy Policy</Link>.
+          lasts 24 hours, including who you are while you share it. By using Twittesia, you agree to
+          them and to our <Link href="/privacy">Privacy Policy</Link>.
         </>
       }
     >
-      <LegalSection title="1. Your account">
+      <LegalSection title="1. Your identity">
         <ul>
           <li>
-            <strong>Accurate information.</strong> Give accurate details when you create your
-            account, and keep them up to date.
+            <strong>We give you one.</strong> There is no sign-up. Starting gives you a handle, a
+            display name and a picture that we generate. You give us nothing.
           </li>
           <li>
-            <strong>Security.</strong> You are responsible for your password, your authenticator app
-            and backup codes if you use two-factor authentication, and everything that happens under
-            your account.
+            <strong>It lasts a day.</strong> Your identity stops working 24 hours after it was
+            created. There is no password and no email address, so there is nothing to recover it
+            with: once it is gone, it is gone, and so is everything it wrote.
+          </li>
+          <li>
+            <strong>It is yours while it lasts.</strong> You are responsible for everything done
+            under your identity, for as long as you hold it.
           </li>
         </ul>
       </LegalSection>
@@ -51,7 +55,7 @@ export default function TermsPage() {
             are created. We cannot restore them afterwards.
           </li>
           <li>
-            <strong>Ghosts.</strong> A ghost is stored without any link to your account, so nobody,
+            <strong>Ghosts.</strong> A ghost is stored without any link to your identity, so nobody,
             including us, can see who posted it. These terms still apply to what you post as a
             ghost.
           </li>
@@ -91,9 +95,9 @@ export default function TermsPage() {
 
       <LegalSection title="5. Moderation and termination">
         <p>
-          We may remove content, or suspend or terminate accounts, that break these terms. You can
-          ask us to delete your account at any time by writing to{" "}
-          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+          We may remove content, or end identities, that break these terms. You can end your own
+          identity at any time by leaving, from the menu under your name. Everything you wrote
+          expires within a day either way.
         </p>
       </LegalSection>
 
@@ -128,8 +132,8 @@ export default function TermsPage() {
       <LegalSection title="8. Changes to these terms">
         <p>
           We may update these terms. When we do, we will publish the new version here and update the
-          effective date. For significant changes, we will also tell you by email or with a notice
-          on Twittesia.
+          effective date. For significant changes, we will also post a notice on Twittesia, since we
+          have no way to write to you.
         </p>
       </LegalSection>
 

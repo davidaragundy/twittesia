@@ -2,28 +2,30 @@
 
 Twittesia is an open-source social media platform, similar to Twitter, where
 every piece of content — posts and comments — exists for 24 hours and is then
-gone for good.
+gone for good. So does the identity that wrote it: nobody signs up, and nobody
+gives an email address, a password or a social login.
 
 ## Language
 
 ### People
 
 **User**:
-A person using Twittesia, whether or not they have linked an account.
-_Avoid_: member
+A person using Twittesia. Every user is anonymous: there is only one kind.
+_Avoid_: member, guest, account
 
-**Guest**:
-A user who has not linked any account yet, so has given no email address,
-password or social login.
-_Avoid_: anonymous user, visitor
+**Identity**:
+The user Twittesia generates for someone when they start, and everything it
+carries: their handle, display name and picture. It lasts 24 hours, like the
+content it creates.
+_Avoid_: account, session, login
 
-**Account**:
-One way a user signs in, such as a password or a Google login. A user may have
-several.
-_Avoid_: login, provider
+**Handle**:
+The generated name a user is known by, as `swift-otter-x7k3qa`. It is unique,
+nobody chooses it, and `/@handle` resolves to that user's profile.
+_Avoid_: username, nickname
 
 **Profile**:
-A user's public identity: their username, name and avatar.
+A user's public identity: their handle, display name and picture.
 _Avoid_: page
 
 ### Content
@@ -52,10 +54,10 @@ _Avoid_: timeline, home
 ### Time
 
 **Lifespan**:
-The 24 hours a piece of content exists after it is created.
+The 24 hours a piece of content, or an identity, exists after it is created.
 _Avoid_: TTL, duration
 
 **Expiry**:
-The moment a piece of content reaches the end of its lifespan and is deleted for
-good.
+The moment a piece of content, or an identity, reaches the end of its lifespan
+and is deleted for good.
 _Avoid_: expiration, archive

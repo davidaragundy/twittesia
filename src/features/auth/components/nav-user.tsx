@@ -26,7 +26,7 @@ type Props = {
 };
 
 export function NavUser({ menuItems }: Props) {
-  const { user, signOut, isSigningOut } = useNavUser();
+  const { user, leave, isLeaving } = useNavUser();
 
   if (!user) return null;
 
@@ -58,15 +58,15 @@ export function NavUser({ menuItems }: Props) {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>{menuItems}</DropdownMenuGroup>
         <DropdownMenuSeparator />
-        {/* Stays open so the spinner shows until the sign-out lands */}
+        {/* Stays open so the spinner shows until leaving lands */}
         <DropdownMenuItem
           variant="destructive"
           closeOnClick={false}
-          disabled={isSigningOut}
-          onClick={signOut}
+          disabled={isLeaving}
+          onClick={leave}
         >
-          {isSigningOut ? <Spinner /> : <HugeiconsIcon icon={Logout01Icon} />}
-          Sign out
+          {isLeaving ? <Spinner /> : <HugeiconsIcon icon={Logout01Icon} />}
+          Leave
           <DropdownMenuShortcut>⌘O</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>

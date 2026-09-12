@@ -27,7 +27,10 @@ export const createPost = async (
   const session = await getSession();
 
   if (!session) {
-    return { data: null, error: { code: "UNAUTHORIZED", message: "You need to sign in" } };
+    return {
+      data: null,
+      error: { code: "UNAUTHORIZED", message: "You need an identity to do that" },
+    };
   }
 
   const { user } = session;

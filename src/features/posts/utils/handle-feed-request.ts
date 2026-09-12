@@ -10,7 +10,8 @@ import { getFeedPage } from "@/features/posts/queries/get-feed-page";
 export const handleFeedRequest = async (request: Request) => {
   const session = await getSession();
 
-  if (!session) return NextResponse.json({ message: "You need to sign in" }, { status: 401 });
+  if (!session)
+    return NextResponse.json({ message: "You need an identity to do that" }, { status: 401 });
 
   const cursor = new URL(request.url).searchParams.get("cursor");
   const { data, error } = await getFeedPage({ cursor, viewerId: session.user.id });

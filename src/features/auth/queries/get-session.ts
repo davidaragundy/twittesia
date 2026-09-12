@@ -22,11 +22,9 @@ export const getSession = cache(async (): Promise<Session | null> => {
     user: {
       id: user.id,
       name: user.name,
-      email: user.email,
       image: user.image,
       username: user.username,
       displayUsername: user.displayUsername,
-      twoFactorEnabled: user.twoFactorEnabled,
     },
     session: { id: session.id },
   };

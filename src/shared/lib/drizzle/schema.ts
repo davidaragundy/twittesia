@@ -17,6 +17,9 @@ export const user = pgTable("user", {
   twoFactorEnabled: boolean("two_factor_enabled").default(false),
   followerCount: integer("follower_count").default(0).notNull(),
   followingCount: integer("following_count").default(0).notNull(),
+  // Every user is anonymous, so this is always true. better-auth's anonymous plugin owns the
+  // column and reads it on every session, so it stays until the plugin stops needing it.
+  isAnonymous: boolean("is_anonymous").default(false),
 });
 
 export const session = pgTable(

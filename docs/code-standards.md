@@ -48,7 +48,7 @@ a folder is created when its first file is, never upfront.
 
 `auth`, `settings`, `profiles`, `posts`, `comments`, `landing`
 
-`landing` owns how Twittesia presents itself to people who have not signed up:
+`landing` owns how Twittesia presents itself to people who have not started yet:
 the landing page's copy, highlights and structured data.
 
 Adding a name is a decision worth making deliberately, because it asserts that a

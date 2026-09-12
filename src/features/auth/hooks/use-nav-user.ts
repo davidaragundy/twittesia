@@ -1,14 +1,14 @@
 import { useEffect, useEffectEvent } from "react";
 
+import { useLeave } from "@/features/auth/hooks/use-leave";
 import { useSession } from "@/features/auth/hooks/use-session";
-import { useSignOut } from "@/features/auth/hooks/use-sign-out";
 
 export const useNavUser = () => {
   const session = useSession();
-  const { signOut, isSigningOut } = useSignOut();
+  const { leave, isLeaving } = useLeave();
 
   // Always calls the latest handler without re-subscribing the listener on every render
-  const onSignOutShortcut = useEffectEvent(() => signOut());
+  const onLeaveShortcut = useEffectEvent(() => leave());
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -16,7 +16,7 @@ export const useNavUser = () => {
 
       if (event.key === "o") {
         event.preventDefault();
-        onSignOutShortcut();
+        onLeaveShortcut();
       }
     };
 
@@ -25,5 +25,5 @@ export const useNavUser = () => {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  return { user: session?.user, signOut, isSigningOut };
+  return { user: session?.user, leave, isLeaving };
 };
