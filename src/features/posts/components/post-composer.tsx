@@ -1,20 +1,17 @@
 "use client";
 
-import { AnonymousIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
 import { Button } from "@/shared/components/ui/button";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/shared/components/ui/field";
 import { Spinner } from "@/shared/components/ui/spinner";
-import { Switch } from "@/shared/components/ui/switch";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { cn } from "@/shared/utils/cn";
 
 import { usePostComposer } from "@/features/posts/hooks/use-post-composer";
 
 export const PostComposer = () => {
-  const { form, onSubmit, isPending, isGhost, remaining, canSubmit } = usePostComposer();
+  const { form, onSubmit, isPending, remaining, canSubmit } = usePostComposer();
 
   return (
     <form id="post-composer" onSubmit={form.handleSubmit(onSubmit)}>
@@ -32,9 +29,7 @@ export const PostComposer = () => {
                 {...field}
                 id="post-composer-content"
                 rows={3}
-                placeholder={
-                  isGhost ? "Say it as a ghost, nobody will know" : "What is on your mind?"
-                }
+                placeholder="What is on your mind?"
                 aria-invalid={fieldState.invalid}
                 className="min-h-24 resize-none"
               />
@@ -43,31 +38,7 @@ export const PostComposer = () => {
           )}
         />
 
-        <Field orientation="horizontal" className="justify-between">
-          <Controller
-            name="isGhost"
-            control={form.control}
-            disabled={isPending}
-            render={({ field }) => (
-              <div className="flex items-center gap-3">
-                <Switch
-                  id="post-composer-ghost"
-                  name={field.name}
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  disabled={isPending}
-                />
-                <FieldLabel
-                  htmlFor="post-composer-ghost"
-                  className="flex items-center gap-2 font-normal"
-                >
-                  <HugeiconsIcon icon={AnonymousIcon} className="size-4" />
-                  Ghost
-                </FieldLabel>
-              </div>
-            )}
-          />
-
+        <Field orientation="horizontal" className="justify-end">
           <div className="flex items-center gap-4">
             <span
               className={cn(

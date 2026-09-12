@@ -8,5 +8,4 @@ export const createPostFormSchema = z.object({
     .trim()
     .min(1, { message: "Write something first" })
     .max(MAX_POST_LENGTH, { message: `A post can be at most ${MAX_POST_LENGTH} characters long` }),
-  isGhost: z.boolean(),
 });

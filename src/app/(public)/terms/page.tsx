@@ -55,11 +55,6 @@ export default function TermsPage() {
             are created. We cannot restore them afterwards.
           </li>
           <li>
-            <strong>Ghosts.</strong> A ghost is stored without any link to your identity, so nobody,
-            including us, can see who posted it. These terms still apply to what you post as a
-            ghost.
-          </li>
-          <li>
             <strong>Others can still copy it.</strong> Anyone who sees your content before it
             expires can copy or screenshot it. Only share what you are comfortable with.
           </li>

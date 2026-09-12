@@ -15,7 +15,6 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
-import { Spinner } from "@/shared/components/ui/spinner";
 import { getInitials } from "@/shared/utils/get-initials";
 
 import { useNavUser } from "@/features/auth/hooks/use-nav-user";
@@ -26,7 +25,7 @@ type Props = {
 };
 
 export function NavUser({ menuItems }: Props) {
-  const { user, leave, isLeaving } = useNavUser();
+  const { user, openLeave } = useNavUser();
 
   if (!user) return null;
 
@@ -58,14 +57,9 @@ export function NavUser({ menuItems }: Props) {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>{menuItems}</DropdownMenuGroup>
         <DropdownMenuSeparator />
-        {/* Stays open so the spinner shows until leaving lands */}
-        <DropdownMenuItem
-          variant="destructive"
-          closeOnClick={false}
-          disabled={isLeaving}
-          onClick={leave}
-        >
-          {isLeaving ? <Spinner /> : <HugeiconsIcon icon={Logout01Icon} />}
+        {/* Opens the confirmation; the menu closes behind it */}
+        <DropdownMenuItem variant="destructive" onClick={openLeave}>
+          <HugeiconsIcon icon={Logout01Icon} />
           Leave
           <DropdownMenuShortcut>⌘O</DropdownMenuShortcut>
         </DropdownMenuItem>
