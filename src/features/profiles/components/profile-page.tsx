@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
-import { Badge } from "@/shared/components/ui/badge";
 import { getInitials } from "@/shared/utils/get-initials";
 
 import { getProfile } from "@/features/profiles/queries/get-profile";
@@ -28,11 +27,6 @@ export const ProfilePage = async ({ username }: Props) => {
       <div className="flex flex-col gap-1">
         <h1 className="text-2xl font-semibold tracking-tight">{profile.name}</h1>
         <p className="text-muted-foreground">@{profile.username}</p>
-      </div>
-
-      <div className="flex gap-2">
-        <Badge variant="outline">{profile.followerCount} followers</Badge>
-        <Badge variant="outline">{profile.followingCount} following</Badge>
       </div>
     </div>
   );

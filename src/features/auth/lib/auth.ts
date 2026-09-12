@@ -58,16 +58,6 @@ export const auth = betterAuth({
     nextCookies(),
   ],
   user: {
-    additionalFields: {
-      followerCount: {
-        type: "number",
-        defaultValue: 0,
-      },
-      followingCount: {
-        type: "number",
-        defaultValue: 0,
-      },
-    },
     changeEmail: {
       enabled: true,
       sendChangeEmailConfirmation: sendChangeEmailConfirmation,

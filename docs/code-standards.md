@@ -46,8 +46,7 @@ who depends on it. _Review._
 **CS-7.** Feature names come from this list. It is a vocabulary, not a skeleton:
 a folder is created when its first file is, never upfront.
 
-`auth`, `settings`, `profiles`, `follows`, `posts`, `comments`, `chats`,
-`close-friends`, `landing`
+`auth`, `settings`, `profiles`, `posts`, `comments`, `landing`
 
 `landing` owns how Twittesia presents itself to people who have not signed up:
 the landing page's copy, highlights and structured data.

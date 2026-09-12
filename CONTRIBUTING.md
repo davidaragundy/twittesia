@@ -30,8 +30,8 @@ The commit linter accepts these and nothing else.
 A scope is optional but strongly preferred, and must be lower-case kebab-case.
 
 By convention the scope is the name of the feature a change touches:
-`auth`, `settings`, `profiles`, `follows`, `posts`, `comments`, `chats`,
-`close-friends`, `landing`. Use `repo`, `ci` or `agents` for work that touches no feature.
+`auth`, `settings`, `profiles`, `posts`, `comments`, `landing`. Use `repo`,
+`ci` or `agents` for work that touches no feature.
 
 The linter checks that a scope is kebab-case; it does not check it against that
 list. Adding a feature should not mean editing a linter config in the same pull
