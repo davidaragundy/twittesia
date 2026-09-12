@@ -1,8 +1,10 @@
 name: CI
 
 on:
+  # Every pull request, whatever it targets. A filter here would silently skip a pull request
+  # stacked on another feature branch, and nothing reports a job that never ran: the pull request
+  # shows as clean because there is no check missing.
   pull_request:
-    branches: [main]
   push:
     branches: [main]
 
