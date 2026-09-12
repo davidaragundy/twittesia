@@ -111,9 +111,11 @@ export const post = pgTable(
     // A ghost is stored with no author, so it can't be traced back to anyone
     userId: text("user_id").references(() => user.id, { onDelete: "cascade" }),
     content: text("content").notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
+    // With the time zone: a naive timestamp is written in the server's local time and read back
+    // as UTC, which breaks both the expiry filter and the feed's cursor
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     // When the post reaches the end of its lifespan and stops being shown
-    expiresAt: timestamp("expires_at").notNull(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
   },
   (table) => [
     // The feed reads the newest posts that haven't expired
