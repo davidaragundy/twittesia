@@ -6,4 +6,5 @@ export const AUTH_EMAIL_ERROR_CODES = {
   FAILED_TO_SEND_TWO_FACTOR_OTP: "Failed to send two-factor authentication OTP",
   FAILED_TO_SEND_CHANGE_EMAIL_CONFIRMATION: "Failed to send change email confirmation",
   FAILED_TO_SEND_EXISTING_USER_SIGN_UP_EMAIL: "Failed to send existing user sign up email",
+  FAILED_TO_SEND_DELETE_ACCOUNT_VERIFICATION: "Failed to send delete account verification",
 } as const;
