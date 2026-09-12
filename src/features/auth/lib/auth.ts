@@ -9,6 +9,7 @@ import { db } from "@/shared/lib/drizzle/server";
 
 import { AUTH_COOKIE_PREFIX } from "@/features/auth/constants/auth-cookie-prefix";
 import { sendChangeEmailConfirmation } from "@/features/auth/utils/send-change-email-confirmation";
+import { sendDeleteAccountVerification } from "@/features/auth/utils/send-delete-account-verification";
 import { sendExistingUserSignUpEmail } from "@/features/auth/utils/send-existing-user-sign-up";
 import { sendMagicLink } from "@/features/auth/utils/send-magic-link";
 import { sendOTP } from "@/features/auth/utils/send-otp";
@@ -70,6 +71,12 @@ export const auth = betterAuth({
     changeEmail: {
       enabled: true,
       sendChangeEmailConfirmation: sendChangeEmailConfirmation,
+    },
+    // Leaving is confirmed by email, so it works the same for a password account and for one
+    // that only ever signed in with GitHub or Google
+    deleteUser: {
+      enabled: true,
+      sendDeleteAccountVerification: sendDeleteAccountVerification,
     },
   },
   emailVerification: {

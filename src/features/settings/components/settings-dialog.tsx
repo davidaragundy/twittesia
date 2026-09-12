@@ -27,6 +27,7 @@ import { ChangeEmailForm } from "@/features/settings/components/change-email-for
 import { ChangeNameForm } from "@/features/settings/components/change-name-form";
 import { ChangePasswordForm } from "@/features/settings/components/change-password-form";
 import { ChangeUsernameForm } from "@/features/settings/components/change-username-form";
+import { DeleteAccount } from "@/features/settings/components/delete-account";
 import { GenerateBackupCodesForm } from "@/features/settings/components/generate-backup-codes-form";
 import { ToggleTwoFactorForm } from "@/features/settings/components/toggle-two-factor-form";
 import { SETTINGS_DIALOG_DESCRIPTION } from "@/features/settings/constants/settings-dialog-description";
@@ -60,6 +61,13 @@ export function SettingsDialog() {
         <ChangeNameForm />
         <ChangeUsernameForm />
         <ChangeEmailForm />
+
+        <SettingsSection
+          title="Delete account"
+          description="Leave Twittesia and take your profile and posts with you."
+        >
+          <DeleteAccount />
+        </SettingsSection>
       </div>
     ) : (
       <div className="flex flex-col gap-14">
