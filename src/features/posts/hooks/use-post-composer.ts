@@ -18,6 +18,10 @@ export const usePostComposer = () => {
 
   const { mutate, isPending } = useCreatePostMutation({ form });
 
+  // Read at the top, like every other form hook: a formState read buried in the returned object
+  // gets memoized against the stable form, and never sees the field become valid
+  const { isValid } = form.formState;
+
   const content = useWatch({ control: form.control, name: "content" });
   const isGhost = useWatch({ control: form.control, name: "isGhost" });
 
@@ -29,6 +33,6 @@ export const usePostComposer = () => {
     isPending,
     isGhost,
     remaining: MAX_POST_LENGTH - (content?.length ?? 0),
-    canSubmit: form.formState.isValid,
+    canSubmit: isValid,
   };
 };
