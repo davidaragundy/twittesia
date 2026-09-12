@@ -14,9 +14,6 @@ export const user = pgTable("user", {
     .notNull(),
   username: text("username").unique(),
   displayUsername: text("display_username"),
-  twoFactorEnabled: boolean("two_factor_enabled").default(false),
-  followerCount: integer("follower_count").default(0).notNull(),
-  followingCount: integer("following_count").default(0).notNull(),
   // Every user is anonymous, so this is always true. better-auth's anonymous plugin owns the
   // column and reads it on every session, so it stays until the plugin stops needing it.
   isAnonymous: boolean("is_anonymous").default(false),
@@ -88,25 +85,6 @@ export const rateLimit = pgTable("rate_limit", {
   lastRequest: bigint("last_request", { mode: "number" }).notNull(),
 });
 
-export const twoFactor = pgTable(
-  "two_factor",
-  {
-    id: text("id").primaryKey(),
-    secret: text("secret").notNull(),
-    backupCodes: text("backup_codes").notNull(),
-    userId: text("user_id")
-      .notNull()
-      .references(() => user.id, { onDelete: "cascade" }),
-    verified: boolean("verified").default(true),
-    failedVerificationCount: integer("failed_verification_count").default(0),
-    lockedUntil: timestamp("locked_until"),
-  },
-  (table) => [
-    index("twoFactor_secret_idx").on(table.secret),
-    index("twoFactor_userId_idx").on(table.userId),
-  ],
-);
-
 export const post = pgTable(
   "post",
   {
@@ -132,7 +110,6 @@ export const post = pgTable(
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
-  twoFactors: many(twoFactor),
   posts: many(post),
 }));
 
@@ -153,13 +130,6 @@ export const sessionRelations = relations(session, ({ one }) => ({
 export const accountRelations = relations(account, ({ one }) => ({
   user: one(user, {
     fields: [account.userId],
-    references: [user.id],
-  }),
-}));
-
-export const twoFactorRelations = relations(twoFactor, ({ one }) => ({
-  user: one(user, {
-    fields: [twoFactor.userId],
     references: [user.id],
   }),
 }));

@@ -8,7 +8,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Everything must be in English. Write a short title that states what is missing, for example `[Request]: let users share a post with their close friends only`.
+        Everything must be in English. Write a short title that states what is missing, for example `[Request]: let users comment on a post`.
 
   - type: textarea
     id: problem
