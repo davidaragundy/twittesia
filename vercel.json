@@ -1,4 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "pnpm exec drizzle-kit migrate && pnpm build"
+  "buildCommand": "pnpm exec drizzle-kit migrate && pnpm build",
+  "crons": [
+    {
+      "path": "/api/cron/purge-expired-posts",
+      "schedule": "0 4 * * *"
+    }
+  ]
 }
