@@ -104,10 +104,40 @@ export const twoFactor = pgTable(
   ],
 );
 
+export const post = pgTable(
+  "post",
+  {
+    id: text("id").primaryKey(),
+    // A ghost is stored with no author, so it can't be traced back to anyone
+    userId: text("user_id").references(() => user.id, { onDelete: "cascade" }),
+    content: text("content").notNull(),
+    // With the time zone: a naive timestamp is written in the server's local time and read back
+    // as UTC, which breaks both the expiry filter and the feed's cursor
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    // When the post reaches the end of its lifespan and stops being shown
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  },
+  (table) => [
+    // The feed reads the newest posts that haven't expired
+    index("post_createdAt_idx").on(table.createdAt),
+    // The purge reads the expired ones
+    index("post_expiresAt_idx").on(table.expiresAt),
+    index("post_userId_idx").on(table.userId),
+  ],
+);
+
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
   twoFactors: many(twoFactor),
+  posts: many(post),
+}));
+
+export const postRelations = relations(post, ({ one }) => ({
+  author: one(user, {
+    fields: [post.userId],
+    references: [user.id],
+  }),
 }));
 
 export const sessionRelations = relations(session, ({ one }) => ({

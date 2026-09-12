@@ -1,14 +1,9 @@
-import { Home01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
-import {
-  Empty,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/shared/components/ui/empty";
+import { FeedSkeleton } from "@/features/posts/components/feed-skeleton";
+import { FeedWithFirstPage } from "@/features/posts/components/feed-with-first-page";
+import { PostComposer } from "@/features/posts/components/post-composer";
 
 export const metadata: Metadata = {
   title: "Twittesia | Home",
@@ -16,16 +11,12 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <Empty>
-      <EmptyHeader>
-        <EmptyMedia variant="icon">
-          <HugeiconsIcon icon={Home01Icon} />
-        </EmptyMedia>
-        <EmptyTitle>Your feed</EmptyTitle>
-        <EmptyDescription>
-          Posts from the people you follow will show up here, for the 24 hours they live.
-        </EmptyDescription>
-      </EmptyHeader>
-    </Empty>
+    <div className="flex flex-col gap-12">
+      <PostComposer />
+
+      <Suspense fallback={<FeedSkeleton />}>
+        <FeedWithFirstPage />
+      </Suspense>
+    </div>
   );
 }
