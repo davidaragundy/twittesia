@@ -38,11 +38,6 @@ _Avoid_: data, media
 Content a user publishes.
 _Avoid_: tweet, story
 
-**Ghost**:
-A post published anonymously: it is stored without any link to the user who wrote it, so it
-shows no profile and cannot be traced back to one.
-_Avoid_: anonymous post, secret
-
 **Comment**:
 A response to a post.
 _Avoid_: reply

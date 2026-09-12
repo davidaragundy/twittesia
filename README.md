@@ -2,9 +2,8 @@
 
 Twittesia is an open-source social media platform, similar to Twitter, where
 every piece of content has a lifespan of 24 hours. Nobody signs up: arriving
-gives you a generated identity, which lasts 24 hours too. Users publish posts,
-publish ghosts when they would rather stay anonymous, and comment on posts. At
-expiry, each post and comment is deleted for good.
+gives you a generated identity, which lasts 24 hours too. Users publish posts
+and comment on them. At expiry, each post and comment is deleted for good.
 
 The domain words used above each mean one specific thing here, defined in
 [CONTEXT.md](./CONTEXT.md).

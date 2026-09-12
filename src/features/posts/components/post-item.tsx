@@ -52,7 +52,7 @@ export const PostItem = ({ post, onDelete, isDeleting }: Props) => {
               {author.name}
             </Link>
           ) : (
-            <span className="font-medium">Ghost</span>
+            <span className="font-medium text-muted-foreground">Someone who left</span>
           )}
           <span className="font-normal text-muted-foreground">
             {author ? `@${author.displayUsername} · ` : ""}

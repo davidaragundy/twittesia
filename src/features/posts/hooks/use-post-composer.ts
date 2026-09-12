@@ -12,7 +12,6 @@ export const usePostComposer = () => {
     resolver: zodResolver(createPostFormSchema),
     defaultValues: {
       content: "",
-      isGhost: false,
     },
   });
 
@@ -23,7 +22,6 @@ export const usePostComposer = () => {
   const { isValid } = form.formState;
 
   const content = useWatch({ control: form.control, name: "content" });
-  const isGhost = useWatch({ control: form.control, name: "isGhost" });
 
   const onSubmit = (values: CreatePostFormValues) => mutate(values);
 
@@ -31,7 +29,6 @@ export const usePostComposer = () => {
     form,
     onSubmit,
     isPending,
-    isGhost,
     remaining: MAX_POST_LENGTH - (content?.length ?? 0),
     canSubmit: isValid,
   };

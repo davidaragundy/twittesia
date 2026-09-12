@@ -1,4 +1,4 @@
-import { Edit02Icon, GhostIcon } from "@hugeicons/core-free-icons";
+import { Edit02Icon, UserQuestion01Icon } from "@hugeicons/core-free-icons";
 
 // What people can share, as listed on the landing page
 export const LANDING_HIGHLIGHTS = [
@@ -8,8 +8,8 @@ export const LANDING_HIGHLIGHTS = [
     description: "Share what's on your mind, for as long as the day lasts.",
   },
   {
-    icon: GhostIcon,
-    title: "Ghosts",
-    description: "Post anonymously. No profile, just the words.",
+    icon: UserQuestion01Icon,
+    title: "No account",
+    description: "No email, no password. You arrive, you get a name, you post.",
   },
 ];
