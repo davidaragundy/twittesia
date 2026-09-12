@@ -1,20 +1,16 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
-import { username, magicLink, twoFactor, haveIBeenPwned } from "better-auth/plugins";
-// import { dash } from "@better-auth/infra";
+import { anonymous, username } from "better-auth/plugins";
 
 import { BASE_URL } from "@/shared/constants/base-url";
 import { db } from "@/shared/lib/drizzle/server";
 
 import { AUTH_COOKIE_PREFIX } from "@/features/auth/constants/auth-cookie-prefix";
-import { sendChangeEmailConfirmation } from "@/features/auth/utils/send-change-email-confirmation";
-import { sendDeleteAccountVerification } from "@/features/auth/utils/send-delete-account-verification";
-import { sendExistingUserSignUpEmail } from "@/features/auth/utils/send-existing-user-sign-up";
-import { sendMagicLink } from "@/features/auth/utils/send-magic-link";
-import { sendOTP } from "@/features/auth/utils/send-otp";
-import { sendResetPassword } from "@/features/auth/utils/send-reset-password";
-import { sendVerificationEmail } from "@/features/auth/utils/send-verification-email";
+import { IDENTITY_LIFESPAN_SECONDS } from "@/features/auth/constants/identity-lifespan-seconds";
+import { generateHandle } from "@/features/auth/utils/generate-handle";
+import { getAvatarUrl } from "@/features/auth/utils/get-avatar-url";
+import { getDisplayName } from "@/features/auth/utils/get-display-name";
 
 export const auth = betterAuth({
   appName: "Twittesia",
@@ -29,78 +25,49 @@ export const auth = betterAuth({
     storage: "database",
     enabled: true,
   },
-  account: {
-    accountLinking: {
-      enabled: true,
-      trustedProviders: ["emailAndPassword", "github", "google"],
-    },
-  },
   advanced: {
     cookiePrefix: AUTH_COOKIE_PREFIX,
   },
+  session: {
+    // An identity lasts as long as the content it creates, and no longer. Refresh has to be off
+    // for that to hold: updateAge would slide the expiry forward on every visit, and an identity
+    // that keeps being used would outlive every post it ever wrote.
+    expiresIn: IDENTITY_LIFESPAN_SECONDS,
+    disableSessionRefresh: true,
+  },
   plugins: [
-    username(),
-    magicLink({
-      disableSignUp: true,
-      sendMagicLink: sendMagicLink,
+    username({
+      // better-auth's default validator rejects hyphens, and every handle we generate has two.
+      // Without this a user's own handle fails validation the moment they open the form.
+      usernameValidator: (value) => /^[a-zA-Z0-9_-]+$/.test(value),
     }),
-    twoFactor({
-      issuer: "Twittesia",
-      otpOptions: {
-        sendOTP: sendOTP,
-      },
+    anonymous({
+      // Nothing signs in any other way, so there is never an account to link and never an
+      // anonymous user to clean up after linking one
+      disableDeleteAnonymousUser: true,
     }),
-    haveIBeenPwned({
-      enabled: process.env.NODE_ENV === "production",
-    }),
-    // dash(),
     // Must stay last, so the Set-Cookie headers of every plugin before it reach Next.js
     nextCookies(),
   ],
-  user: {
-    changeEmail: {
-      enabled: true,
-      sendChangeEmailConfirmation: sendChangeEmailConfirmation,
-    },
-    // Leaving is confirmed by email, so it works the same for a password account and for one
-    // that only ever signed in with GitHub or Google
-    deleteUser: {
-      enabled: true,
-      sendDeleteAccountVerification: sendDeleteAccountVerification,
-    },
-  },
-  emailVerification: {
-    sendOnSignUp: true,
-    sendOnSignIn: true,
-    autoSignInAfterVerification: true,
-    sendVerificationEmail: sendVerificationEmail,
-  },
-  emailAndPassword: {
-    enabled: true,
-    requireEmailVerification: true,
-    onExistingUserSignUp: sendExistingUserSignUpEmail,
-    revokeSessionsOnPasswordReset: true,
-    sendResetPassword: sendResetPassword,
-  },
-  socialProviders: {
-    github: {
-      clientId: process.env.GITHUB_CLIENT_ID as string,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
-      mapProfileToUser: (profile) => {
-        return {
-          username: profile.login,
-          displayUsername: profile.login,
-        };
-      },
-    },
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-      mapProfileToUser: (profile) => {
-        return {
-          username: profile.email.split("@")[0],
-          displayUsername: profile.email.split("@")[0],
-        };
+  databaseHooks: {
+    user: {
+      create: {
+        // The anonymous plugin writes only an email, a name and isAnonymous. Everything the app
+        // shows of a person — their handle, their display name, their picture — is invented here,
+        // because there is no profile anywhere to take it from.
+        before: async (user) => {
+          const handle = generateHandle();
+
+          return {
+            data: {
+              ...user,
+              name: getDisplayName({ handle }),
+              username: handle,
+              displayUsername: handle,
+              image: await getAvatarUrl({ handle }),
+            },
+          };
+        },
       },
     },
   },

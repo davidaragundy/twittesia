@@ -10,7 +10,9 @@ export const changeUsernameFormSchema = z.object({
     .max(30, {
       message: "Username must be at most 30 characters long",
     })
-    .regex(/^[a-zA-Z0-9_]+$/, {
-      message: "Username should only contain alphanumeric characters and underscores",
+    // Hyphens are allowed because every generated handle has two; the same rule is set on the
+    // username plugin, so the form and the server agree
+    .regex(/^[a-zA-Z0-9_-]+$/, {
+      message: "Username should only contain letters, numbers, hyphens and underscores",
     }),
 });

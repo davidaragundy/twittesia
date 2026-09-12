@@ -43,7 +43,7 @@ export function ChangeUsernameForm() {
                 />
               </InputGroup>
               <FieldDescription>
-                Letters, numbers and underscores. It is how people find and mention you.
+                Letters, numbers, hyphens and underscores. It is how people find and mention you.
               </FieldDescription>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>

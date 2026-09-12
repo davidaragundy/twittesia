@@ -14,15 +14,12 @@ export default function PublicLayout({
   return (
     <div className="mx-auto flex min-h-svh w-full max-w-6xl flex-col px-6 sm:px-10 lg:px-16">
       <SiteHeader>
-        <Button variant="ghost" render={<Link href="/sign-in" />} nativeButton={false}>
-          Sign in
-        </Button>
         <Button
           className="hidden sm:inline-flex"
-          render={<Link href="/sign-up" />}
+          render={<Link href="/start" />}
           nativeButton={false}
         >
-          Get started
+          Start posting
         </Button>
       </SiteHeader>
 

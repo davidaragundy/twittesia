@@ -8,11 +8,11 @@ import { NavButton } from "@/shared/components/nav-button";
 import { SiteHeader } from "@/shared/components/site-header";
 import { APP_NAV_LINKS } from "@/shared/constants/app-nav-links";
 
+import { LeaveNavButton } from "@/features/auth/components/leave-nav-button";
 import { NavUser } from "@/features/auth/components/nav-user";
 import { NavUserSkeleton } from "@/features/auth/components/nav-user-skeleton";
 import { SessionGuard } from "@/features/auth/components/session-guard";
 import { SessionProvider } from "@/features/auth/components/session-provider";
-import { SignOutNavButton } from "@/features/auth/components/sign-out-nav-button";
 import { ProfileNavLink } from "@/features/profiles/components/profile-nav-link";
 import { SettingsDialog } from "@/features/settings/components/settings-dialog";
 import { SettingsMenuItem } from "@/features/settings/components/settings-menu-item";
@@ -52,7 +52,7 @@ export default function Layout({
                 <>
                   {profileLink}
                   <SettingsNavButton />
-                  <SignOutNavButton />
+                  <LeaveNavButton />
                 </>
               }
             />

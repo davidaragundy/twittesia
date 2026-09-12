@@ -1,25 +1,11 @@
-import {
-  usernameClient,
-  magicLinkClient,
-  twoFactorClient,
-  inferAdditionalFields,
-} from "better-auth/client/plugins";
+import { anonymousClient, usernameClient } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
-// import { sentinelClient } from "@better-auth/infra/client";
 import { toast } from "sonner";
 
 import { TOO_MANY_REQUESTS_STATUS } from "@/shared/constants/too-many-requests-status";
 
-import type { auth } from "@/features/auth/lib/auth";
-
 export const authClient = createAuthClient({
-  plugins: [
-    usernameClient(),
-    magicLinkClient(),
-    twoFactorClient(),
-    inferAdditionalFields<typeof auth>(),
-    // sentinelClient(),
-  ],
+  plugins: [usernameClient(), anonymousClient()],
   fetchOptions: {
     // A failed request (offline, DNS, CORS) resolves with an error like any other response,
     // so callers handle it the same way instead of catching a throw

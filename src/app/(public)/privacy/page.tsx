@@ -14,48 +14,45 @@ export default function PrivacyPage() {
   return (
     <LegalPage
       title="Privacy Policy"
-      effectiveDate="September 10, 2026"
-      intro="Twittesia is built to keep as little as possible for as short a time as possible. This policy explains what we collect, why, who helps us process it and how long we keep it."
+      effectiveDate="September 11, 2026"
+      intro="Twittesia never asks who you are. There is no sign-up, no email address, no password and no social login. This policy explains the little we do collect, why, who helps us process it and how long we keep it."
     >
       <LegalSection title="1. What we collect">
         <ul>
           <li>
-            <strong>Account details.</strong> Your name, username and email address. If you set a
-            password, we store only a salted hash of it, never the password itself.
+            <strong>An identity we invent.</strong> When you start, we generate a handle, a display
+            name and a picture for you. You gave us nothing to make them from, and they are not
+            derived from anything about you.
           </li>
           <li>
-            <strong>Sign-in providers.</strong> If you sign in with GitHub or Google, we receive
-            your name, email address and profile picture from them, and store the tokens they issue.
+            <strong>Your content.</strong> The posts and comments you create. Ghosts are stored with
+            no link to your identity at all.
           </li>
           <li>
-            <strong>Security data.</strong> For each session, the IP address and browser or device
-            it was created from, which you can see and revoke in your settings. If you turn on
-            two-factor authentication, your authenticator secret and backup codes.
-          </li>
-          <li>
-            <strong>Your content.</strong> The posts and comments you create. Ghosts are stored
-            without any link to your account.
+            <strong>Session and security data.</strong> For each session, the IP address and browser
+            or device it was created from, which you can see in your settings. We also record IP
+            addresses briefly to limit repeated requests. This is the only information we hold that
+            can point back to a person, and we keep it no longer than the session that created it.
           </li>
           <li>
             <strong>Usage and performance.</strong> Page views and loading performance, measured
             with Vercel Analytics and Speed Insights, which do not use cookies.
           </li>
         </ul>
+        <p>
+          We do not ask for, and cannot receive, your name, email address, phone number or any other
+          contact detail. If you put such a detail in a post, it is content like any other, visible
+          to whoever can see that post, and deleted with it.
+        </p>
       </LegalSection>
 
       <LegalSection title="2. How we use it">
         <ul>
           <li>To run Twittesia and show your content to the people you share it with.</li>
-          <li>
-            To sign you in and protect your account, including sessions, two-factor authentication
-            and limiting repeated attempts.
-          </li>
-          <li>
-            To send the emails the service needs: address verification, magic links, password resets
-            and sign-in codes.
-          </li>
+          <li>To keep you signed in for the life of your identity, and to limit abuse.</li>
           <li>To find and fix problems, and make Twittesia faster.</li>
         </ul>
+        <p>We send no email, because we have no address to send it to.</p>
       </LegalSection>
 
       <LegalSection title="3. How long we keep it">
@@ -65,21 +62,19 @@ export default function PrivacyPage() {
             are created.
           </li>
           <li>
-            <strong>Sessions.</strong> Until they expire, you sign out or you revoke them.
+            <strong>Your identity.</strong> It stops working 24 hours after it was created, and is
+            deleted once the last thing it wrote has expired. There is no way to recover it and no
+            way for us to restore it.
           </li>
           <li>
-            <strong>Links and codes.</strong> Verification links, magic links and sign-in codes last
-            until they are used or expire.
-          </li>
-          <li>
-            <strong>Account details.</strong> For as long as you have an account.
+            <strong>Sessions.</strong> Until they expire or you leave.
           </li>
         </ul>
       </LegalSection>
 
       <LegalSection title="4. Who processes it">
         <p>
-          We do not sell, rent or trade your personal information. These services process it on our
+          We do not sell, rent or trade information about you. These services process it on our
           behalf, only to provide Twittesia:
         </p>
         <ul>
@@ -90,14 +85,9 @@ export default function PrivacyPage() {
             <strong>Neon</strong> hosts the database.
           </li>
           <li>
-            <strong>Resend</strong> delivers our emails.
-          </li>
-          <li>
-            <strong>GitHub</strong> and <strong>Google</strong>, only if you use them to sign in.
-          </li>
-          <li>
-            <strong>Have I Been Pwned</strong> checks new passwords against known breaches. Only the
-            first five characters of the password&apos;s hash are sent, never the password.
+            <strong>Gravatar</strong> draws the generated pictures. Your browser fetches the picture
+            from them directly, so Gravatar sees your IP address. We send them only a hash of the
+            handle we invented, which is connected to nothing else about you.
           </li>
         </ul>
         <p>We may also disclose information when the law requires it.</p>
@@ -105,22 +95,25 @@ export default function PrivacyPage() {
 
       <LegalSection title="5. Cookies and local storage">
         <p>
-          We use a cookie only to keep you signed in. Your light or dark theme choice is saved in
-          your browser&apos;s local storage. We do not use advertising or tracking cookies.
+          We use a cookie only to keep your identity signed in. Your light or dark theme choice is
+          saved in your browser&apos;s local storage. We do not use advertising or tracking cookies.
         </p>
       </LegalSection>
 
       <LegalSection title="6. Security">
         <p>
-          We protect your data with encryption in transit, hashed passwords and optional two-factor
-          authentication. No system is perfectly secure, so we cannot guarantee absolute security.
+          We protect data with encryption in transit. The strongest protection here is that there is
+          so little to protect: no password to steal, no address to leak, and nothing that outlives
+          a day. No system is perfectly secure, so we cannot guarantee absolute security.
         </p>
       </LegalSection>
 
       <LegalSection title="7. Your rights">
         <p>
-          You can change your name, username, email and password, and revoke sessions, in your
-          settings. To get a copy of your information, correct it or delete your account, write to{" "}
+          You can change your display name and handle in your settings, and delete any post you
+          wrote. Leaving ends your identity immediately. Everything else deletes itself within a
+          day, and afterwards we hold nothing that would let us find your information again, or
+          connect it to you if you asked us to. Questions go to{" "}
           <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
         </p>
       </LegalSection>
@@ -128,8 +121,8 @@ export default function PrivacyPage() {
       <LegalSection title="8. Changes to this policy">
         <p>
           We may update this policy. When we do, we will publish the new version here and update the
-          effective date. For significant changes, we will also tell you by email or with a notice
-          on Twittesia.
+          effective date. For significant changes, we will also post a notice on Twittesia, since we
+          have no way to write to you.
         </p>
       </LegalSection>
 

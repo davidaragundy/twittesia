@@ -7,20 +7,19 @@ interface Props {
 }
 
 export const resolveAuthRouteAccess = ({ pathname, hasSession }: Props) => {
-  const isPublicRoute = PUBLIC_ROUTE_PATHS.has(pathname);
-  const isAuthRoute = AUTH_ROUTE_PATHS.has(pathname);
-
-  if (isPublicRoute) {
+  if (PUBLIC_ROUTE_PATHS.has(pathname)) {
     return { action: "allow" as const };
   }
 
+  // Without an identity there is nothing to sign in to, so anywhere that needs one sends the
+  // visitor to the landing page to start rather than to a form
   if (!hasSession) {
-    return isAuthRoute
+    return AUTH_ROUTE_PATHS.has(pathname)
       ? { action: "allow" as const }
-      : { action: "redirect" as const, destination: "/sign-in" };
+      : { action: "redirect" as const, destination: "/" };
   }
 
-  return isAuthRoute
+  return AUTH_ROUTE_PATHS.has(pathname)
     ? { action: "redirect" as const, destination: "/home" }
     : { action: "allow" as const };
 };

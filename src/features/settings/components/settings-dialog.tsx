@@ -23,13 +23,8 @@ import { Spinner } from "@/shared/components/ui/spinner";
 import { ToggleGroup, ToggleGroupItem } from "@/shared/components/ui/toggle-group";
 
 import { ActiveSessions } from "@/features/settings/components/active-sessions";
-import { ChangeEmailForm } from "@/features/settings/components/change-email-form";
 import { ChangeNameForm } from "@/features/settings/components/change-name-form";
-import { ChangePasswordForm } from "@/features/settings/components/change-password-form";
 import { ChangeUsernameForm } from "@/features/settings/components/change-username-form";
-import { DeleteAccount } from "@/features/settings/components/delete-account";
-import { GenerateBackupCodesForm } from "@/features/settings/components/generate-backup-codes-form";
-import { ToggleTwoFactorForm } from "@/features/settings/components/toggle-two-factor-form";
 import { SETTINGS_DIALOG_DESCRIPTION } from "@/features/settings/constants/settings-dialog-description";
 import { SETTINGS_DIALOG_TITLE } from "@/features/settings/constants/settings-dialog-title";
 import { SETTINGS_SECTIONS } from "@/features/settings/constants/settings-sections";
@@ -60,28 +55,13 @@ export function SettingsDialog() {
       <div className="flex flex-col gap-14">
         <ChangeNameForm />
         <ChangeUsernameForm />
-        <ChangeEmailForm />
-
-        <SettingsSection
-          title="Delete account"
-          description="Leave Twittesia and take your profile and posts with you."
-        >
-          <DeleteAccount />
-        </SettingsSection>
       </div>
     ) : (
       <div className="flex flex-col gap-14">
-        <SettingsSection title="Password" description="Change the password you sign in with.">
-          <ChangePasswordForm />
-        </SettingsSection>
         <SettingsSection
-          title="Two-factor authentication"
-          description="Add a second step when you sign in."
+          title="Active sessions"
+          description="Where this identity is open. It expires 24 hours after it was created, here and everywhere else."
         >
-          <ToggleTwoFactorForm />
-          <GenerateBackupCodesForm />
-        </SettingsSection>
-        <SettingsSection title="Active sessions" description="Devices signed in to your account.">
           <ActiveSessions />
         </SettingsSection>
       </div>

@@ -56,13 +56,13 @@ export default function LandingPage() {
           A social network where every post and comment is deleted after a day.
         </p>
         <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
-          <Button size="lg" render={<Link href="/sign-up" />} nativeButton={false}>
-            Get started
-          </Button>
-          <Button size="lg" variant="ghost" render={<Link href="/sign-in" />} nativeButton={false}>
-            Sign in
+          <Button size="lg" render={<Link href="/start" />} nativeButton={false}>
+            Start posting
           </Button>
         </div>
+        <p className="max-w-md text-sm text-balance text-muted-foreground">
+          No email, no password, no account. You get a name and you are in.
+        </p>
       </section>
 
       <section aria-labelledby="features-title" className="flex flex-col gap-8">
@@ -119,8 +119,8 @@ export default function LandingPage() {
         <h2 className="text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
           Nothing to regret tomorrow.
         </h2>
-        <Button size="lg" render={<Link href="/sign-up" />} nativeButton={false}>
-          Join Twittesia
+        <Button size="lg" render={<Link href="/start" />} nativeButton={false}>
+          Start posting
         </Button>
       </section>
     </div>

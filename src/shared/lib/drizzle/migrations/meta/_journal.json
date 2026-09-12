@@ -22,6 +22,13 @@
       "when": 1789173549986,
       "tag": "0002_post_timestamptz",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1789176512232,
+      "tag": "0003_user_is_anonymous",
+      "breakpoints": true
     }
   ]
 }

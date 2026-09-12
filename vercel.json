@@ -3,7 +3,7 @@
   "buildCommand": "pnpm exec drizzle-kit migrate && pnpm build",
   "crons": [
     {
-      "path": "/api/cron/purge-expired-posts",
+      "path": "/api/cron/purge",
       "schedule": "0 4 * * *"
     }
   ]
