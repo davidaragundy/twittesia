@@ -42,7 +42,7 @@ export default async function OpengraphImage() {
         Say it. In 24 hours, it&apos;s gone.
       </div>
       <div style={{ fontSize: 32, fontWeight: 400, color: "#a1a1a1" }}>
-        Twitter, with amnesia. Every post, comment and message is deleted after a day.
+        Twitter, with amnesia. Every post and comment is deleted after a day.
       </div>
     </div>,
     {

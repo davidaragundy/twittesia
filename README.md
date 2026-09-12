@@ -1,10 +1,9 @@
 # Twittesia
 
 Twittesia is an open-source social media platform, similar to Twitter, where
-every piece of content has a lifespan of 24 hours. Users publish posts to their
-followers or to their close friends, publish ghosts when they would rather stay
-anonymous, comment on posts, and talk in chats. At expiry, each post, comment
-and message is deleted for good.
+every piece of content has a lifespan of 24 hours. Users publish posts, publish
+ghosts when they would rather stay anonymous, and comment on posts. At expiry,
+each post and comment is deleted for good.
 
 The domain words used above each mean one specific thing here, defined in
 [CONTEXT.md](./CONTEXT.md).

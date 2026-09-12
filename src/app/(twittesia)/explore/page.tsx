@@ -22,9 +22,7 @@ export default function ExplorePage() {
           <HugeiconsIcon icon={Search01Icon} />
         </EmptyMedia>
         <EmptyTitle>Explore</EmptyTitle>
-        <EmptyDescription>
-          Posts from people you don&apos;t follow yet will show up here.
-        </EmptyDescription>
+        <EmptyDescription>Posts from across Twittesia will show up here.</EmptyDescription>
       </EmptyHeader>
     </Empty>
   );

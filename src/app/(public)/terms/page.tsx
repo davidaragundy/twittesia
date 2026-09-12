@@ -47,8 +47,8 @@ export default function TermsPage() {
             exists.
           </li>
           <li>
-            <strong>It expires.</strong> Posts, comments and messages are deleted for good 24 hours
-            after they are created. We cannot restore them afterwards.
+            <strong>It expires.</strong> Posts and comments are deleted for good 24 hours after they
+            are created. We cannot restore them afterwards.
           </li>
           <li>
             <strong>Ghosts.</strong> A ghost is stored without any link to your account, so nobody,

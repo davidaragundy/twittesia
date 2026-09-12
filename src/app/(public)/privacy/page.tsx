@@ -33,8 +33,8 @@ export default function PrivacyPage() {
             two-factor authentication, your authenticator secret and backup codes.
           </li>
           <li>
-            <strong>Your content.</strong> The posts, comments and messages you create. Ghosts are
-            stored without any link to your account.
+            <strong>Your content.</strong> The posts and comments you create. Ghosts are stored
+            without any link to your account.
           </li>
           <li>
             <strong>Usage and performance.</strong> Page views and loading performance, measured
@@ -61,8 +61,8 @@ export default function PrivacyPage() {
       <LegalSection title="3. How long we keep it">
         <ul>
           <li>
-            <strong>Content.</strong> Posts, comments and messages are deleted for good 24 hours
-            after they are created.
+            <strong>Content.</strong> Posts and comments are deleted for good 24 hours after they
+            are created.
           </li>
           <li>
             <strong>Sessions.</strong> Until they expire, you sign out or you revoke them.

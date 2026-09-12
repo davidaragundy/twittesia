@@ -1,8 +1,8 @@
 # Twittesia
 
 Twittesia is an open-source social media platform, similar to Twitter, where
-every piece of content — posts, comments and messages — exists for 24 hours and
-is then gone for good.
+every piece of content — posts and comments — exists for 24 hours and is then
+gone for good.
 
 ## Language
 
@@ -26,27 +26,14 @@ _Avoid_: login, provider
 A user's public identity: their username, name and avatar.
 _Avoid_: page
 
-**Follow**:
-A one-way connection through which a user sees another user's posts.
-_Avoid_: subscription, friendship
-
-**Follower**:
-A user who follows another user.
-_Avoid_: subscriber, fan
-
-**Close friend**:
-A user someone has added to their close-friends list, so that they see the posts
-shared only with that list.
-_Avoid_: inner circle, favourite
-
 ### Content
 
 **Content**:
-Anything a user creates: posts, comments and messages.
+Anything a user creates: posts and comments.
 _Avoid_: data, media
 
 **Post**:
-Content a user publishes to their followers or to their close friends.
+Content a user publishes.
 _Avoid_: tweet, story
 
 **Ghost**:
@@ -59,16 +46,8 @@ A response to a post.
 _Avoid_: reply
 
 **Feed**:
-The posts from the users someone follows.
+The posts a user sees.
 _Avoid_: timeline, home
-
-**Chat**:
-A private conversation between users, holding their messages.
-_Avoid_: conversation, DM, thread
-
-**Message**:
-One entry in a chat.
-_Avoid_: DM
 
 ### Time
 

@@ -53,7 +53,7 @@ export default function LandingPage() {
           Say it. In 24 hours, it&apos;s gone.
         </h1>
         <p className="max-w-md text-base text-balance text-muted-foreground sm:text-lg">
-          A social network where every post, comment and message is deleted after a day.
+          A social network where every post and comment is deleted after a day.
         </p>
         <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
           <Button size="lg" render={<Link href="/sign-up" />} nativeButton={false}>

@@ -8,10 +8,5 @@ export const ProfilePageSkeleton = () => (
       <Skeleton className="h-7 w-40" />
       <Skeleton className="h-5 w-24" />
     </div>
-
-    <div className="flex gap-2">
-      <Skeleton className="h-5 w-20 rounded-full" />
-      <Skeleton className="h-5 w-20 rounded-full" />
-    </div>
   </div>
 );
