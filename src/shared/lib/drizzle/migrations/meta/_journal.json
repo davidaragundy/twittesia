@@ -57,6 +57,13 @@
       "when": 1789580634562,
       "tag": "0007_post_reaction_emoji",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1789591136350,
+      "tag": "0008_comment",
+      "breakpoints": true
     }
   ]
 }

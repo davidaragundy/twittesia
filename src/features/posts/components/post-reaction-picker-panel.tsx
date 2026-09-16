@@ -34,11 +34,7 @@ export const PostReactionPickerPanel = ({ mine, onSelect, className }: Props) =>
         </Button>
       ))}
     </div>
-    <EmojiPicker
-      className="h-80 w-full"
-      columns={8}
-      onEmojiSelect={({ emoji }) => onSelect(emoji)}
-    >
+    <EmojiPicker className="h-80 w-full" columns={8} onEmojiSelect={({ emoji }) => onSelect(emoji)}>
       <EmojiPickerSearch placeholder="Search emoji" />
       <EmojiPickerContent />
       <EmojiPickerFooter />

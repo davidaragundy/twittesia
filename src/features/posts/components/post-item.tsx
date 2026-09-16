@@ -1,31 +1,47 @@
 "use client";
 
-import { AnonymousIcon, ViewIcon } from "@hugeicons/core-free-icons";
+import { AnonymousIcon, BubbleChatIcon, ViewIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 
+import { ConfirmDialog } from "@/shared/components/confirm-dialog";
+import { DeleteActionsMenu } from "@/shared/components/delete-actions-menu";
 import { SeededAvatar } from "@/shared/components/seeded-avatar";
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
 import { formatRelativeTime } from "@/shared/utils/format-relative-time";
 
-import { DeletePostDialog } from "@/features/posts/components/delete-post-dialog";
-import { PostActionsMenu } from "@/features/posts/components/post-actions-menu";
 import { PostReactions } from "@/features/posts/components/post-reactions";
+import { DELETE_POST_DIALOG_COPY } from "@/features/posts/constants/delete-post-dialog-copy";
 import { POST_DATE_FORMAT } from "@/features/posts/constants/post-date-format";
 import { usePostItem } from "@/features/posts/hooks/use-post-item";
 import type { FeedPost } from "@/features/posts/types/feed-post";
+import { formatCommentCount } from "@/features/posts/utils/format-comment-count";
 import { formatViewCount } from "@/features/posts/utils/format-view-count";
+import { getPostPath } from "@/features/posts/utils/get-post-path";
 
 interface Props {
   post: FeedPost;
   position: number;
   total: number;
+  // Called once the post is deleted, for a page that can't show anything without it
+  onDeleted?: () => void;
 }
 
-export const PostItem = ({ post, position, total }: Props) => {
+export const PostItem = ({ post, position, total, onDeleted }: Props) => {
   const { isDeleteOpen, onDeleteOpenChange, requestDelete, confirmDelete, isDeleting } =
-    usePostItem({ postId: post.id });
+    usePostItem({ postId: post.id, onDeleted });
   const { author } = post;
+
+  // The clock differs between the server and the browser by a moment
+  const time = (
+    <time
+      dateTime={post.createdAt.toISOString()}
+      title={POST_DATE_FORMAT.format(post.createdAt)}
+      suppressHydrationWarning
+    >
+      {formatRelativeTime(post.createdAt)}
+    </time>
+  );
 
   return (
     <article
@@ -72,36 +88,52 @@ export const PostItem = ({ post, position, total }: Props) => {
             <span aria-hidden className="shrink-0 text-sm text-muted-foreground/60">
               ·
             </span>
-            {/* The clock differs between the server and the browser by a moment */}
-            <time
-              dateTime={post.createdAt.toISOString()}
-              title={POST_DATE_FORMAT.format(post.createdAt)}
-              suppressHydrationWarning
-              className="shrink-0 text-sm text-muted-foreground"
-            >
-              {formatRelativeTime(post.createdAt)}
-            </time>
+            {author ? (
+              <Link
+                href={getPostPath({ username: author.username, postId: post.id })}
+                className="shrink-0 text-sm text-muted-foreground hover:underline"
+              >
+                {time}
+              </Link>
+            ) : (
+              <span className="shrink-0 text-sm text-muted-foreground">{time}</span>
+            )}
           </div>
-          {post.isMine && <PostActionsMenu onDelete={requestDelete} />}
+          {post.isMine && <DeleteActionsMenu subject="Post" onDelete={requestDelete} />}
         </header>
 
         <p className="text-base leading-relaxed break-words whitespace-pre-wrap">{post.content}</p>
 
         <footer className="flex flex-wrap items-center justify-between gap-3">
           <PostReactions post={post} />
-          <span className="flex items-center gap-1.5 text-xs text-muted-foreground tabular-nums">
-            <HugeiconsIcon icon={ViewIcon} className="size-3.5" />
-            {formatViewCount(post.viewCount)}
-          </span>
+          <div className="flex items-center gap-4 text-xs text-muted-foreground tabular-nums">
+            {author && (
+              <Link
+                href={`${getPostPath({ username: author.username, postId: post.id })}#comments`}
+                aria-label={formatCommentCount(post.commentCount)}
+                className="flex items-center gap-1.5 rounded-full hover:text-foreground"
+              >
+                <HugeiconsIcon icon={BubbleChatIcon} className="size-3.5" />
+                {post.commentCount}
+              </Link>
+            )}
+            <span className="flex items-center gap-1.5">
+              <HugeiconsIcon icon={ViewIcon} className="size-3.5" />
+              {formatViewCount(post.viewCount)}
+            </span>
+          </div>
         </footer>
       </div>
 
       {post.isMine && (
-        <DeletePostDialog
+        <ConfirmDialog
           isOpen={isDeleteOpen}
           onOpenChange={onDeleteOpenChange}
+          title={DELETE_POST_DIALOG_COPY.title}
+          description={DELETE_POST_DIALOG_COPY.description}
+          confirmLabel="Delete"
           onConfirm={confirmDelete}
-          isDeleting={isDeleting}
+          isPending={isDeleting}
         />
       )}
     </article>

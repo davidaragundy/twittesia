@@ -14,48 +14,51 @@ import {
 } from "@/shared/components/ui/input-group";
 import { Spinner } from "@/shared/components/ui/spinner";
 
-import { MAX_POST_LENGTH } from "@/features/posts/constants/max-post-length";
-import { usePostComposer } from "@/features/posts/hooks/use-post-composer";
+import { MAX_COMMENT_LENGTH } from "@/features/comments/constants/max-comment-length";
+import { useCommentComposer } from "@/features/comments/hooks/use-comment-composer";
 
-export const PostComposer = () => {
-  const { form, user, onSubmit, onKeyDown, isPending, length, canSubmit } = usePostComposer();
+interface Props {
+  postId: string;
+  // The writer's handle, for their avatar
+  viewerHandle: string;
+}
+
+export const CommentComposer = ({ postId, viewerHandle }: Props) => {
+  const { form, onSubmit, onKeyDown, isPending, length, canSubmit } = useCommentComposer({
+    postId,
+  });
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-4">
-      {user && (
-        <SeededAvatar seed={user.username ?? user.id} size="lg" className="mt-1 hidden sm:block" />
-      )}
+      <SeededAvatar seed={viewerHandle} className="mt-1.5 hidden sm:block" />
 
       <Controller
         name="content"
         control={form.control}
         disabled={isPending}
         render={({ field }) => (
-          <InputGroup className="has-data-[align=block-end]:rounded-4xl has-[textarea]:rounded-4xl">
-            <label htmlFor="post-composer-content" className="sr-only">
-              What&apos;s on your mind?
+          <InputGroup className="has-data-[align=block-end]:rounded-3xl has-[textarea]:rounded-3xl">
+            <label htmlFor="comment-composer-content" className="sr-only">
+              Write a comment
             </label>
             <InputGroupTextarea
               {...field}
-              id="post-composer-content"
-              placeholder="What's on your mind?"
+              id="comment-composer-content"
+              placeholder="Write a comment"
               aria-invalid={length > 0 && !canSubmit && !isPending}
               onKeyDown={onKeyDown}
-              className="max-h-72 min-h-20 px-5 pt-4 text-base md:text-base"
+              className="max-h-60 min-h-12 px-4 pt-3.5 text-base md:text-base"
             />
-            <InputGroupAddon align="block-end" className="gap-3 px-4 pb-3">
-              <span className="hidden text-xs text-muted-foreground sm:inline">
-                ⌘ Enter to post
-              </span>
+            <InputGroupAddon align="block-end" className="gap-3 px-3 pb-2.5">
               <div className="ml-auto flex items-center gap-3">
-                <CharacterCountRing length={length} max={MAX_POST_LENGTH} />
+                <CharacterCountRing length={length} max={MAX_COMMENT_LENGTH} />
                 <InputGroupButton
                   type="submit"
                   variant="default"
                   size="icon-sm"
                   disabled={!canSubmit}
-                  aria-label="Post"
-                  title="Post"
+                  aria-label="Comment"
+                  title="Comment"
                   className="rounded-full"
                 >
                   {isPending ? <Spinner /> : <HugeiconsIcon icon={ArrowUp02Icon} />}

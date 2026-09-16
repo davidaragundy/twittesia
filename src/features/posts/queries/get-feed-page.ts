@@ -1,20 +1,17 @@
 import "server-only";
 
-import { and, desc, eq, gt, inArray, lt, sql } from "drizzle-orm";
+import { and, gt, lt, sql } from "drizzle-orm";
 
-import { post, postReaction, postView, user } from "@/shared/lib/drizzle/schema";
-import { db } from "@/shared/lib/drizzle/server";
+import { post } from "@/shared/lib/drizzle/schema";
 import type { ActionResponse } from "@/shared/types/action-response";
-import { tryCatch } from "@/shared/utils/try-catch";
 
 import { FEED_PAGE_SIZE } from "@/features/posts/constants/feed-page-size";
 import type { FeedPage } from "@/features/posts/types/feed-page";
 import { parseFeedCursor, toFeedCursor } from "@/features/posts/utils/feed-cursor";
-import { groupPostReactions } from "@/features/posts/utils/group-post-reactions";
+import { readFeedPosts } from "@/features/posts/utils/read-feed-posts";
 
 interface Props {
   cursor?: string | null;
-  // The reader, so each post knows whether they can delete it and which reactions are theirs
   viewerId?: string | null;
 }
 
@@ -26,32 +23,17 @@ export const getFeedPage = async ({
 }: Props): Promise<ActionResponse<FeedPage, "FAILED_TO_LOAD_FEED">> => {
   const after = parseFeedCursor(cursor);
 
-  const { data, error } = await tryCatch(
-    db
-      .select({
-        id: post.id,
-        content: post.content,
-        createdAt: post.createdAt,
-        authorId: post.userId,
-        authorName: user.name,
-        authorUsername: user.username,
-        authorDisplayUsername: user.displayUsername,
-        viewCount: sql<number>`(select count(*)::int from ${postView} where ${postView.postId} = ${post.id})`,
-      })
-      .from(post)
-      .leftJoin(user, eq(user.id, post.userId))
-      .where(
-        and(
-          gt(post.expiresAt, new Date()),
-          after
-            ? lt(sql`(${post.createdAt}, ${post.id})`, sql`(${after.createdAt}, ${after.id})`)
-            : undefined,
-        ),
-      )
-      .orderBy(desc(post.createdAt), desc(post.id))
-      // One more than the page, to tell whether another page follows
-      .limit(FEED_PAGE_SIZE + 1),
-  );
+  const { data, error } = await readFeedPosts({
+    condition: and(
+      gt(post.expiresAt, new Date()),
+      after
+        ? lt(sql`(${post.createdAt}, ${post.id})`, sql`(${after.createdAt}, ${after.id})`)
+        : undefined,
+    ),
+    // One more than the page, to tell whether another page follows
+    limit: FEED_PAGE_SIZE + 1,
+    viewerId,
+  });
 
   if (error) {
     return {
@@ -60,57 +42,12 @@ export const getFeedPage = async ({
     };
   }
 
-  const rows = data.slice(0, FEED_PAGE_SIZE);
-  const last = rows.at(-1);
-
-  const { data: counts, error: countsError } = rows.length
-    ? await tryCatch(
-        db
-          .select({
-            postId: postReaction.postId,
-            emoji: postReaction.reaction,
-            count: sql<number>`count(*)::int`,
-            isMine: sql<boolean>`coalesce(bool_or(${postReaction.userId} = ${viewerId ?? null}), false)`,
-          })
-          .from(postReaction)
-          .where(
-            inArray(
-              postReaction.postId,
-              rows.map((row) => row.id),
-            ),
-          )
-          .groupBy(postReaction.postId, postReaction.reaction)
-          .orderBy(sql`min(${postReaction.createdAt})`),
-      )
-    : { data: [], error: null };
-
-  if (countsError) {
-    return {
-      data: null,
-      error: { code: "FAILED_TO_LOAD_FEED", message: "Couldn't load the feed" },
-    };
-  }
-
-  const reactions = groupPostReactions({ counts });
+  const posts = data.slice(0, FEED_PAGE_SIZE);
+  const last = posts.at(-1);
 
   return {
     data: {
-      posts: rows.map((row) => ({
-        id: row.id,
-        content: row.content,
-        createdAt: row.createdAt,
-        author:
-          row.authorId && row.authorName && row.authorUsername
-            ? {
-                name: row.authorName,
-                username: row.authorUsername,
-                displayUsername: row.authorDisplayUsername ?? row.authorUsername,
-              }
-            : null,
-        isMine: !!row.authorId && row.authorId === viewerId,
-        reactions: reactions.get(row.id) ?? [],
-        viewCount: row.viewCount,
-      })),
+      posts,
       nextCursor: data.length > FEED_PAGE_SIZE && last ? toFeedCursor(last) : null,
     },
     error: null,

@@ -65,6 +65,7 @@ export const createPost = async (
       isMine: true,
       reactions: [],
       viewCount: 0,
+      commentCount: 0,
     },
     error: null,
   };
