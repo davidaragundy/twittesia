@@ -34,7 +34,7 @@ export const PostItem = ({ post, position, total }: Props) => {
       aria-setsize={total}
       data-post-id={post.id}
       data-is-mine={post.isMine}
-      className="flex gap-4 rounded-4xl px-4 py-5 transition-colors hover:bg-muted/40 sm:px-5"
+      className="flex gap-4 px-4 py-5 sm:px-5"
     >
       {author ? (
         <Link href={`/${author.username}`} className="shrink-0" tabIndex={-1} aria-hidden>
