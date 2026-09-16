@@ -65,7 +65,7 @@ function EmojiPickerEmoji({ emoji, className, ...props }: EmojiPickerListEmojiPr
       {...props}
       data-slot="emoji-picker-emoji"
       className={cn(
-        "flex size-9 items-center justify-center rounded-2xl text-xl transition-colors data-active:bg-muted",
+        "flex h-9 min-w-9 flex-1 items-center justify-center rounded-2xl text-xl transition-colors data-active:bg-muted",
         className
       )}
     >

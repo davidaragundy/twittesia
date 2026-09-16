@@ -1,60 +1,69 @@
 "use client";
 
+import { ArrowUp02Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
-import { Button } from "@/shared/components/ui/button";
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/shared/components/ui/field";
+import { SeededAvatar } from "@/shared/components/seeded-avatar";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupTextarea,
+} from "@/shared/components/ui/input-group";
 import { Spinner } from "@/shared/components/ui/spinner";
-import { Textarea } from "@/shared/components/ui/textarea";
-import { cn } from "@/shared/utils/cn";
 
+import { PostLengthRing } from "@/features/posts/components/post-length-ring";
 import { usePostComposer } from "@/features/posts/hooks/use-post-composer";
 
 export const PostComposer = () => {
-  const { form, onSubmit, isPending, remaining, canSubmit } = usePostComposer();
+  const { form, user, onSubmit, onKeyDown, isPending, length, canSubmit } = usePostComposer();
 
   return (
-    <form id="post-composer" onSubmit={form.handleSubmit(onSubmit)}>
-      <FieldGroup>
-        <Controller
-          name="content"
-          control={form.control}
-          disabled={isPending}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="post-composer-content" className="sr-only">
-                What&apos;s on your mind?
-              </FieldLabel>
-              <Textarea
-                {...field}
-                id="post-composer-content"
-                rows={3}
-                placeholder="What is on your mind?"
-                aria-invalid={fieldState.invalid}
-                className="min-h-24 resize-none"
-              />
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
-        />
+    <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-4">
+      {user && (
+        <SeededAvatar seed={user.username ?? user.id} size="lg" className="mt-1 hidden sm:block" />
+      )}
 
-        <Field orientation="horizontal" className="justify-end">
-          <div className="flex items-center gap-4">
-            <span
-              className={cn(
-                "text-sm text-muted-foreground tabular-nums",
-                remaining < 0 && "text-destructive",
-              )}
-            >
-              {remaining}
-            </span>
-            <Button type="submit" form="post-composer" disabled={!canSubmit || isPending}>
-              {isPending && <Spinner data-icon="inline-start" />}
-              Post
-            </Button>
-          </div>
-        </Field>
-      </FieldGroup>
+      <Controller
+        name="content"
+        control={form.control}
+        disabled={isPending}
+        render={({ field }) => (
+          <InputGroup className="has-data-[align=block-end]:rounded-4xl has-[textarea]:rounded-4xl">
+            <label htmlFor="post-composer-content" className="sr-only">
+              What&apos;s on your mind?
+            </label>
+            <InputGroupTextarea
+              {...field}
+              id="post-composer-content"
+              placeholder="What's on your mind?"
+              aria-invalid={length > 0 && !canSubmit && !isPending}
+              onKeyDown={onKeyDown}
+              className="max-h-72 min-h-20 px-5 pt-4 text-base md:text-base"
+            />
+            <InputGroupAddon align="block-end" className="gap-3 px-4 pb-3">
+              <span className="hidden text-xs text-muted-foreground sm:inline">
+                ⌘ Enter to post
+              </span>
+              <div className="ml-auto flex items-center gap-3">
+                <PostLengthRing length={length} />
+                <InputGroupButton
+                  type="submit"
+                  variant="default"
+                  size="icon-sm"
+                  disabled={!canSubmit}
+                  aria-label="Post"
+                  title="Post"
+                  className="rounded-full"
+                >
+                  {isPending ? <Spinner /> : <HugeiconsIcon icon={ArrowUp02Icon} />}
+                </InputGroupButton>
+              </div>
+            </InputGroupAddon>
+          </InputGroup>
+        )}
+      />
     </form>
   );
 };
