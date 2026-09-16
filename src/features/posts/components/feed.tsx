@@ -16,6 +16,7 @@ import { Spinner } from "@/shared/components/ui/spinner";
 import { PostItem } from "@/features/posts/components/post-item";
 import { useDeletePostMutation } from "@/features/posts/hooks/use-delete-post-mutation";
 import { useFeed } from "@/features/posts/hooks/use-feed";
+import { usePostViewTracking } from "@/features/posts/hooks/use-post-view-tracking";
 import type { FeedPage } from "@/features/posts/types/feed-page";
 
 interface Props {
@@ -23,7 +24,8 @@ interface Props {
 }
 
 export const Feed = ({ initialPage }: Props) => {
-  const { posts, hasNextPage, isFetchingNextPage, endRef } = useFeed({ initialPage });
+  const { posts, postIds, hasNextPage, isFetchingNextPage, endRef } = useFeed({ initialPage });
+  const { containerRef } = usePostViewTracking({ postIds });
   const {
     mutate: deletePost,
     isPending: isDeleting,
@@ -47,7 +49,7 @@ export const Feed = ({ initialPage }: Props) => {
   }
 
   return (
-    <ItemGroup className="gap-8">
+    <ItemGroup ref={containerRef} className="gap-8">
       {posts.map((post) => (
         <PostItem
           key={post.id}

@@ -43,6 +43,11 @@ An emoji from a fixed set that a user adds to a post. A user may add several
 different ones to the same post, and each shows how many users added it.
 _Avoid_: like, emote
 
+**View**:
+One user other than the author having seen a post in their feed: at least half
+of it visible for about a second. Each user counts at most once per post.
+_Avoid_: impression, read
+
 **Comment**:
 A response to a post.
 _Avoid_: reply

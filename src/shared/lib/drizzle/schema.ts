@@ -135,6 +135,24 @@ export const postReaction = pgTable(
   ],
 );
 
+export const postView = pgTable(
+  "post_view",
+  {
+    postId: text("post_id")
+      .notNull()
+      .references(() => post.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  // One view per user per post; leads with post_id, so it also serves the feed's count
+  (table) => [
+    primaryKey({ columns: [table.postId, table.userId] }),
+    index("post_view_userId_idx").on(table.userId),
+  ],
+);
+
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),

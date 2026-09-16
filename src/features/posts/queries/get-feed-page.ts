@@ -2,7 +2,7 @@ import "server-only";
 
 import { and, desc, eq, gt, inArray, lt, sql } from "drizzle-orm";
 
-import { post, postReaction, user } from "@/shared/lib/drizzle/schema";
+import { post, postReaction, postView, user } from "@/shared/lib/drizzle/schema";
 import { db } from "@/shared/lib/drizzle/server";
 import type { ActionResponse } from "@/shared/types/action-response";
 import { tryCatch } from "@/shared/utils/try-catch";
@@ -36,6 +36,7 @@ export const getFeedPage = async ({
         authorName: user.name,
         authorUsername: user.username,
         authorDisplayUsername: user.displayUsername,
+        viewCount: sql<number>`(select count(*)::int from ${postView} where ${postView.postId} = ${post.id})`,
       })
       .from(post)
       .leftJoin(user, eq(user.id, post.userId))
@@ -107,6 +108,7 @@ export const getFeedPage = async ({
             : null,
         isMine: !!row.authorId && row.authorId === viewerId,
         reactions: reactions.get(row.id) ?? [],
+        viewCount: row.viewCount,
       })),
       nextCursor: data.length > FEED_PAGE_SIZE && last ? toFeedCursor(last) : null,
     },

@@ -1,6 +1,6 @@
 "use client";
 
-import { AnonymousIcon, Delete02Icon } from "@hugeicons/core-free-icons";
+import { AnonymousIcon, Delete02Icon, ViewIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 
@@ -19,6 +19,7 @@ import { formatRelativeTime } from "@/shared/utils/format-relative-time";
 
 import { PostReactions } from "@/features/posts/components/post-reactions";
 import type { FeedPost } from "@/features/posts/types/feed-post";
+import { formatViewCount } from "@/features/posts/utils/format-view-count";
 
 interface Props {
   post: FeedPost;
@@ -30,7 +31,7 @@ export const PostItem = ({ post, onDelete, isDeleting }: Props) => {
   const { author } = post;
 
   return (
-    <Item className="items-start">
+    <Item className="items-start" data-post-id={post.id} data-is-mine={post.isMine}>
       <ItemMedia>
         {author ? (
           <SeededAvatar seed={author.username} />
@@ -63,7 +64,13 @@ export const PostItem = ({ post, onDelete, isDeleting }: Props) => {
         <ItemDescription className="text-base whitespace-pre-wrap text-foreground">
           {post.content}
         </ItemDescription>
-        <PostReactions post={post} />
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <PostReactions post={post} />
+          <span className="flex items-center gap-1 text-sm text-muted-foreground tabular-nums">
+            <HugeiconsIcon icon={ViewIcon} className="size-4" />
+            {formatViewCount(post.viewCount)}
+          </span>
+        </div>
       </ItemContent>
 
       {post.isMine && (
