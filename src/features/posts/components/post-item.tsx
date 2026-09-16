@@ -17,6 +17,7 @@ import {
 } from "@/shared/components/ui/item";
 import { formatRelativeTime } from "@/shared/utils/format-relative-time";
 
+import { PostReactions } from "@/features/posts/components/post-reactions";
 import type { FeedPost } from "@/features/posts/types/feed-post";
 
 interface Props {
@@ -62,6 +63,7 @@ export const PostItem = ({ post, onDelete, isDeleting }: Props) => {
         <ItemDescription className="text-base whitespace-pre-wrap text-foreground">
           {post.content}
         </ItemDescription>
+        <PostReactions post={post} />
       </ItemContent>
 
       {post.isMine && (

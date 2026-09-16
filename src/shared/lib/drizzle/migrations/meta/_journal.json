@@ -36,6 +36,13 @@
       "when": 1789178076438,
       "tag": "0004_drop_two_factor_and_counts",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1789579161575,
+      "tag": "0005_post_reaction",
+      "breakpoints": true
     }
   ]
 }
