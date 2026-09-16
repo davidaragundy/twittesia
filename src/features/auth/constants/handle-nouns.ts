@@ -1,5 +1,4 @@
-// The other half of a generated handle: snacks, small animals and household objects, which is
-// roughly the cast of any good joke.
+// Snacks, small animals and household objects
 export const HANDLE_NOUNS = [
   "avocado",
   "axolotl",

@@ -1,5 +1,4 @@
-// Colour sets a seeded avatar is drawn from. The background is saturated and the body light, so the
-// dark ink of the face reads on the body whatever the page's own theme is.
+// The background is saturated and the body light, so the dark ink of the face reads on any theme
 export const SEEDED_AVATAR_PALETTES = [
   { background: "#F97316", body: "#FDE68A", ink: "#1C1917" },
   { background: "#6366F1", body: "#C7D2FE", ink: "#1E1B4B" },

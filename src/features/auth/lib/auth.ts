@@ -49,9 +49,7 @@ export const auth = betterAuth({
   databaseHooks: {
     user: {
       create: {
-        // The anonymous plugin writes only an email, a name and isAnonymous, so the handle and
-        // display name are invented here. The picture is not stored at all: it is drawn from the
-        // handle wherever it is shown.
+        // The anonymous plugin writes only an email, a name and isAnonymous
         before: async (user) => {
           const handle = generateHandle();
 

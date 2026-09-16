@@ -1,5 +1,4 @@
-// One half of a generated handle. Silly on purpose, about the handle and never about a person: no
-// looks, no bodies, no health, nothing anyone would mind being called for a day.
+// Silly about the handle, never about the person
 export const HANDLE_ADJECTIVES = [
   "awkward",
   "bashful",
