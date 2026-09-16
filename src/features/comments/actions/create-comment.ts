@@ -82,6 +82,8 @@ export const createComment = async (
         displayUsername: user.displayUsername ?? user.username ?? "",
       },
       isMine: true,
+      reactions: [],
+      viewCount: 0,
     },
     error: null,
   };

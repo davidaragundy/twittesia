@@ -5,12 +5,12 @@ import { NextResponse } from "next/server";
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import { getSession } from "@/features/auth/queries/get-session";
+import { recordCommentViews } from "@/features/comments/utils/record-comment-views";
 import { recordViewsSchema } from "@/features/posts/schemas/record-views-schema";
-import { recordPostViews } from "@/features/posts/utils/record-post-views";
 
-// A route handler rather than a server action: actions are dispatched one at a time per client,
-// and a page that is closing can only reach a URL, through navigator.sendBeacon
-export const handleRecordPostViewsRequest = async (request: Request) => {
+// A route handler rather than a server action, for the same reasons as post views: actions are
+// dispatched one at a time per client, and a page that is closing can only reach a URL
+export const handleRecordCommentViewsRequest = async (request: Request) => {
   const session = await getSession();
 
   if (!session) {
@@ -22,8 +22,8 @@ export const handleRecordPostViewsRequest = async (request: Request) => {
 
   if (!input.success) return NextResponse.json({ message: "Invalid views" }, { status: 400 });
 
-  const { error } = await recordPostViews({
-    postIds: input.data.ids,
+  const { error } = await recordCommentViews({
+    commentIds: input.data.ids,
     viewerId: session.user.id,
   });
 

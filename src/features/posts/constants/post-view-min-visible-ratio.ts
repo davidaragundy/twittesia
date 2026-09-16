@@ -1,1 +1,0 @@
-export const POST_VIEW_MIN_VISIBLE_RATIO = 0.5;

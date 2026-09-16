@@ -1,8 +1,8 @@
 import "server-only";
 
-import { and, asc, eq, gt, sql } from "drizzle-orm";
+import { and, asc, eq, gt, inArray, sql } from "drizzle-orm";
 
-import { comment, post, user } from "@/shared/lib/drizzle/schema";
+import { comment, commentReaction, commentView, post, user } from "@/shared/lib/drizzle/schema";
 import { db } from "@/shared/lib/drizzle/server";
 import type { ActionResponse } from "@/shared/types/action-response";
 import { tryCatch } from "@/shared/utils/try-catch";
@@ -11,6 +11,7 @@ import { COMMENTS_PAGE_SIZE } from "@/features/comments/constants/comments-page-
 import type { CommentsPage } from "@/features/comments/types/comments-page";
 import { parseCommentCursor } from "@/features/comments/utils/parse-comment-cursor";
 import { toCommentCursor } from "@/features/comments/utils/to-comment-cursor";
+import { groupReactions } from "@/features/posts/utils/group-reactions";
 
 interface Props {
   postId: string;
@@ -37,6 +38,7 @@ export const getCommentsPage = async ({
         authorName: user.name,
         authorUsername: user.username,
         authorDisplayUsername: user.displayUsername,
+        viewCount: sql<number>`(select count(*)::int from ${commentView} where ${commentView.commentId} = ${comment.id})`,
       })
       .from(comment)
       .innerJoin(post, eq(post.id, comment.postId))
@@ -62,7 +64,39 @@ export const getCommentsPage = async ({
     };
   }
 
-  const comments = data.slice(0, COMMENTS_PAGE_SIZE).map((row) => ({
+  const rows = data.slice(0, COMMENTS_PAGE_SIZE);
+
+  const { data: counts, error: countsError } = rows.length
+    ? await tryCatch(
+        db
+          .select({
+            targetId: commentReaction.commentId,
+            emoji: commentReaction.reaction,
+            count: sql<number>`count(*)::int`,
+            isMine: sql<boolean>`coalesce(bool_or(${commentReaction.userId} = ${viewerId ?? null}), false)`,
+          })
+          .from(commentReaction)
+          .where(
+            inArray(
+              commentReaction.commentId,
+              rows.map((row) => row.id),
+            ),
+          )
+          .groupBy(commentReaction.commentId, commentReaction.reaction)
+          .orderBy(sql`min(${commentReaction.createdAt})`),
+      )
+    : { data: [], error: null };
+
+  if (countsError) {
+    return {
+      data: null,
+      error: { code: "FAILED_TO_LOAD_COMMENTS", message: "Couldn't load the comments" },
+    };
+  }
+
+  const reactions = groupReactions({ counts });
+
+  const comments = rows.map((row) => ({
     id: row.id,
     postId: row.postId,
     content: row.content,
@@ -73,6 +107,8 @@ export const getCommentsPage = async ({
       displayUsername: row.authorDisplayUsername ?? row.authorUsername ?? "",
     },
     isMine: row.authorId === viewerId,
+    reactions: reactions.get(row.id) ?? [],
+    viewCount: row.viewCount,
   }));
   const last = comments.at(-1);
 

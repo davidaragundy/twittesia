@@ -48,8 +48,8 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
       aria-labelledby={`post-${post.id}-author`}
       aria-posinset={position}
       aria-setsize={total}
-      data-post-id={post.id}
-      data-is-mine={post.isMine}
+      data-view-id={post.id}
+      data-view-mine={post.isMine}
       className="flex gap-4 px-4 py-5 sm:px-5"
     >
       {author ? (

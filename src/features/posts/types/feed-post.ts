@@ -1,4 +1,4 @@
-import type { FeedPostReaction } from "@/features/posts/types/feed-post-reaction";
+import type { Reaction } from "@/features/posts/types/reaction";
 
 // `author` is null only for posts written before ghosts were removed, until they expire
 export type FeedPost = {
@@ -13,7 +13,7 @@ export type FeedPost = {
   // Whether the reader wrote it, and so can delete it
   isMine: boolean;
   // In the order of POST_REACTION_KEYS, only those at least one user added
-  reactions: FeedPostReaction[];
+  reactions: Reaction[];
   // Users other than the author who saw it
   viewCount: number;
   commentCount: number;

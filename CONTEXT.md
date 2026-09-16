@@ -39,13 +39,14 @@ Content a user publishes.
 _Avoid_: tweet, story
 
 **Reaction**:
-An emoji a user adds to a post. A user may add several different ones to the
-same post, and each shows how many users added it.
+An emoji a user adds to a post or a comment. A user may add several different
+ones to the same one, and each shows how many users added it.
 _Avoid_: like, emote
 
 **View**:
-One user other than the author having seen a post in their feed: at least half
-of it visible for about a second. Each user counts at most once per post.
+One user other than the author having seen a post or a comment: at least half
+of it visible for about a second. Each user counts at most once per post or
+comment.
 _Avoid_: impression, read
 
 **Comment**:
