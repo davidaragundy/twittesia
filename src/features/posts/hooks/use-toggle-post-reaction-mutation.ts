@@ -5,7 +5,7 @@ import { togglePostReaction } from "@/features/posts/actions/toggle-post-reactio
 import { FEED_QUERY_KEY } from "@/features/posts/constants/feed-query-key";
 import type { FeedData } from "@/features/posts/types/feed-data";
 import type { TogglePostReactionInput } from "@/features/posts/types/toggle-post-reaction-input";
-import { findFeedPost } from "@/features/posts/utils/find-feed-post";
+import { findCachedPost } from "@/features/posts/utils/find-cached-post";
 import { removeFeedPost } from "@/features/posts/utils/remove-feed-post";
 import { setCachedPostReaction } from "@/features/posts/utils/set-cached-post-reaction";
 
@@ -19,10 +19,7 @@ export const useTogglePostReactionMutation = () => {
     onMutate: async (input: TogglePostReactionInput) => {
       await queryClient.cancelQueries({ queryKey: FEED_QUERY_KEY });
 
-      const post = findFeedPost({
-        feed: queryClient.getQueryData<FeedData>(FEED_QUERY_KEY),
-        postId: input.postId,
-      });
+      const post = findCachedPost({ queryClient, postId: input.postId });
       const isAdding = !post?.reactions.some((item) => item.emoji === input.emoji && item.isMine);
 
       setCachedPostReaction({ queryClient, input, isMine: isAdding });

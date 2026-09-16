@@ -4,15 +4,16 @@ import { useDeletePostMutation } from "@/features/posts/hooks/use-delete-post-mu
 
 interface Props {
   postId: string;
+  onDeleted?: () => void;
 }
 
-export const usePostItem = ({ postId }: Props) => {
+export const usePostItem = ({ postId, onDeleted }: Props) => {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const { mutate, isPending } = useDeletePostMutation();
 
   // The post leaves the feed optimistically, so the dialog closes with it
   const confirmDelete = () => {
-    mutate(postId);
+    mutate(postId, { onSuccess: ({ error }) => !error && onDeleted?.() });
     setIsDeleteOpen(false);
   };
 

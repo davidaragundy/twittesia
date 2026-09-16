@@ -16,4 +16,5 @@ export type FeedPost = {
   reactions: FeedPostReaction[];
   // Users other than the author who saw it
   viewCount: number;
+  commentCount: number;
 };

@@ -20,26 +20,36 @@ import {
 import { Spinner } from "@/shared/components/ui/spinner";
 import { useIsMobile } from "@/shared/hooks/use-mobile";
 
-import { DELETE_POST_DIALOG_COPY } from "@/features/posts/constants/delete-post-dialog-copy";
-
-interface Props {
+type Props = {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
+  title: string;
+  description: string;
+  confirmLabel: string;
   onConfirm: () => void;
-  isDeleting: boolean;
-}
+  isPending: boolean;
+};
 
-export const DeletePostDialog = ({ isOpen, onOpenChange, onConfirm, isDeleting }: Props) => {
+// A destructive confirmation: a dialog on larger screens and a drawer on phones
+export const ConfirmDialog = ({
+  isOpen,
+  onOpenChange,
+  title,
+  description,
+  confirmLabel,
+  onConfirm,
+  isPending,
+}: Props) => {
   const isMobile = useIsMobile();
 
   const actions = (
     <>
-      <Button variant="ghost" size="lg" onClick={() => onOpenChange(false)} disabled={isDeleting}>
+      <Button variant="ghost" size="lg" onClick={() => onOpenChange(false)} disabled={isPending}>
         Cancel
       </Button>
-      <Button variant="destructive" size="lg" onClick={onConfirm} disabled={isDeleting}>
-        {isDeleting && <Spinner data-icon="inline-start" />}
-        Delete
+      <Button variant="destructive" size="lg" onClick={onConfirm} disabled={isPending}>
+        {isPending && <Spinner data-icon="inline-start" />}
+        {confirmLabel}
       </Button>
     </>
   );
@@ -49,8 +59,8 @@ export const DeletePostDialog = ({ isOpen, onOpenChange, onConfirm, isDeleting }
       <Drawer open={isOpen} onOpenChange={onOpenChange}>
         <DrawerContent>
           <DrawerHeader className="gap-2 px-6 pt-6">
-            <DrawerTitle>{DELETE_POST_DIALOG_COPY.title}</DrawerTitle>
-            <DrawerDescription>{DELETE_POST_DIALOG_COPY.description}</DrawerDescription>
+            <DrawerTitle>{title}</DrawerTitle>
+            <DrawerDescription>{description}</DrawerDescription>
           </DrawerHeader>
           <DrawerFooter className="flex-col-reverse gap-2 px-6 pt-6 pb-8">{actions}</DrawerFooter>
         </DrawerContent>
@@ -62,8 +72,8 @@ export const DeletePostDialog = ({ isOpen, onOpenChange, onConfirm, isDeleting }
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="gap-8 p-8 sm:max-w-md" showCloseButton={false}>
         <DialogHeader className="gap-2">
-          <DialogTitle>{DELETE_POST_DIALOG_COPY.title}</DialogTitle>
-          <DialogDescription>{DELETE_POST_DIALOG_COPY.description}</DialogDescription>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         <DialogFooter className="gap-2">{actions}</DialogFooter>
       </DialogContent>

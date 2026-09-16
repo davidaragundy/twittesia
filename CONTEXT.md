@@ -49,7 +49,8 @@ of it visible for about a second. Each user counts at most once per post.
 _Avoid_: impression, read
 
 **Comment**:
-A response to a post.
+A response to a post, shown on the post's page. It is deleted with its post, so
+one written late in a post's lifespan lives only until the post's expiry.
 _Avoid_: reply
 
 **Feed**:

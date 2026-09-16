@@ -1,19 +1,20 @@
 "use client";
 
+import { CHARACTER_COUNT_RING_GEOMETRY } from "@/shared/constants/character-count-ring-geometry";
+import { useCharacterCountRing } from "@/shared/hooks/use-character-count-ring";
 import { cn } from "@/shared/utils/cn";
 
-import { POST_LENGTH_RING_GEOMETRY } from "@/features/posts/constants/post-length-ring-geometry";
-import { usePostLengthRing } from "@/features/posts/hooks/use-post-length-ring";
-
-interface Props {
+type Props = {
   length: number;
-}
+  max: number;
+};
 
-export const PostLengthRing = ({ length }: Props) => {
-  const { remaining, tone, circumference, dashOffset, showCount, label } = usePostLengthRing({
+export const CharacterCountRing = ({ length, max }: Props) => {
+  const { remaining, tone, circumference, dashOffset, showCount, label } = useCharacterCountRing({
     length,
+    max,
   });
-  const { size, radius, strokeWidth } = POST_LENGTH_RING_GEOMETRY;
+  const { size, radius, strokeWidth } = CHARACTER_COUNT_RING_GEOMETRY;
 
   return (
     <div className="flex items-center gap-2">
