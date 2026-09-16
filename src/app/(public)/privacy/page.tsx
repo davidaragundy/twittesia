@@ -14,7 +14,7 @@ export default function PrivacyPage() {
   return (
     <LegalPage
       title="Privacy Policy"
-      effectiveDate="September 16, 2026"
+      effectiveDate="September 17, 2026"
       intro="Twittesia never asks who you are. There is no sign-up, no email address, no password and no social login. This policy explains the little we do collect, why, who helps us process it and how long we keep it."
     >
       <LegalSection title="1. What we collect">
@@ -83,6 +83,11 @@ export default function PrivacyPage() {
           </li>
           <li>
             <strong>Neon</strong> hosts the database.
+          </li>
+          <li>
+            <strong>jsDelivr</strong> delivers the list of emoji the reaction picker shows. Your
+            browser loads it from them directly when you open the picker, so jsDelivr sees your IP
+            address. Nothing else about you is sent.
           </li>
         </ul>
         <p>We may also disclose information when the law requires it.</p>

@@ -50,6 +50,13 @@
       "when": 1789579622822,
       "tag": "0006_post_view",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1789580634562,
+      "tag": "0007_post_reaction_emoji",
+      "breakpoints": true
     }
   ]
 }

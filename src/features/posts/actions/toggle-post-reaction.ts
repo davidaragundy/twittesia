@@ -31,7 +31,7 @@ export const togglePostReaction = async (
     };
   }
 
-  const { postId, reaction } = input.data;
+  const { postId, emoji } = input.data;
   const userId = session.user.id;
 
   const { data: live, error: liveError } = await tryCatch(
@@ -57,7 +57,7 @@ export const togglePostReaction = async (
         and(
           eq(postReaction.postId, postId),
           eq(postReaction.userId, userId),
-          eq(postReaction.reaction, reaction),
+          eq(postReaction.reaction, emoji),
         ),
       )
       .returning({ postId: postReaction.postId }),
@@ -70,7 +70,7 @@ export const togglePostReaction = async (
   if (removed.length) return { data: { reacted: false }, error: null };
 
   const { error: addError } = await tryCatch(
-    db.insert(postReaction).values({ postId, userId, reaction }).onConflictDoNothing(),
+    db.insert(postReaction).values({ postId, userId, reaction: emoji }).onConflictDoNothing(),
   );
 
   if (addError) {

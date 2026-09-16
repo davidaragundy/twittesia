@@ -23,9 +23,7 @@ export const useTogglePostReactionMutation = () => {
         feed: queryClient.getQueryData<FeedData>(FEED_QUERY_KEY),
         postId: input.postId,
       });
-      const isAdding = !post?.reactions.some(
-        (item) => item.reaction === input.reaction && item.isMine,
-      );
+      const isAdding = !post?.reactions.some((item) => item.emoji === input.emoji && item.isMine);
 
       setCachedPostReaction({ queryClient, input, isMine: isAdding });
 
