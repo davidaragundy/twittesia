@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { InfiniteData } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { deletePost } from "@/features/posts/actions/delete-post";
 import { FEED_QUERY_KEY } from "@/features/posts/constants/feed-query-key";
-import type { FeedPage } from "@/features/posts/types/feed-page";
+import type { FeedData } from "@/features/posts/types/feed-data";
+import { removeFeedPost } from "@/features/posts/utils/remove-feed-post";
 
 export const useDeletePostMutation = () => {
   const queryClient = useQueryClient();
@@ -15,19 +15,10 @@ export const useDeletePostMutation = () => {
     onMutate: async (postId: string) => {
       await queryClient.cancelQueries({ queryKey: FEED_QUERY_KEY });
 
-      const previous =
-        queryClient.getQueryData<InfiniteData<FeedPage, string | null>>(FEED_QUERY_KEY);
+      const previous = queryClient.getQueryData<FeedData>(FEED_QUERY_KEY);
 
-      queryClient.setQueryData<InfiniteData<FeedPage, string | null>>(FEED_QUERY_KEY, (feed) =>
-        feed
-          ? {
-              ...feed,
-              pages: feed.pages.map((page) => ({
-                ...page,
-                posts: page.posts.filter((item) => item.id !== postId),
-              })),
-            }
-          : feed,
+      queryClient.setQueryData<FeedData>(FEED_QUERY_KEY, (feed) =>
+        removeFeedPost({ feed, postId }),
       );
 
       return { previous };

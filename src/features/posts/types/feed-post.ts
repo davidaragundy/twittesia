@@ -1,8 +1,6 @@
-// What the browser gets of a post.
-//
-// `author` is null only for posts written before ghosts were removed. Nothing creates an
-// authorless post now — leaving deletes its author's posts along with the identity — but those
-// rows are around until they expire, so the null case still renders.
+import type { FeedPostReaction } from "@/features/posts/types/feed-post-reaction";
+
+// `author` is null only for posts written before ghosts were removed, until they expire
 export type FeedPost = {
   id: string;
   content: string;
@@ -14,4 +12,6 @@ export type FeedPost = {
   } | null;
   // Whether the reader wrote it, and so can delete it
   isMine: boolean;
+  // In the order of POST_REACTION_KEYS, only those at least one user added
+  reactions: FeedPostReaction[];
 };

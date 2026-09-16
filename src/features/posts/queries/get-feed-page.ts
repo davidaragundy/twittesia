@@ -1,8 +1,8 @@
 import "server-only";
 
-import { and, desc, eq, gt, lt, sql } from "drizzle-orm";
+import { and, desc, eq, gt, inArray, lt, sql } from "drizzle-orm";
 
-import { post, user } from "@/shared/lib/drizzle/schema";
+import { post, postReaction, user } from "@/shared/lib/drizzle/schema";
 import { db } from "@/shared/lib/drizzle/server";
 import type { ActionResponse } from "@/shared/types/action-response";
 import { tryCatch } from "@/shared/utils/try-catch";
@@ -10,10 +10,11 @@ import { tryCatch } from "@/shared/utils/try-catch";
 import { FEED_PAGE_SIZE } from "@/features/posts/constants/feed-page-size";
 import type { FeedPage } from "@/features/posts/types/feed-page";
 import { parseFeedCursor, toFeedCursor } from "@/features/posts/utils/feed-cursor";
+import { groupPostReactions } from "@/features/posts/utils/group-post-reactions";
 
 interface Props {
   cursor?: string | null;
-  // The reader, so each post knows whether they can delete it
+  // The reader, so each post knows whether they can delete it and which reactions are theirs
   viewerId?: string | null;
 }
 
@@ -61,6 +62,35 @@ export const getFeedPage = async ({
   const rows = data.slice(0, FEED_PAGE_SIZE);
   const last = rows.at(-1);
 
+  const { data: counts, error: countsError } = rows.length
+    ? await tryCatch(
+        db
+          .select({
+            postId: postReaction.postId,
+            reaction: postReaction.reaction,
+            count: sql<number>`count(*)::int`,
+            isMine: sql<boolean>`coalesce(bool_or(${postReaction.userId} = ${viewerId ?? null}), false)`,
+          })
+          .from(postReaction)
+          .where(
+            inArray(
+              postReaction.postId,
+              rows.map((row) => row.id),
+            ),
+          )
+          .groupBy(postReaction.postId, postReaction.reaction),
+      )
+    : { data: [], error: null };
+
+  if (countsError) {
+    return {
+      data: null,
+      error: { code: "FAILED_TO_LOAD_FEED", message: "Couldn't load the feed" },
+    };
+  }
+
+  const reactions = groupPostReactions({ counts });
+
   return {
     data: {
       posts: rows.map((row) => ({
@@ -76,6 +106,7 @@ export const getFeedPage = async ({
               }
             : null,
         isMine: !!row.authorId && row.authorId === viewerId,
+        reactions: reactions.get(row.id) ?? [],
       })),
       nextCursor: data.length > FEED_PAGE_SIZE && last ? toFeedCursor(last) : null,
     },

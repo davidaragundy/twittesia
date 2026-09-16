@@ -63,6 +63,7 @@ export const createPost = async (
         displayUsername: user.displayUsername ?? user.username ?? "",
       },
       isMine: true,
+      reactions: [],
     },
     error: null,
   };

@@ -38,6 +38,11 @@ _Avoid_: data, media
 Content a user publishes.
 _Avoid_: tweet, story
 
+**Reaction**:
+An emoji from a fixed set that a user adds to a post. A user may add several
+different ones to the same post, and each shows how many users added it.
+_Avoid_: like, emote
+
 **Comment**:
 A response to a post.
 _Avoid_: reply

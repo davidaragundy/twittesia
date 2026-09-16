@@ -1,5 +1,14 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, integer, bigint, index } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  text,
+  timestamp,
+  boolean,
+  integer,
+  bigint,
+  index,
+  primaryKey,
+} from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -104,6 +113,25 @@ export const post = pgTable(
     // The purge reads the expired ones
     index("post_expiresAt_idx").on(table.expiresAt),
     index("post_userId_idx").on(table.userId),
+  ],
+);
+
+export const postReaction = pgTable(
+  "post_reaction",
+  {
+    postId: text("post_id")
+      .notNull()
+      .references(() => post.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    reaction: text("reaction").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  // Leads with post_id, so it also serves the feed's lookup of a page's reactions
+  (table) => [
+    primaryKey({ columns: [table.postId, table.userId, table.reaction] }),
+    index("post_reaction_userId_idx").on(table.userId),
   ],
 );
 
