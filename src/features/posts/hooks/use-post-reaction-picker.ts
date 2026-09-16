@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { useIsMobile } from "@/shared/hooks/use-mobile";
+
 import type { FeedPostReaction } from "@/features/posts/types/feed-post-reaction";
 
 interface Props {
@@ -8,6 +10,7 @@ interface Props {
 }
 
 export const usePostReactionPicker = ({ reactions, onToggle }: Props) => {
+  const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(false);
 
   const select = (emoji: string) => {
@@ -17,5 +20,5 @@ export const usePostReactionPicker = ({ reactions, onToggle }: Props) => {
 
   const mine = new Set(reactions.filter((item) => item.isMine).map((item) => item.emoji));
 
-  return { isOpen, onOpenChange: setIsOpen, select, mine };
+  return { isMobile, isOpen, onOpenChange: setIsOpen, select, mine };
 };

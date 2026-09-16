@@ -22,7 +22,9 @@ export const ProfilePage = async ({ username }: Props) => {
 
       <div className="flex flex-col gap-1">
         <h1 className="text-2xl font-semibold tracking-tight">{profile.name}</h1>
-        <p className="text-muted-foreground">@{profile.username}</p>
+        <p className="[font-feature-settings:'calt'_0] text-muted-foreground">
+          @{profile.username}
+        </p>
       </div>
     </div>
   );
