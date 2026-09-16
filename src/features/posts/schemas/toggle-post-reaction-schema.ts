@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-import { POST_REACTION_KEYS } from "@/features/posts/constants/post-reaction-keys";
+import { SINGLE_EMOJI_PATTERN } from "@/features/posts/constants/single-emoji-pattern";
 
 export const togglePostReactionSchema = z.object({
   postId: z.string().min(1),
-  reaction: z.enum(POST_REACTION_KEYS),
+  emoji: z.string().regex(SINGLE_EMOJI_PATTERN, { message: "Pick a single emoji" }),
 });

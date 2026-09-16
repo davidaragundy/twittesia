@@ -1,22 +1,21 @@
 import { useState } from "react";
 
 import type { FeedPostReaction } from "@/features/posts/types/feed-post-reaction";
-import type { PostReactionKey } from "@/features/posts/types/post-reaction-key";
 
 interface Props {
   reactions: FeedPostReaction[];
-  onToggle: (reaction: PostReactionKey) => void;
+  onToggle: (emoji: string) => void;
 }
 
 export const usePostReactionPicker = ({ reactions, onToggle }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const select = (reaction: PostReactionKey) => {
-    onToggle(reaction);
+  const select = (emoji: string) => {
+    onToggle(emoji);
     setIsOpen(false);
   };
 
-  const mine = new Set(reactions.filter((item) => item.isMine).map((item) => item.reaction));
+  const mine = new Set(reactions.filter((item) => item.isMine).map((item) => item.emoji));
 
   return { isOpen, onOpenChange: setIsOpen, select, mine };
 };

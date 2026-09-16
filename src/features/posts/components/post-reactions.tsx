@@ -3,7 +3,6 @@
 import { Toggle } from "@/shared/components/ui/toggle";
 
 import { PostReactionPicker } from "@/features/posts/components/post-reaction-picker";
-import { POST_REACTION_EMOJIS } from "@/features/posts/constants/post-reaction-emojis";
 import { usePostReactions } from "@/features/posts/hooks/use-post-reactions";
 import type { FeedPost } from "@/features/posts/types/feed-post";
 
@@ -16,17 +15,17 @@ export const PostReactions = ({ post }: Props) => {
 
   return (
     <div className="flex flex-wrap items-center gap-1.5">
-      {post.reactions.map(({ reaction, count, isMine }) => (
+      {post.reactions.map(({ emoji, count, isMine }) => (
         <Toggle
-          key={reaction}
+          key={emoji}
           variant="outline"
           size="sm"
           pressed={isMine}
-          onPressedChange={() => toggle(reaction)}
-          aria-label={`${POST_REACTION_EMOJIS[reaction].label}, ${count}`}
+          onPressedChange={() => toggle(emoji)}
+          aria-label={`${emoji} ${count}`}
           className="gap-1.5 px-2.5 aria-pressed:border-primary/40 aria-pressed:bg-primary/10"
         >
-          <span>{POST_REACTION_EMOJIS[reaction].emoji}</span>
+          <span>{emoji}</span>
           <span className="tabular-nums">{count}</span>
         </Toggle>
       ))}

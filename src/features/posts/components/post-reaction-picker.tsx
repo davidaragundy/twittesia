@@ -4,17 +4,22 @@ import { SmileIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
 import { Button } from "@/shared/components/ui/button";
+import {
+  EmojiPicker,
+  EmojiPickerContent,
+  EmojiPickerFooter,
+  EmojiPickerSearch,
+} from "@/shared/components/ui/emoji-picker";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover";
 
-import { POST_REACTION_EMOJIS } from "@/features/posts/constants/post-reaction-emojis";
-import { POST_REACTION_KEYS } from "@/features/posts/constants/post-reaction-keys";
+import { EMOJIBASE_DATA_URL } from "@/features/posts/constants/emojibase-data-url";
+import { QUICK_REACTIONS } from "@/features/posts/constants/quick-reactions";
 import { usePostReactionPicker } from "@/features/posts/hooks/use-post-reaction-picker";
 import type { FeedPostReaction } from "@/features/posts/types/feed-post-reaction";
-import type { PostReactionKey } from "@/features/posts/types/post-reaction-key";
 
 interface Props {
   reactions: FeedPostReaction[];
-  onToggle: (reaction: PostReactionKey) => void;
+  onToggle: (emoji: string) => void;
 }
 
 export const PostReactionPicker = ({ reactions, onToggle }: Props) => {
@@ -35,22 +40,32 @@ export const PostReactionPicker = ({ reactions, onToggle }: Props) => {
       >
         <HugeiconsIcon icon={SmileIcon} />
       </PopoverTrigger>
-      <PopoverContent align="start" className="grid w-auto grid-cols-4 gap-1 p-2">
-        {POST_REACTION_KEYS.map((reaction) => (
-          <Button
-            key={reaction}
-            type="button"
-            variant="ghost"
-            size="icon"
-            aria-label={POST_REACTION_EMOJIS[reaction].label}
-            title={POST_REACTION_EMOJIS[reaction].label}
-            aria-pressed={mine.has(reaction)}
-            onClick={() => select(reaction)}
-            className="text-xl aria-pressed:bg-muted"
-          >
-            {POST_REACTION_EMOJIS[reaction].emoji}
-          </Button>
-        ))}
+      <PopoverContent align="start" className="w-auto gap-0 overflow-hidden p-0">
+        <div className="flex items-center gap-1 border-b border-border/60 p-2">
+          {QUICK_REACTIONS.map((emoji) => (
+            <Button
+              key={emoji}
+              type="button"
+              variant="ghost"
+              size="icon"
+              aria-pressed={mine.has(emoji)}
+              onClick={() => select(emoji)}
+              className="text-xl aria-pressed:bg-muted"
+            >
+              {emoji}
+            </Button>
+          ))}
+        </div>
+        <EmojiPicker
+          className="h-80"
+          columns={8}
+          emojibaseUrl={EMOJIBASE_DATA_URL}
+          onEmojiSelect={({ emoji }) => select(emoji)}
+        >
+          <EmojiPickerSearch placeholder="Search emoji" />
+          <EmojiPickerContent />
+          <EmojiPickerFooter />
+        </EmojiPicker>
       </PopoverContent>
     </Popover>
   );

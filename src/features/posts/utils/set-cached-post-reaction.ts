@@ -17,6 +17,6 @@ export const setCachedPostReaction = ({ queryClient, input, isMine }: Props) =>
     updateFeedPost({
       feed,
       postId: input.postId,
-      update: (post) => setFeedPostReaction({ post, reaction: input.reaction, isMine }),
+      update: (post) => setFeedPostReaction({ post, emoji: input.emoji, isMine }),
     }),
   );

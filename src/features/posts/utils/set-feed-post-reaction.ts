@@ -1,22 +1,27 @@
 import type { FeedPost } from "@/features/posts/types/feed-post";
-import type { PostReactionKey } from "@/features/posts/types/post-reaction-key";
-import { sortPostReactions } from "@/features/posts/utils/sort-post-reactions";
 
 interface Props {
   post: FeedPost;
-  reaction: PostReactionKey;
+  emoji: string;
   isMine: boolean;
 }
 
-// Sets rather than toggles, so applying the same state twice changes nothing
-export const setFeedPostReaction = ({ post, reaction, isMine }: Props): FeedPost => {
-  const current = post.reactions.find((item) => item.reaction === reaction);
+// Sets rather than toggles, so applying the same state twice changes nothing. A new emoji goes
+// last, where the server will put it, since reactions are ordered by when each was first added.
+export const setFeedPostReaction = ({ post, emoji, isMine }: Props): FeedPost => {
+  const current = post.reactions.find((item) => item.emoji === emoji);
 
   if ((current?.isMine ?? false) === isMine) return post;
 
   const count = (current?.count ?? 0) + (isMine ? 1 : -1);
-  const others = post.reactions.filter((item) => item.reaction !== reaction);
-  const reactions = count > 0 ? [...others, { reaction, count, isMine }] : others;
 
-  return { ...post, reactions: sortPostReactions(reactions) };
+  if (!current) return { ...post, reactions: [...post.reactions, { emoji, count, isMine }] };
+
+  return {
+    ...post,
+    reactions:
+      count > 0
+        ? post.reactions.map((item) => (item.emoji === emoji ? { emoji, count, isMine } : item))
+        : post.reactions.filter((item) => item.emoji !== emoji),
+  };
 };

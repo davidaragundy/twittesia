@@ -68,7 +68,7 @@ export const getFeedPage = async ({
         db
           .select({
             postId: postReaction.postId,
-            reaction: postReaction.reaction,
+            emoji: postReaction.reaction,
             count: sql<number>`count(*)::int`,
             isMine: sql<boolean>`coalesce(bool_or(${postReaction.userId} = ${viewerId ?? null}), false)`,
           })
@@ -79,7 +79,8 @@ export const getFeedPage = async ({
               rows.map((row) => row.id),
             ),
           )
-          .groupBy(postReaction.postId, postReaction.reaction),
+          .groupBy(postReaction.postId, postReaction.reaction)
+          .orderBy(sql`min(${postReaction.createdAt})`),
       )
     : { data: [], error: null };
 
