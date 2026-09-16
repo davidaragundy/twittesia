@@ -44,25 +44,29 @@ export default function Layout({
 
   return (
     <>
-      <div className="mx-auto flex h-svh w-full max-w-7xl flex-col px-6 sm:px-10 lg:px-16">
-        <SiteHeader
-          leading={
-            <MobileNav
-              links={APP_NAV_LINKS}
-              actions={
-                <>
-                  {profileLink}
-                  <SettingsNavButton />
-                  <LeaveNavButton />
-                </>
-              }
-            />
-          }
-          logoHref="/home"
-        />
+      <div className="mx-auto flex min-h-svh w-full max-w-5xl flex-col px-6 sm:px-10">
+        {/* The page scrolls as a whole, so the wheel works over the margins too, and the header
+            and sidebar stay in place */}
+        <div className="sticky top-0 z-40 bg-background">
+          <SiteHeader
+            leading={
+              <MobileNav
+                links={APP_NAV_LINKS}
+                actions={
+                  <>
+                    {profileLink}
+                    <SettingsNavButton />
+                    <LeaveNavButton />
+                  </>
+                }
+              />
+            }
+            logoHref="/home"
+          />
+        </div>
 
-        <div className="flex min-h-0 flex-1 gap-20">
-          <aside className="hidden w-60 shrink-0 flex-col justify-between pt-4 pb-12 md:flex">
+        <div className="flex flex-1 gap-12">
+          <aside className="sticky top-20 hidden h-[calc(100svh-5rem)] w-60 shrink-0 flex-col justify-between pt-4 pb-12 md:flex">
             <AppNav links={APP_NAV_LINKS}>{profileLink}</AppNav>
             <Suspense fallback={<NavUserSkeleton />}>
               <SessionProvider>
@@ -71,7 +75,7 @@ export default function Layout({
             </Suspense>
           </aside>
 
-          <main className="no-scrollbar flex min-w-0 flex-1 flex-col gap-12 overflow-y-auto pt-4 pb-24">
+          <main className="flex max-w-2xl min-w-0 flex-1 flex-col gap-12 pt-4 pb-24">
             {children}
           </main>
         </div>
