@@ -17,7 +17,7 @@ interface Props {
   className?: string;
 }
 
-export const PostReactionPickerPanel = ({ mine, onSelect, className }: Props) => (
+export const ReactionPickerPanel = ({ mine, onSelect, className }: Props) => (
   <div className={cn("flex flex-col", className)}>
     <div className="flex items-center justify-between gap-1 border-b border-border/60 p-2">
       {QUICK_REACTIONS.map((emoji) => (

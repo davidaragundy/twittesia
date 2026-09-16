@@ -1,0 +1,1 @@
+export const VIEW_FLUSH_INTERVAL_MS = 5_000;

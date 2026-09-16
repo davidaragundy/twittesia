@@ -9,7 +9,7 @@ import type { ActionResponse } from "@/shared/types/action-response";
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import type { FeedPost } from "@/features/posts/types/feed-post";
-import { groupPostReactions } from "@/features/posts/utils/group-post-reactions";
+import { groupReactions } from "@/features/posts/utils/group-reactions";
 
 interface Props {
   condition: SQL | undefined;
@@ -55,7 +55,7 @@ export const readFeedPosts = async ({
     ? await tryCatch(
         db
           .select({
-            postId: postReaction.postId,
+            targetId: postReaction.postId,
             emoji: postReaction.reaction,
             count: sql<number>`count(*)::int`,
             isMine: sql<boolean>`coalesce(bool_or(${postReaction.userId} = ${viewerId ?? null}), false)`,
@@ -74,7 +74,7 @@ export const readFeedPosts = async ({
 
   if (countsError) return failure;
 
-  const reactions = groupPostReactions({ counts });
+  const reactions = groupReactions({ counts });
 
   return {
     data: rows.map((row) => ({

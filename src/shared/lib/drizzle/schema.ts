@@ -173,6 +173,43 @@ export const comment = pgTable(
   ],
 );
 
+export const commentReaction = pgTable(
+  "comment_reaction",
+  {
+    commentId: text("comment_id")
+      .notNull()
+      .references(() => comment.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    reaction: text("reaction").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  // Leads with comment_id, so it also serves the lookup of a page's reactions
+  (table) => [
+    primaryKey({ columns: [table.commentId, table.userId, table.reaction] }),
+    index("comment_reaction_userId_idx").on(table.userId),
+  ],
+);
+
+export const commentView = pgTable(
+  "comment_view",
+  {
+    commentId: text("comment_id")
+      .notNull()
+      .references(() => comment.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  // One view per user per comment; leads with comment_id, so it also serves the count
+  (table) => [
+    primaryKey({ columns: [table.commentId, table.userId] }),
+    index("comment_view_userId_idx").on(table.userId),
+  ],
+);
+
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),

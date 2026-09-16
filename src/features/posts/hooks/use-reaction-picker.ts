@@ -2,14 +2,14 @@ import { useState } from "react";
 
 import { useIsMobile } from "@/shared/hooks/use-mobile";
 
-import type { FeedPostReaction } from "@/features/posts/types/feed-post-reaction";
+import type { Reaction } from "@/features/posts/types/reaction";
 
 interface Props {
-  reactions: FeedPostReaction[];
+  reactions: Reaction[];
   onToggle: (emoji: string) => void;
 }
 
-export const usePostReactionPicker = ({ reactions, onToggle }: Props) => {
+export const useReactionPicker = ({ reactions, onToggle }: Props) => {
   const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(false);
 

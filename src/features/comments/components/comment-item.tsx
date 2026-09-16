@@ -1,5 +1,7 @@
 "use client";
 
+import { ViewIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 
 import { ConfirmDialog } from "@/shared/components/confirm-dialog";
@@ -7,10 +9,12 @@ import { DeleteActionsMenu } from "@/shared/components/delete-actions-menu";
 import { SeededAvatar } from "@/shared/components/seeded-avatar";
 import { formatRelativeTime } from "@/shared/utils/format-relative-time";
 
+import { CommentReactions } from "@/features/comments/components/comment-reactions";
 import { DELETE_COMMENT_DIALOG_COPY } from "@/features/comments/constants/delete-comment-dialog-copy";
 import { useCommentItem } from "@/features/comments/hooks/use-comment-item";
 import type { PostComment } from "@/features/comments/types/post-comment";
 import { POST_DATE_FORMAT } from "@/features/posts/constants/post-date-format";
+import { formatViewCount } from "@/features/posts/utils/format-view-count";
 
 interface Props {
   comment: PostComment;
@@ -24,6 +28,8 @@ export const CommentItem = ({ comment }: Props) => {
   return (
     <article
       aria-labelledby={`comment-${comment.id}-author`}
+      data-view-id={comment.id}
+      data-view-mine={comment.isMine}
       className="flex gap-4 px-4 py-4 sm:px-5"
     >
       <Link href={`/${author.username}`} className="shrink-0" tabIndex={-1} aria-hidden>
@@ -62,6 +68,14 @@ export const CommentItem = ({ comment }: Props) => {
         <p className="text-base leading-relaxed break-words whitespace-pre-wrap">
           {comment.content}
         </p>
+
+        <footer className="flex flex-wrap items-center justify-between gap-3">
+          <CommentReactions comment={comment} />
+          <span className="flex items-center gap-1.5 text-xs text-muted-foreground tabular-nums">
+            <HugeiconsIcon icon={ViewIcon} className="size-3.5" />
+            {formatViewCount(comment.viewCount)}
+          </span>
+        </footer>
       </div>
 
       {comment.isMine && (

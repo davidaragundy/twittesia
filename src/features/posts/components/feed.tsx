@@ -13,8 +13,9 @@ import {
 import { Spinner } from "@/shared/components/ui/spinner";
 
 import { PostItem } from "@/features/posts/components/post-item";
+import { POST_VIEWS_URL } from "@/features/posts/constants/post-views-url";
 import { useFeed } from "@/features/posts/hooks/use-feed";
-import { usePostViewTracking } from "@/features/posts/hooks/use-post-view-tracking";
+import { useViewTracking } from "@/features/posts/hooks/use-view-tracking";
 import type { FeedPage } from "@/features/posts/types/feed-page";
 
 interface Props {
@@ -23,7 +24,7 @@ interface Props {
 
 export const Feed = ({ initialPage }: Props) => {
   const { posts, postIds, hasNextPage, isFetchingNextPage, endRef } = useFeed({ initialPage });
-  const { containerRef } = usePostViewTracking({ postIds });
+  const { containerRef } = useViewTracking({ ids: postIds, url: POST_VIEWS_URL });
 
   if (!posts.length) {
     return (

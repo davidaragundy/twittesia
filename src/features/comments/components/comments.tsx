@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const Comments = ({ postId, initialPage }: Props) => {
-  const { comments, hasNextPage, isFetchingNextPage, showMore } = useComments({
+  const { comments, containerRef, hasNextPage, isFetchingNextPage, showMore } = useComments({
     postId,
     initialPage,
   });
@@ -28,7 +28,7 @@ export const Comments = ({ postId, initialPage }: Props) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="-mx-4 flex flex-col sm:-mx-5">
+      <div ref={containerRef} className="-mx-4 flex flex-col sm:-mx-5">
         {comments.map((comment) => (
           <CommentItem key={comment.id} comment={comment} />
         ))}

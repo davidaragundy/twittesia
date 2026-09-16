@@ -7,17 +7,17 @@ import { Button } from "@/shared/components/ui/button";
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "@/shared/components/ui/drawer";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover";
 
-import { PostReactionPickerPanel } from "@/features/posts/components/post-reaction-picker-panel";
-import { usePostReactionPicker } from "@/features/posts/hooks/use-post-reaction-picker";
-import type { FeedPostReaction } from "@/features/posts/types/feed-post-reaction";
+import { ReactionPickerPanel } from "@/features/posts/components/reaction-picker-panel";
+import { useReactionPicker } from "@/features/posts/hooks/use-reaction-picker";
+import type { Reaction } from "@/features/posts/types/reaction";
 
 interface Props {
-  reactions: FeedPostReaction[];
+  reactions: Reaction[];
   onToggle: (emoji: string) => void;
 }
 
-export const PostReactionPicker = ({ reactions, onToggle }: Props) => {
-  const { isMobile, isOpen, onOpenChange, select, mine } = usePostReactionPicker({
+export const ReactionPicker = ({ reactions, onToggle }: Props) => {
+  const { isMobile, isOpen, onOpenChange, select, mine } = useReactionPicker({
     reactions,
     onToggle,
   });
@@ -41,7 +41,7 @@ export const PostReactionPicker = ({ reactions, onToggle }: Props) => {
         </DrawerTrigger>
         <DrawerContent>
           <DrawerTitle className="sr-only">Add reaction</DrawerTitle>
-          <PostReactionPickerPanel mine={mine} onSelect={select} className="pb-4" />
+          <ReactionPickerPanel mine={mine} onSelect={select} className="pb-4" />
         </DrawerContent>
       </Drawer>
     );
@@ -53,7 +53,7 @@ export const PostReactionPicker = ({ reactions, onToggle }: Props) => {
         <HugeiconsIcon icon={SmileIcon} />
       </PopoverTrigger>
       <PopoverContent align="start" className="w-auto gap-0 overflow-hidden p-0">
-        <PostReactionPickerPanel mine={mine} onSelect={select} />
+        <ReactionPickerPanel mine={mine} onSelect={select} />
       </PopoverContent>
     </Popover>
   );
