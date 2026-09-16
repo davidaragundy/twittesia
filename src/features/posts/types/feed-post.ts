@@ -11,7 +11,6 @@ export type FeedPost = {
     name: string;
     username: string;
     displayUsername: string;
-    image: string | null;
   } | null;
   // Whether the reader wrote it, and so can delete it
   isMine: boolean;

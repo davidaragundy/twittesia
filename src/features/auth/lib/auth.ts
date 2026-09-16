@@ -9,7 +9,6 @@ import { db } from "@/shared/lib/drizzle/server";
 import { AUTH_COOKIE_PREFIX } from "@/features/auth/constants/auth-cookie-prefix";
 import { IDENTITY_LIFESPAN_SECONDS } from "@/features/auth/constants/identity-lifespan-seconds";
 import { generateHandle } from "@/features/auth/utils/generate-handle";
-import { getAvatarUrl } from "@/features/auth/utils/get-avatar-url";
 import { getDisplayName } from "@/features/auth/utils/get-display-name";
 
 export const auth = betterAuth({
@@ -50,9 +49,7 @@ export const auth = betterAuth({
   databaseHooks: {
     user: {
       create: {
-        // The anonymous plugin writes only an email, a name and isAnonymous. Everything the app
-        // shows of a person — their handle, their display name, their picture — is invented here,
-        // because there is no profile anywhere to take it from.
+        // The anonymous plugin writes only an email, a name and isAnonymous
         before: async (user) => {
           const handle = generateHandle();
 
@@ -62,7 +59,6 @@ export const auth = betterAuth({
               name: getDisplayName({ handle }),
               username: handle,
               displayUsername: handle,
-              image: await getAvatarUrl({ handle }),
             },
           };
         },

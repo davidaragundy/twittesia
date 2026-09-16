@@ -4,7 +4,8 @@ import { AnonymousIcon, Delete02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
+import { SeededAvatar } from "@/shared/components/seeded-avatar";
+import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
 import { Button } from "@/shared/components/ui/button";
 import {
   Item,
@@ -15,7 +16,6 @@ import {
   ItemTitle,
 } from "@/shared/components/ui/item";
 import { formatRelativeTime } from "@/shared/utils/format-relative-time";
-import { getInitials } from "@/shared/utils/get-initials";
 
 import type { FeedPost } from "@/features/posts/types/feed-post";
 
@@ -32,10 +32,7 @@ export const PostItem = ({ post, onDelete, isDeleting }: Props) => {
     <Item className="items-start">
       <ItemMedia>
         {author ? (
-          <Avatar>
-            <AvatarImage src={author.image ?? undefined} alt={author.name} />
-            <AvatarFallback>{getInitials(author.name)}</AvatarFallback>
-          </Avatar>
+          <SeededAvatar seed={author.username} />
         ) : (
           <Avatar>
             <AvatarFallback>

@@ -61,7 +61,6 @@ export const createPost = async (
         name: user.name,
         username: user.username ?? "",
         displayUsername: user.displayUsername ?? user.username ?? "",
-        image: user.image ?? null,
       },
       isMine: true,
     },

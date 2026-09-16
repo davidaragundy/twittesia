@@ -22,7 +22,6 @@ export const getSession = cache(async (): Promise<Session | null> => {
     user: {
       id: user.id,
       name: user.name,
-      image: user.image,
       username: user.username,
       displayUsername: user.displayUsername,
     },

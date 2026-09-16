@@ -4,7 +4,7 @@ import { Logout01Icon, UnfoldMoreIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
 import { NavButton } from "@/shared/components/nav-button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
+import { SeededAvatar } from "@/shared/components/seeded-avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +15,6 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
-import { getInitials } from "@/shared/utils/get-initials";
 
 import { useNavUser } from "@/features/auth/hooks/use-nav-user";
 
@@ -31,10 +30,7 @@ export function NavUser({ menuItems }: Props) {
 
   const identity = (
     <>
-      <Avatar size="sm">
-        <AvatarImage src={user.image ?? undefined} alt={user.name} />
-        <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
-      </Avatar>
+      <SeededAvatar seed={user.username ?? user.id} size="sm" />
       <div className="grid flex-1 text-left text-sm leading-tight">
         <span className="truncate font-medium">{user.name}</span>
         <span className="truncate text-xs text-muted-foreground">@{user.displayUsername}</span>

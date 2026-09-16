@@ -20,7 +20,7 @@ content it creates.
 _Avoid_: account, session, login
 
 **Handle**:
-The generated name a user is known by, as `swift-otter-x7k3qa`. It is unique,
+The generated name a user is known by, as `sneaky-waffle-x7k3qa`. It is unique,
 nobody chooses it, and `/@handle` resolves to that user's profile.
 _Avoid_: username, nickname
 

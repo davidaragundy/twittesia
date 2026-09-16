@@ -35,7 +35,6 @@ export const getFeedPage = async ({
         authorName: user.name,
         authorUsername: user.username,
         authorDisplayUsername: user.displayUsername,
-        authorImage: user.image,
       })
       .from(post)
       .leftJoin(user, eq(user.id, post.userId))
@@ -74,7 +73,6 @@ export const getFeedPage = async ({
                 name: row.authorName,
                 username: row.authorUsername,
                 displayUsername: row.authorDisplayUsername ?? row.authorUsername,
-                image: row.authorImage,
               }
             : null,
         isMine: !!row.authorId && row.authorId === viewerId,

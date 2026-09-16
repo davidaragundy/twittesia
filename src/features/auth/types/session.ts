@@ -6,6 +6,6 @@ type AuthSession = typeof auth.$Infer.Session;
 // email here because nobody gives one, and none of the placeholder address better-auth invents
 // to satisfy its own schema should ever reach a screen.
 export type Session = {
-  user: Pick<AuthSession["user"], "id" | "name" | "image" | "username" | "displayUsername">;
+  user: Pick<AuthSession["user"], "id" | "name" | "username" | "displayUsername">;
   session: Pick<AuthSession["session"], "id">;
 };
