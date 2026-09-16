@@ -14,6 +14,7 @@ import { DELETE_COMMENT_DIALOG_COPY } from "@/features/comments/constants/delete
 import { useCommentItem } from "@/features/comments/hooks/use-comment-item";
 import type { PostComment } from "@/features/comments/types/post-comment";
 import { POST_DATE_FORMAT } from "@/features/posts/constants/post-date-format";
+import { VIEW_COUNT_FORMAT } from "@/features/posts/constants/view-count-format";
 import { formatViewCount } from "@/features/posts/utils/format-view-count";
 
 interface Props {
@@ -71,9 +72,14 @@ export const CommentItem = ({ comment }: Props) => {
 
         <footer className="flex flex-wrap items-center justify-between gap-3">
           <CommentReactions comment={comment} />
-          <span className="flex items-center gap-1.5 text-xs text-muted-foreground tabular-nums">
+          <span
+            role="img"
+            aria-label={formatViewCount(comment.viewCount)}
+            title={formatViewCount(comment.viewCount)}
+            className="flex items-center gap-1.5 text-xs text-muted-foreground tabular-nums"
+          >
             <HugeiconsIcon icon={ViewIcon} className="size-3.5" />
-            {formatViewCount(comment.viewCount)}
+            {VIEW_COUNT_FORMAT.format(comment.viewCount)}
           </span>
         </footer>
       </div>
