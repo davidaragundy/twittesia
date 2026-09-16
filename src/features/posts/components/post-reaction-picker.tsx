@@ -12,7 +12,6 @@ import {
 } from "@/shared/components/ui/emoji-picker";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover";
 
-import { EMOJIBASE_DATA_URL } from "@/features/posts/constants/emojibase-data-url";
 import { QUICK_REACTIONS } from "@/features/posts/constants/quick-reactions";
 import { usePostReactionPicker } from "@/features/posts/hooks/use-post-reaction-picker";
 import type { FeedPostReaction } from "@/features/posts/types/feed-post-reaction";
@@ -56,12 +55,7 @@ export const PostReactionPicker = ({ reactions, onToggle }: Props) => {
             </Button>
           ))}
         </div>
-        <EmojiPicker
-          className="h-80"
-          columns={8}
-          emojibaseUrl={EMOJIBASE_DATA_URL}
-          onEmojiSelect={({ emoji }) => select(emoji)}
-        >
+        <EmojiPicker className="h-80" columns={8} onEmojiSelect={({ emoji }) => select(emoji)}>
           <EmojiPickerSearch placeholder="Search emoji" />
           <EmojiPickerContent />
           <EmojiPickerFooter />
