@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
-import { getInitials } from "@/shared/utils/get-initials";
+import { SeededAvatar } from "@/shared/components/seeded-avatar";
 
 import { getProfile } from "@/features/profiles/queries/get-profile";
 
@@ -19,10 +18,7 @@ export const ProfilePage = async ({ username }: Props) => {
 
   return (
     <div className="flex flex-col items-center gap-8 py-8 text-center">
-      <Avatar size="lg">
-        <AvatarImage src={profile.image ?? undefined} alt={profile.name} />
-        <AvatarFallback>{getInitials(profile.name)}</AvatarFallback>
-      </Avatar>
+      <SeededAvatar seed={profile.username ?? profile.id} size="lg" className="size-24" />
 
       <div className="flex flex-col gap-1">
         <h1 className="text-2xl font-semibold tracking-tight">{profile.name}</h1>

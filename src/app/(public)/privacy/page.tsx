@@ -14,15 +14,15 @@ export default function PrivacyPage() {
   return (
     <LegalPage
       title="Privacy Policy"
-      effectiveDate="September 11, 2026"
+      effectiveDate="September 16, 2026"
       intro="Twittesia never asks who you are. There is no sign-up, no email address, no password and no social login. This policy explains the little we do collect, why, who helps us process it and how long we keep it."
     >
       <LegalSection title="1. What we collect">
         <ul>
           <li>
-            <strong>An identity we invent.</strong> When you start, we generate a handle, a display
-            name and a picture for you. You gave us nothing to make them from, and they are not
-            derived from anything about you.
+            <strong>An identity we invent.</strong> When you start, we generate a handle and a
+            display name for you. Your picture is drawn in your browser from that handle, so it is
+            never stored and never fetched from anyone. You gave us nothing to make any of it from.
           </li>
           <li>
             <strong>Your content.</strong> The posts and comments you create. Leaving deletes them
@@ -83,11 +83,6 @@ export default function PrivacyPage() {
           </li>
           <li>
             <strong>Neon</strong> hosts the database.
-          </li>
-          <li>
-            <strong>Gravatar</strong> draws the generated pictures. Your browser fetches the picture
-            from them directly, so Gravatar sees your IP address. We send them only a hash of the
-            handle we invented, which is connected to nothing else about you.
           </li>
         </ul>
         <p>We may also disclose information when the law requires it.</p>

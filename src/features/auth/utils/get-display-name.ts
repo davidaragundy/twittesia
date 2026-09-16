@@ -3,8 +3,9 @@ interface Props {
 }
 
 /**
- * The readable half of a handle: `swift-otter-x7k3qa` shows as `Swift Otter`. The random suffix
- * is dropped, so two identities can share a display name; the handle behind it is still unique.
+ * The readable half of a handle: `sneaky-waffle-x7k3qa` shows as `Sneaky Waffle`. The random
+ * suffix is dropped, so two identities can share a display name; the handle behind it is still
+ * unique.
  */
 export const getDisplayName = ({ handle }: Props): string =>
   handle
