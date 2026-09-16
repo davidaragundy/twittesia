@@ -112,9 +112,9 @@ so you will never see it fail.
 
 **CS-16.** One exported concept per file: a function, a component, a schema, a
 constant or a type. A component's props type may sit beside it. There are no
-`index.ts` files. Private helpers inside the file are fine, and preferable to
-exporting something only so it can live elsewhere — until a second file needs
-one, at which point it moves to `utils/`. _Review._
+`index.ts` files. A file declares no functions besides its export: a helper is
+a concept of its own, so it lives in the `utils/` of the file's owner, even when
+only that file uses it, and moves to `shared/utils/` only as CS-6 says. _Review._
 
 **CS-17.** A component that has real logic — state, effects, data fetching,
 non-trivial computation — moves that logic into a hook named after it:
