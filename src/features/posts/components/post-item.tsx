@@ -13,6 +13,7 @@ import { formatRelativeTime } from "@/shared/utils/format-relative-time";
 import { PostReactions } from "@/features/posts/components/post-reactions";
 import { DELETE_POST_DIALOG_COPY } from "@/features/posts/constants/delete-post-dialog-copy";
 import { POST_DATE_FORMAT } from "@/features/posts/constants/post-date-format";
+import { VIEW_COUNT_FORMAT } from "@/features/posts/constants/view-count-format";
 import { usePostItem } from "@/features/posts/hooks/use-post-item";
 import type { FeedPost } from "@/features/posts/types/feed-post";
 import { formatCommentCount } from "@/features/posts/utils/format-comment-count";
@@ -117,9 +118,14 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
                 {post.commentCount}
               </Link>
             )}
-            <span className="flex items-center gap-1.5">
+            <span
+              role="img"
+              aria-label={formatViewCount(post.viewCount)}
+              title={formatViewCount(post.viewCount)}
+              className="flex items-center gap-1.5"
+            >
               <HugeiconsIcon icon={ViewIcon} className="size-3.5" />
-              {formatViewCount(post.viewCount)}
+              {VIEW_COUNT_FORMAT.format(post.viewCount)}
             </span>
           </div>
         </footer>
