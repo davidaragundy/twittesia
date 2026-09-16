@@ -36,7 +36,7 @@ export const useCreatePostMutation = ({ form }: Props) => {
           : feed,
       );
 
-      form.reset({ content: "", isGhost: form.getValues("isGhost") });
+      form.reset({ content: "" });
     },
     onError: () => {
       toast.error("Couldn't publish your post", { description: "Please try again in a moment." });

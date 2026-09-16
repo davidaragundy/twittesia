@@ -8,6 +8,7 @@ import { NavButton } from "@/shared/components/nav-button";
 import { SiteHeader } from "@/shared/components/site-header";
 import { APP_NAV_LINKS } from "@/shared/constants/app-nav-links";
 
+import { LeaveDialog } from "@/features/auth/components/leave-dialog";
 import { LeaveNavButton } from "@/features/auth/components/leave-nav-button";
 import { NavUser } from "@/features/auth/components/nav-user";
 import { NavUserSkeleton } from "@/features/auth/components/nav-user-skeleton";
@@ -84,6 +85,10 @@ export default function Layout({
         <SessionProvider>
           <SettingsDialog />
         </SessionProvider>
+      </Suspense>
+
+      <Suspense>
+        <LeaveDialog />
       </Suspense>
     </>
   );

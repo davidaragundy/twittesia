@@ -1,4 +1,8 @@
-// What the browser gets of a post. A ghost has no author, so nothing ties it to whoever wrote it.
+// What the browser gets of a post.
+//
+// `author` is null only for posts written before ghosts were removed. Nothing creates an
+// authorless post now — leaving deletes its author's posts along with the identity — but those
+// rows are around until they expire, so the null case still renders.
 export type FeedPost = {
   id: string;
   content: string;

@@ -1,14 +1,13 @@
 import { useEffect, useEffectEvent } from "react";
 
-import { useLeave } from "@/features/auth/hooks/use-leave";
 import { useSession } from "@/features/auth/hooks/use-session";
+import { writeLeaveOpen } from "@/features/auth/utils/write-leave-open";
 
 export const useNavUser = () => {
   const session = useSession();
-  const { leave, isLeaving } = useLeave();
 
   // Always calls the latest handler without re-subscribing the listener on every render
-  const onLeaveShortcut = useEffectEvent(() => leave());
+  const onLeaveShortcut = useEffectEvent(() => writeLeaveOpen(true));
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -25,5 +24,6 @@ export const useNavUser = () => {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  return { user: session?.user, leave, isLeaving };
+  // The shortcut and the menu item both open the confirmation; neither leaves on its own
+  return { user: session?.user, openLeave: () => writeLeaveOpen(true) };
 };

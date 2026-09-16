@@ -10,7 +10,9 @@ export const useLeaveMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => unwrapAuthResponse(authClient.signOut()),
+    // Deletes the identity itself, not just the session. post.user_id cascades, so every post
+    // it wrote goes with it.
+    mutationFn: () => unwrapAuthResponse(authClient.deleteAnonymousUser()),
     onSuccess: () => {
       // Nothing cached for this identity may show to whoever uses the browser next
       queryClient.clear();

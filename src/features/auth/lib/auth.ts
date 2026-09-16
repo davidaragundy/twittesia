@@ -41,11 +41,9 @@ export const auth = betterAuth({
       // Without this a user's own handle fails validation the moment they open the form.
       usernameValidator: (value) => /^[a-zA-Z0-9_-]+$/.test(value),
     }),
-    anonymous({
-      // Nothing signs in any other way, so there is never an account to link and never an
-      // anonymous user to clean up after linking one
-      disableDeleteAnonymousUser: true,
-    }),
+    // Nothing signs in any other way, so there is never an account to link. Deleting the
+    // anonymous user stays enabled: that endpoint is how leaving ends an identity.
+    anonymous(),
     // Must stay last, so the Set-Cookie headers of every plugin before it reach Next.js
     nextCookies(),
   ],

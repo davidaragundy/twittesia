@@ -25,8 +25,8 @@ export default function PrivacyPage() {
             derived from anything about you.
           </li>
           <li>
-            <strong>Your content.</strong> The posts and comments you create. Ghosts are stored with
-            no link to your identity at all.
+            <strong>Your content.</strong> The posts and comments you create. Leaving deletes them
+            along with your identity.
           </li>
           <li>
             <strong>Session and security data.</strong> For each session, the IP address and browser
