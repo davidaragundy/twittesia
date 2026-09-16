@@ -14,4 +14,6 @@ export type FeedPost = {
   isMine: boolean;
   // In the order of POST_REACTION_KEYS, only those at least one user added
   reactions: FeedPostReaction[];
+  // Users other than the author who saw it
+  viewCount: number;
 };

@@ -36,8 +36,11 @@ export const useFeed = ({ initialPage }: Props) => {
     return () => observer.disconnect();
   }, [fetchNextPage, hasNextPage]);
 
+  const posts = data.pages.flatMap((page) => page.posts);
+
   return {
-    posts: data.pages.flatMap((page) => page.posts),
+    posts,
+    postIds: posts.map((post) => post.id),
     isError: !!error,
     hasNextPage,
     isFetchingNextPage,
