@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <div className="mx-auto flex w-full max-w-2xl flex-col gap-10">
+    <div className="flex flex-col gap-10">
       <Suspense fallback={<PostComposerSkeleton />}>
         <SessionProvider>
           <PostComposer />
