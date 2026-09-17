@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 
 import { getSession } from "@/features/auth/queries/get-session";
 import { getCommentsPage } from "@/features/comments/queries/get-comments-page";
+import { commentSortSchema } from "@/features/comments/schemas/comment-sort-schema";
 
 // The pages of a post's comments the browser asks for after the first
 export const handleCommentsRequest = async (
@@ -17,8 +18,13 @@ export const handleCommentsRequest = async (
   }
 
   const { postId } = await params;
-  const cursor = new URL(request.url).searchParams.get("cursor");
-  const { data, error } = await getCommentsPage({ postId, cursor, viewerId: session.user.id });
+  const { searchParams } = new URL(request.url);
+  const { data, error } = await getCommentsPage({
+    postId,
+    cursor: searchParams.get("cursor"),
+    sort: commentSortSchema.parse(searchParams.get("sort")),
+    viewerId: session.user.id,
+  });
 
   if (error) return NextResponse.json({ message: error.message }, { status: 500 });
 

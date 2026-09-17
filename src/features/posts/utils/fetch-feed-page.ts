@@ -1,14 +1,22 @@
 import type { FeedPage } from "@/features/posts/types/feed-page";
+import type { FeedSort } from "@/features/posts/types/feed-sort";
+
+interface Props {
+  cursor: string | null;
+  sort: FeedSort;
+}
 
 type SerializedFeedPage = Omit<FeedPage, "posts"> & {
   posts: (Omit<FeedPage["posts"][number], "createdAt"> & { createdAt: string })[];
 };
 
 // JSON has no dates, so the timestamps come back as strings
-export const fetchFeedPage = async (cursor: string | null): Promise<FeedPage> => {
-  const response = await fetch(
-    cursor ? `/api/posts?cursor=${encodeURIComponent(cursor)}` : "/api/posts",
-  );
+export const fetchFeedPage = async ({ cursor, sort }: Props): Promise<FeedPage> => {
+  const params = new URLSearchParams({ sort });
+
+  if (cursor) params.set("cursor", cursor);
+
+  const response = await fetch(`/api/posts?${params}`);
 
   if (!response.ok) throw new Error("Couldn't load the feed");
 

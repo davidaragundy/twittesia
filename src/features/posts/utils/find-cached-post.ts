@@ -11,7 +11,10 @@ interface Props {
   postId: string;
 }
 
-// The post's own page first, then the feed
+// The post's own page first, then whichever order of the feed holds it
 export const findCachedPost = ({ queryClient, postId }: Props): FeedPost | undefined =>
   queryClient.getQueryData<FeedPost>([POST_QUERY_KEY, postId]) ??
-  findFeedPost({ feed: queryClient.getQueryData<FeedData>(FEED_QUERY_KEY), postId });
+  queryClient
+    .getQueriesData<FeedData>({ queryKey: FEED_QUERY_KEY })
+    .map(([, feed]) => findFeedPost({ feed, postId }))
+    .find(Boolean);

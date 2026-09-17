@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { InfiniteData } from "@tanstack/react-query";
 import type { UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
 import { createPost } from "@/features/posts/actions/create-post";
 import { FEED_QUERY_KEY } from "@/features/posts/constants/feed-query-key";
 import type { CreatePostFormValues } from "@/features/posts/types/create-post-form-values";
-import type { FeedPage } from "@/features/posts/types/feed-page";
+import type { FeedData } from "@/features/posts/types/feed-data";
 import type { FeedPost } from "@/features/posts/types/feed-post";
+import { prependFeedPost } from "@/features/posts/utils/prepend-feed-post";
 
 interface Props {
   form: UseFormReturn<CreatePostFormValues>;
@@ -24,16 +24,10 @@ export const useCreatePostMutation = ({ form }: Props) => {
         return;
       }
 
-      // The new post leads the feed without waiting for a refetch
-      queryClient.setQueryData<InfiniteData<FeedPage, string | null>>(FEED_QUERY_KEY, (feed) =>
-        feed
-          ? {
-              ...feed,
-              pages: feed.pages.map((page, index) =>
-                index === 0 ? { ...page, posts: [created as FeedPost, ...page.posts] } : page,
-              ),
-            }
-          : feed,
+      // The new post leads whichever order is on screen, so it is there the moment it is written;
+      // where popularity really places it arrives with the next read
+      queryClient.setQueriesData<FeedData>({ queryKey: FEED_QUERY_KEY }, (feed) =>
+        prependFeedPost({ feed, post: created as FeedPost }),
       );
 
       form.reset({ content: "" });

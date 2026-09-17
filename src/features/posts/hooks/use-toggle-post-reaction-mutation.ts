@@ -29,7 +29,7 @@ export const useTogglePostReactionMutation = () => {
     onSuccess: ({ data, error }, input, context) => {
       // A post that has expired or been deleted leaves the feed rather than staying unusable
       if (error?.code === "POST_NOT_FOUND") {
-        queryClient.setQueryData<FeedData>(FEED_QUERY_KEY, (feed) =>
+        queryClient.setQueriesData<FeedData>({ queryKey: FEED_QUERY_KEY }, (feed) =>
           removeFeedPost({ feed, postId: input.postId }),
         );
         toast.error("Couldn't save your reaction", { description: error.message });

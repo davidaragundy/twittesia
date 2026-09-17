@@ -1,8 +1,8 @@
 import type { QueryClient } from "@tanstack/react-query";
 
-import { COMMENTS_QUERY_KEY } from "@/features/comments/constants/comments-query-key";
 import type { CommentsData } from "@/features/comments/types/comments-data";
 import type { PostComment } from "@/features/comments/types/post-comment";
+import { toCommentsQueryPrefix } from "@/features/comments/utils/to-comments-query-prefix";
 
 interface Props {
   queryClient: QueryClient;
@@ -11,9 +11,10 @@ interface Props {
   update: (comment: PostComment) => PostComment;
 }
 
+// Every order the reader has loaded, so the comment reads the same whichever one they switch to
 export const updateCachedComment = ({ queryClient, postId, commentId, update }: Props) =>
-  queryClient.setQueryData<CommentsData>(
-    [COMMENTS_QUERY_KEY, postId],
+  queryClient.setQueriesData<CommentsData>(
+    { queryKey: toCommentsQueryPrefix({ postId }) },
     (comments) =>
       comments && {
         ...comments,

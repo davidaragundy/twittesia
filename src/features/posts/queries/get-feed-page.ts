@@ -1,17 +1,22 @@
 import "server-only";
 
-import { and, gt, lt, sql } from "drizzle-orm";
+import { and, gt } from "drizzle-orm";
 
 import { post } from "@/shared/lib/drizzle/schema";
 import type { ActionResponse } from "@/shared/types/action-response";
 
+import { DEFAULT_FEED_SORT } from "@/features/posts/constants/default-feed-sort";
 import { FEED_PAGE_SIZE } from "@/features/posts/constants/feed-page-size";
 import type { FeedPage } from "@/features/posts/types/feed-page";
-import { parseFeedCursor, toFeedCursor } from "@/features/posts/utils/feed-cursor";
+import type { FeedSort } from "@/features/posts/types/feed-sort";
+import { feedCursorCondition } from "@/features/posts/utils/feed-cursor-condition";
+import { parseFeedCursor } from "@/features/posts/utils/parse-feed-cursor";
 import { readFeedPosts } from "@/features/posts/utils/read-feed-posts";
+import { toFeedCursor } from "@/features/posts/utils/to-feed-cursor";
 
 interface Props {
   cursor?: string | null;
+  sort?: FeedSort;
   viewerId?: string | null;
 }
 
@@ -19,19 +24,16 @@ interface Props {
 // lifespan, whenever the expired rows are actually deleted
 export const getFeedPage = async ({
   cursor,
+  sort = DEFAULT_FEED_SORT,
   viewerId,
 }: Props): Promise<ActionResponse<FeedPage, "FAILED_TO_LOAD_FEED">> => {
-  const after = parseFeedCursor(cursor);
+  const after = parseFeedCursor({ cursor, sort });
 
   const { data, error } = await readFeedPosts({
-    condition: and(
-      gt(post.expiresAt, new Date()),
-      after
-        ? lt(sql`(${post.createdAt}, ${post.id})`, sql`(${after.createdAt}, ${after.id})`)
-        : undefined,
-    ),
+    condition: and(gt(post.expiresAt, new Date()), feedCursorCondition({ after, sort })),
     // One more than the page, to tell whether another page follows
     limit: FEED_PAGE_SIZE + 1,
+    sort,
     viewerId,
   });
 
@@ -48,7 +50,7 @@ export const getFeedPage = async ({
   return {
     data: {
       posts,
-      nextCursor: data.length > FEED_PAGE_SIZE && last ? toFeedCursor(last) : null,
+      nextCursor: data.length > FEED_PAGE_SIZE && last ? toFeedCursor({ post: last, sort }) : null,
     },
     error: null,
   };

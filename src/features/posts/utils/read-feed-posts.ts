@@ -8,20 +8,25 @@ import { db } from "@/shared/lib/drizzle/server";
 import type { ActionResponse } from "@/shared/types/action-response";
 import { tryCatch } from "@/shared/utils/try-catch";
 
+import { DEFAULT_FEED_SORT } from "@/features/posts/constants/default-feed-sort";
 import type { FeedPost } from "@/features/posts/types/feed-post";
+import type { FeedSort } from "@/features/posts/types/feed-sort";
 import { groupReactions } from "@/features/posts/utils/group-reactions";
+import { postScoreSql } from "@/features/posts/utils/post-score-sql";
 
 interface Props {
   condition: SQL | undefined;
   limit: number;
+  sort?: FeedSort;
   // The reader, so each post knows whether they can delete it and which reactions are theirs
   viewerId?: string | null;
 }
 
-// Newest first, with everything the feed and a post's page show of each post
+// In the order that was asked for, with everything the feed and a post's page show of each post
 export const readFeedPosts = async ({
   condition,
   limit,
+  sort = DEFAULT_FEED_SORT,
   viewerId,
 }: Props): Promise<ActionResponse<FeedPost[], "FAILED_TO_READ_POSTS">> => {
   const failure = {
@@ -45,7 +50,11 @@ export const readFeedPosts = async ({
       .from(post)
       .leftJoin(user, eq(user.id, post.userId))
       .where(condition)
-      .orderBy(desc(post.createdAt), desc(post.id))
+      .orderBy(
+        ...(sort === "popular" ? [desc(postScoreSql)] : []),
+        desc(post.createdAt),
+        desc(post.id),
+      )
       .limit(limit),
   );
 
