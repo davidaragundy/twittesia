@@ -23,11 +23,15 @@ import type { FeedPage } from "@/features/posts/types/feed-page";
 
 interface Props {
   initialPage: FeedPage;
+  // A handle, when the feed is one person's posts rather than everyone's
+  author?: string;
+  // What to show when there is nothing to read, for a feed whose emptiness means something else
+  empty?: React.ReactNode;
 }
 
-export const Feed = ({ initialPage }: Props) => {
+export const Feed = ({ initialPage, author, empty }: Props) => {
   const { posts, postIds, sort, setSort, isPending, hasNextPage, isFetchingNextPage, endRef } =
-    useFeed({ initialPage });
+    useFeed({ initialPage, author });
   const { containerRef } = useViewTracking({ ids: postIds, url: POST_VIEWS_URL });
 
   return (
@@ -38,19 +42,21 @@ export const Feed = ({ initialPage }: Props) => {
 
       {isPending && <FeedSkeleton />}
 
-      {!isPending && !posts.length && (
-        <Empty className="py-16">
-          <EmptyHeader>
-            <EmptyMedia variant="icon">
-              <HugeiconsIcon icon={Home01Icon} />
-            </EmptyMedia>
-            <EmptyTitle>Nothing here yet</EmptyTitle>
-            <EmptyDescription>
-              Posts show up here for the 24 hours they live. Write the first one.
-            </EmptyDescription>
-          </EmptyHeader>
-        </Empty>
-      )}
+      {!isPending &&
+        !posts.length &&
+        (empty ?? (
+          <Empty className="py-16">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <HugeiconsIcon icon={Home01Icon} />
+              </EmptyMedia>
+              <EmptyTitle>Nothing here yet</EmptyTitle>
+              <EmptyDescription>
+                Posts show up here for the 24 hours they live. Write the first one.
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        ))}
 
       {!isPending && !!posts.length && (
         <div className="flex flex-col gap-2">

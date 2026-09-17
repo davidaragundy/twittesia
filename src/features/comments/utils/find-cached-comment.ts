@@ -1,23 +1,19 @@
 import type { QueryClient } from "@tanstack/react-query";
 
+import { COMMENT_LIST_QUERY_ROOTS } from "@/features/comments/constants/comment-list-query-roots";
 import type { CommentsData } from "@/features/comments/types/comments-data";
 import type { PostComment } from "@/features/comments/types/post-comment";
-import { toCommentsQueryPrefix } from "@/features/comments/utils/to-comments-query-prefix";
 
 interface Props {
   queryClient: QueryClient;
-  postId: string;
   commentId: string;
 }
 
-// Whichever order of the post's comments holds it
-export const findCachedComment = ({
-  queryClient,
-  postId,
-  commentId,
-}: Props): PostComment | undefined =>
-  queryClient
-    .getQueriesData<CommentsData>({ queryKey: toCommentsQueryPrefix({ postId }) })
+// Whichever list the reader has loaded holds it
+export const findCachedComment = ({ queryClient, commentId }: Props): PostComment | undefined =>
+  COMMENT_LIST_QUERY_ROOTS.flatMap((root) =>
+    queryClient.getQueriesData<CommentsData>({ queryKey: [root] }),
+  )
     .map(([, comments]) =>
       comments?.pages.flatMap((page) => page.comments).find((item) => item.id === commentId),
     )

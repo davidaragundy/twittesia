@@ -4,10 +4,10 @@ import { toast } from "sonner";
 import { restoreQueries } from "@/shared/utils/restore-queries";
 
 import { deleteComment } from "@/features/comments/actions/delete-comment";
-import type { CommentsData } from "@/features/comments/types/comments-data";
+import { COMMENTS_QUERY_KEY } from "@/features/comments/constants/comments-query-key";
 import { changeCachedCommentCount } from "@/features/comments/utils/change-cached-comment-count";
-import { removeComment } from "@/features/comments/utils/remove-comment";
-import { toCommentsQueryPrefix } from "@/features/comments/utils/to-comments-query-prefix";
+import { readCachedComments } from "@/features/comments/utils/read-cached-comments";
+import { removeCachedComment } from "@/features/comments/utils/remove-cached-comment";
 
 interface Props {
   postId: string;
@@ -15,19 +15,16 @@ interface Props {
 
 export const useDeleteCommentMutation = ({ postId }: Props) => {
   const queryClient = useQueryClient();
-  const queryKey = toCommentsQueryPrefix({ postId });
 
   return useMutation({
     mutationFn: deleteComment,
-    // The comment leaves every order at once and comes back if the server refuses
+    // The comment leaves every list at once and comes back if the server refuses
     onMutate: async (commentId: string) => {
-      await queryClient.cancelQueries({ queryKey });
+      await queryClient.cancelQueries({ queryKey: [COMMENTS_QUERY_KEY] });
 
-      const previous = queryClient.getQueriesData<CommentsData>({ queryKey });
+      const previous = readCachedComments({ queryClient });
 
-      queryClient.setQueriesData<CommentsData>({ queryKey }, (comments) =>
-        removeComment({ comments, commentId }),
-      );
+      removeCachedComment({ queryClient, commentId });
       changeCachedCommentCount({ queryClient, postId, by: -1 });
 
       return { previous };

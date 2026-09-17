@@ -1,8 +1,8 @@
 import "server-only";
 
-import { and, gt } from "drizzle-orm";
+import { and, eq, gt } from "drizzle-orm";
 
-import { post } from "@/shared/lib/drizzle/schema";
+import { post, user } from "@/shared/lib/drizzle/schema";
 import type { ActionResponse } from "@/shared/types/action-response";
 
 import { DEFAULT_FEED_SORT } from "@/features/posts/constants/default-feed-sort";
@@ -17,6 +17,8 @@ import { toFeedCursor } from "@/features/posts/utils/to-feed-cursor";
 interface Props {
   cursor?: string | null;
   sort?: FeedSort;
+  // A handle, when the page being read is one person's posts rather than everyone's
+  author?: string | null;
   viewerId?: string | null;
 }
 
@@ -25,12 +27,17 @@ interface Props {
 export const getFeedPage = async ({
   cursor,
   sort = DEFAULT_FEED_SORT,
+  author,
   viewerId,
 }: Props): Promise<ActionResponse<FeedPage, "FAILED_TO_LOAD_FEED">> => {
   const after = parseFeedCursor({ cursor, sort });
 
   const { data, error } = await readFeedPosts({
-    condition: and(gt(post.expiresAt, new Date()), feedCursorCondition({ after, sort })),
+    condition: and(
+      gt(post.expiresAt, new Date()),
+      author ? eq(user.username, author) : undefined,
+      feedCursorCondition({ after, sort }),
+    ),
     // One more than the page, to tell whether another page follows
     limit: FEED_PAGE_SIZE + 1,
     sort,
