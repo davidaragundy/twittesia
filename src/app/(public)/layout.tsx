@@ -6,6 +6,8 @@ import { SiteHeader } from "@/shared/components/site-header";
 import { Button } from "@/shared/components/ui/button";
 import { REPOSITORY_URL } from "@/shared/constants/repository-url";
 
+import { StartButton } from "@/features/auth/components/start-button";
+
 export default function PublicLayout({
   children,
 }: Readonly<{
@@ -14,13 +16,7 @@ export default function PublicLayout({
   return (
     <div className="mx-auto flex min-h-svh w-full max-w-6xl flex-col px-6 sm:px-10 lg:px-16">
       <SiteHeader>
-        <Button
-          className="hidden sm:inline-flex"
-          render={<Link href="/start" />}
-          nativeButton={false}
-        >
-          Start posting
-        </Button>
+        <StartButton className="hidden sm:inline-flex" />
       </SiteHeader>
 
       <main className="flex flex-1 flex-col">{children}</main>
