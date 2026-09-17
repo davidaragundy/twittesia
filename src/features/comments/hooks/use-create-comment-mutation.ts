@@ -3,11 +3,11 @@ import type { UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
 import { createComment } from "@/features/comments/actions/create-comment";
-import { COMMENTS_QUERY_KEY } from "@/features/comments/constants/comments-query-key";
 import type { CommentFormValues } from "@/features/comments/types/comment-form-values";
 import type { CommentsData } from "@/features/comments/types/comments-data";
-import { appendComment } from "@/features/comments/utils/append-comment";
 import { changeCachedCommentCount } from "@/features/comments/utils/change-cached-comment-count";
+import { prependComment } from "@/features/comments/utils/prepend-comment";
+import { toCommentsQueryPrefix } from "@/features/comments/utils/to-comments-query-prefix";
 
 interface Props {
   postId: string;
@@ -25,8 +25,11 @@ export const useCreateCommentMutation = ({ postId, form }: Props) => {
         return;
       }
 
-      queryClient.setQueryData<CommentsData>([COMMENTS_QUERY_KEY, postId], (comments) =>
-        appendComment({ comments, comment: created }),
+      // The new comment leads whichever order is on screen, so it is there the moment it is
+      // written; where popularity really places it arrives with the next read
+      queryClient.setQueriesData<CommentsData>(
+        { queryKey: toCommentsQueryPrefix({ postId }) },
+        (comments) => prependComment({ comments, comment: created }),
       );
       changeCachedCommentCount({ queryClient, postId, by: 1 });
 

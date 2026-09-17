@@ -1,6 +1,6 @@
 import "server-only";
 
-import { and, asc, eq, gt, inArray, sql } from "drizzle-orm";
+import { and, desc, eq, gt, inArray, sql } from "drizzle-orm";
 
 import { comment, commentReaction, commentView, post, user } from "@/shared/lib/drizzle/schema";
 import { db } from "@/shared/lib/drizzle/server";
@@ -8,7 +8,11 @@ import type { ActionResponse } from "@/shared/types/action-response";
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import { COMMENTS_PAGE_SIZE } from "@/features/comments/constants/comments-page-size";
+import { DEFAULT_COMMENT_SORT } from "@/features/comments/constants/default-comment-sort";
+import type { CommentSort } from "@/features/comments/types/comment-sort";
 import type { CommentsPage } from "@/features/comments/types/comments-page";
+import { commentCursorCondition } from "@/features/comments/utils/comment-cursor-condition";
+import { commentScoreSql } from "@/features/comments/utils/comment-score-sql";
 import { parseCommentCursor } from "@/features/comments/utils/parse-comment-cursor";
 import { toCommentCursor } from "@/features/comments/utils/to-comment-cursor";
 import { groupReactions } from "@/features/posts/utils/group-reactions";
@@ -16,16 +20,18 @@ import { groupReactions } from "@/features/posts/utils/group-reactions";
 interface Props {
   postId: string;
   cursor?: string | null;
+  sort?: CommentSort;
   viewerId?: string | null;
 }
 
-// Oldest first. A post that has expired has no comments to show, whenever its rows are deleted.
+// A post that has expired has no comments to show, whenever its rows are deleted.
 export const getCommentsPage = async ({
   postId,
   cursor,
+  sort = DEFAULT_COMMENT_SORT,
   viewerId,
 }: Props): Promise<ActionResponse<CommentsPage, "FAILED_TO_LOAD_COMMENTS">> => {
-  const after = parseCommentCursor(cursor);
+  const after = parseCommentCursor({ cursor, sort });
 
   const { data, error } = await tryCatch(
     db
@@ -47,12 +53,14 @@ export const getCommentsPage = async ({
         and(
           eq(comment.postId, postId),
           gt(post.expiresAt, new Date()),
-          after
-            ? gt(sql`(${comment.createdAt}, ${comment.id})`, sql`(${after.createdAt}, ${after.id})`)
-            : undefined,
+          commentCursorCondition({ after, sort }),
         ),
       )
-      .orderBy(asc(comment.createdAt), asc(comment.id))
+      .orderBy(
+        ...(sort === "popular" ? [desc(commentScoreSql)] : []),
+        desc(comment.createdAt),
+        desc(comment.id),
+      )
       // One more than the page, to tell whether another page follows
       .limit(COMMENTS_PAGE_SIZE + 1),
   );
@@ -115,7 +123,8 @@ export const getCommentsPage = async ({
   return {
     data: {
       comments,
-      nextCursor: data.length > COMMENTS_PAGE_SIZE && last ? toCommentCursor(last) : null,
+      nextCursor:
+        data.length > COMMENTS_PAGE_SIZE && last ? toCommentCursor({ comment: last, sort }) : null,
     },
     error: null,
   };

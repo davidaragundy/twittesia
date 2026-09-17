@@ -1,9 +1,11 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import { FEED_QUERY_KEY } from "@/features/posts/constants/feed-query-key";
+import { DEFAULT_FEED_SORT } from "@/features/posts/constants/default-feed-sort";
 import type { FeedPage } from "@/features/posts/types/feed-page";
+import type { FeedSort } from "@/features/posts/types/feed-sort";
 import { fetchFeedPage } from "@/features/posts/utils/fetch-feed-page";
+import { toFeedQueryKey } from "@/features/posts/utils/to-feed-query-key";
 
 interface Props {
   // Rendered on the server, so the feed is there on the first paint
@@ -11,13 +13,18 @@ interface Props {
 }
 
 export const useFeed = ({ initialPage }: Props) => {
-  const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: FEED_QUERY_KEY,
-    queryFn: ({ pageParam }) => fetchFeedPage(pageParam),
-    initialPageParam: null as string | null,
-    getNextPageParam: (lastPage: FeedPage) => lastPage.nextCursor,
-    initialData: { pages: [initialPage], pageParams: [null] },
-  });
+  const [sort, setSort] = useState<FeedSort>(DEFAULT_FEED_SORT);
+
+  const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =
+    useInfiniteQuery({
+      queryKey: toFeedQueryKey({ sort }),
+      queryFn: ({ pageParam }) => fetchFeedPage({ cursor: pageParam, sort }),
+      initialPageParam: null as string | null,
+      getNextPageParam: (lastPage: FeedPage) => lastPage.nextCursor,
+      // Only the order the server rendered starts with a page; another is read when it is asked for
+      initialData:
+        sort === DEFAULT_FEED_SORT ? { pages: [initialPage], pageParams: [null] } : undefined,
+    });
 
   // Loads the next page once the end of the list comes into view
   const endRef = useRef<HTMLDivElement>(null);
@@ -36,11 +43,14 @@ export const useFeed = ({ initialPage }: Props) => {
     return () => observer.disconnect();
   }, [fetchNextPage, hasNextPage]);
 
-  const posts = data.pages.flatMap((page) => page.posts);
+  const posts = data?.pages.flatMap((page) => page.posts) ?? [];
 
   return {
     posts,
     postIds: posts.map((post) => post.id),
+    sort,
+    setSort,
+    isPending,
     isError: !!error,
     hasNextPage,
     isFetchingNextPage,

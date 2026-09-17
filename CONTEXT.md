@@ -58,6 +58,17 @@ _Avoid_: reply
 The posts a user sees.
 _Avoid_: timeline, home
 
+**Order**:
+The arrangement a reader asks for, of the feed or of a post's comments: latest,
+newest first, or most popular. It is theirs alone, and lasts as long as they are
+on the page.
+_Avoid_: sort, filter, ranking
+
+**Popularity**:
+What a piece of content drew from other users: for a post, its reactions and its
+comments together; for a comment, its reactions. Views are not part of it.
+_Avoid_: score, engagement, trending
+
 ### Time
 
 **Lifespan**:

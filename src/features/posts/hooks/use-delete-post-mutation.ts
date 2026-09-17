@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
+import { restoreQueries } from "@/shared/utils/restore-queries";
+
 import { deletePost } from "@/features/posts/actions/delete-post";
 import { FEED_QUERY_KEY } from "@/features/posts/constants/feed-query-key";
 import { POST_QUERY_KEY } from "@/features/posts/constants/post-query-key";
@@ -12,13 +14,13 @@ export const useDeletePostMutation = () => {
 
   return useMutation({
     mutationFn: deletePost,
-    // The post leaves the feed at once and comes back if the server refuses
+    // The post leaves every order at once and comes back if the server refuses
     onMutate: async (postId: string) => {
       await queryClient.cancelQueries({ queryKey: FEED_QUERY_KEY });
 
-      const previous = queryClient.getQueryData<FeedData>(FEED_QUERY_KEY);
+      const previous = queryClient.getQueriesData<FeedData>({ queryKey: FEED_QUERY_KEY });
 
-      queryClient.setQueryData<FeedData>(FEED_QUERY_KEY, (feed) =>
+      queryClient.setQueriesData<FeedData>({ queryKey: FEED_QUERY_KEY }, (feed) =>
         removeFeedPost({ feed, postId }),
       );
 
@@ -31,11 +33,11 @@ export const useDeletePostMutation = () => {
         return;
       }
 
-      queryClient.setQueryData(FEED_QUERY_KEY, context?.previous);
+      restoreQueries({ queryClient, queries: context?.previous });
       toast.error("Couldn't delete your post", { description: error.message });
     },
     onError: (_error, _postId, context) => {
-      queryClient.setQueryData(FEED_QUERY_KEY, context?.previous);
+      restoreQueries({ queryClient, queries: context?.previous });
       toast.error("Couldn't delete your post", { description: "Please try again in a moment." });
     },
   });

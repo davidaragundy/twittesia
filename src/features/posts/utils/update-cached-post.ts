@@ -12,9 +12,9 @@ interface Props {
   update: (post: FeedPost) => FeedPost;
 }
 
-// Keeps the feed and the post's own page in step, whichever of them is on screen
+// Keeps every order of the feed and the post's own page in step, whichever of them is on screen
 export const updateCachedPost = ({ queryClient, postId, update }: Props) => {
-  queryClient.setQueryData<FeedData>(FEED_QUERY_KEY, (feed) =>
+  queryClient.setQueriesData<FeedData>({ queryKey: FEED_QUERY_KEY }, (feed) =>
     updateFeedPost({ feed, postId, update }),
   );
   queryClient.setQueryData<FeedPost>([POST_QUERY_KEY, postId], (post) => post && update(post));

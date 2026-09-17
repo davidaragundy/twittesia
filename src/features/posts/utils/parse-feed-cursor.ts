@@ -1,13 +1,13 @@
-import type { CommentCursor } from "@/features/comments/types/comment-cursor";
-import type { CommentSort } from "@/features/comments/types/comment-sort";
+import type { FeedCursor } from "@/features/posts/types/feed-cursor";
+import type { FeedSort } from "@/features/posts/types/feed-sort";
 
 interface Props {
   cursor: string | null | undefined;
-  sort: CommentSort;
+  sort: FeedSort;
 }
 
 // A cursor the reader sent back, which is only as trustworthy as anything else from the browser
-export const parseCommentCursor = ({ cursor, sort }: Props): CommentCursor | null => {
+export const parseFeedCursor = ({ cursor, sort }: Props): FeedCursor | null => {
   if (!cursor) return null;
 
   // An id holds underscores of its own, so only the parts before it are split off
