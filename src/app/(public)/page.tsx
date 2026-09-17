@@ -1,9 +1,7 @@
 import { HugeiconsIcon } from "@hugeicons/react";
 import type { Metadata } from "next";
-import Link from "next/link";
 
 import { Badge } from "@/shared/components/ui/badge";
-import { Button } from "@/shared/components/ui/button";
 import {
   Item,
   ItemContent,
@@ -13,6 +11,7 @@ import {
   ItemTitle,
 } from "@/shared/components/ui/item";
 
+import { StartButton } from "@/features/auth/components/start-button";
 import { LANDING_DESCRIPTION } from "@/features/landing/constants/landing-description";
 import { LANDING_HIGHLIGHTS } from "@/features/landing/constants/landing-highlights";
 import { LANDING_JSON_LD } from "@/features/landing/constants/landing-json-ld";
@@ -56,9 +55,7 @@ export default function LandingPage() {
           A social network where every post and comment is deleted after a day.
         </p>
         <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
-          <Button size="lg" render={<Link href="/start" />} nativeButton={false}>
-            Start posting
-          </Button>
+          <StartButton size="lg" />
         </div>
         <p className="max-w-md text-sm text-balance text-muted-foreground">
           No email, no password, no account. You get a name and you are in.
@@ -119,9 +116,7 @@ export default function LandingPage() {
         <h2 className="text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
           Nothing to regret tomorrow.
         </h2>
-        <Button size="lg" render={<Link href="/start" />} nativeButton={false}>
-          Start posting
-        </Button>
+        <StartButton size="lg" />
       </section>
     </div>
   );
