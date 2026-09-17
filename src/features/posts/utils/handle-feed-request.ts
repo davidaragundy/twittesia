@@ -19,6 +19,7 @@ export const handleFeedRequest = async (request: Request) => {
   const { data, error } = await getFeedPage({
     cursor: searchParams.get("cursor"),
     sort,
+    author: searchParams.get("author"),
     viewerId: session.user.id,
   });
 

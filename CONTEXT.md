@@ -25,7 +25,9 @@ nobody chooses it, and `/@handle` resolves to that user's profile.
 _Avoid_: username, nickname
 
 **Profile**:
-A user's public identity: their handle, display name and picture.
+A user's public identity — their handle, display name and picture — and
+everything of theirs still alive: their posts, their comments, and what those
+drew.
 _Avoid_: page
 
 ### Content

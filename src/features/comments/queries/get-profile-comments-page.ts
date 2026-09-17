@@ -1,6 +1,7 @@
 import "server-only";
 
 import { and, desc, eq, gt, sql } from "drizzle-orm";
+import { alias } from "drizzle-orm/pg-core";
 
 import { comment, commentView, post, user } from "@/shared/lib/drizzle/schema";
 import { db } from "@/shared/lib/drizzle/server";
@@ -10,7 +11,7 @@ import { tryCatch } from "@/shared/utils/try-catch";
 import { COMMENTS_PAGE_SIZE } from "@/features/comments/constants/comments-page-size";
 import { DEFAULT_COMMENT_SORT } from "@/features/comments/constants/default-comment-sort";
 import type { CommentSort } from "@/features/comments/types/comment-sort";
-import type { CommentsPage } from "@/features/comments/types/comments-page";
+import type { ProfileCommentsPage } from "@/features/comments/types/profile-comments-page";
 import { commentCursorCondition } from "@/features/comments/utils/comment-cursor-condition";
 import { commentScoreSql } from "@/features/comments/utils/comment-score-sql";
 import { parseCommentCursor } from "@/features/comments/utils/parse-comment-cursor";
@@ -18,20 +19,27 @@ import { readCommentReactions } from "@/features/comments/utils/read-comment-rea
 import { toCommentCursor } from "@/features/comments/utils/to-comment-cursor";
 
 interface Props {
-  postId: string;
+  username: string;
   cursor?: string | null;
   sort?: CommentSort;
   viewerId?: string | null;
 }
 
-// A post that has expired has no comments to show, whenever its rows are deleted.
-export const getCommentsPage = async ({
-  postId,
+// One person's comments, wherever they wrote them. A comment whose post has expired is already
+// gone with it, whenever the rows are actually deleted.
+export const getProfileCommentsPage = async ({
+  username,
   cursor,
   sort = DEFAULT_COMMENT_SORT,
   viewerId,
-}: Props): Promise<ActionResponse<CommentsPage, "FAILED_TO_LOAD_COMMENTS">> => {
+}: Props): Promise<ActionResponse<ProfileCommentsPage, "FAILED_TO_LOAD_COMMENTS">> => {
   const after = parseCommentCursor({ cursor, sort });
+  const postAuthor = alias(user, "post_author");
+
+  const failure = {
+    data: null,
+    error: { code: "FAILED_TO_LOAD_COMMENTS" as const, message: "Couldn't load the comments" },
+  };
 
   const { data, error } = await tryCatch(
     db
@@ -44,14 +52,16 @@ export const getCommentsPage = async ({
         authorName: user.name,
         authorUsername: user.username,
         authorDisplayUsername: user.displayUsername,
+        postAuthorUsername: postAuthor.username,
         viewCount: sql<number>`(select count(*)::int from ${commentView} where ${commentView.commentId} = ${comment.id})`,
       })
       .from(comment)
       .innerJoin(post, eq(post.id, comment.postId))
       .innerJoin(user, eq(user.id, comment.userId))
+      .leftJoin(postAuthor, eq(postAuthor.id, post.userId))
       .where(
         and(
-          eq(comment.postId, postId),
+          eq(user.username, username),
           gt(post.expiresAt, new Date()),
           commentCursorCondition({ after, sort }),
         ),
@@ -65,12 +75,7 @@ export const getCommentsPage = async ({
       .limit(COMMENTS_PAGE_SIZE + 1),
   );
 
-  if (error) {
-    return {
-      data: null,
-      error: { code: "FAILED_TO_LOAD_COMMENTS", message: "Couldn't load the comments" },
-    };
-  }
+  if (error) return failure;
 
   const rows = data.slice(0, COMMENTS_PAGE_SIZE);
 
@@ -79,12 +84,7 @@ export const getCommentsPage = async ({
     viewerId,
   });
 
-  if (reactionsError) {
-    return {
-      data: null,
-      error: { code: "FAILED_TO_LOAD_COMMENTS", message: "Couldn't load the comments" },
-    };
-  }
+  if (reactionsError) return failure;
 
   const comments = rows.map((row) => ({
     id: row.id,
@@ -96,6 +96,7 @@ export const getCommentsPage = async ({
       username: row.authorUsername ?? "",
       displayUsername: row.authorDisplayUsername ?? row.authorUsername ?? "",
     },
+    postAuthorUsername: row.postAuthorUsername,
     isMine: row.authorId === viewerId,
     reactions: reactions.get(row.id) ?? [],
     viewCount: row.viewCount,

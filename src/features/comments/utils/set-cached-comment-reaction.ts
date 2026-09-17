@@ -6,15 +6,13 @@ import { setReaction } from "@/features/posts/utils/set-reaction";
 
 interface Props {
   queryClient: QueryClient;
-  postId: string;
   input: ToggleCommentReactionInput;
   isMine: boolean;
 }
 
-export const setCachedCommentReaction = ({ queryClient, postId, input, isMine }: Props) =>
+export const setCachedCommentReaction = ({ queryClient, input, isMine }: Props) =>
   updateCachedComment({
     queryClient,
-    postId,
     commentId: input.commentId,
     update: (comment) => ({
       ...comment,
