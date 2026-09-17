@@ -44,7 +44,7 @@ export default function Layout({
 
   return (
     <>
-      <div className="mx-auto flex min-h-svh w-full max-w-5xl flex-col px-6 sm:px-10">
+      <div className="mx-auto flex min-h-svh w-full max-w-4xl flex-col px-6 sm:px-10">
         {/* The page scrolls as a whole, so the wheel works over the margins too, and the header
             and sidebar stay in place */}
         <div className="sticky top-0 z-40 bg-background">
@@ -75,7 +75,7 @@ export default function Layout({
             </Suspense>
           </aside>
 
-          <main className="flex max-w-2xl min-w-0 flex-1 flex-col gap-12 pt-4 pb-24">
+          <main className="flex max-w-xl min-w-0 flex-1 flex-col gap-12 pt-4 pb-24">
             {children}
           </main>
         </div>
