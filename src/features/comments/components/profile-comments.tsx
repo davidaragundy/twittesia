@@ -1,6 +1,6 @@
 "use client";
 
-import { SortSwitch } from "@/shared/components/sort-switch";
+import { SegmentedControl } from "@/shared/components/segmented-control";
 import { Button } from "@/shared/components/ui/button";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Spinner } from "@/shared/components/ui/spinner";
@@ -31,7 +31,7 @@ export const ProfileComments = ({ username, displayUsername, initialPage }: Prop
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-end">
-        <SortSwitch
+        <SegmentedControl
           label="Order comments by"
           options={COMMENT_SORTS}
           value={sort}

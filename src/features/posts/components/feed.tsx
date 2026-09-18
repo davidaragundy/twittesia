@@ -3,7 +3,7 @@
 import { Home01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
-import { SortSwitch } from "@/shared/components/sort-switch";
+import { SegmentedControl } from "@/shared/components/segmented-control";
 import {
   Empty,
   EmptyDescription,
@@ -37,7 +37,12 @@ export const Feed = ({ initialPage, author, empty }: Props) => {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-end">
-        <SortSwitch label="Order posts by" options={FEED_SORTS} value={sort} onChange={setSort} />
+        <SegmentedControl
+          label="Order posts by"
+          options={FEED_SORTS}
+          value={sort}
+          onChange={setSort}
+        />
       </div>
 
       {isPending && <FeedSkeleton />}
