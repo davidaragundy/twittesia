@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:email": "email dev --dir src/features/auth/emails",
+    "redis:indexes": "tsx scripts/create-search-indexes.mts",
     "build": "next build",
     "start": "next start",
     "lint": "oxlint",
@@ -25,6 +26,7 @@
     "@neondatabase/serverless": "^1.1.0",
     "@next/env": "^16.3.4",
     "@tanstack/react-query": "^5.102.8",
+    "@upstash/redis": "^1.38.4",
     "@vercel/analytics": "^2.0.1",
     "@vercel/blob": "^2.8.0",
     "@vercel/speed-insights": "^2.0.0",
