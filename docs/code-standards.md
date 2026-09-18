@@ -67,7 +67,7 @@ kinds:
 
 - `context` holds React contexts, created with `createContext`.
 - `lib` holds configured instances of third-party libraries — the better-auth
-  server and client, the database, the email provider — and nothing else.
+  server and client, the database, Redis, the email provider — and nothing else.
 - `emails` holds React Email templates, each the default export of its file, so
   `pnpm dev:email` can preview the folder.
 

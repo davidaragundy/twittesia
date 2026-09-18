@@ -21,17 +21,20 @@ Copy the environment template and fill in each value. `DATABASE_URL` is the
 pooled connection the app uses, and `DATABASE_URL_UNPOOLED` the direct
 connection migrations run over. The `BLOB_` variables and `VERCEL_OIDC_TOKEN`
 come from a public Vercel Blob store connected to the project with the
-Development environment and the webhook public key included; `vercel env pull`
-writes them:
+Development environment and the webhook public key included, and the
+`UPSTASH_REDIS_` variables from the project's Upstash Redis database;
+`vercel env pull` writes them all:
 
 ```bash
 cp .env.example .env.local
 ```
 
-Bring your database up to the current schema:
+Bring your database up to the current schema, and create the Redis search
+index:
 
 ```bash
 pnpm exec drizzle-kit migrate
+pnpm redis:indexes
 ```
 
 Install dependencies and start the dev server:
