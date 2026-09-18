@@ -14,6 +14,7 @@ import {
 } from "@/shared/components/ui/input-group";
 import { Spinner } from "@/shared/components/ui/spinner";
 
+import { MediaCaptureButtons } from "@/features/media/components/media-capture-buttons";
 import { MediaDraftList } from "@/features/media/components/media-draft-list";
 import { MediaPicker } from "@/features/media/components/media-picker";
 import { MAX_POST_LENGTH } from "@/features/posts/constants/max-post-length";
@@ -67,7 +68,14 @@ export const PostComposer = () => {
               onRemove={removeDraft}
             />
             <InputGroupAddon align="block-end" className="gap-3 px-4 pb-3">
-              <MediaPicker onPick={addFiles} multiple={MAX_POST_MEDIA > 1} disabled={!canAttach} />
+              <div className="flex items-center gap-0.5">
+                <MediaPicker
+                  onPick={addFiles}
+                  multiple={MAX_POST_MEDIA > 1}
+                  disabled={!canAttach}
+                />
+                <MediaCaptureButtons onCapture={addFiles} disabled={!canAttach} />
+              </div>
               <span className="hidden text-xs text-muted-foreground sm:inline">
                 ⌘ Enter to post
               </span>

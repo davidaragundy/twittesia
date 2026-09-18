@@ -29,6 +29,11 @@ export default function PrivacyPage() {
             and audio you attach to them. Leaving deletes them along with your identity.
           </li>
           <li>
+            <strong>Your camera and microphone.</strong> Only while the camera or recorder window is
+            open, and only once your browser has asked you. What they capture stays on your device
+            until you attach it and send it; closing the window turns them off.
+          </li>
+          <li>
             <strong>What is inside your files.</strong> JPEG, PNG and WebP images are drawn again in
             your browser before they upload, which leaves behind hidden details such as where a
             photo was taken and on what device. Video, audio, GIF and AVIF files upload exactly as

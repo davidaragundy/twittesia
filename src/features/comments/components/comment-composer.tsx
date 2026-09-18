@@ -17,6 +17,7 @@ import { Spinner } from "@/shared/components/ui/spinner";
 import { MAX_COMMENT_LENGTH } from "@/features/comments/constants/max-comment-length";
 import { MAX_COMMENT_MEDIA } from "@/features/comments/constants/max-comment-media";
 import { useCommentComposer } from "@/features/comments/hooks/use-comment-composer";
+import { MediaCaptureButtons } from "@/features/media/components/media-capture-buttons";
 import { MediaDraftList } from "@/features/media/components/media-draft-list";
 import { MediaPicker } from "@/features/media/components/media-picker";
 
@@ -70,11 +71,14 @@ export const CommentComposer = ({ postId, viewerHandle }: Props) => {
               onRemove={removeDraft}
             />
             <InputGroupAddon align="block-end" className="gap-3 px-3 pb-2.5">
-              <MediaPicker
-                onPick={addFiles}
-                multiple={MAX_COMMENT_MEDIA > 1}
-                disabled={!canAttach}
-              />
+              <div className="flex items-center gap-0.5">
+                <MediaPicker
+                  onPick={addFiles}
+                  multiple={MAX_COMMENT_MEDIA > 1}
+                  disabled={!canAttach}
+                />
+                <MediaCaptureButtons onCapture={addFiles} disabled={!canAttach} />
+              </div>
               <div className="ml-auto flex items-center gap-3">
                 <CharacterCountRing length={length} max={MAX_COMMENT_LENGTH} />
                 <InputGroupButton
