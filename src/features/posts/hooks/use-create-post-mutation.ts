@@ -11,9 +11,11 @@ import { prependFeedPost } from "@/features/posts/utils/prepend-feed-post";
 
 interface Props {
   form: UseFormReturn<CreatePostFormValues>;
+  // Clears what the form doesn't hold, such as the files attached to it
+  onPublished: () => void;
 }
 
-export const useCreatePostMutation = ({ form }: Props) => {
+export const useCreatePostMutation = ({ form, onPublished }: Props) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -31,6 +33,7 @@ export const useCreatePostMutation = ({ form }: Props) => {
       );
 
       form.reset({ content: "" });
+      onPublished();
     },
     onError: () => {
       toast.error("Couldn't publish your post", { description: "Please try again in a moment." });

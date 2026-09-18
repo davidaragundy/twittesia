@@ -12,9 +12,11 @@ import { toCommentsQueryPrefix } from "@/features/comments/utils/to-comments-que
 interface Props {
   postId: string;
   form: UseFormReturn<CommentFormValues>;
+  // Clears what the form doesn't hold, such as the file attached to it
+  onPublished: () => void;
 }
 
-export const useCreateCommentMutation = ({ postId, form }: Props) => {
+export const useCreateCommentMutation = ({ postId, form, onPublished }: Props) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -34,6 +36,7 @@ export const useCreateCommentMutation = ({ postId, form }: Props) => {
       changeCachedCommentCount({ queryClient, postId, by: 1 });
 
       form.reset({ content: "" });
+      onPublished();
     },
     onError: () => {
       toast.error("Couldn't publish your comment", {

@@ -14,11 +14,28 @@ import {
 } from "@/shared/components/ui/input-group";
 import { Spinner } from "@/shared/components/ui/spinner";
 
+import { MediaDraftList } from "@/features/media/components/media-draft-list";
+import { MediaPicker } from "@/features/media/components/media-picker";
 import { MAX_POST_LENGTH } from "@/features/posts/constants/max-post-length";
+import { MAX_POST_MEDIA } from "@/features/posts/constants/max-post-media";
 import { usePostComposer } from "@/features/posts/hooks/use-post-composer";
 
 export const PostComposer = () => {
-  const { form, user, onSubmit, onKeyDown, isPending, length, canSubmit } = usePostComposer();
+  const {
+    form,
+    user,
+    onSubmit,
+    onKeyDown,
+    isPending,
+    isUploading,
+    length,
+    canSubmit,
+    drafts,
+    progress,
+    addFiles,
+    removeDraft,
+    canAttach,
+  } = usePostComposer();
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-4">
@@ -43,7 +60,14 @@ export const PostComposer = () => {
               onKeyDown={onKeyDown}
               className="max-h-72 min-h-20 px-5 pt-4 text-base md:text-base"
             />
+            <MediaDraftList
+              drafts={drafts}
+              progress={progress}
+              isUploading={isUploading}
+              onRemove={removeDraft}
+            />
             <InputGroupAddon align="block-end" className="gap-3 px-4 pb-3">
+              <MediaPicker onPick={addFiles} multiple={MAX_POST_MEDIA > 1} disabled={!canAttach} />
               <span className="hidden text-xs text-muted-foreground sm:inline">
                 ⌘ Enter to post
               </span>

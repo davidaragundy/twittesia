@@ -17,6 +17,7 @@ import { commentScoreSql } from "@/features/comments/utils/comment-score-sql";
 import { parseCommentCursor } from "@/features/comments/utils/parse-comment-cursor";
 import { readCommentReactions } from "@/features/comments/utils/read-comment-reactions";
 import { toCommentCursor } from "@/features/comments/utils/to-comment-cursor";
+import { readMedia } from "@/features/media/utils/read-media";
 
 interface Props {
   username: string;
@@ -86,6 +87,13 @@ export const getProfileCommentsPage = async ({
 
   if (reactionsError) return failure;
 
+  const { data: media, error: mediaError } = await readMedia({
+    owner: "comment",
+    ids: rows.map((row) => row.id),
+  });
+
+  if (mediaError) return failure;
+
   const comments = rows.map((row) => ({
     id: row.id,
     postId: row.postId,
@@ -99,6 +107,7 @@ export const getProfileCommentsPage = async ({
     postAuthorUsername: row.postAuthorUsername,
     isMine: row.authorId === viewerId,
     reactions: reactions.get(row.id) ?? [],
+    media: media.get(row.id) ?? [],
     viewCount: row.viewCount,
   }));
   const last = comments.at(-1);

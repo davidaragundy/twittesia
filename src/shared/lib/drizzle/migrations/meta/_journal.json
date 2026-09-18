@@ -71,6 +71,13 @@
       "when": 1789592574600,
       "tag": "0009_comment_reaction_and_view",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1789764648951,
+      "tag": "0010_add_media",
+      "breakpoints": true
     }
   ]
 }

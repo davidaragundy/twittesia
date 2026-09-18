@@ -10,6 +10,7 @@ import { AUTH_COOKIE_PREFIX } from "@/features/auth/constants/auth-cookie-prefix
 import { IDENTITY_LIFESPAN_SECONDS } from "@/features/auth/constants/identity-lifespan-seconds";
 import { generateHandle } from "@/features/auth/utils/generate-handle";
 import { getDisplayName } from "@/features/auth/utils/get-display-name";
+import { sweepOrphanedMedia } from "@/features/media/utils/sweep-orphaned-media";
 
 export const auth = betterAuth({
   appName: "Twittesia",
@@ -61,6 +62,13 @@ export const auth = betterAuth({
               displayUsername: handle,
             },
           };
+        },
+      },
+      delete: {
+        // Leaving takes the identity's posts and comments with it, and with them every file they
+        // carried. The files are what the cascade can't reach: they live in Blob, not the database.
+        after: async () => {
+          await sweepOrphanedMedia();
         },
       },
     },
