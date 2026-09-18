@@ -33,12 +33,17 @@ _Avoid_: page
 ### Content
 
 **Content**:
-Anything a user creates: posts and comments.
-_Avoid_: data, media
+Anything a user creates: posts and comments, and the media attached to them.
+_Avoid_: data
 
 **Post**:
 Content a user publishes.
 _Avoid_: tweet, story
+
+**Media**:
+An image, a video or an audio clip attached to a post or a comment. It lives and
+is deleted with what it is attached to: a post carries up to four, a comment one.
+_Avoid_: attachment, file, upload, asset
 
 **Reaction**:
 An emoji a user adds to a post or a comment. A user may add several different

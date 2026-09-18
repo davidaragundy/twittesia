@@ -1,3 +1,4 @@
+import type { Media } from "@/features/media/types/media";
 import type { Reaction } from "@/features/posts/types/reaction";
 
 // What the browser gets of a comment
@@ -14,6 +15,8 @@ export type PostComment = {
   // Whether the reader wrote it, and so can delete it
   isMine: boolean;
   reactions: Reaction[];
+  // In the order they were attached
+  media: Media[];
   // Users other than the author who saw it
   viewCount: number;
 };

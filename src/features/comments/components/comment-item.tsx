@@ -13,6 +13,7 @@ import { CommentReactions } from "@/features/comments/components/comment-reactio
 import { DELETE_COMMENT_DIALOG_COPY } from "@/features/comments/constants/delete-comment-dialog-copy";
 import { useCommentItem } from "@/features/comments/hooks/use-comment-item";
 import type { PostComment } from "@/features/comments/types/post-comment";
+import { MediaGallery } from "@/features/media/components/media-gallery";
 import { POST_DATE_FORMAT } from "@/features/posts/constants/post-date-format";
 import { VIEW_COUNT_FORMAT } from "@/features/posts/constants/view-count-format";
 import { formatViewCount } from "@/features/posts/utils/format-view-count";
@@ -66,9 +67,13 @@ export const CommentItem = ({ comment }: Props) => {
           {comment.isMine && <DeleteActionsMenu subject="Comment" onDelete={requestDelete} />}
         </header>
 
-        <p className="text-base leading-relaxed break-words whitespace-pre-wrap">
-          {comment.content}
-        </p>
+        {comment.content && (
+          <p className="text-base leading-relaxed break-words whitespace-pre-wrap">
+            {comment.content}
+          </p>
+        )}
+
+        <MediaGallery media={comment.media} />
 
         <footer className="flex flex-wrap items-center justify-between gap-3">
           <CommentReactions comment={comment} />

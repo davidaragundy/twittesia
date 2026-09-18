@@ -46,10 +46,15 @@ who depends on it. _Review._
 **CS-7.** Feature names come from this list. It is a vocabulary, not a skeleton:
 a folder is created when its first file is, never upfront.
 
-`auth`, `settings`, `profiles`, `posts`, `comments`, `landing`
+`auth`, `settings`, `profiles`, `posts`, `comments`, `media`, `landing`
 
 `landing` owns how Twittesia presents itself to people who have not started yet:
 the landing page's copy, highlights and structured data.
+
+`media` owns the files attached to posts and comments: authorising their
+uploads, confirming them against the store, showing them, and deleting them
+once nothing is left for them to belong to. Posts and comments import it; it
+imports neither, nor `auth`.
 
 Adding a name is a decision worth making deliberately, because it asserts that a
 new area of the domain exists. _Review._

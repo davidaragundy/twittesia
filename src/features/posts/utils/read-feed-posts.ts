@@ -8,6 +8,7 @@ import { db } from "@/shared/lib/drizzle/server";
 import type { ActionResponse } from "@/shared/types/action-response";
 import { tryCatch } from "@/shared/utils/try-catch";
 
+import { readMedia } from "@/features/media/utils/read-media";
 import { DEFAULT_FEED_SORT } from "@/features/posts/constants/default-feed-sort";
 import type { FeedPost } from "@/features/posts/types/feed-post";
 import type { FeedSort } from "@/features/posts/types/feed-sort";
@@ -85,6 +86,13 @@ export const readFeedPosts = async ({
 
   const reactions = groupReactions({ counts });
 
+  const { data: media, error: mediaError } = await readMedia({
+    owner: "post",
+    ids: rows.map((row) => row.id),
+  });
+
+  if (mediaError) return failure;
+
   return {
     data: rows.map((row) => ({
       id: row.id,
@@ -100,6 +108,7 @@ export const readFeedPosts = async ({
           : null,
       isMine: !!row.authorId && row.authorId === viewerId,
       reactions: reactions.get(row.id) ?? [],
+      media: media.get(row.id) ?? [],
       viewCount: row.viewCount,
       commentCount: row.commentCount,
     })),

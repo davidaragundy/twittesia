@@ -1,3 +1,4 @@
+import type { Media } from "@/features/media/types/media";
 import type { Reaction } from "@/features/posts/types/reaction";
 
 // `author` is null only for posts written before ghosts were removed, until they expire
@@ -14,6 +15,8 @@ export type FeedPost = {
   isMine: boolean;
   // In the order of POST_REACTION_KEYS, only those at least one user added
   reactions: Reaction[];
+  // In the order they were attached
+  media: Media[];
   // Users other than the author who saw it
   viewCount: number;
   commentCount: number;

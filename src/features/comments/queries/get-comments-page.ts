@@ -16,6 +16,7 @@ import { commentScoreSql } from "@/features/comments/utils/comment-score-sql";
 import { parseCommentCursor } from "@/features/comments/utils/parse-comment-cursor";
 import { readCommentReactions } from "@/features/comments/utils/read-comment-reactions";
 import { toCommentCursor } from "@/features/comments/utils/to-comment-cursor";
+import { readMedia } from "@/features/media/utils/read-media";
 
 interface Props {
   postId: string;
@@ -86,6 +87,18 @@ export const getCommentsPage = async ({
     };
   }
 
+  const { data: media, error: mediaError } = await readMedia({
+    owner: "comment",
+    ids: rows.map((row) => row.id),
+  });
+
+  if (mediaError) {
+    return {
+      data: null,
+      error: { code: "FAILED_TO_LOAD_COMMENTS", message: "Couldn't load the comments" },
+    };
+  }
+
   const comments = rows.map((row) => ({
     id: row.id,
     postId: row.postId,
@@ -98,6 +111,7 @@ export const getCommentsPage = async ({
     },
     isMine: row.authorId === viewerId,
     reactions: reactions.get(row.id) ?? [],
+    media: media.get(row.id) ?? [],
     viewCount: row.viewCount,
   }));
   const last = comments.at(-1);

@@ -14,7 +14,7 @@ export default function PrivacyPage() {
   return (
     <LegalPage
       title="Privacy Policy"
-      effectiveDate="September 17, 2026"
+      effectiveDate="September 18, 2026"
       intro="Twittesia never asks who you are. There is no sign-up, no email address, no password and no social login. This policy explains the little we do collect, why, who helps us process it and how long we keep it."
     >
       <LegalSection title="1. What we collect">
@@ -25,8 +25,14 @@ export default function PrivacyPage() {
             never stored and never fetched from anyone. You gave us nothing to make any of it from.
           </li>
           <li>
-            <strong>Your content.</strong> The posts and comments you create. Leaving deletes them
-            along with your identity.
+            <strong>Your content.</strong> The posts and comments you create, and the images, video
+            and audio you attach to them. Leaving deletes them along with your identity.
+          </li>
+          <li>
+            <strong>What is inside your files.</strong> JPEG, PNG and WebP images are drawn again in
+            your browser before they upload, which leaves behind hidden details such as where a
+            photo was taken and on what device. Video, audio, GIF and AVIF files upload exactly as
+            they are, so any such details inside them go with them.
           </li>
           <li>
             <strong>Session and security data.</strong> For each session, the IP address and browser
@@ -62,6 +68,11 @@ export default function PrivacyPage() {
             are created.
           </li>
           <li>
+            <strong>Attached files.</strong> Deleted with the post or comment they belong to. Copies
+            kept by the network&apos;s caches, or by a browser that already opened them, can outlast
+            it by up to a day. A file whose post or comment was never sent is deleted within a day.
+          </li>
+          <li>
             <strong>Your identity.</strong> It stops working 24 hours after it was created, and is
             deleted once the last thing it wrote has expired. There is no way to recover it and no
             way for us to restore it.
@@ -83,6 +94,10 @@ export default function PrivacyPage() {
           </li>
           <li>
             <strong>Neon</strong> hosts the database.
+          </li>
+          <li>
+            <strong>Vercel Blob</strong> stores the files you attach. Your browser sends them to it
+            directly, and loads them from it when you view them.
           </li>
           <li>
             <strong>jsDelivr</strong> delivers the list of emoji the reaction picker shows. Your

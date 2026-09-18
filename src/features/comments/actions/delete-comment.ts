@@ -1,6 +1,7 @@
 "use server";
 
 import { and, eq } from "drizzle-orm";
+import { after } from "next/server";
 import { z } from "zod";
 
 import { comment } from "@/shared/lib/drizzle/schema";
@@ -10,6 +11,7 @@ import type { BaseActionErrorCode } from "@/shared/types/base-action-error-code"
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import { getSession } from "@/features/auth/queries/get-session";
+import { sweepOrphanedMedia } from "@/features/media/utils/sweep-orphaned-media";
 
 // Only the author can delete a comment
 export const deleteComment = async (
@@ -47,6 +49,9 @@ export const deleteComment = async (
       error: { code: "COMMENT_NOT_FOUND", message: "That comment is already gone" },
     };
   }
+
+  // Its file is left with no owner; it leaves Blob once the answer has been sent
+  after(sweepOrphanedMedia);
 
   return { data: null, error: null };
 };

@@ -16,7 +16,7 @@ export default function TermsPage() {
   return (
     <LegalPage
       title="Terms of Service"
-      effectiveDate="September 11, 2026"
+      effectiveDate="September 18, 2026"
       intro={
         <>
           These terms govern your use of Twittesia, a social network where everything you share
@@ -51,12 +51,12 @@ export default function TermsPage() {
             exists.
           </li>
           <li>
-            <strong>It expires.</strong> Posts and comments are deleted for good 24 hours after they
-            are created. We cannot restore them afterwards.
+            <strong>It expires.</strong> Posts and comments, and the files attached to them, are
+            deleted for good 24 hours after they are created. We cannot restore them afterwards.
           </li>
           <li>
             <strong>Others can still copy it.</strong> Anyone who sees your content before it
-            expires can copy or screenshot it. Only share what you are comfortable with.
+            expires can copy, screenshot or download it. Only share what you are comfortable with.
           </li>
         </ul>
       </LegalSection>
@@ -67,6 +67,7 @@ export default function TermsPage() {
           <li>Break any applicable law or regulation.</li>
           <li>Post content that is unlawful, harmful, abusive or harassing.</li>
           <li>Infringe the intellectual property or other rights of others.</li>
+          <li>Share images, video or audio of other people without their consent.</li>
           <li>Send malware or anything else designed to cause harm.</li>
           <li>Interfere with Twittesia or disrupt other people&apos;s use of it.</li>
         </ul>

@@ -15,7 +15,10 @@ import {
 import { Spinner } from "@/shared/components/ui/spinner";
 
 import { MAX_COMMENT_LENGTH } from "@/features/comments/constants/max-comment-length";
+import { MAX_COMMENT_MEDIA } from "@/features/comments/constants/max-comment-media";
 import { useCommentComposer } from "@/features/comments/hooks/use-comment-composer";
+import { MediaDraftList } from "@/features/media/components/media-draft-list";
+import { MediaPicker } from "@/features/media/components/media-picker";
 
 interface Props {
   postId: string;
@@ -24,9 +27,20 @@ interface Props {
 }
 
 export const CommentComposer = ({ postId, viewerHandle }: Props) => {
-  const { form, onSubmit, onKeyDown, isPending, length, canSubmit } = useCommentComposer({
-    postId,
-  });
+  const {
+    form,
+    onSubmit,
+    onKeyDown,
+    isPending,
+    isUploading,
+    length,
+    canSubmit,
+    drafts,
+    progress,
+    addFiles,
+    removeDraft,
+    canAttach,
+  } = useCommentComposer({ postId });
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-4">
@@ -49,7 +63,18 @@ export const CommentComposer = ({ postId, viewerHandle }: Props) => {
               onKeyDown={onKeyDown}
               className="max-h-60 min-h-12 px-4 pt-3.5 text-base md:text-base"
             />
+            <MediaDraftList
+              drafts={drafts}
+              progress={progress}
+              isUploading={isUploading}
+              onRemove={removeDraft}
+            />
             <InputGroupAddon align="block-end" className="gap-3 px-3 pb-2.5">
+              <MediaPicker
+                onPick={addFiles}
+                multiple={MAX_COMMENT_MEDIA > 1}
+                disabled={!canAttach}
+              />
               <div className="ml-auto flex items-center gap-3">
                 <CharacterCountRing length={length} max={MAX_COMMENT_LENGTH} />
                 <InputGroupButton

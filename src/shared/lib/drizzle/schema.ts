@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   pgTable,
   text,
@@ -207,6 +207,39 @@ export const commentView = pgTable(
   (table) => [
     primaryKey({ columns: [table.commentId, table.userId] }),
     index("comment_view_userId_idx").on(table.userId),
+  ],
+);
+
+export const media = pgTable(
+  "media",
+  {
+    id: text("id").primaryKey(),
+    // Every owner is set to null rather than cascading: a row left with no post and no comment is
+    // how the sweep finds a file to delete from Blob, which a cascade would erase along with it
+    userId: text("user_id").references(() => user.id, { onDelete: "set null" }),
+    postId: text("post_id").references(() => post.id, { onDelete: "set null" }),
+    commentId: text("comment_id").references(() => comment.id, { onDelete: "set null" }),
+    // Where the file lives in the Blob store, recorded when its upload is authorised
+    pathname: text("pathname").notNull().unique(),
+    kind: text("kind").notNull(),
+    // Known once the upload is confirmed, from the store itself rather than the browser
+    url: text("url"),
+    contentType: text("content_type"),
+    size: integer("size"),
+    width: integer("width"),
+    height: integer("height"),
+    position: integer("position").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    attachedAt: timestamp("attached_at", { withTimezone: true }),
+  },
+  (table) => [
+    index("media_postId_idx").on(table.postId),
+    index("media_commentId_idx").on(table.commentId),
+    index("media_userId_idx").on(table.userId),
+    // What the sweep reads: files with nothing left to belong to
+    index("media_orphan_idx")
+      .on(table.createdAt)
+      .where(sql`${table.postId} is null and ${table.commentId} is null`),
   ],
 );
 

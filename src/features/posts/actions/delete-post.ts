@@ -1,6 +1,7 @@
 "use server";
 
 import { and, eq } from "drizzle-orm";
+import { after } from "next/server";
 import { z } from "zod";
 
 import { post } from "@/shared/lib/drizzle/schema";
@@ -10,6 +11,7 @@ import type { BaseActionErrorCode } from "@/shared/types/base-action-error-code"
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import { getSession } from "@/features/auth/queries/get-session";
+import { sweepOrphanedMedia } from "@/features/media/utils/sweep-orphaned-media";
 
 // Only the author can delete a post, and a ghost has no author, so nobody can delete one
 export const deletePost = async (
@@ -44,6 +46,10 @@ export const deletePost = async (
   if (!data.length) {
     return { data: null, error: { code: "POST_NOT_FOUND", message: "That post is already gone" } };
   }
+
+  // Its files, and its comments' files, are left with no owner; they leave Blob once the answer
+  // has been sent, rather than a day later with the cron
+  after(sweepOrphanedMedia);
 
   return { data: null, error: null };
 };

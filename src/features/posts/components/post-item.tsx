@@ -10,6 +10,7 @@ import { SeededAvatar } from "@/shared/components/seeded-avatar";
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
 import { formatRelativeTime } from "@/shared/utils/format-relative-time";
 
+import { MediaGallery } from "@/features/media/components/media-gallery";
 import { PostReactions } from "@/features/posts/components/post-reactions";
 import { DELETE_POST_DIALOG_COPY } from "@/features/posts/constants/delete-post-dialog-copy";
 import { POST_DATE_FORMAT } from "@/features/posts/constants/post-date-format";
@@ -103,7 +104,13 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
           {post.isMine && <DeleteActionsMenu subject="Post" onDelete={requestDelete} />}
         </header>
 
-        <p className="text-base leading-relaxed break-words whitespace-pre-wrap">{post.content}</p>
+        {post.content && (
+          <p className="text-base leading-relaxed break-words whitespace-pre-wrap">
+            {post.content}
+          </p>
+        )}
+
+        <MediaGallery media={post.media} />
 
         <footer className="flex flex-wrap items-center justify-between gap-3">
           <PostReactions post={post} />
