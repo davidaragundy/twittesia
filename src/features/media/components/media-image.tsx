@@ -34,7 +34,9 @@ export const MediaImage = ({ media, className, style }: Props) => (
       />
     </DialogTrigger>
 
-    <DialogContent className="w-auto max-w-[calc(100%-2rem)] bg-transparent p-0 shadow-none ring-0 sm:max-w-[min(90vw,64rem)]">
+    {/* An explicit width: centred from the middle of the screen, a shrink-to-fit popup could
+        never be wider than half of it */}
+    <DialogContent className="w-[min(calc(100vw-2rem),64rem)] max-w-none bg-transparent p-0 shadow-none ring-0 sm:max-w-none">
       <DialogTitle className="sr-only">Attached image</DialogTitle>
       <Image
         src={media.url}
@@ -42,7 +44,7 @@ export const MediaImage = ({ media, className, style }: Props) => (
         width={media.width ?? 1200}
         height={media.height ?? 900}
         unoptimized
-        className="max-h-[85svh] w-auto rounded-3xl object-contain"
+        className="h-auto max-h-[85svh] w-full rounded-3xl object-contain"
       />
     </DialogContent>
   </Dialog>

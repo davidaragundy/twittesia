@@ -19,7 +19,10 @@ Requirements:
 
 Copy the environment template and fill in each value. `DATABASE_URL` is the
 pooled connection the app uses, and `DATABASE_URL_UNPOOLED` the direct
-connection migrations run over:
+connection migrations run over. The `BLOB_` variables and `VERCEL_OIDC_TOKEN`
+come from a public Vercel Blob store connected to the project with the
+Development environment and the webhook public key included; `vercel env pull`
+writes them:
 
 ```bash
 cp .env.example .env.local
