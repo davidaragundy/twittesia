@@ -39,7 +39,7 @@ export const ProfilePage = async ({ username }: Props) => {
 
   const [stats, posts, comments] = await Promise.all([
     getProfileStats({ userId: profile.id }),
-    getFeedPage({ author: handle, viewerId }),
+    getFeedPage({ authorId: profile.id, viewerId }),
     getProfileCommentsPage({ username: handle, viewerId }),
   ]);
 
@@ -56,7 +56,7 @@ export const ProfilePage = async ({ username }: Props) => {
           ) : (
             <Feed
               initialPage={posts.data}
-              author={handle}
+              authorId={profile.id}
               empty={
                 <Empty className="py-16">
                   <EmptyHeader>

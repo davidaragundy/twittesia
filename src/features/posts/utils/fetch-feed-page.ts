@@ -4,8 +4,8 @@ import type { FeedSort } from "@/features/posts/types/feed-sort";
 interface Props {
   cursor: string | null;
   sort: FeedSort;
-  // A handle, when the feed is one person's posts rather than everyone's
-  author?: string;
+  // An identity, when the feed is one person's posts rather than everyone's
+  authorId?: string;
 }
 
 type SerializedFeedPage = Omit<FeedPage, "posts"> & {
@@ -13,11 +13,11 @@ type SerializedFeedPage = Omit<FeedPage, "posts"> & {
 };
 
 // JSON has no dates, so the timestamps come back as strings
-export const fetchFeedPage = async ({ cursor, sort, author }: Props): Promise<FeedPage> => {
+export const fetchFeedPage = async ({ cursor, sort, authorId }: Props): Promise<FeedPage> => {
   const params = new URLSearchParams({ sort });
 
   if (cursor) params.set("cursor", cursor);
-  if (author) params.set("author", author);
+  if (authorId) params.set("authorId", authorId);
 
   const response = await fetch(`/api/posts?${params}`);
 

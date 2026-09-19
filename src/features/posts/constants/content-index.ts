@@ -5,9 +5,11 @@ import { s } from "@upstash/redis";
 // comments, a profile's posts and comments, and their counts. A field a hash lacks leaves it out
 // of any query that filters on it, so filtering on postId only ever finds comments.
 //
-// A change to the schema is a new name: an existing index keeps the schema it was created with.
+// `rank` orders by popularity with the newest first among equals, in one field: the index sorts
+// on a single field at a time. An existing index keeps the schema it was created with, so a
+// change here means running `pnpm redis:indexes --recreate`.
 export const CONTENT_INDEX = {
-  name: "content-v1",
+  name: "content",
   prefix: ["post:", "comment:"],
   schema: s.object({
     type: s.keyword(),
@@ -15,6 +17,6 @@ export const CONTENT_INDEX = {
     postId: s.keyword(),
     createdAt: s.number("U64"),
     expiresAt: s.number("U64"),
-    score: s.number("U64"),
+    rank: s.number("U64"),
   }),
 };

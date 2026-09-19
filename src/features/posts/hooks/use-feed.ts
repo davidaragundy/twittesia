@@ -10,17 +10,17 @@ import { toFeedQueryKey } from "@/features/posts/utils/to-feed-query-key";
 interface Props {
   // Rendered on the server, so the feed is there on the first paint
   initialPage: FeedPage;
-  // A handle, when the feed is one person's posts rather than everyone's
-  author?: string;
+  // An identity, when the feed is one person's posts rather than everyone's
+  authorId?: string;
 }
 
-export const useFeed = ({ initialPage, author }: Props) => {
+export const useFeed = ({ initialPage, authorId }: Props) => {
   const [sort, setSort] = useState<FeedSort>(DEFAULT_FEED_SORT);
 
   const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =
     useInfiniteQuery({
-      queryKey: toFeedQueryKey({ sort, author }),
-      queryFn: ({ pageParam }) => fetchFeedPage({ cursor: pageParam, sort, author }),
+      queryKey: toFeedQueryKey({ sort, authorId }),
+      queryFn: ({ pageParam }) => fetchFeedPage({ cursor: pageParam, sort, authorId }),
       initialPageParam: null as string | null,
       getNextPageParam: (lastPage: FeedPage) => lastPage.nextCursor,
       // Only the order the server rendered starts with a page; another is read when it is asked for

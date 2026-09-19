@@ -7,6 +7,7 @@ import { tryCatch } from "@/shared/utils/try-catch";
 
 import { getSession } from "@/features/auth/queries/get-session";
 import { toIdentityKey } from "@/features/auth/utils/to-identity-key";
+import { rewritePostAuthors } from "@/features/posts/utils/rewrite-post-authors";
 import { changeNameFormSchema } from "@/features/settings/schemas/change-name-form-schema";
 import type { ChangeNameFormValues } from "@/features/settings/types/change-name-form-values";
 
@@ -38,6 +39,9 @@ export const changeName = async (
 
   if (error)
     return { data: null, error: { code: "UNKNOWN", message: "Couldn't change your name" } };
+
+  // The identity already has its new name; a post still showing the old one is fixed next time
+  await rewritePostAuthors({ authorId: session.user.id, author: { name: input.data.name } });
 
   return { data: null, error: null };
 };
