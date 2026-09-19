@@ -1,9 +1,10 @@
 "use client";
 
-import { Home01Icon } from "@hugeicons/core-free-icons";
+import { ArrowUp01Icon, Home01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
 import { SegmentedControl } from "@/shared/components/segmented-control";
+import { Button } from "@/shared/components/ui/button";
 import {
   Empty,
   EmptyDescription,
@@ -30,11 +31,23 @@ interface Props {
   empty?: React.ReactNode;
   // The order the first page was read in, for a feed that doesn't start with the usual one
   initialSort?: FeedSort;
+  // The reader, so their own posts never arrive as news
+  viewerId?: string | null;
 }
 
-export const Feed = ({ initialPage, authorId, empty, initialSort }: Props) => {
-  const { posts, postIds, sort, setSort, isPending, hasNextPage, isFetchingNextPage, endRef } =
-    useFeed({ initialPage, authorId, initialSort });
+export const Feed = ({ initialPage, authorId, empty, initialSort, viewerId }: Props) => {
+  const {
+    posts,
+    postIds,
+    sort,
+    setSort,
+    isPending,
+    hasNextPage,
+    isFetchingNextPage,
+    endRef,
+    newPostCount,
+    showNewPosts,
+  } = useFeed({ initialPage, authorId, initialSort, viewerId });
   const { containerRef } = useViewTracking({ ids: postIds, url: POST_VIEWS_URL });
 
   return (
@@ -47,6 +60,14 @@ export const Feed = ({ initialPage, authorId, empty, initialSort }: Props) => {
           onChange={setSort}
         />
       </div>
+
+      {/* Offered rather than shown: nothing moves under the reader until they ask for it */}
+      {!!newPostCount && (
+        <Button variant="secondary" className="self-center" onClick={showNewPosts}>
+          <HugeiconsIcon icon={ArrowUp01Icon} />
+          {newPostCount === 1 ? "1 new post" : `${newPostCount} new posts`}
+        </Button>
+      )}
 
       {isPending && <FeedSkeleton />}
 

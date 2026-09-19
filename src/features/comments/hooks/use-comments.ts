@@ -5,6 +5,7 @@ import { useScrollToHash } from "@/shared/hooks/use-scroll-to-hash";
 
 import { COMMENT_VIEWS_URL } from "@/features/comments/constants/comment-views-url";
 import { DEFAULT_COMMENT_SORT } from "@/features/comments/constants/default-comment-sort";
+import { useCommentEvents } from "@/features/comments/hooks/use-comment-events";
 import type { CommentSort } from "@/features/comments/types/comment-sort";
 import type { CommentsPage } from "@/features/comments/types/comments-page";
 import { fetchCommentsPage } from "@/features/comments/utils/fetch-comments-page";
@@ -13,12 +14,15 @@ import { useViewTracking } from "@/features/posts/hooks/use-view-tracking";
 
 interface Props {
   postId: string;
+  // The reader, so their own comments never arrive as news
+  viewerId?: string | null;
   // Rendered on the server, so the first comments are there on the first paint
   initialPage: CommentsPage;
 }
 
-export const useComments = ({ postId, initialPage }: Props) => {
+export const useComments = ({ postId, initialPage, viewerId }: Props) => {
   useScrollToHash({ id: "comments" });
+  useCommentEvents({ postId, viewerId });
 
   const [sort, setSort] = useState<CommentSort>(DEFAULT_COMMENT_SORT);
 

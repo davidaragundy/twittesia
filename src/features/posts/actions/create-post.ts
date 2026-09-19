@@ -1,5 +1,7 @@
 "use server";
 
+import { after } from "next/server";
+
 import { redis } from "@/shared/lib/redis/server";
 import type { ActionResponse } from "@/shared/types/action-response";
 import type { BaseActionErrorCode } from "@/shared/types/base-action-error-code";
@@ -20,6 +22,7 @@ import { createPostRateLimits } from "@/features/posts/lib/create-post-rate-limi
 import { createPostSchema } from "@/features/posts/schemas/create-post-schema";
 import type { CreatePostInput } from "@/features/posts/types/create-post-input";
 import type { FeedPost } from "@/features/posts/types/feed-post";
+import { emitContentPosted } from "@/features/posts/utils/emit-content-posted";
 import { getContentIndex } from "@/features/posts/utils/get-content-index";
 import { toPostKey } from "@/features/posts/utils/to-post-key";
 import { toRank } from "@/features/posts/utils/to-rank";
@@ -125,6 +128,9 @@ export const createPost = async (
   // Indexing trails a write, by seconds when the store is busy. Answering once the index has the
   // post means a reload straight after publishing still finds it. The post is saved either way.
   await tryCatch(getContentIndex().waitIndexing());
+
+  // Open feeds hear about it once the answer has been sent
+  after(emitContentPosted({ id, authorId: user.id }));
 
   return {
     data: {

@@ -1,5 +1,7 @@
 "use server";
 
+import { after } from "next/server";
+
 import { redis } from "@/shared/lib/redis/server";
 import type { ActionResponse } from "@/shared/types/action-response";
 import type { BaseActionErrorCode } from "@/shared/types/base-action-error-code";
@@ -15,6 +17,7 @@ import { createCommentRateLimits } from "@/features/comments/lib/create-comment-
 import { createCommentSchema } from "@/features/comments/schemas/create-comment-schema";
 import type { CreateCommentInput } from "@/features/comments/types/create-comment-input";
 import type { PostComment } from "@/features/comments/types/post-comment";
+import { emitContentCommented } from "@/features/comments/utils/emit-content-commented";
 import { toCommentKey } from "@/features/comments/utils/to-comment-key";
 import { BLOB_EXPIRY_KEY } from "@/features/media/constants/blob-expiry-key";
 import { confirmMediaUploads } from "@/features/media/utils/confirm-media-uploads";
@@ -126,6 +129,9 @@ export const createComment = async (
   // Indexing trails a write; answering once the index has the comment means a reload straight
   // after still finds it. The comment is saved either way.
   await tryCatch(getContentIndex().waitIndexing());
+
+  // The post's open pages hear about it once the answer has been sent
+  after(emitContentCommented({ postId: input.data.postId, authorId: user.id }));
 
   return {
     data: {

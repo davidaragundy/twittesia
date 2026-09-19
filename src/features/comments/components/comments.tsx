@@ -13,9 +13,11 @@ import type { CommentsPage } from "@/features/comments/types/comments-page";
 interface Props {
   postId: string;
   initialPage: CommentsPage;
+  // The reader, so their own comments never arrive as news
+  viewerId?: string | null;
 }
 
-export const Comments = ({ postId, initialPage }: Props) => {
+export const Comments = ({ postId, initialPage, viewerId }: Props) => {
   const {
     comments,
     containerRef,
@@ -25,7 +27,7 @@ export const Comments = ({ postId, initialPage }: Props) => {
     hasNextPage,
     isFetchingNextPage,
     showMore,
-  } = useComments({ postId, initialPage });
+  } = useComments({ postId, initialPage, viewerId });
 
   return (
     <div className="flex flex-col gap-4">

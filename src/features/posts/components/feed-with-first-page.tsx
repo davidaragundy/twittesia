@@ -11,5 +11,5 @@ export async function FeedWithFirstPage() {
 
   if (error) return <FeedError />;
 
-  return <Feed initialPage={data} />;
+  return <Feed initialPage={data} viewerId={session?.user.id} />;
 }

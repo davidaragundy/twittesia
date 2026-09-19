@@ -30,7 +30,7 @@ export async function CommentsSection({ params }: Props) {
       {error ? (
         <p className="text-sm text-muted-foreground">Couldn&apos;t load the comments.</p>
       ) : (
-        <Comments postId={postId} initialPage={data} />
+        <Comments postId={postId} initialPage={data} viewerId={session?.user.id} />
       )}
     </section>
   );

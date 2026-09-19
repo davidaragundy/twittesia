@@ -11,5 +11,5 @@ export async function PopularPosts() {
 
   if (error) return <FeedError />;
 
-  return <Feed initialPage={data} initialSort="popular" />;
+  return <Feed initialPage={data} initialSort="popular" viewerId={session?.user.id} />;
 }

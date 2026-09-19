@@ -1,5 +1,7 @@
 "use server";
 
+import { after } from "next/server";
+
 import type { ActionResponse } from "@/shared/types/action-response";
 import type { BaseActionErrorCode } from "@/shared/types/base-action-error-code";
 import { isRateLimited } from "@/shared/utils/is-rate-limited";
@@ -8,6 +10,7 @@ import { getSession } from "@/features/auth/queries/get-session";
 import { reactionRateLimits } from "@/features/posts/lib/reaction-rate-limits";
 import { togglePostReactionSchema } from "@/features/posts/schemas/toggle-post-reaction-schema";
 import type { TogglePostReactionInput } from "@/features/posts/types/toggle-post-reaction-input";
+import { emitContentReacted } from "@/features/posts/utils/emit-content-reacted";
 import { toPostKey } from "@/features/posts/utils/to-post-key";
 import { toggleReaction } from "@/features/posts/utils/toggle-reaction";
 
@@ -48,6 +51,15 @@ export const togglePostReaction = async (
   }
 
   if (error) return { data: null, error: { code: "UNKNOWN", message: error.message } };
+
+  after(
+    emitContentReacted({
+      targetKey: toPostKey({ id: input.data.postId }),
+      id: input.data.postId,
+      type: "post",
+      authorId: session.user.id,
+    }),
+  );
 
   return { data, error: null };
 };

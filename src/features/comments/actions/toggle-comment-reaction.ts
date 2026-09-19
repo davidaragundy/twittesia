@@ -1,5 +1,7 @@
 "use server";
 
+import { after } from "next/server";
+
 import type { ActionResponse } from "@/shared/types/action-response";
 import type { BaseActionErrorCode } from "@/shared/types/base-action-error-code";
 import { isRateLimited } from "@/shared/utils/is-rate-limited";
@@ -9,6 +11,7 @@ import { toggleCommentReactionSchema } from "@/features/comments/schemas/toggle-
 import type { ToggleCommentReactionInput } from "@/features/comments/types/toggle-comment-reaction-input";
 import { toCommentKey } from "@/features/comments/utils/to-comment-key";
 import { reactionRateLimits } from "@/features/posts/lib/reaction-rate-limits";
+import { emitContentReacted } from "@/features/posts/utils/emit-content-reacted";
 import { toggleReaction } from "@/features/posts/utils/toggle-reaction";
 
 // Removes the reaction when the user already added it, and adds it otherwise
@@ -51,6 +54,15 @@ export const toggleCommentReaction = async (
   }
 
   if (error) return { data: null, error: { code: "UNKNOWN", message: error.message } };
+
+  after(
+    emitContentReacted({
+      targetKey: toCommentKey({ id: input.data.commentId }),
+      id: input.data.commentId,
+      type: "comment",
+      authorId: session.user.id,
+    }),
+  );
 
   return { data, error: null };
 };
