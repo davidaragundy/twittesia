@@ -20,6 +20,7 @@ import { POST_VIEWS_URL } from "@/features/posts/constants/post-views-url";
 import { useFeed } from "@/features/posts/hooks/use-feed";
 import { useViewTracking } from "@/features/posts/hooks/use-view-tracking";
 import type { FeedPage } from "@/features/posts/types/feed-page";
+import type { FeedSort } from "@/features/posts/types/feed-sort";
 
 interface Props {
   initialPage: FeedPage;
@@ -27,11 +28,13 @@ interface Props {
   authorId?: string;
   // What to show when there is nothing to read, for a feed whose emptiness means something else
   empty?: React.ReactNode;
+  // The order the first page was read in, for a feed that doesn't start with the usual one
+  initialSort?: FeedSort;
 }
 
-export const Feed = ({ initialPage, authorId, empty }: Props) => {
+export const Feed = ({ initialPage, authorId, empty, initialSort }: Props) => {
   const { posts, postIds, sort, setSort, isPending, hasNextPage, isFetchingNextPage, endRef } =
-    useFeed({ initialPage, authorId });
+    useFeed({ initialPage, authorId, initialSort });
   const { containerRef } = useViewTracking({ ids: postIds, url: POST_VIEWS_URL });
 
   return (

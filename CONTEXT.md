@@ -76,6 +76,15 @@ What a piece of content drew from other users: for a post, its reactions and its
 comments together; for a comment, its reactions. Views are not part of it.
 _Avoid_: score, engagement, trending
 
+**Search**:
+Finding live posts and comments by the words in them. It forgives a typo and an
+unfinished last word, and matches a phrase exactly when it is quoted.
+_Avoid_: query, lookup
+
+**Explore**:
+The page a user searches from, which shows the most popular posts until they do.
+_Avoid_: discover, browse, trending
+
 ### Time
 
 **Lifespan**:

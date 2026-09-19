@@ -12,10 +12,12 @@ interface Props {
   initialPage: FeedPage;
   // An identity, when the feed is one person's posts rather than everyone's
   authorId?: string;
+  // The order the first page was read in, for a feed that doesn't start with the usual one
+  initialSort?: FeedSort;
 }
 
-export const useFeed = ({ initialPage, authorId }: Props) => {
-  const [sort, setSort] = useState<FeedSort>(DEFAULT_FEED_SORT);
+export const useFeed = ({ initialPage, authorId, initialSort = DEFAULT_FEED_SORT }: Props) => {
+  const [sort, setSort] = useState<FeedSort>(initialSort);
 
   const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =
     useInfiniteQuery({
@@ -24,8 +26,7 @@ export const useFeed = ({ initialPage, authorId }: Props) => {
       initialPageParam: null as string | null,
       getNextPageParam: (lastPage: FeedPage) => lastPage.nextCursor,
       // Only the order the server rendered starts with a page; another is read when it is asked for
-      initialData:
-        sort === DEFAULT_FEED_SORT ? { pages: [initialPage], pageParams: [null] } : undefined,
+      initialData: sort === initialSort ? { pages: [initialPage], pageParams: [null] } : undefined,
     });
 
   // Loads the next page once the end of the list comes into view
