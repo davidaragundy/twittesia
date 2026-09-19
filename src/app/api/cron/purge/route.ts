@@ -2,16 +2,15 @@ import { NextResponse } from "next/server";
 
 import { isCronRequest } from "@/shared/utils/is-cron-request";
 
-import { sweepOrphanedMedia } from "@/features/media/utils/sweep-orphaned-media";
+import { sweepDueMedia } from "@/features/media/utils/sweep-due-media";
 
-// Posts and identities need no purge: they expire in the store by themselves. Files in Blob
-// don't, so they are swept.
+// Everything in the store expires by itself. Files in Blob don't, so the ones due are swept.
 export const GET = async (request: Request) => {
   if (!isCronRequest(request)) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const media = await sweepOrphanedMedia();
+  const media = await sweepDueMedia();
 
   if (media.error) return NextResponse.json({ message: media.error.message }, { status: 500 });
 

@@ -13,6 +13,11 @@ import { createCommentSchema } from "@/features/comments/schemas/create-comment-
 import type { CreateCommentInput } from "@/features/comments/types/create-comment-input";
 import type { PostComment } from "@/features/comments/types/post-comment";
 import { toCommentKey } from "@/features/comments/utils/to-comment-key";
+import { BLOB_EXPIRY_KEY } from "@/features/media/constants/blob-expiry-key";
+import { confirmMediaUploads } from "@/features/media/utils/confirm-media-uploads";
+import { toMedia } from "@/features/media/utils/to-media";
+import { toMediaFields } from "@/features/media/utils/to-media-fields";
+import { toUploadKey } from "@/features/media/utils/to-upload-key";
 import { RANK_SCORE_WEIGHT } from "@/features/posts/constants/rank-score-weight";
 import { getContentIndex } from "@/features/posts/utils/get-content-index";
 import { toPostKey } from "@/features/posts/utils/to-post-key";
@@ -22,7 +27,14 @@ import { toRank } from "@/features/posts/utils/to-rank";
 export const createComment = async (
   values: CreateCommentInput,
 ): Promise<
-  ActionResponse<PostComment, "POST_NOT_FOUND" | "INVALID_MEDIA" | BaseActionErrorCode>
+  ActionResponse<
+    PostComment,
+    | "POST_NOT_FOUND"
+    | "MEDIA_NOT_FOUND"
+    | "INVALID_MEDIA"
+    | "FAILED_TO_CONFIRM_MEDIA"
+    | BaseActionErrorCode
+  >
 > => {
   const input = createCommentSchema.safeParse(values);
 
@@ -30,14 +42,6 @@ export const createComment = async (
     return {
       data: null,
       error: { code: "INVALID_INPUT", message: input.error.issues[0]?.message ?? "Invalid input" },
-    };
-  }
-
-  // Attachments move to Redis in their own step of the migration
-  if (input.data.media.length) {
-    return {
-      data: null,
-      error: { code: "INVALID_MEDIA", message: "Attaching files is coming back shortly" },
     };
   }
 
@@ -51,6 +55,15 @@ export const createComment = async (
   }
 
   const { user } = session;
+
+  const { data: confirmed, error: mediaError } = await confirmMediaUploads({
+    uploads: input.data.media,
+    userId: user.id,
+  });
+
+  if (mediaError) return { data: null, error: mediaError };
+
+  const pathnames = confirmed.map((item) => item.pathname);
   const id = crypto.randomUUID();
   const createdAt = Date.now();
 
@@ -62,10 +75,14 @@ export const createComment = async (
         toCommentKey({ id }),
         toIdentityKey({ id: user.id }),
         toHandleKey({ handle: user.username }),
+        BLOB_EXPIRY_KEY,
+        ...pathnames.map((pathname) => toUploadKey({ pathname })),
       ],
       [
         String(createdAt),
         String(RANK_SCORE_WEIGHT),
+        String(pathnames.length),
+        ...pathnames,
         ...Object.entries({
           id,
           type: "comment",
@@ -74,7 +91,7 @@ export const createComment = async (
           authorHandle: user.username,
           authorName: user.name,
           content: input.data.content,
-          media: "[]",
+          ...toMediaFields({ confirmed }),
           reactions: "[]",
           reactionCount: "0",
           viewCount: "0",
@@ -106,7 +123,7 @@ export const createComment = async (
       author: { name: user.name, username: user.username, displayUsername: user.username },
       isMine: true,
       reactions: [],
-      media: [],
+      media: confirmed.map((item) => toMedia({ confirmed: item })),
       viewCount: 0,
     },
     error: null,
