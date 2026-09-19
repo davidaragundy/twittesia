@@ -33,7 +33,10 @@ each, and realtime and full-text search later without another service.
   index, so a `type` field tells the two apart. Indexing lags a write by about
   half a second, so a writer sees their own content through the client's cache,
   and queries filter out anything past its expiry that the index still holds.
-  A change to the index's schema is a new index name.
+  It sorts on one field at a time, so popularity is indexed as one `rank`: the
+  score, then the creation time, which keeps ties newest first and lets both
+  orders page by cursor. With room for only one index, a change to its schema
+  drops and recreates it (`pnpm redis:indexes --recreate`).
 - **Identities are the app's own.** A session is a random token in an httpOnly
   cookie; Redis keeps only its SHA-256, and forgets it after a day.
 - **Every command is billed.** Upstash counts each command, pipelined or not, so

@@ -1,63 +1,83 @@
 import "server-only";
 
-import { and, eq, gt } from "drizzle-orm";
-
-import { post, user } from "@/shared/lib/drizzle/schema";
 import type { ActionResponse } from "@/shared/types/action-response";
+import { tryCatch } from "@/shared/utils/try-catch";
 
 import { DEFAULT_FEED_SORT } from "@/features/posts/constants/default-feed-sort";
 import { FEED_PAGE_SIZE } from "@/features/posts/constants/feed-page-size";
 import type { FeedPage } from "@/features/posts/types/feed-page";
+import type { FeedPost } from "@/features/posts/types/feed-post";
 import type { FeedSort } from "@/features/posts/types/feed-sort";
-import { feedCursorCondition } from "@/features/posts/utils/feed-cursor-condition";
+import { getContentIndex } from "@/features/posts/utils/get-content-index";
 import { parseFeedCursor } from "@/features/posts/utils/parse-feed-cursor";
-import { readFeedPosts } from "@/features/posts/utils/read-feed-posts";
-import { toFeedCursor } from "@/features/posts/utils/to-feed-cursor";
+import { readPostHashes } from "@/features/posts/utils/read-post-hashes";
+import { toFeedPost } from "@/features/posts/utils/to-feed-post";
 
 interface Props {
   cursor?: string | null;
   sort?: FeedSort;
-  // A handle, when the page being read is one person's posts rather than everyone's
-  author?: string | null;
+  // An identity, when the page being read is one person's posts rather than everyone's
+  authorId?: string | null;
   viewerId?: string | null;
 }
 
-// Expiry is applied here rather than trusted to the purge, so a post is never read past its
-// lifespan, whenever the expired rows are actually deleted
+/**
+ * One search query finds and orders a page of keys; one pipelined read fetches their hashes.
+ *
+ * The page's end and its cursor come from the search results, not from the posts read: the index
+ * can still list a post deleted or expired a moment ago, whose hash reads as nothing, and a page
+ * with a gap in it is still not the last page. Expiry is part of the filter for the same reason.
+ */
 export const getFeedPage = async ({
   cursor,
   sort = DEFAULT_FEED_SORT,
-  author,
+  authorId,
   viewerId,
 }: Props): Promise<ActionResponse<FeedPage, "FAILED_TO_LOAD_FEED">> => {
-  const after = parseFeedCursor({ cursor, sort });
+  const failure = {
+    data: null,
+    error: { code: "FAILED_TO_LOAD_FEED" as const, message: "Couldn't load the feed" },
+  };
 
-  const { data, error } = await readFeedPosts({
-    condition: and(
-      gt(post.expiresAt, new Date()),
-      author ? eq(user.username, author) : undefined,
-      feedCursorCondition({ after, sort }),
-    ),
-    // One more than the page, to tell whether another page follows
-    limit: FEED_PAGE_SIZE + 1,
-    sort,
-    viewerId,
-  });
+  const after = parseFeedCursor({ cursor });
+  const field = sort === "popular" ? "rank" : "createdAt";
 
-  if (error) {
-    return {
-      data: null,
-      error: { code: "FAILED_TO_LOAD_FEED", message: "Couldn't load the feed" },
-    };
-  }
+  const { data: results, error } = await tryCatch(
+    getContentIndex().query({
+      filter: {
+        type: "post",
+        expiresAt: { $gt: Date.now() },
+        ...(authorId ? { authorId } : {}),
+        ...(after ? { [field]: { $lt: after } } : {}),
+      },
+      orderBy: sort === "popular" ? { rank: "DESC" } : { createdAt: "DESC" },
+      // Only the field the order sorts on: a number, which the index returns exactly
+      select: sort === "popular" ? { rank: true } : { createdAt: true },
+      // One more than the page, to tell whether another page follows
+      limit: FEED_PAGE_SIZE + 1,
+    }),
+  );
 
-  const posts = data.slice(0, FEED_PAGE_SIZE);
-  const last = posts.at(-1);
+  if (error) return failure;
+
+  const page = results.slice(0, FEED_PAGE_SIZE);
+  const last = page.at(-1);
+
+  const { data: hashes, error: readError } = await tryCatch(
+    readPostHashes({ keys: page.map((result) => result.key) }),
+  );
+
+  if (readError) return failure;
 
   return {
     data: {
-      posts,
-      nextCursor: data.length > FEED_PAGE_SIZE && last ? toFeedCursor({ post: last, sort }) : null,
+      posts: hashes
+        .map((hash) => toFeedPost({ hash, viewerId }))
+        .filter((post): post is FeedPost => post !== null),
+      nextCursor:
+        results.length > FEED_PAGE_SIZE && last
+          ? String((last.data as Record<string, unknown>)[field])
+          : null,
     },
     error: null,
   };

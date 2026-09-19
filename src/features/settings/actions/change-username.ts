@@ -6,15 +6,16 @@ import type { BaseActionErrorCode } from "@/shared/types/base-action-error-code"
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import { getSession } from "@/features/auth/queries/get-session";
-import { getIdentityExpiry } from "@/features/auth/utils/get-identity-expiry";
 import { readIdentity } from "@/features/auth/utils/read-identity";
 import { toHandleKey } from "@/features/auth/utils/to-handle-key";
 import { toIdentityKey } from "@/features/auth/utils/to-identity-key";
+import { rewritePostAuthors } from "@/features/posts/utils/rewrite-post-authors";
 import { changeUsernameFormSchema } from "@/features/settings/schemas/change-username-form-schema";
 import type { ChangeUsernameFormValues } from "@/features/settings/types/change-username-form-values";
 
 // The new handle is claimed before the old one is let go, with SET NX, so two identities can
-// never hold the same one, even when both ask at once
+// never hold the same one, even when both ask at once. It lives as long as the identity does,
+// which its posts may have extended past its first day.
 export const changeUsername = async (
   values: ChangeUsernameFormValues,
 ): Promise<ActionResponse<null, "USERNAME_TAKEN" | BaseActionErrorCode>> => {
@@ -46,11 +47,14 @@ export const changeUsername = async (
     error: { code: "UNKNOWN" as const, message: "Couldn't change your username" },
   };
 
+  const { data: secondsLeft, error: ttlError } = await tryCatch(
+    redis.ttl(toIdentityKey({ id: identity.id })),
+  );
+
+  if (ttlError || secondsLeft <= 0) return failure;
+
   const { data: claimed, error: claimError } = await tryCatch(
-    redis.set(toHandleKey({ handle }), identity.id, {
-      nx: true,
-      exat: Math.ceil(getIdentityExpiry({ createdAt: identity.createdAt }) / 1_000),
-    }),
+    redis.set(toHandleKey({ handle }), identity.id, { nx: true, ex: secondsLeft }),
   );
 
   if (claimError) return failure;
@@ -71,6 +75,8 @@ export const changeUsername = async (
   );
 
   if (error) return failure;
+
+  await rewritePostAuthors({ authorId: identity.id, author: { handle } });
 
   return { data: null, error: null };
 };

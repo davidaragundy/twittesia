@@ -23,15 +23,15 @@ import type { FeedPage } from "@/features/posts/types/feed-page";
 
 interface Props {
   initialPage: FeedPage;
-  // A handle, when the feed is one person's posts rather than everyone's
-  author?: string;
+  // An identity, when the feed is one person's posts rather than everyone's
+  authorId?: string;
   // What to show when there is nothing to read, for a feed whose emptiness means something else
   empty?: React.ReactNode;
 }
 
-export const Feed = ({ initialPage, author, empty }: Props) => {
+export const Feed = ({ initialPage, authorId, empty }: Props) => {
   const { posts, postIds, sort, setSort, isPending, hasNextPage, isFetchingNextPage, endRef } =
-    useFeed({ initialPage, author });
+    useFeed({ initialPage, authorId });
   const { containerRef } = useViewTracking({ ids: postIds, url: POST_VIEWS_URL });
 
   return (

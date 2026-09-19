@@ -1,12 +1,13 @@
 import "server-only";
 
-import { and, eq, gt } from "drizzle-orm";
-
-import { post } from "@/shared/lib/drizzle/schema";
+import { redis } from "@/shared/lib/redis/server";
 import type { ActionResponse } from "@/shared/types/action-response";
+import { toHashRecord } from "@/shared/utils/to-hash-record";
+import { tryCatch } from "@/shared/utils/try-catch";
 
 import type { FeedPost } from "@/features/posts/types/feed-post";
-import { readFeedPosts } from "@/features/posts/utils/read-feed-posts";
+import { toFeedPost } from "@/features/posts/utils/to-feed-post";
+import { toPostKey } from "@/features/posts/utils/to-post-key";
 
 interface Props {
   postId: string;
@@ -18,11 +19,7 @@ export const getPost = async ({
   postId,
   viewerId,
 }: Props): Promise<ActionResponse<FeedPost, "POST_NOT_FOUND" | "FAILED_TO_LOAD_POST">> => {
-  const { data, error } = await readFeedPosts({
-    condition: and(eq(post.id, postId), gt(post.expiresAt, new Date())),
-    limit: 1,
-    viewerId,
-  });
+  const { data, error } = await tryCatch(redis.hgetall(toPostKey({ id: postId })));
 
   if (error) {
     return {
@@ -31,11 +28,12 @@ export const getPost = async ({
     };
   }
 
-  const [found] = data;
+  const hash = toHashRecord({ reply: data });
+  const post = Number(hash?.expiresAt) > Date.now() ? toFeedPost({ hash, viewerId }) : null;
 
-  if (!found) {
+  if (!post) {
     return { data: null, error: { code: "POST_NOT_FOUND", message: "That post is gone" } };
   }
 
-  return { data: found, error: null };
+  return { data: post, error: null };
 };
