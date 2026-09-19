@@ -1,17 +1,16 @@
 import { useMutation } from "@tanstack/react-query";
-import { uploadPresigned } from "@vercel/blob/client";
+import { upload } from "@upstash/blob/browser";
 import { useState } from "react";
 import { toast } from "sonner";
 
 import { MEDIA_UPLOAD_URL } from "@/features/media/constants/media-upload-url";
 import type { MediaDraft } from "@/features/media/types/media-draft";
 import type { MediaUpload } from "@/features/media/types/media-upload";
-import { toMediaPathname } from "@/features/media/utils/to-media-pathname";
 
 /**
- * Sends a composer's files straight from the browser to Blob, each one authorised first by the
- * upload route. Nothing goes up until the post or comment is sent, so a draft that is abandoned
- * spends none of the plan's monthly uploads.
+ * Sends a composer's files straight from the browser to the bucket, each one authorised first by
+ * the upload route for its kind, which also names its path. Nothing goes up until the post or
+ * comment is sent, so a draft that is abandoned spends none of the plan's monthly uploads.
  */
 export const useUploadMediaMutation = () => {
   // Percent sent, by draft
@@ -21,18 +20,14 @@ export const useUploadMediaMutation = () => {
     mutationFn: (drafts: MediaDraft[]) =>
       Promise.all(
         drafts.map(async (draft): Promise<MediaUpload> => {
-          const pathname = toMediaPathname({ kind: draft.kind, contentType: draft.file.type });
+          const task = upload(draft.file, { route: `${MEDIA_UPLOAD_URL}?route=${draft.kind}` });
+          const unsubscribe = task.subscribe(() =>
+            setProgress((current) => ({ ...current, [draft.id]: task.snapshot().percent })),
+          );
 
-          await uploadPresigned(pathname, draft.file, {
-            access: "public",
-            handleUploadUrl: MEDIA_UPLOAD_URL,
-            clientPayload: draft.kind,
-            contentType: draft.file.type,
-            onUploadProgress: ({ percentage }) =>
-              setProgress((current) => ({ ...current, [draft.id]: percentage })),
-          });
+          const blob = await task.done.finally(unsubscribe);
 
-          return { pathname, width: draft.width, height: draft.height };
+          return { pathname: blob.path, width: draft.width, height: draft.height };
         }),
       ),
     onError: () => {

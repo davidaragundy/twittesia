@@ -1,7 +1,6 @@
 import "server-only";
 
-import { del } from "@vercel/blob";
-
+import { bucket } from "@/shared/lib/blob/server";
 import { redis } from "@/shared/lib/redis/server";
 import type { ActionResponse } from "@/shared/types/action-response";
 import { tryCatch } from "@/shared/utils/try-catch";
@@ -11,12 +10,12 @@ import { MEDIA_SWEEP_BATCH_SIZE } from "@/features/media/constants/media-sweep-b
 import { MEDIA_SWEEP_MAX_BATCHES } from "@/features/media/constants/media-sweep-max-batches";
 
 /**
- * Deletes from Blob every file that is due, then forgets it.
+ * Deletes from the bucket every file that is due, then forgets it.
  *
  * Expiring keys notify nobody, so every file sits in one sorted set scored by when it must go:
  * its owner's expiry, the end of its grace while unattached, or now once its owner is deleted.
- * This sweep is the only code that deletes files. Deleting is free on Blob and idempotent, so a
- * duplicated or missed run costs nothing.
+ * This sweep is the only code that deletes files. Deleting is free and idempotent, so a duplicated
+ * or missed run costs nothing.
  */
 export const sweepDueMedia = async (): Promise<
   ActionResponse<{ deleted: number; hasMore: boolean }, "FAILED_TO_SWEEP_MEDIA">
@@ -42,7 +41,7 @@ export const sweepDueMedia = async (): Promise<
     if (!pathnames.length) return { data: { deleted, hasMore: false }, error: null };
 
     // The files first: a path forgotten before its file is gone would leave the file for good
-    const { error: deleteError } = await tryCatch(del(pathnames));
+    const { error: deleteError } = await tryCatch(bucket.del(pathnames));
 
     if (deleteError) return failure;
 

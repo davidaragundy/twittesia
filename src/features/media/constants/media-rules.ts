@@ -1,9 +1,9 @@
 import { BYTES_PER_MEGABYTE } from "@/features/media/constants/bytes-per-megabyte";
 import type { MediaKind } from "@/features/media/types/media-kind";
 
-// What each kind may be. The sizes keep a day of uploads well inside the Hobby plan's 1 GB of
+// What each kind may be. The sizes keep a day of uploads well inside the free plan's 1 GB of
 // storage and 10 GB of transfer; the types are the ones every current browser can play or show.
-// SVG is left out on purpose: it can carry script, and Blob would serve it inline.
+// SVG is left out on purpose: it can carry script, and the bucket would serve it inline.
 export const MEDIA_RULES: Record<
   MediaKind,
   { maxBytes: number; contentTypes: string[]; extensions: Record<string, string> }

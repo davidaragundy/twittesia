@@ -1,7 +1,5 @@
 import "server-only";
 
-import { BlobNotFoundError, head } from "@vercel/blob";
-
 import { redis } from "@/shared/lib/redis/server";
 import type { ActionResponse } from "@/shared/types/action-response";
 import { tryCatch } from "@/shared/utils/try-catch";
@@ -18,12 +16,12 @@ interface Props {
 }
 
 /**
- * Checks every upload the browser asks to attach against what is actually stored.
+ * Checks every upload the browser asks to attach against what was actually stored.
  *
  * Each one must still be claimed, by this identity: a claim lasts exactly the grace the sweep
- * gives an unattached file, so a claimed file is never swept out from under it. Then the store is
- * asked, with head(), whether the file arrived, and what type and size it really is: the browser's
- * word counts for nothing past this point.
+ * gives an unattached file, so a claimed file is never swept out from under it. And it must have
+ * landed: the upload route records the stored file's type and size on the claim once the bucket
+ * has it, so the browser's word counts for nothing past this point.
  */
 export const confirmMediaUploads = async ({
   uploads,
@@ -56,31 +54,21 @@ export const confirmMediaUploads = async ({
 
   if (error) return failure;
 
-  const kinds = claims.map((claim) => {
-    const parsed = claim ? (JSON.parse(claim) as UploadClaim) : null;
+  const parsed = claims.map((claim) => (claim ? (JSON.parse(claim) as UploadClaim) : null));
 
-    return parsed?.uploaderId === userId ? parsed.kind : null;
-  });
-
-  if (kinds.some((kind) => !kind)) return notFound;
-
-  const { data: blobs, error: headError } = await tryCatch(
-    Promise.all(pathnames.map((pathname) => head(pathname))),
-  );
-
-  if (headError) return headError instanceof BlobNotFoundError ? notFound : failure;
+  if (parsed.some((claim) => claim?.uploaderId !== userId || !claim.landed)) return notFound;
 
   const confirmed: ConfirmedMedia[] = [];
 
   for (const [position, upload] of uploads.entries()) {
-    const kind = kinds[position];
-    const blob = blobs[position];
+    const claim = parsed[position];
+    const landed = claim?.landed;
 
     if (
-      !kind ||
-      !blob ||
-      !MEDIA_RULES[kind].contentTypes.includes(blob.contentType) ||
-      blob.size > MEDIA_RULES[kind].maxBytes
+      !claim ||
+      !landed ||
+      !MEDIA_RULES[claim.kind].contentTypes.includes(landed.contentType) ||
+      landed.size > MEDIA_RULES[claim.kind].maxBytes
     ) {
       return {
         data: null,
@@ -90,13 +78,13 @@ export const confirmMediaUploads = async ({
 
     confirmed.push({
       id: crypto.randomUUID(),
-      kind,
-      url: blob.url,
-      contentType: blob.contentType,
-      width: kind === "audio" ? null : upload.width,
-      height: kind === "audio" ? null : upload.height,
+      kind: claim.kind,
+      url: landed.url,
+      contentType: landed.contentType,
+      width: claim.kind === "audio" ? null : upload.width,
+      height: claim.kind === "audio" ? null : upload.height,
       pathname: upload.pathname,
-      size: blob.size,
+      size: landed.size,
       position,
     });
   }

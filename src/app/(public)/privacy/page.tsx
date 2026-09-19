@@ -99,11 +99,9 @@ export default function PrivacyPage() {
           </li>
           <li>
             <strong>Upstash</strong> stores your identity, your session, and your posts and
-            comments, each until it expires.
-          </li>
-          <li>
-            <strong>Vercel Blob</strong> stores the files you attach. Your browser sends them to it
-            directly, and loads them from it when you view them.
+            comments, each until it expires, and the files you attach until they are deleted with
+            them. Your browser sends files to it directly, and loads them from it when you view
+            them.
           </li>
           <li>
             <strong>jsDelivr</strong> delivers the list of emoji the reaction picker shows. Your
