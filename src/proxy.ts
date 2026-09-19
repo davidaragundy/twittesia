@@ -1,17 +1,14 @@
-import { getSessionCookie } from "better-auth/cookies";
 import { NextRequest, NextResponse } from "next/server";
 
-import { AUTH_COOKIE_PREFIX } from "@/features/auth/constants/auth-cookie-prefix";
+import { SESSION_COOKIE_NAME } from "@/features/auth/constants/session-cookie-name";
 import { resolveAuthRouteAccess } from "@/features/auth/utils/resolve-auth-route-access";
 
 export function proxy(request: NextRequest) {
-  const sessionCookie = getSessionCookie(request, {
-    cookiePrefix: AUTH_COOKIE_PREFIX,
-  });
-
+  // Only whether the cookie is there: the session behind it is checked where it is read, since a
+  // check here would cost a store lookup on every request, assets and prefetches included
   const decision = resolveAuthRouteAccess({
     pathname: request.nextUrl.pathname,
-    hasSession: Boolean(sessionCookie),
+    hasSession: request.cookies.has(SESSION_COOKIE_NAME),
   });
 
   if (decision.action === "allow") {

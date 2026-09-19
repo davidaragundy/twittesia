@@ -2,13 +2,11 @@ import { NextResponse } from "next/server";
 
 import { isCronRequest } from "@/shared/utils/is-cron-request";
 
-import { purgeExpiredIdentities } from "@/features/auth/utils/purge-expired-identities";
 import { sweepOrphanedMedia } from "@/features/media/utils/sweep-orphaned-media";
 import { purgeExpiredPosts } from "@/features/posts/utils/purge-expired-posts";
 
-// Posts first, then identities: an identity is only removed once it has no posts left, so
-// clearing expired posts in the same run lets the identities behind them go on the same pass.
-// Media last, because both leave files behind with nothing to belong to.
+// Posts first, then media, because expired posts leave files behind with nothing to belong to.
+// Identities need no purge: they expire in the store by themselves.
 export const GET = async (request: Request) => {
   if (!isCronRequest(request)) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -18,15 +16,9 @@ export const GET = async (request: Request) => {
 
   if (posts.error) return NextResponse.json({ message: posts.error.message }, { status: 500 });
 
-  const identities = await purgeExpiredIdentities();
-
-  if (identities.error) {
-    return NextResponse.json({ message: identities.error.message }, { status: 500 });
-  }
-
   const media = await sweepOrphanedMedia();
 
   if (media.error) return NextResponse.json({ message: media.error.message }, { status: 500 });
 
-  return NextResponse.json({ posts: posts.data, identities: identities.data, media: media.data });
+  return NextResponse.json({ posts: posts.data, media: media.data });
 };

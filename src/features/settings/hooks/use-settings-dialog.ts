@@ -9,7 +9,7 @@ import type { SettingsTab } from "@/features/settings/types/settings-tab";
 import { isSettingsTab } from "@/features/settings/utils/is-settings-tab";
 import { writeSettingsTab } from "@/features/settings/utils/write-settings-tab";
 
-// The open tab lives in the URL, so links such as /home?settings=security open it directly
+// The open tab lives in the URL, so links such as /home?settings=account open it directly
 export const useSettingsDialog = () => {
   const searchParams = useSearchParams();
   const isMobile = useIsMobile();
