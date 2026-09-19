@@ -1,3 +1,4 @@
-import type { user } from "@/shared/lib/drizzle/schema";
+import type { Identity } from "@/features/auth/types/identity";
 
-export type Profile = typeof user.$inferSelect;
+// A profile is an identity, seen by anyone
+export type Profile = Identity;

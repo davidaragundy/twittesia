@@ -18,11 +18,9 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/shared/components/ui/drawer";
-import { FieldContent, FieldDescription, FieldTitle } from "@/shared/components/ui/field";
 import { Spinner } from "@/shared/components/ui/spinner";
 import { ToggleGroup, ToggleGroupItem } from "@/shared/components/ui/toggle-group";
 
-import { ActiveSessions } from "@/features/settings/components/active-sessions";
 import { ChangeNameForm } from "@/features/settings/components/change-name-form";
 import { ChangeUsernameForm } from "@/features/settings/components/change-username-form";
 import { SETTINGS_DIALOG_DESCRIPTION } from "@/features/settings/constants/settings-dialog-description";
@@ -49,23 +47,13 @@ export function SettingsDialog() {
     </nav>
   );
 
-  const content =
-    tab === "account" ? (
-      // Each of these forms is a single field, so its own label and description head it
-      <div className="flex flex-col gap-14">
-        <ChangeNameForm />
-        <ChangeUsernameForm />
-      </div>
-    ) : (
-      <div className="flex flex-col gap-14">
-        <SettingsSection
-          title="Active sessions"
-          description="Where this identity is open. It expires 24 hours after it was created, here and everywhere else."
-        >
-          <ActiveSessions />
-        </SettingsSection>
-      </div>
-    );
+  // Each of these forms is a single field, so its own label and description head it
+  const content = tab === "account" && (
+    <div className="flex flex-col gap-14">
+      <ChangeNameForm />
+      <ChangeUsernameForm />
+    </div>
+  );
 
   if (isMobile) {
     return (
@@ -111,23 +99,5 @@ export function SettingsDialog() {
         </div>
       </DialogContent>
     </Dialog>
-  );
-}
-
-type SettingsSectionProps = {
-  title: string;
-  description: string;
-  children: React.ReactNode;
-};
-
-function SettingsSection({ title, description, children }: SettingsSectionProps) {
-  return (
-    <section className="flex flex-col gap-8">
-      <FieldContent>
-        <FieldTitle>{title}</FieldTitle>
-        <FieldDescription>{description}</FieldDescription>
-      </FieldContent>
-      {children}
-    </section>
   );
 }

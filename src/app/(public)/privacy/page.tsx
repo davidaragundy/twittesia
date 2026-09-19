@@ -40,10 +40,10 @@ export default function PrivacyPage() {
             they are, so any such details inside them go with them.
           </li>
           <li>
-            <strong>Session and security data.</strong> For each session, the IP address and browser
-            or device it was created from, which you can see in your settings. We also record IP
-            addresses briefly to limit repeated requests. This is the only information we hold that
-            can point back to a person, and we keep it no longer than the session that created it.
+            <strong>Your session.</strong> A random token in a cookie keeps your identity signed in.
+            We store only a one-way fingerprint of it, never the token itself, and forget it when
+            your identity ends. We don&apos;t record your IP address or which browser or device you
+            use.
           </li>
           <li>
             <strong>Usage and performance.</strong> Page views and loading performance, measured

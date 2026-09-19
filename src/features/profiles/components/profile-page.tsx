@@ -35,7 +35,7 @@ export const ProfilePage = async ({ username }: Props) => {
 
   const session = await getSession();
   const viewerId = session?.user.id;
-  const handle = profile.username ?? username;
+  const { handle } = profile;
 
   const [stats, posts, comments] = await Promise.all([
     getProfileStats({ userId: profile.id }),
@@ -79,7 +79,7 @@ export const ProfilePage = async ({ username }: Props) => {
           ) : (
             <ProfileComments
               username={handle}
-              displayUsername={profile.displayUsername ?? handle}
+              displayUsername={handle}
               initialPage={comments.data}
             />
           )

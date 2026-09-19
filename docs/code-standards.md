@@ -66,8 +66,8 @@ kinds:
 `utils`, `styles`, `context`, `lib`, `emails`
 
 - `context` holds React contexts, created with `createContext`.
-- `lib` holds configured instances of third-party libraries — the better-auth
-  server and client, the database, Redis, the email provider — and nothing else.
+- `lib` holds configured instances of third-party libraries — the database,
+  Redis, the email provider — and nothing else.
 - `emails` holds React Email templates, each the default export of its file, so
   `pnpm dev:email` can preview the folder.
 
@@ -89,8 +89,7 @@ data access to the browser. _Review._
 **CS-11.** `actions/` writes. Every file in it is a server action, marked
 `"use server"`. An action is a public endpoint: it validates its input with a
 schema from `schemas/`, authenticates and rate-limits the caller, and returns
-only what the UI renders. Authentication and settings changes go through
-`authClient` instead, which better-auth rate-limits. _Review._
+only what the UI renders. _Review._
 
 **CS-12.** An action may call a query. A query may never write. A query runs
 while a page renders, so a render that is repeated, prerendered or later cached
@@ -150,15 +149,10 @@ the exception. _Review._
 `Code` every error code it can return. Callers branch on `error.code`, never on
 `error.message`, which is for people to read. _Review._
 
-**CS-22.** A call that can throw — a database query, a server-side `auth.api`
-call, a browser API such as the clipboard — goes through `tryCatch` from
-`@/shared/utils/try-catch`, and its failure is handled where it happens.
-`authClient` calls resolve with an error instead of throwing: a mutation or query
-function passes them through `unwrapAuthResponse`, so TanStack Query sees the
-failure, and every `authClient` error is dispatched with `handleAuthError`, whose
-handlers are keyed by the codes the auth server can return. A rate-limited
-request (429) is shown once, by `authClient`'s global handler, and nothing else
-handles it; queries don't retry a 4xx response. _Review._
+**CS-22.** A call that can throw — a database query, a Redis command, a browser
+API such as the clipboard — goes through `tryCatch` from
+`@/shared/utils/try-catch`, and its failure is handled where it happens. Queries
+don't retry a 4xx response. _Review._
 
 ## What the tooling actually does
 
