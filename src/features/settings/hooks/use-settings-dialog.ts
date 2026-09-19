@@ -1,31 +1,43 @@
-import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { use, useState } from "react";
 
 import { useIsMobile } from "@/shared/hooks/use-mobile";
 
-import { SETTINGS_SEARCH_PARAM } from "@/features/settings/constants/settings-search-param";
-import { SETTINGS_SECTIONS } from "@/features/settings/constants/settings-sections";
-import type { SettingsTab } from "@/features/settings/types/settings-tab";
 import { isSettingsTab } from "@/features/settings/utils/is-settings-tab";
-import { writeSettingsTab } from "@/features/settings/utils/write-settings-tab";
+import { toSettingsPath } from "@/features/settings/utils/to-settings-path";
 
-// The open tab lives in the URL, so links such as /home?settings=account open it directly
-export const useSettingsDialog = () => {
-  const searchParams = useSearchParams();
+/**
+ * The dialog is a route, /settings/<section>, intercepted over the page it was opened from. It is
+ * open for as long as that route is; closing it plays the closing animation, then goes back to
+ * the page underneath. Switching sections replaces the URL, so going back still closes it.
+ */
+interface Props {
+  // The route's params, read here, under the boundary, so opening the dialog never waits on them
+  params: Promise<{ section: string }>;
+}
+
+export const useSettingsDialog = ({ params }: Props) => {
+  const { section } = use(params);
+  const router = useRouter();
   const isMobile = useIsMobile();
+  const [isOpen, setIsOpen] = useState(true);
 
-  const param = searchParams.get(SETTINGS_SEARCH_PARAM);
-  const openTab = isSettingsTab(param) ? param : null;
+  const onOpenChange = (open: boolean) => setIsOpen(open);
 
-  // Keeps the last tab on screen while the dialog animates closed
-  const [lastTab, setLastTab] = useState<SettingsTab>(SETTINGS_SECTIONS[0].value);
-  if (openTab && openTab !== lastTab) setLastTab(openTab);
-
-  const onOpenChange = (open: boolean) => writeSettingsTab(open ? lastTab : null);
-
-  const onTabChange = (value: unknown) => {
-    if (isSettingsTab(value)) writeSettingsTab(value);
+  const onOpenChangeComplete = (open: boolean) => {
+    if (!open) router.back();
   };
 
-  return { isMobile, isOpen: openTab !== null, tab: lastTab, onOpenChange, onTabChange };
+  const onTabChange = (value: unknown) => {
+    if (isSettingsTab(value)) router.replace(toSettingsPath({ section: value }), { scroll: false });
+  };
+
+  return {
+    section: isSettingsTab(section) ? section : null,
+    isMobile,
+    isOpen,
+    onOpenChange,
+    onOpenChangeComplete,
+    onTabChange,
+  };
 };

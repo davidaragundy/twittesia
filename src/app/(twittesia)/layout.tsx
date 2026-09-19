@@ -15,18 +15,13 @@ import { SessionGuard } from "@/features/auth/components/session-guard";
 import { SessionProvider } from "@/features/auth/components/session-provider";
 import { ProfileNavLink } from "@/features/profiles/components/profile-nav-link";
 import { LeaveDialog } from "@/features/settings/components/leave-dialog";
-import { SettingsDialog } from "@/features/settings/components/settings-dialog";
 import { SettingsMenuItem } from "@/features/settings/components/settings-menu-item";
 import { SettingsNavButton } from "@/features/settings/components/settings-nav-button";
 
 // Not async: nothing here waits for the request, so the whole shell prerenders. Each part
 // that needs the session reads it inside its own <Suspense> boundary; the reads share one
 // lookup per request.
-export default function Layout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function Layout({ children, modal }: LayoutProps<"/">) {
   const profileLink = (
     <Suspense
       fallback={
@@ -85,11 +80,7 @@ export default function Layout({
         <SessionGuard />
       </Suspense>
 
-      <Suspense>
-        <SessionProvider>
-          <SettingsDialog />
-        </SessionProvider>
-      </Suspense>
+      {modal}
 
       <Suspense>
         <LeaveDialog />
