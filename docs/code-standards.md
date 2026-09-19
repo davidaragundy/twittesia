@@ -46,10 +46,15 @@ who depends on it. _Review._
 **CS-7.** Feature names come from this list. It is a vocabulary, not a skeleton:
 a folder is created when its first file is, never upfront.
 
-`auth`, `settings`, `profiles`, `posts`, `comments`, `media`, `landing`
+`auth`, `settings`, `profiles`, `posts`, `comments`, `media`, `landing`,
+`explore`
 
 `landing` owns how Twittesia presents itself to people who have not started yet:
 the landing page's copy, highlights and structured data.
+
+`explore` owns finding content: the search box, what a search means, and the
+results, which mix posts and comments. It imports `posts` and `comments` for
+their cards; neither imports it.
 
 `media` owns the files attached to posts and comments: authorising their
 uploads, confirming they arrived, showing them, and deleting them
