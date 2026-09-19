@@ -8,6 +8,7 @@ import type { BaseActionErrorCode } from "@/shared/types/base-action-error-code"
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import { getSession } from "@/features/auth/queries/get-session";
+import { getContentIndex } from "@/features/posts/utils/get-content-index";
 import { toPostKey } from "@/features/posts/utils/to-post-key";
 
 // Only the author can delete a post. Someone else's post reads as already gone, so nobody learns
@@ -41,8 +42,20 @@ export const deletePost = async (
     return { data: null, error: { code: "POST_NOT_FOUND", message: "That post is already gone" } };
   }
 
-  // What hangs off the post — who reacted, who viewed — expires with it anyway
-  const { error } = await tryCatch(redis.del(key));
+  // Its comments go with it. What hangs off either — who reacted, who viewed — expires anyway.
+  const { data: comments, error: commentsError } = await tryCatch(
+    getContentIndex().query({
+      filter: { type: "comment", postId: input.data },
+      select: {},
+      limit: 1000,
+    }),
+  );
+
+  if (commentsError) {
+    return { data: null, error: { code: "UNKNOWN", message: "Couldn't delete your post" } };
+  }
+
+  const { error } = await tryCatch(redis.del(key, ...comments.map((comment) => comment.key)));
 
   if (error)
     return { data: null, error: { code: "UNKNOWN", message: "Couldn't delete your post" } };

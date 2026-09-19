@@ -1,19 +1,20 @@
 "use server";
 
-import { and, eq } from "drizzle-orm";
-import { after } from "next/server";
 import { z } from "zod";
 
-import { comment } from "@/shared/lib/drizzle/schema";
-import { db } from "@/shared/lib/drizzle/server";
+import { redis } from "@/shared/lib/redis/server";
 import type { ActionResponse } from "@/shared/types/action-response";
 import type { BaseActionErrorCode } from "@/shared/types/base-action-error-code";
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import { getSession } from "@/features/auth/queries/get-session";
-import { sweepOrphanedMedia } from "@/features/media/utils/sweep-orphaned-media";
+import { DELETE_COMMENT_SCRIPT } from "@/features/comments/constants/delete-comment-script";
+import { toCommentKey } from "@/features/comments/utils/to-comment-key";
+import { RANK_SCORE_WEIGHT } from "@/features/posts/constants/rank-score-weight";
+import { toPostKey } from "@/features/posts/utils/to-post-key";
 
-// Only the author can delete a comment
+// Only the author can delete a comment. Someone else's comment reads as already gone, so nobody
+// learns anything by trying.
 export const deleteComment = async (
   commentId: string,
 ): Promise<ActionResponse<null, "COMMENT_NOT_FOUND" | BaseActionErrorCode>> => {
@@ -32,26 +33,31 @@ export const deleteComment = async (
     };
   }
 
-  const { data, error } = await tryCatch(
-    db
-      .delete(comment)
-      .where(and(eq(comment.id, input.data), eq(comment.userId, session.user.id)))
-      .returning({ id: comment.id }),
+  const failure = {
+    data: null,
+    error: { code: "UNKNOWN" as const, message: "Couldn't delete your comment" },
+  };
+  const gone = {
+    data: null,
+    error: { code: "COMMENT_NOT_FOUND" as const, message: "That comment is already gone" },
+  };
+
+  const key = toCommentKey({ id: input.data });
+  const { data: postId, error: readError } = await tryCatch(redis.hget<string>(key, "postId"));
+
+  if (readError) return failure;
+  if (!postId) return gone;
+
+  const { data: deleted, error } = await tryCatch(
+    redis.eval<string[], number>(
+      DELETE_COMMENT_SCRIPT,
+      [key, toPostKey({ id: postId })],
+      [session.user.id, String(RANK_SCORE_WEIGHT)],
+    ),
   );
 
-  if (error) {
-    return { data: null, error: { code: "UNKNOWN", message: "Couldn't delete your comment" } };
-  }
-
-  if (!data.length) {
-    return {
-      data: null,
-      error: { code: "COMMENT_NOT_FOUND", message: "That comment is already gone" },
-    };
-  }
-
-  // Its file is left with no owner; it leaves Blob once the answer has been sent
-  after(sweepOrphanedMedia);
+  if (error) return failure;
+  if (Number(deleted) !== 1) return gone;
 
   return { data: null, error: null };
 };

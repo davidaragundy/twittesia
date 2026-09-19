@@ -40,7 +40,7 @@ export const ProfilePage = async ({ username }: Props) => {
   const [stats, posts, comments] = await Promise.all([
     getProfileStats({ userId: profile.id }),
     getFeedPage({ authorId: profile.id, viewerId }),
-    getProfileCommentsPage({ username: handle, viewerId }),
+    getProfileCommentsPage({ authorId: profile.id, viewerId }),
   ]);
 
   return (

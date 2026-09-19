@@ -9,7 +9,7 @@ import { getSession } from "@/features/auth/queries/get-session";
 import { readIdentity } from "@/features/auth/utils/read-identity";
 import { toHandleKey } from "@/features/auth/utils/to-handle-key";
 import { toIdentityKey } from "@/features/auth/utils/to-identity-key";
-import { rewritePostAuthors } from "@/features/posts/utils/rewrite-post-authors";
+import { rewriteContentAuthors } from "@/features/posts/utils/rewrite-content-authors";
 import { changeUsernameFormSchema } from "@/features/settings/schemas/change-username-form-schema";
 import type { ChangeUsernameFormValues } from "@/features/settings/types/change-username-form-values";
 
@@ -76,7 +76,7 @@ export const changeUsername = async (
 
   if (error) return failure;
 
-  await rewritePostAuthors({ authorId: identity.id, author: { handle } });
+  await rewriteContentAuthors({ authorId: identity.id, author: { handle } });
 
   return { data: null, error: null };
 };

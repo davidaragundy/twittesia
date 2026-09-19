@@ -1,32 +1,28 @@
 "use server";
 
-import { and, eq, gt } from "drizzle-orm";
-
-import { comment, post } from "@/shared/lib/drizzle/schema";
-import { db } from "@/shared/lib/drizzle/server";
+import { redis } from "@/shared/lib/redis/server";
 import type { ActionResponse } from "@/shared/types/action-response";
 import type { BaseActionErrorCode } from "@/shared/types/base-action-error-code";
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import { getSession } from "@/features/auth/queries/get-session";
+import { toHandleKey } from "@/features/auth/utils/to-handle-key";
+import { toIdentityKey } from "@/features/auth/utils/to-identity-key";
+import { CREATE_COMMENT_SCRIPT } from "@/features/comments/constants/create-comment-script";
 import { createCommentSchema } from "@/features/comments/schemas/create-comment-schema";
 import type { CreateCommentInput } from "@/features/comments/types/create-comment-input";
 import type { PostComment } from "@/features/comments/types/post-comment";
-import { confirmMediaUploads } from "@/features/media/utils/confirm-media-uploads";
-import { toMedia } from "@/features/media/utils/to-media";
-import { toMediaAttachQueries } from "@/features/media/utils/to-media-attach-queries";
+import { toCommentKey } from "@/features/comments/utils/to-comment-key";
+import { RANK_SCORE_WEIGHT } from "@/features/posts/constants/rank-score-weight";
+import { getContentIndex } from "@/features/posts/utils/get-content-index";
+import { toPostKey } from "@/features/posts/utils/to-post-key";
+import { toRank } from "@/features/posts/utils/to-rank";
 
+// Written in one script with its post, so a comment never lands on a post deleted a moment ago
 export const createComment = async (
   values: CreateCommentInput,
 ): Promise<
-  ActionResponse<
-    PostComment,
-    | "POST_NOT_FOUND"
-    | "MEDIA_NOT_FOUND"
-    | "INVALID_MEDIA"
-    | "FAILED_TO_CONFIRM_MEDIA"
-    | BaseActionErrorCode
-  >
+  ActionResponse<PostComment, "POST_NOT_FOUND" | "INVALID_MEDIA" | BaseActionErrorCode>
 > => {
   const input = createCommentSchema.safeParse(values);
 
@@ -34,6 +30,14 @@ export const createComment = async (
     return {
       data: null,
       error: { code: "INVALID_INPUT", message: input.error.issues[0]?.message ?? "Invalid input" },
+    };
+  }
+
+  // Attachments move to Redis in their own step of the migration
+  if (input.data.media.length) {
+    return {
+      data: null,
+      error: { code: "INVALID_MEDIA", message: "Attaching files is coming back shortly" },
     };
   }
 
@@ -46,66 +50,63 @@ export const createComment = async (
     };
   }
 
-  const { data: live, error: liveError } = await tryCatch(
-    db
-      .select({ id: post.id })
-      .from(post)
-      .where(and(eq(post.id, input.data.postId), gt(post.expiresAt, new Date())))
-      .limit(1),
+  const { user } = session;
+  const id = crypto.randomUUID();
+  const createdAt = Date.now();
+
+  const { data: expiresAt, error } = await tryCatch(
+    redis.eval<string[], number>(
+      CREATE_COMMENT_SCRIPT,
+      [
+        toPostKey({ id: input.data.postId }),
+        toCommentKey({ id }),
+        toIdentityKey({ id: user.id }),
+        toHandleKey({ handle: user.username }),
+      ],
+      [
+        String(createdAt),
+        String(RANK_SCORE_WEIGHT),
+        ...Object.entries({
+          id,
+          type: "comment",
+          postId: input.data.postId,
+          authorId: user.id,
+          authorHandle: user.username,
+          authorName: user.name,
+          content: input.data.content,
+          media: "[]",
+          reactions: "[]",
+          reactionCount: "0",
+          viewCount: "0",
+          createdAt: String(createdAt),
+          rank: String(toRank({ score: 0, createdAt })),
+        }).flat(),
+      ],
+    ),
   );
 
-  if (liveError) {
+  if (error) {
     return { data: null, error: { code: "UNKNOWN", message: "Couldn't publish your comment" } };
   }
 
-  if (!live.length) {
+  if (Number(expiresAt) < 0) {
     return { data: null, error: { code: "POST_NOT_FOUND", message: "That post is already gone" } };
   }
 
-  const { user } = session;
-
-  const { data: confirmed, error: mediaError } = await confirmMediaUploads({
-    uploads: input.data.media,
-    userId: user.id,
-  });
-
-  if (mediaError) return { data: null, error: mediaError };
-
-  const id = crypto.randomUUID();
-
-  // One batch, so the comment and its file are saved together or not at all
-  const { data, error } = await tryCatch(
-    db.batch([
-      db
-        .insert(comment)
-        .values({ id, postId: input.data.postId, userId: user.id, content: input.data.content })
-        .returning({
-          id: comment.id,
-          postId: comment.postId,
-          content: comment.content,
-          createdAt: comment.createdAt,
-        }),
-      ...toMediaAttachQueries({ confirmed, owner: { commentId: id } }),
-    ]),
-  );
-
-  const [created] = data?.[0] ?? [];
-
-  if (error || !created) {
-    return { data: null, error: { code: "UNKNOWN", message: "Couldn't publish your comment" } };
-  }
+  // Indexing trails a write; answering once the index has the comment means a reload straight
+  // after still finds it. The comment is saved either way.
+  await tryCatch(getContentIndex().waitIndexing());
 
   return {
     data: {
-      ...created,
-      author: {
-        name: user.name,
-        username: user.username ?? "",
-        displayUsername: user.displayUsername ?? user.username ?? "",
-      },
+      id,
+      postId: input.data.postId,
+      content: input.data.content,
+      createdAt: new Date(createdAt),
+      author: { name: user.name, username: user.username, displayUsername: user.username },
       isMine: true,
       reactions: [],
-      media: confirmed.map((item) => toMedia({ confirmed: item })),
+      media: [],
       viewCount: 0,
     },
     error: null,

@@ -13,14 +13,18 @@ interface Props {
   author: { handle?: string; name?: string };
 }
 
-// Every live post of an author carries a copy of their handle and name; renaming rewrites them
-export const rewritePostAuthors = async ({
+// Every live post and comment of an author carries a copy of their handle and name; renaming
+// rewrites them
+export const rewriteContentAuthors = async ({
   authorId,
   author,
-}: Props): Promise<ActionResponse<null, "FAILED_TO_REWRITE_POSTS">> => {
+}: Props): Promise<ActionResponse<null, "FAILED_TO_REWRITE_CONTENT">> => {
   const failure = {
     data: null,
-    error: { code: "FAILED_TO_REWRITE_POSTS" as const, message: "Couldn't update your posts" },
+    error: {
+      code: "FAILED_TO_REWRITE_CONTENT" as const,
+      message: "Couldn't update your posts and comments",
+    },
   };
 
   const fields = [
@@ -28,17 +32,17 @@ export const rewritePostAuthors = async ({
     ...(author.name ? ["authorName", author.name] : []),
   ];
 
-  const { data: posts, error } = await tryCatch(
-    getContentIndex().query({ filter: { type: "post", authorId }, select: {}, limit: 1000 }),
+  const { data: results, error } = await tryCatch(
+    getContentIndex().query({ filter: { authorId }, select: {}, limit: 1000 }),
   );
 
   if (error) return failure;
-  if (!posts.length || !fields.length) return { data: null, error: null };
+  if (!results.length || !fields.length) return { data: null, error: null };
 
   const { error: writeError } = await tryCatch(
     redis.eval(
       REWRITE_IF_EXISTS_SCRIPT,
-      posts.map((post) => post.key),
+      results.map((result) => result.key),
       fields,
     ),
   );

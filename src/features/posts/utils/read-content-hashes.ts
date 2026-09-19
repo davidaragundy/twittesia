@@ -12,15 +12,15 @@ interface Props {
 }
 
 /**
- * The hashes behind a page of search results, and the reader's own reactions on each, in one
- * pipelined request.
+ * The post or comment hashes behind a page of search results, and the reader's own reactions on
+ * each, in one pipelined request.
  *
  * The search index answers with values it has parsed as JSON wherever they look like it, so a
  * post that says `null` or `{ "a": 1 }` would come back as something else. The index only finds
  * and orders the keys; the text is read from the hashes themselves, exactly as it was written.
  * A key the index still lists but whose hash has gone — deleted a moment ago — reads as null.
  */
-export const readPostHashes = async ({ keys, viewerId }: Props) => {
+export const readContentHashes = async ({ keys, viewerId }: Props) => {
   if (!keys.length) return [];
 
   const pipeline = redis.pipeline();

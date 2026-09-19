@@ -2,7 +2,11 @@ import "server-only";
 
 import { NextResponse } from "next/server";
 
+import { redis } from "@/shared/lib/redis/server";
+import { tryCatch } from "@/shared/utils/try-catch";
+
 import { getSession } from "@/features/auth/queries/get-session";
+import { toHandleKey } from "@/features/auth/utils/to-handle-key";
 import { getProfileCommentsPage } from "@/features/comments/queries/get-profile-comments-page";
 import { commentSortSchema } from "@/features/comments/schemas/comment-sort-schema";
 
@@ -18,9 +22,19 @@ export const handleProfileCommentsRequest = async (
   }
 
   const { username } = await params;
+  const { data: authorId, error: handleError } = await tryCatch(
+    redis.get<string>(toHandleKey({ handle: username.toLowerCase() })),
+  );
+
+  if (handleError)
+    return NextResponse.json({ message: "Couldn't load the comments" }, { status: 500 });
+
+  // A handle that has expired or left has no comments left to show
+  if (!authorId) return NextResponse.json({ comments: [], nextCursor: null });
+
   const { searchParams } = new URL(request.url);
   const { data, error } = await getProfileCommentsPage({
-    username,
+    authorId,
     cursor: searchParams.get("cursor"),
     sort: commentSortSchema.parse(searchParams.get("sort")),
     viewerId: session.user.id,
