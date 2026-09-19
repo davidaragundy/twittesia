@@ -1,12 +1,12 @@
 import "server-only";
 
-import { and, eq, gt } from "drizzle-orm";
-
-import { post } from "@/shared/lib/drizzle/schema";
 import type { ActionResponse } from "@/shared/types/action-response";
+import { tryCatch } from "@/shared/utils/try-catch";
 
 import type { FeedPost } from "@/features/posts/types/feed-post";
-import { readFeedPosts } from "@/features/posts/utils/read-feed-posts";
+import { readContentHashes } from "@/features/posts/utils/read-content-hashes";
+import { toFeedPost } from "@/features/posts/utils/to-feed-post";
+import { toPostKey } from "@/features/posts/utils/to-post-key";
 
 interface Props {
   postId: string;
@@ -18,11 +18,9 @@ export const getPost = async ({
   postId,
   viewerId,
 }: Props): Promise<ActionResponse<FeedPost, "POST_NOT_FOUND" | "FAILED_TO_LOAD_POST">> => {
-  const { data, error } = await readFeedPosts({
-    condition: and(eq(post.id, postId), gt(post.expiresAt, new Date())),
-    limit: 1,
-    viewerId,
-  });
+  const { data, error } = await tryCatch(
+    readContentHashes({ keys: [toPostKey({ id: postId })], viewerId }),
+  );
 
   if (error) {
     return {
@@ -31,11 +29,15 @@ export const getPost = async ({
     };
   }
 
-  const [found] = data;
+  const [read] = data;
+  const post =
+    read && Number(read.hash?.expiresAt) > Date.now()
+      ? toFeedPost({ hash: read.hash, viewerId, mine: read.mine })
+      : null;
 
-  if (!found) {
+  if (!post) {
     return { data: null, error: { code: "POST_NOT_FOUND", message: "That post is gone" } };
   }
 
-  return { data: found, error: null };
+  return { data: post, error: null };
 };

@@ -14,7 +14,7 @@ export default function PrivacyPage() {
   return (
     <LegalPage
       title="Privacy Policy"
-      effectiveDate="September 18, 2026"
+      effectiveDate="September 19, 2026"
       intro="Twittesia never asks who you are. There is no sign-up, no email address, no password and no social login. This policy explains the little we do collect, why, who helps us process it and how long we keep it."
     >
       <LegalSection title="1. What we collect">
@@ -40,10 +40,10 @@ export default function PrivacyPage() {
             they are, so any such details inside them go with them.
           </li>
           <li>
-            <strong>Session and security data.</strong> For each session, the IP address and browser
-            or device it was created from, which you can see in your settings. We also record IP
-            addresses briefly to limit repeated requests. This is the only information we hold that
-            can point back to a person, and we keep it no longer than the session that created it.
+            <strong>Your session.</strong> A random token in a cookie keeps your identity signed in.
+            We store only a one-way fingerprint of it, never the token itself, and forget it when
+            your identity ends. We don&apos;t record your IP address or which browser or device you
+            use.
           </li>
           <li>
             <strong>Usage and performance.</strong> Page views and loading performance, measured
@@ -98,7 +98,8 @@ export default function PrivacyPage() {
             <strong>Vercel</strong> hosts Twittesia and provides Analytics and Speed Insights.
           </li>
           <li>
-            <strong>Neon</strong> hosts the database.
+            <strong>Upstash</strong> stores your identity, your session, and your posts and
+            comments, each until it expires.
           </li>
           <li>
             <strong>Vercel Blob</strong> stores the files you attach. Your browser sends them to it

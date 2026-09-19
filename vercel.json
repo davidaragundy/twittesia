@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "pnpm exec drizzle-kit migrate && pnpm build",
+  "buildCommand": "pnpm redis:indexes && pnpm build",
   "crons": [
     {
       "path": "/api/cron/purge",

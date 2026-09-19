@@ -53,8 +53,8 @@ the landing page's copy, highlights and structured data.
 
 `media` owns the files attached to posts and comments: authorising their
 uploads, confirming them against the store, showing them, and deleting them
-once nothing is left for them to belong to. Posts and comments import it; it
-imports neither, nor `auth`.
+once nothing is left for them to belong to. Posts, comments and settings import
+it; it imports none of them, nor `auth`.
 
 Adding a name is a decision worth making deliberately, because it asserts that a
 new area of the domain exists. _Review._
@@ -63,13 +63,11 @@ new area of the domain exists. _Review._
 kinds:
 
 `components`, `hooks`, `schemas`, `types`, `constants`, `queries`, `actions`,
-`utils`, `styles`, `context`, `lib`, `emails`
+`utils`, `styles`, `context`, `lib`
 
 - `context` holds React contexts, created with `createContext`.
-- `lib` holds configured instances of third-party libraries — the better-auth
-  server and client, the database, the email provider — and nothing else.
-- `emails` holds React Email templates, each the default export of its file, so
-  `pnpm dev:email` can preview the folder.
+- `lib` holds configured instances of third-party libraries, such as Redis, and
+  nothing else.
 
 The list may grow, but only for a concept that does not already have a word —
 one word per concept. `services/` and `helpers/` are therefore excluded: they
@@ -89,8 +87,7 @@ data access to the browser. _Review._
 **CS-11.** `actions/` writes. Every file in it is a server action, marked
 `"use server"`. An action is a public endpoint: it validates its input with a
 schema from `schemas/`, authenticates and rate-limits the caller, and returns
-only what the UI renders. Authentication and settings changes go through
-`authClient` instead, which better-auth rate-limits. _Review._
+only what the UI renders. _Review._
 
 **CS-12.** An action may call a query. A query may never write. A query runs
 while a page renders, so a render that is repeated, prerendered or later cached
@@ -150,15 +147,10 @@ the exception. _Review._
 `Code` every error code it can return. Callers branch on `error.code`, never on
 `error.message`, which is for people to read. _Review._
 
-**CS-22.** A call that can throw — a database query, a server-side `auth.api`
-call, a browser API such as the clipboard — goes through `tryCatch` from
-`@/shared/utils/try-catch`, and its failure is handled where it happens.
-`authClient` calls resolve with an error instead of throwing: a mutation or query
-function passes them through `unwrapAuthResponse`, so TanStack Query sees the
-failure, and every `authClient` error is dispatched with `handleAuthError`, whose
-handlers are keyed by the codes the auth server can return. A rate-limited
-request (429) is shown once, by `authClient`'s global handler, and nothing else
-handles it; queries don't retry a 4xx response. _Review._
+**CS-22.** A call that can throw — a Redis command, a search query, a browser
+API such as the clipboard — goes through `tryCatch` from
+`@/shared/utils/try-catch`, and its failure is handled where it happens. Queries
+don't retry a 4xx response. _Review._
 
 ## What the tooling actually does
 
@@ -168,7 +160,6 @@ handles it; queries don't retry a 4xx response. _Review._
 | Import order                               | `pre-commit`, on staged files, autofixed |
 | Framework lint rules                       | `pre-commit` and CI                      |
 | Types                                      | CI                                       |
-| Migrations match the schema                | CI                                       |
 | Commit message format                      | `commit-msg`                             |
 | Branch name, and refusing pushes to `main` | `pre-push`                               |
 

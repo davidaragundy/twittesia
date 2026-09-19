@@ -4,15 +4,19 @@ import { issueSignedToken } from "@vercel/blob";
 import { handleUploadPresigned, type HandleUploadPresignedBody } from "@vercel/blob/client";
 import { NextResponse } from "next/server";
 
-import { media } from "@/shared/lib/drizzle/schema";
-import { db } from "@/shared/lib/drizzle/server";
+import { redis } from "@/shared/lib/redis/server";
 import { tryCatch } from "@/shared/utils/try-catch";
 
+import { BLOB_EXPIRY_KEY } from "@/features/media/constants/blob-expiry-key";
+import { CLAIM_UPLOAD_SCRIPT } from "@/features/media/constants/claim-upload-script";
 import { MEDIA_CACHE_MAX_AGE_SECONDS } from "@/features/media/constants/media-cache-max-age-seconds";
 import { MEDIA_PATHNAME_PATTERN } from "@/features/media/constants/media-pathname-pattern";
 import { MEDIA_RULES } from "@/features/media/constants/media-rules";
 import { MEDIA_TOKEN_LIFETIME_MS } from "@/features/media/constants/media-token-lifetime-ms";
+import { PENDING_MEDIA_GRACE_MS } from "@/features/media/constants/pending-media-grace-ms";
 import { mediaKindSchema } from "@/features/media/schemas/media-kind-schema";
+import type { UploadClaim } from "@/features/media/types/upload-claim";
+import { toUploadKey } from "@/features/media/utils/to-upload-key";
 
 interface Props {
   request: Request;
@@ -26,9 +30,9 @@ interface Props {
  *
  * It answers with a presigned URL, signed with a token the store issues over OIDC, so no
  * long-lived read-write token exists anywhere. The URL only allows the kind the browser declared,
- * up to that kind's size, at the path it proposed, once. The path is recorded here, before the
- * file exists, so an upload whose post or comment never arrives is still known to the sweep and
- * deleted.
+ * up to that kind's size, at the path it proposed, once. The path is claimed and scheduled for
+ * deletion here, before the file exists, so an upload whose post or comment never arrives is
+ * still deleted by the sweep once its grace ends.
  */
 export const handleMediaUploadRequest = async ({ request, userId }: Props) => {
   if (!userId) {
@@ -73,11 +77,21 @@ export const handleMediaUploadRequest = async ({ request, userId }: Props) => {
           validUntil,
         });
 
-        // Recorded only once the token exists, and before its URL is handed out. The path is
-        // unique, so a second request for the same path fails here and gets no URL.
-        await db
-          .insert(media)
-          .values({ id: crypto.randomUUID(), userId, pathname, kind: kind.data });
+        // Claimed only once the token exists, and before its URL is handed out. A path can be
+        // claimed once, so a second request for the same path fails here and gets no URL.
+        const claim: UploadClaim = { uploaderId: userId, kind: kind.data };
+        const claimed = await redis.eval<string[], number>(
+          CLAIM_UPLOAD_SCRIPT,
+          [toUploadKey({ pathname }), BLOB_EXPIRY_KEY],
+          [
+            JSON.stringify(claim),
+            String(PENDING_MEDIA_GRACE_MS),
+            pathname,
+            String(Date.now() + PENDING_MEDIA_GRACE_MS),
+          ],
+        );
+
+        if (Number(claimed) !== 1) throw new Error("That file can't be uploaded");
 
         return {
           token,

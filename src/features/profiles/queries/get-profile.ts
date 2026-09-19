@@ -1,23 +1,23 @@
 import "server-only";
 
-import { eq } from "drizzle-orm";
-
-import { user } from "@/shared/lib/drizzle/schema";
-import { db } from "@/shared/lib/drizzle/server";
+import { redis } from "@/shared/lib/redis/server";
 import type { ActionResponse } from "@/shared/types/action-response";
 import { tryCatch } from "@/shared/utils/try-catch";
 
+import { readIdentity } from "@/features/auth/utils/read-identity";
+import { toHandleKey } from "@/features/auth/utils/to-handle-key";
 import type { Profile } from "@/features/profiles/types/profile";
 
 interface Props {
   username: string;
 }
 
+// The identity a handle points at. A handle is stored lower-case, so any case finds it.
 export const getProfile = async ({
   username,
 }: Props): Promise<ActionResponse<Profile, "USER_NOT_FOUND" | "FAILED_TO_GET_PROFILE">> => {
-  const { data, error } = await tryCatch(
-    db.select().from(user).where(eq(user.username, username)).limit(1),
+  const { data: id, error } = await tryCatch(
+    redis.get<string>(toHandleKey({ handle: username.toLowerCase() })),
   );
 
   if (error) {
@@ -27,7 +27,7 @@ export const getProfile = async ({
     };
   }
 
-  const [profile] = data;
+  const profile = id ? await readIdentity({ id }) : null;
 
   if (!profile) {
     return { data: null, error: { code: "USER_NOT_FOUND", message: "User not found" } };

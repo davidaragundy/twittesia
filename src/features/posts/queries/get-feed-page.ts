@@ -1,46 +1,34 @@
 import "server-only";
 
-import { and, eq, gt } from "drizzle-orm";
-
-import { post, user } from "@/shared/lib/drizzle/schema";
 import type { ActionResponse } from "@/shared/types/action-response";
 
 import { DEFAULT_FEED_SORT } from "@/features/posts/constants/default-feed-sort";
 import { FEED_PAGE_SIZE } from "@/features/posts/constants/feed-page-size";
 import type { FeedPage } from "@/features/posts/types/feed-page";
+import type { FeedPost } from "@/features/posts/types/feed-post";
 import type { FeedSort } from "@/features/posts/types/feed-sort";
-import { feedCursorCondition } from "@/features/posts/utils/feed-cursor-condition";
-import { parseFeedCursor } from "@/features/posts/utils/parse-feed-cursor";
-import { readFeedPosts } from "@/features/posts/utils/read-feed-posts";
-import { toFeedCursor } from "@/features/posts/utils/to-feed-cursor";
+import { queryContentPage } from "@/features/posts/utils/query-content-page";
+import { toFeedPost } from "@/features/posts/utils/to-feed-post";
 
 interface Props {
   cursor?: string | null;
   sort?: FeedSort;
-  // A handle, when the page being read is one person's posts rather than everyone's
-  author?: string | null;
+  // An identity, when the page being read is one person's posts rather than everyone's
+  authorId?: string | null;
   viewerId?: string | null;
 }
 
-// Expiry is applied here rather than trusted to the purge, so a post is never read past its
-// lifespan, whenever the expired rows are actually deleted
 export const getFeedPage = async ({
   cursor,
   sort = DEFAULT_FEED_SORT,
-  author,
+  authorId,
   viewerId,
 }: Props): Promise<ActionResponse<FeedPage, "FAILED_TO_LOAD_FEED">> => {
-  const after = parseFeedCursor({ cursor, sort });
-
-  const { data, error } = await readFeedPosts({
-    condition: and(
-      gt(post.expiresAt, new Date()),
-      author ? eq(user.username, author) : undefined,
-      feedCursorCondition({ after, sort }),
-    ),
-    // One more than the page, to tell whether another page follows
-    limit: FEED_PAGE_SIZE + 1,
+  const { data, error } = await queryContentPage({
+    filter: { type: "post", ...(authorId ? { authorId } : {}) },
     sort,
+    cursor,
+    pageSize: FEED_PAGE_SIZE,
     viewerId,
   });
 
@@ -51,13 +39,12 @@ export const getFeedPage = async ({
     };
   }
 
-  const posts = data.slice(0, FEED_PAGE_SIZE);
-  const last = posts.at(-1);
-
   return {
     data: {
-      posts,
-      nextCursor: data.length > FEED_PAGE_SIZE && last ? toFeedCursor({ post: last, sort }) : null,
+      posts: data.reads
+        .map(({ hash, mine }) => toFeedPost({ hash, viewerId, mine }))
+        .filter((post): post is FeedPost => post !== null),
+      nextCursor: data.nextCursor,
     },
     error: null,
   };
