@@ -17,12 +17,10 @@ Requirements:
 - **pnpm** — the version pinned in the `packageManager` field of
   [package.json](./package.json). Enable it with `corepack enable`.
 
-Copy the environment template and fill in each value. The `BLOB_` variables
-and `VERCEL_OIDC_TOKEN`
-come from a public Vercel Blob store connected to the project with the
-Development environment and the webhook public key included, and the
-`UPSTASH_REDIS_` variables from the project's Upstash Redis database;
-`vercel env pull` writes them all:
+Copy the environment template and fill in each value from the
+[Upstash Console](https://console.upstash.com): the `UPSTASH_REDIS_` variables
+from the project's Redis database, and `UPSTASH_BLOB_TOKEN` from its public Blob
+bucket. `CRON_SECRET` is any long random string:
 
 ```bash
 cp .env.example .env.local

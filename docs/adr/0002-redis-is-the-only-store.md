@@ -6,8 +6,8 @@ status: accepted
 
 Everything Twittesia keeps lives for a day at most: identities, sessions, posts,
 comments, reactions, views and the record of attached files. Nobody signs up, and
-nothing is kept for later. **Upstash Redis is the only store**, and Vercel Blob
-holds the files. There is no relational database and no authentication library.
+nothing is kept for later. **Upstash Redis is the only store**, and an Upstash
+Blob bucket holds the files. There is no relational database and no authentication library.
 
 ## Why
 
