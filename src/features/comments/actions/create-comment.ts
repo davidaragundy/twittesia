@@ -3,6 +3,7 @@
 import { redis } from "@/shared/lib/redis/server";
 import type { ActionResponse } from "@/shared/types/action-response";
 import type { BaseActionErrorCode } from "@/shared/types/base-action-error-code";
+import { generateId } from "@/shared/utils/generate-id";
 import { isRateLimited } from "@/shared/utils/is-rate-limited";
 import { tryCatch } from "@/shared/utils/try-catch";
 
@@ -76,7 +77,7 @@ export const createComment = async (
   if (mediaError) return { data: null, error: mediaError };
 
   const pathnames = confirmed.map((item) => item.pathname);
-  const id = crypto.randomUUID();
+  const id = generateId();
   const createdAt = Date.now();
 
   const { data: expiresAt, error } = await tryCatch(

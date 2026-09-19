@@ -1,4 +1,4 @@
-import { nanoid } from "nanoid";
+import { generateId } from "@/shared/utils/generate-id";
 
 import type { Capture } from "@/features/media/types/capture";
 import type { MediaKind } from "@/features/media/types/media-kind";
@@ -13,7 +13,7 @@ interface Props {
 export const toCapture = ({ file, kind, width = null, height = null }: Props): Capture => ({
   file,
   media: {
-    id: nanoid(),
+    id: generateId(),
     kind,
     url: URL.createObjectURL(file),
     contentType: file.type,

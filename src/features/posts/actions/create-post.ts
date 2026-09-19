@@ -3,6 +3,7 @@
 import { redis } from "@/shared/lib/redis/server";
 import type { ActionResponse } from "@/shared/types/action-response";
 import type { BaseActionErrorCode } from "@/shared/types/base-action-error-code";
+import { generateId } from "@/shared/utils/generate-id";
 import { isRateLimited } from "@/shared/utils/is-rate-limited";
 import { tryCatch } from "@/shared/utils/try-catch";
 
@@ -78,7 +79,7 @@ export const createPost = async (
 
   if (mediaError) return { data: null, error: mediaError };
 
-  const id = crypto.randomUUID();
+  const id = generateId();
   const createdAt = Date.now();
   const expiresAt = createdAt + LIFESPAN_HOURS * 60 * 60 * 1_000;
   const expiresAtSeconds = Math.ceil(expiresAt / 1_000);
