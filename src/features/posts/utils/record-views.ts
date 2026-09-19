@@ -5,7 +5,6 @@ import type { ActionResponse } from "@/shared/types/action-response";
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import { RECORD_VIEWS_SCRIPT } from "@/features/posts/constants/record-views-script";
-import { toViewsKey } from "@/features/posts/utils/to-views-key";
 
 interface Props {
   // The post or comment hashes seen
@@ -21,11 +20,7 @@ export const recordViews = async ({
   if (!targetKeys.length) return { data: { recorded: 0 }, error: null };
 
   const { data, error } = await tryCatch(
-    redis.eval<string[], number>(
-      RECORD_VIEWS_SCRIPT,
-      targetKeys.flatMap((targetKey) => [targetKey, toViewsKey({ targetKey })]),
-      [viewerId, String(Date.now())],
-    ),
+    redis.eval<string[], number>(RECORD_VIEWS_SCRIPT, targetKeys, [viewerId, String(Date.now())]),
   );
 
   if (error) {
