@@ -1,3 +1,4 @@
+import { SETTINGS_PATH } from "@/features/settings/constants/settings-path";
 import type { SettingsTab } from "@/features/settings/types/settings-tab";
 
 interface Props {
@@ -6,4 +7,4 @@ interface Props {
 
 // Where a section of the settings lives: a page of its own, or the dialog over the current page
 // when it is opened from inside the app
-export const toSettingsPath = ({ section }: Props) => `/settings/${section}`;
+export const toSettingsPath = ({ section }: Props) => `${SETTINGS_PATH}/${section}`;
