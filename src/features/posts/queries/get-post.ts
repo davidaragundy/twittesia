@@ -1,11 +1,10 @@
 import "server-only";
 
-import { redis } from "@/shared/lib/redis/server";
 import type { ActionResponse } from "@/shared/types/action-response";
-import { toHashRecord } from "@/shared/utils/to-hash-record";
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import type { FeedPost } from "@/features/posts/types/feed-post";
+import { readPostHashes } from "@/features/posts/utils/read-post-hashes";
 import { toFeedPost } from "@/features/posts/utils/to-feed-post";
 import { toPostKey } from "@/features/posts/utils/to-post-key";
 
@@ -19,7 +18,9 @@ export const getPost = async ({
   postId,
   viewerId,
 }: Props): Promise<ActionResponse<FeedPost, "POST_NOT_FOUND" | "FAILED_TO_LOAD_POST">> => {
-  const { data, error } = await tryCatch(redis.hgetall(toPostKey({ id: postId })));
+  const { data, error } = await tryCatch(
+    readPostHashes({ keys: [toPostKey({ id: postId })], viewerId }),
+  );
 
   if (error) {
     return {
@@ -28,8 +29,11 @@ export const getPost = async ({
     };
   }
 
-  const hash = toHashRecord({ reply: data });
-  const post = Number(hash?.expiresAt) > Date.now() ? toFeedPost({ hash, viewerId }) : null;
+  const [read] = data;
+  const post =
+    read && Number(read.hash?.expiresAt) > Date.now()
+      ? toFeedPost({ hash: read.hash, viewerId, mine: read.mine })
+      : null;
 
   if (!post) {
     return { data: null, error: { code: "POST_NOT_FOUND", message: "That post is gone" } };

@@ -64,7 +64,7 @@ export const getFeedPage = async ({
   const last = page.at(-1);
 
   const { data: hashes, error: readError } = await tryCatch(
-    readPostHashes({ keys: page.map((result) => result.key) }),
+    readPostHashes({ keys: page.map((result) => result.key), viewerId }),
   );
 
   if (readError) return failure;
@@ -72,7 +72,7 @@ export const getFeedPage = async ({
   return {
     data: {
       posts: hashes
-        .map((hash) => toFeedPost({ hash, viewerId }))
+        .map(({ hash, mine }) => toFeedPost({ hash, viewerId, mine }))
         .filter((post): post is FeedPost => post !== null),
       nextCursor:
         results.length > FEED_PAGE_SIZE && last

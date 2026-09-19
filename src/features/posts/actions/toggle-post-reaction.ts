@@ -1,16 +1,13 @@
 "use server";
 
-import { and, eq, gt } from "drizzle-orm";
-
-import { post, postReaction } from "@/shared/lib/drizzle/schema";
-import { db } from "@/shared/lib/drizzle/server";
 import type { ActionResponse } from "@/shared/types/action-response";
 import type { BaseActionErrorCode } from "@/shared/types/base-action-error-code";
-import { tryCatch } from "@/shared/utils/try-catch";
 
 import { getSession } from "@/features/auth/queries/get-session";
 import { togglePostReactionSchema } from "@/features/posts/schemas/toggle-post-reaction-schema";
 import type { TogglePostReactionInput } from "@/features/posts/types/toggle-post-reaction-input";
+import { toPostKey } from "@/features/posts/utils/to-post-key";
+import { toggleReaction } from "@/features/posts/utils/toggle-reaction";
 
 // Removes the reaction when the user already added it, and adds it otherwise
 export const togglePostReaction = async (
@@ -31,51 +28,17 @@ export const togglePostReaction = async (
     };
   }
 
-  const { postId, emoji } = input.data;
-  const userId = session.user.id;
+  const { data, error } = await toggleReaction({
+    targetKey: toPostKey({ id: input.data.postId }),
+    identityId: session.user.id,
+    emoji: input.data.emoji,
+  });
 
-  const { data: live, error: liveError } = await tryCatch(
-    db
-      .select({ id: post.id })
-      .from(post)
-      .where(and(eq(post.id, postId), gt(post.expiresAt, new Date())))
-      .limit(1),
-  );
-
-  if (liveError) {
-    return { data: null, error: { code: "UNKNOWN", message: "Couldn't save your reaction" } };
-  }
-
-  if (!live.length) {
+  if (error?.code === "TARGET_NOT_FOUND") {
     return { data: null, error: { code: "POST_NOT_FOUND", message: "That post is already gone" } };
   }
 
-  const { data: removed, error: removeError } = await tryCatch(
-    db
-      .delete(postReaction)
-      .where(
-        and(
-          eq(postReaction.postId, postId),
-          eq(postReaction.userId, userId),
-          eq(postReaction.reaction, emoji),
-        ),
-      )
-      .returning({ postId: postReaction.postId }),
-  );
+  if (error) return { data: null, error: { code: "UNKNOWN", message: error.message } };
 
-  if (removeError) {
-    return { data: null, error: { code: "UNKNOWN", message: "Couldn't save your reaction" } };
-  }
-
-  if (removed.length) return { data: { reacted: false }, error: null };
-
-  const { error: addError } = await tryCatch(
-    db.insert(postReaction).values({ postId, userId, reaction: emoji }).onConflictDoNothing(),
-  );
-
-  if (addError) {
-    return { data: null, error: { code: "UNKNOWN", message: "Couldn't save your reaction" } };
-  }
-
-  return { data: { reacted: true }, error: null };
+  return { data, error: null };
 };

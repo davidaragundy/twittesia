@@ -7,10 +7,12 @@ interface Props {
   hash: Record<string, string> | null | undefined;
   // The reader, so the post knows whether they wrote it
   viewerId?: string | null;
+  // The emoji the reader added to it
+  mine?: string[];
 }
 
 // Everything the feed and a post's page show of a post, or null for anything that isn't one
-export const toFeedPost = ({ hash, viewerId }: Props): FeedPost | null => {
+export const toFeedPost = ({ hash, viewerId, mine = [] }: Props): FeedPost | null => {
   if (!hash || hash.type !== "post" || !hash.id) return null;
 
   return {
@@ -24,7 +26,9 @@ export const toFeedPost = ({ hash, viewerId }: Props): FeedPost | null => {
     },
     isMine: !!viewerId && hash.authorId === viewerId,
     // Written only by the app, as JSON, in the order each emoji was first added
-    reactions: JSON.parse(hash.reactions || "[]") as Reaction[],
+    reactions: (JSON.parse(hash.reactions || "[]") as Omit<Reaction, "isMine">[]).map(
+      (reaction) => ({ ...reaction, isMine: mine.includes(reaction.emoji) }),
+    ),
     media: JSON.parse(hash.media || "[]") as Media[],
     viewCount: Number(hash.viewCount ?? 0),
     commentCount: Number(hash.commentCount ?? 0),
