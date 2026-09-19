@@ -11,7 +11,7 @@ import {
 } from "@/shared/components/ui/dialog";
 import { Spinner } from "@/shared/components/ui/spinner";
 
-import { useLeaveDialog } from "@/features/auth/hooks/use-leave-dialog";
+import { useLeaveDialog } from "@/features/settings/hooks/use-leave-dialog";
 
 // Leaving is the most destructive thing anyone can do here and none of it can be undone: there
 // is no password, no email address and no way back to an identity once it is gone. So it asks.

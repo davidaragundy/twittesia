@@ -5,7 +5,7 @@ import type { ActionResponse } from "@/shared/types/action-response";
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import { REWRITE_IF_EXISTS_SCRIPT } from "@/features/posts/constants/rewrite-if-exists-script";
-import { getContentIndex } from "@/features/posts/utils/get-content-index";
+import { queryContentKeys } from "@/features/posts/utils/query-content-keys";
 
 interface Props {
   authorId: string;
@@ -32,20 +32,12 @@ export const rewriteContentAuthors = async ({
     ...(author.name ? ["authorName", author.name] : []),
   ];
 
-  const { data: results, error } = await tryCatch(
-    getContentIndex().query({ filter: { authorId }, select: {}, limit: 1000 }),
-  );
+  const { data: keys, error } = await queryContentKeys({ filter: { authorId } });
 
   if (error) return failure;
-  if (!results.length || !fields.length) return { data: null, error: null };
+  if (!keys.length || !fields.length) return { data: null, error: null };
 
-  const { error: writeError } = await tryCatch(
-    redis.eval(
-      REWRITE_IF_EXISTS_SCRIPT,
-      results.map((result) => result.key),
-      fields,
-    ),
-  );
+  const { error: writeError } = await tryCatch(redis.eval(REWRITE_IF_EXISTS_SCRIPT, keys, fields));
 
   if (writeError) return failure;
 

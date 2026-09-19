@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-import { leave } from "@/features/auth/actions/leave";
+import { leave } from "@/features/settings/actions/leave";
 
 export const useLeaveMutation = () => {
   const router = useRouter();

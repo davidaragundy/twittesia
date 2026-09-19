@@ -8,13 +8,13 @@ import { NavButton } from "@/shared/components/nav-button";
 import { SiteHeader } from "@/shared/components/site-header";
 import { APP_NAV_LINKS } from "@/shared/constants/app-nav-links";
 
-import { LeaveDialog } from "@/features/auth/components/leave-dialog";
 import { LeaveNavButton } from "@/features/auth/components/leave-nav-button";
 import { NavUser } from "@/features/auth/components/nav-user";
 import { NavUserSkeleton } from "@/features/auth/components/nav-user-skeleton";
 import { SessionGuard } from "@/features/auth/components/session-guard";
 import { SessionProvider } from "@/features/auth/components/session-provider";
 import { ProfileNavLink } from "@/features/profiles/components/profile-nav-link";
+import { LeaveDialog } from "@/features/settings/components/leave-dialog";
 import { SettingsDialog } from "@/features/settings/components/settings-dialog";
 import { SettingsMenuItem } from "@/features/settings/components/settings-menu-item";
 import { SettingsNavButton } from "@/features/settings/components/settings-nav-button";

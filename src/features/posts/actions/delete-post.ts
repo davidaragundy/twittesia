@@ -9,9 +9,8 @@ import type { BaseActionErrorCode } from "@/shared/types/base-action-error-code"
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import { getSession } from "@/features/auth/queries/get-session";
-import { markMediaDue } from "@/features/media/utils/mark-media-due";
 import { sweepDueMedia } from "@/features/media/utils/sweep-due-media";
-import { getContentIndex } from "@/features/posts/utils/get-content-index";
+import { deletePosts } from "@/features/posts/utils/delete-posts";
 import { toPostKey } from "@/features/posts/utils/to-post-key";
 
 // Only the author can delete a post. Someone else's post reads as already gone, so nobody learns
@@ -45,36 +44,12 @@ export const deletePost = async (
     return { data: null, error: { code: "POST_NOT_FOUND", message: "That post is already gone" } };
   }
 
-  // Its comments go with it. What hangs off either — who reacted, who viewed — expires anyway.
-  const { data: comments, error: commentsError } = await tryCatch(
-    getContentIndex().query({
-      filter: { type: "comment", postId: input.data },
-      select: {},
-      limit: 1000,
-    }),
-  );
-
-  if (commentsError) {
-    return { data: null, error: { code: "UNKNOWN", message: "Couldn't delete your post" } };
-  }
-
-  const keys = [key, ...comments.map((comment) => comment.key)];
-
-  // Every file of the post and its comments becomes due now, before the hashes that list them go
-  const pipeline = redis.pipeline();
-
-  for (const target of keys) pipeline.hget(target, "mediaPaths");
-
-  const { data: mediaPaths } = await tryCatch(pipeline.exec<(string | null)[]>());
-
-  await markMediaDue({ mediaPaths: mediaPaths ?? [] });
-
-  const { error } = await tryCatch(redis.del(...keys));
+  const { error } = await deletePosts({ keys: [key] });
 
   if (error)
     return { data: null, error: { code: "UNKNOWN", message: "Couldn't delete your post" } };
 
-  // They leave Blob once the answer has been sent, rather than a day later with the cron
+  // Its files leave Blob once the answer has been sent, rather than a day later with the cron
   after(sweepDueMedia);
 
   return { data: null, error: null };
