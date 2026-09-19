@@ -2,8 +2,10 @@
 
 import type { ActionResponse } from "@/shared/types/action-response";
 import type { BaseActionErrorCode } from "@/shared/types/base-action-error-code";
+import { isRateLimited } from "@/shared/utils/is-rate-limited";
 
 import { getSession } from "@/features/auth/queries/get-session";
+import { reactionRateLimits } from "@/features/posts/lib/reaction-rate-limits";
 import { togglePostReactionSchema } from "@/features/posts/schemas/toggle-post-reaction-schema";
 import type { TogglePostReactionInput } from "@/features/posts/types/toggle-post-reaction-input";
 import { toPostKey } from "@/features/posts/utils/to-post-key";
@@ -25,6 +27,13 @@ export const togglePostReaction = async (
     return {
       data: null,
       error: { code: "UNAUTHORIZED", message: "You need an identity to do that" },
+    };
+  }
+
+  if (await isRateLimited({ limits: reactionRateLimits, identityId: session.user.id })) {
+    return {
+      data: null,
+      error: { code: "RATE_LIMITED", message: "You're reacting too fast. Try again in a minute." },
     };
   }
 

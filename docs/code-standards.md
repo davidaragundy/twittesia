@@ -87,7 +87,9 @@ data access to the browser. _Review._
 **CS-11.** `actions/` writes. Every file in it is a server action, marked
 `"use server"`. An action is a public endpoint: it validates its input with a
 schema from `schemas/`, authenticates and rate-limits the caller, and returns
-only what the UI renders. _Review._
+only what the UI renders. Its limits are `Ratelimit` instances in its feature's
+`lib/`, checked with `isRateLimited`; a route handler that writes is held to the
+same. _Review._
 
 **CS-12.** An action may call a query. A query may never write. A query runs
 while a page renders, so a render that is repeated, prerendered or later cached

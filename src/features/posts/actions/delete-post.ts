@@ -6,10 +6,12 @@ import { z } from "zod";
 import { redis } from "@/shared/lib/redis/server";
 import type { ActionResponse } from "@/shared/types/action-response";
 import type { BaseActionErrorCode } from "@/shared/types/base-action-error-code";
+import { isRateLimited } from "@/shared/utils/is-rate-limited";
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import { getSession } from "@/features/auth/queries/get-session";
 import { sweepDueMedia } from "@/features/media/utils/sweep-due-media";
+import { deleteRateLimits } from "@/features/posts/lib/delete-rate-limits";
 import { deletePosts } from "@/features/posts/utils/delete-posts";
 import { toPostKey } from "@/features/posts/utils/to-post-key";
 
@@ -30,6 +32,13 @@ export const deletePost = async (
     return {
       data: null,
       error: { code: "UNAUTHORIZED", message: "You need an identity to do that" },
+    };
+  }
+
+  if (await isRateLimited({ limits: deleteRateLimits, identityId: session.user.id })) {
+    return {
+      data: null,
+      error: { code: "RATE_LIMITED", message: "You're deleting too fast. Try again in a minute." },
     };
   }
 

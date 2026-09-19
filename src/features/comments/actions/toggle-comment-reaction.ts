@@ -2,11 +2,13 @@
 
 import type { ActionResponse } from "@/shared/types/action-response";
 import type { BaseActionErrorCode } from "@/shared/types/base-action-error-code";
+import { isRateLimited } from "@/shared/utils/is-rate-limited";
 
 import { getSession } from "@/features/auth/queries/get-session";
 import { toggleCommentReactionSchema } from "@/features/comments/schemas/toggle-comment-reaction-schema";
 import type { ToggleCommentReactionInput } from "@/features/comments/types/toggle-comment-reaction-input";
 import { toCommentKey } from "@/features/comments/utils/to-comment-key";
+import { reactionRateLimits } from "@/features/posts/lib/reaction-rate-limits";
 import { toggleReaction } from "@/features/posts/utils/toggle-reaction";
 
 // Removes the reaction when the user already added it, and adds it otherwise
@@ -25,6 +27,13 @@ export const toggleCommentReaction = async (
     return {
       data: null,
       error: { code: "UNAUTHORIZED", message: "You need an identity to do that" },
+    };
+  }
+
+  if (await isRateLimited({ limits: reactionRateLimits, identityId: session.user.id })) {
+    return {
+      data: null,
+      error: { code: "RATE_LIMITED", message: "You're reacting too fast. Try again in a minute." },
     };
   }
 

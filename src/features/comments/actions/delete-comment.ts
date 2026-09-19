@@ -6,6 +6,7 @@ import { z } from "zod";
 import { redis } from "@/shared/lib/redis/server";
 import type { ActionResponse } from "@/shared/types/action-response";
 import type { BaseActionErrorCode } from "@/shared/types/base-action-error-code";
+import { isRateLimited } from "@/shared/utils/is-rate-limited";
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import { getSession } from "@/features/auth/queries/get-session";
@@ -14,6 +15,7 @@ import { toCommentKey } from "@/features/comments/utils/to-comment-key";
 import { BLOB_EXPIRY_KEY } from "@/features/media/constants/blob-expiry-key";
 import { sweepDueMedia } from "@/features/media/utils/sweep-due-media";
 import { RANK_SCORE_WEIGHT } from "@/features/posts/constants/rank-score-weight";
+import { deleteRateLimits } from "@/features/posts/lib/delete-rate-limits";
 import { toPostKey } from "@/features/posts/utils/to-post-key";
 
 // Only the author can delete a comment. Someone else's comment reads as already gone, so nobody
@@ -33,6 +35,13 @@ export const deleteComment = async (
     return {
       data: null,
       error: { code: "UNAUTHORIZED", message: "You need an identity to do that" },
+    };
+  }
+
+  if (await isRateLimited({ limits: deleteRateLimits, identityId: session.user.id })) {
+    return {
+      data: null,
+      error: { code: "RATE_LIMITED", message: "You're deleting too fast. Try again in a minute." },
     };
   }
 

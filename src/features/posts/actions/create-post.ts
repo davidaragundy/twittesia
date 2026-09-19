@@ -3,6 +3,7 @@
 import { redis } from "@/shared/lib/redis/server";
 import type { ActionResponse } from "@/shared/types/action-response";
 import type { BaseActionErrorCode } from "@/shared/types/base-action-error-code";
+import { isRateLimited } from "@/shared/utils/is-rate-limited";
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import { getSession } from "@/features/auth/queries/get-session";
@@ -14,6 +15,7 @@ import { toMedia } from "@/features/media/utils/to-media";
 import { toMediaFields } from "@/features/media/utils/to-media-fields";
 import { toUploadKey } from "@/features/media/utils/to-upload-key";
 import { LIFESPAN_HOURS } from "@/features/posts/constants/lifespan-hours";
+import { createPostRateLimits } from "@/features/posts/lib/create-post-rate-limits";
 import { createPostSchema } from "@/features/posts/schemas/create-post-schema";
 import type { CreatePostInput } from "@/features/posts/types/create-post-input";
 import type { FeedPost } from "@/features/posts/types/feed-post";
@@ -52,6 +54,16 @@ export const createPost = async (
     return {
       data: null,
       error: { code: "UNAUTHORIZED", message: "You need an identity to do that" },
+    };
+  }
+
+  if (await isRateLimited({ limits: createPostRateLimits, identityId: session.user.id })) {
+    return {
+      data: null,
+      error: {
+        code: "RATE_LIMITED",
+        message: "You're posting too fast. Try again in a few minutes.",
+      },
     };
   }
 

@@ -1,5 +1,6 @@
 import { HugeiconsIcon } from "@hugeicons/react";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 import { Badge } from "@/shared/components/ui/badge";
 import {
@@ -12,6 +13,7 @@ import {
 } from "@/shared/components/ui/item";
 
 import { StartButton } from "@/features/auth/components/start-button";
+import { StartErrorToast } from "@/features/auth/components/start-error-toast";
 import { LANDING_DESCRIPTION } from "@/features/landing/constants/landing-description";
 import { LANDING_HIGHLIGHTS } from "@/features/landing/constants/landing-highlights";
 import { LANDING_JSON_LD } from "@/features/landing/constants/landing-json-ld";
@@ -39,6 +41,9 @@ export const metadata: Metadata = {
 export default function LandingPage() {
   return (
     <div className="flex flex-col gap-32 py-20 sm:gap-40 sm:py-32">
+      <Suspense>
+        <StartErrorToast />
+      </Suspense>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
