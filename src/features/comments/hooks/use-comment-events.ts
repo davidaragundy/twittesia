@@ -2,9 +2,9 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { COMMENTS_QUERY_KEY } from "@/features/comments/constants/comments-query-key";
 import { removeCachedComment } from "@/features/comments/utils/remove-cached-comment";
-import { setCachedCommentCount } from "@/features/comments/utils/set-cached-comment-count";
 import { setCachedCommentReactions } from "@/features/comments/utils/set-cached-comment-reactions";
 import { useRealtime } from "@/features/posts/lib/realtime-client";
+import { setCachedPostCommentCount } from "@/features/posts/utils/set-cached-post-comment-count";
 import { setCachedPostReactions } from "@/features/posts/utils/set-cached-post-reactions";
 
 interface Props {
@@ -30,7 +30,7 @@ export const useCommentEvents = ({ postId, viewerId }: Props) => {
       if (event === "content.commented") {
         if (data.postId !== postId) return;
 
-        setCachedCommentCount({ queryClient, postId, commentCount: data.commentCount });
+        setCachedPostCommentCount({ queryClient, postId, commentCount: data.commentCount });
         queryClient.invalidateQueries({ queryKey: [COMMENTS_QUERY_KEY] });
         return;
       }
@@ -41,7 +41,7 @@ export const useCommentEvents = ({ postId, viewerId }: Props) => {
         removeCachedComment({ queryClient, commentId: data.id });
 
         if (data.commentCount !== null) {
-          setCachedCommentCount({ queryClient, postId, commentCount: data.commentCount });
+          setCachedPostCommentCount({ queryClient, postId, commentCount: data.commentCount });
         }
 
         return;

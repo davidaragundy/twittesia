@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { useRealtime } from "@/features/posts/lib/realtime-client";
 import { removeCachedPost } from "@/features/posts/utils/remove-cached-post";
+import { setCachedPostCommentCount } from "@/features/posts/utils/set-cached-post-comment-count";
 import { setCachedPostReactions } from "@/features/posts/utils/set-cached-post-reactions";
 
 interface Props {
@@ -22,7 +23,7 @@ export const useFeedEvents = ({ viewerId }: Props) => {
   const [newPostCount, setNewPostCount] = useState(0);
 
   useRealtime({
-    events: ["content.posted", "content.removed", "content.reacted"],
+    events: ["content.posted", "content.commented", "content.removed", "content.reacted"],
     onData({ event, data }) {
       if (data.authorId === viewerId) return;
 
@@ -31,8 +32,27 @@ export const useFeedEvents = ({ viewerId }: Props) => {
         return;
       }
 
+      if (event === "content.commented") {
+        setCachedPostCommentCount({
+          queryClient,
+          postId: data.postId,
+          commentCount: data.commentCount,
+        });
+        return;
+      }
+
       if (event === "content.removed") {
         if (data.type === "post") removeCachedPost({ queryClient, postId: data.id });
+
+        // A comment leaving changes the count of the post it was on, which the feed shows
+        if (data.type === "comment" && data.postId && data.commentCount !== null) {
+          setCachedPostCommentCount({
+            queryClient,
+            postId: data.postId,
+            commentCount: data.commentCount,
+          });
+        }
+
         return;
       }
 
