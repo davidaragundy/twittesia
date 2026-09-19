@@ -8,6 +8,11 @@ import { tryCatch } from "@/shared/utils/try-catch";
 import { getSession } from "@/features/auth/queries/get-session";
 import { toHandleKey } from "@/features/auth/utils/to-handle-key";
 import { toIdentityKey } from "@/features/auth/utils/to-identity-key";
+import { BLOB_EXPIRY_KEY } from "@/features/media/constants/blob-expiry-key";
+import { confirmMediaUploads } from "@/features/media/utils/confirm-media-uploads";
+import { toMedia } from "@/features/media/utils/to-media";
+import { toMediaFields } from "@/features/media/utils/to-media-fields";
+import { toUploadKey } from "@/features/media/utils/to-upload-key";
 import { LIFESPAN_HOURS } from "@/features/posts/constants/lifespan-hours";
 import { createPostSchema } from "@/features/posts/schemas/create-post-schema";
 import type { CreatePostInput } from "@/features/posts/types/create-post-input";
@@ -26,21 +31,18 @@ import { toRank } from "@/features/posts/utils/to-rank";
  */
 export const createPost = async (
   values: CreatePostInput,
-): Promise<ActionResponse<FeedPost, "INVALID_MEDIA" | BaseActionErrorCode>> => {
+): Promise<
+  ActionResponse<
+    FeedPost,
+    "MEDIA_NOT_FOUND" | "INVALID_MEDIA" | "FAILED_TO_CONFIRM_MEDIA" | BaseActionErrorCode
+  >
+> => {
   const input = createPostSchema.safeParse(values);
 
   if (!input.success) {
     return {
       data: null,
       error: { code: "INVALID_INPUT", message: input.error.issues[0]?.message ?? "Invalid input" },
-    };
-  }
-
-  // Attachments move to Redis in their own step of the migration
-  if (input.data.media.length) {
-    return {
-      data: null,
-      error: { code: "INVALID_MEDIA", message: "Attaching files is coming back shortly" },
     };
   }
 
@@ -54,36 +56,55 @@ export const createPost = async (
   }
 
   const { user } = session;
+
+  // Files never pass through here: the browser has already sent them to Blob, and only their
+  // paths arrive, checked against the store before anything is saved
+  const { data: confirmed, error: mediaError } = await confirmMediaUploads({
+    uploads: input.data.media,
+    userId: user.id,
+  });
+
+  if (mediaError) return { data: null, error: mediaError };
+
   const id = crypto.randomUUID();
   const createdAt = Date.now();
   const expiresAt = createdAt + LIFESPAN_HOURS * 60 * 60 * 1_000;
   const expiresAtSeconds = Math.ceil(expiresAt / 1_000);
   const key = toPostKey({ id });
 
-  const { error } = await tryCatch(
-    redis
-      .multi()
-      .hset(key, {
-        id,
-        type: "post",
-        authorId: user.id,
-        authorHandle: user.username,
-        authorName: user.name,
-        content: input.data.content,
-        media: "[]",
-        reactions: "[]",
-        reactionCount: "0",
-        commentCount: "0",
-        viewCount: "0",
-        createdAt: String(createdAt),
-        expiresAt: String(expiresAt),
-        rank: String(toRank({ score: 0, createdAt })),
-      })
-      .expireat(key, expiresAtSeconds)
-      .expireat(toIdentityKey({ id: user.id }), expiresAtSeconds, "GT")
-      .expireat(toHandleKey({ handle: user.username }), expiresAtSeconds, "GT")
-      .exec(),
-  );
+  const transaction = redis
+    .multi()
+    .hset(key, {
+      id,
+      type: "post",
+      authorId: user.id,
+      authorHandle: user.username,
+      authorName: user.name,
+      content: input.data.content,
+      ...toMediaFields({ confirmed }),
+      reactions: "[]",
+      reactionCount: "0",
+      commentCount: "0",
+      viewCount: "0",
+      createdAt: String(createdAt),
+      expiresAt: String(expiresAt),
+      rank: String(toRank({ score: 0, createdAt })),
+    })
+    .expireat(key, expiresAtSeconds)
+    .expireat(toIdentityKey({ id: user.id }), expiresAtSeconds, "GT")
+    .expireat(toHandleKey({ handle: user.username }), expiresAtSeconds, "GT");
+
+  // In the same transaction, its files become due when the post is, and stop waiting to be
+  // attached, so a file is never both attached and swept
+  const [first, ...rest] = confirmed.map((item) => ({ score: expiresAt, member: item.pathname }));
+
+  if (first) {
+    transaction
+      .zadd(BLOB_EXPIRY_KEY, first, ...rest)
+      .del(...confirmed.map((item) => toUploadKey({ pathname: item.pathname })));
+  }
+
+  const { error } = await tryCatch(transaction.exec());
 
   if (error)
     return { data: null, error: { code: "UNKNOWN", message: "Couldn't publish your post" } };
@@ -100,7 +121,7 @@ export const createPost = async (
       author: { name: user.name, username: user.username, displayUsername: user.username },
       isMine: true,
       reactions: [],
-      media: [],
+      media: confirmed.map((item) => toMedia({ confirmed: item })),
       viewCount: 0,
       commentCount: 0,
     },

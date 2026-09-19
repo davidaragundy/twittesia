@@ -1,5 +1,6 @@
 "use server";
 
+import { after } from "next/server";
 import { z } from "zod";
 
 import { redis } from "@/shared/lib/redis/server";
@@ -10,6 +11,8 @@ import { tryCatch } from "@/shared/utils/try-catch";
 import { getSession } from "@/features/auth/queries/get-session";
 import { DELETE_COMMENT_SCRIPT } from "@/features/comments/constants/delete-comment-script";
 import { toCommentKey } from "@/features/comments/utils/to-comment-key";
+import { BLOB_EXPIRY_KEY } from "@/features/media/constants/blob-expiry-key";
+import { sweepDueMedia } from "@/features/media/utils/sweep-due-media";
 import { RANK_SCORE_WEIGHT } from "@/features/posts/constants/rank-score-weight";
 import { toPostKey } from "@/features/posts/utils/to-post-key";
 
@@ -51,13 +54,16 @@ export const deleteComment = async (
   const { data: deleted, error } = await tryCatch(
     redis.eval<string[], number>(
       DELETE_COMMENT_SCRIPT,
-      [key, toPostKey({ id: postId })],
-      [session.user.id, String(RANK_SCORE_WEIGHT)],
+      [key, toPostKey({ id: postId }), BLOB_EXPIRY_KEY],
+      [session.user.id, String(RANK_SCORE_WEIGHT), String(Date.now())],
     ),
   );
 
   if (error) return failure;
   if (Number(deleted) !== 1) return gone;
+
+  // Its files are due now; they leave Blob once the answer has been sent
+  after(sweepDueMedia);
 
   return { data: null, error: null };
 };
