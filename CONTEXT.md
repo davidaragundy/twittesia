@@ -51,10 +51,10 @@ ones to the same one, and each shows how many users added it.
 _Avoid_: like, emote
 
 **View**:
-One user other than the author having seen a post or a comment: at least half
-of it visible for about a second. Each user counts at most once per post or
-comment.
-_Avoid_: impression, read
+A post or a comment being seen by someone other than its author: at least half
+of it visible for about a second. A reader who comes back counts again; nothing
+is kept about who saw what.
+_Avoid_: read, unique view
 
 **Comment**:
 A response to a post, shown on the post's page. It is deleted with its post, so
