@@ -13,6 +13,7 @@ import { getSession } from "@/features/auth/queries/get-session";
 import { sweepDueMedia } from "@/features/media/utils/sweep-due-media";
 import { deleteRateLimits } from "@/features/posts/lib/delete-rate-limits";
 import { deletePosts } from "@/features/posts/utils/delete-posts";
+import { emitContentRemoved } from "@/features/posts/utils/emit-content-removed";
 import { toPostKey } from "@/features/posts/utils/to-post-key";
 
 // Only the author can delete a post. Someone else's post reads as already gone, so nobody learns
@@ -60,6 +61,7 @@ export const deletePost = async (
 
   // Its files leave Blob once the answer has been sent, rather than a day later with the cron
   after(sweepDueMedia);
+  after(emitContentRemoved({ id: input.data, type: "post", authorId: session.user.id }));
 
   return { data: null, error: null };
 };

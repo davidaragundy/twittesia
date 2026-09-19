@@ -1,7 +1,9 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 
 import { DEFAULT_FEED_SORT } from "@/features/posts/constants/default-feed-sort";
+import { FEED_QUERY_KEY } from "@/features/posts/constants/feed-query-key";
+import { useFeedEvents } from "@/features/posts/hooks/use-feed-events";
 import type { FeedPage } from "@/features/posts/types/feed-page";
 import type { FeedSort } from "@/features/posts/types/feed-sort";
 import { fetchFeedPage } from "@/features/posts/utils/fetch-feed-page";
@@ -14,9 +16,17 @@ interface Props {
   authorId?: string;
   // The order the first page was read in, for a feed that doesn't start with the usual one
   initialSort?: FeedSort;
+  // The reader, so their own posts never arrive as news
+  viewerId?: string | null;
 }
 
-export const useFeed = ({ initialPage, authorId, initialSort = DEFAULT_FEED_SORT }: Props) => {
+export const useFeed = ({
+  initialPage,
+  authorId,
+  initialSort = DEFAULT_FEED_SORT,
+  viewerId,
+}: Props) => {
+  const queryClient = useQueryClient();
   const [sort, setSort] = useState<FeedSort>(initialSort);
 
   const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =
@@ -46,10 +56,20 @@ export const useFeed = ({ initialPage, authorId, initialSort = DEFAULT_FEED_SORT
     return () => observer.disconnect();
   }, [fetchNextPage, hasNextPage]);
 
+  const { newPostCount, forgetNewPosts } = useFeedEvents({ viewerId });
+
+  const showNewPosts = () => {
+    forgetNewPosts();
+    queryClient.invalidateQueries({ queryKey: FEED_QUERY_KEY });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const posts = data?.pages.flatMap((page) => page.posts) ?? [];
 
   return {
     posts,
+    newPostCount,
+    showNewPosts,
     postIds: posts.map((post) => post.id),
     sort,
     setSort,

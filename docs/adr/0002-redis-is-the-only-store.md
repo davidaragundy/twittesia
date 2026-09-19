@@ -22,12 +22,16 @@ each, and realtime and full-text search later without another service.
 
 - **Keys expire with what they belong to.** A post's hash, the reader sets of
   its reactions and the HyperLogLog counting its viewers all expire when the post
-  does; a comment expires with its post.
+  does; a comment expires with its post. Nothing is deleted by a schedule except
+  files in Blob, since an expiring key notifies nobody: every file's deletion time
+  sits in a sorted set, and a sweep deletes what is due.
+- **Open pages hear about changes over the same store.** Every write to a post or
+  a comment emits an event on a Redis stream, which pages read over one long-lived
+  HTTP connection. The events carry ids and counts, never text: a page reads the
+  content itself, so what it shows is always what the store holds.
 - **Each count uses the smallest structure that answers it.** Views only need how
   many, never who, so a HyperLogLog counts them, in at most 12 KB and within about
-  0.81%. Reactions need who, to show a reader their own, so they stay sets. Nothing is deleted by a schedule except files in Blob, since an
-  expiring key notifies nobody: every file's deletion time sits in a sorted set,
-  and a sweep deletes what is due.
+  0.81%. Reactions need who, to show a reader their own, so they stay sets.
 - **Reads are denormalised.** A post carries its author's handle and name, its
   counts, its popularity score, its reactions in the order they were first added,
   and its media, so a page is one search query plus one set per item for the
