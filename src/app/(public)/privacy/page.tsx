@@ -42,8 +42,12 @@ export default function PrivacyPage() {
           <li>
             <strong>Your session.</strong> A random token in a cookie keeps your identity signed in.
             We store only a one-way fingerprint of it, never the token itself, and forget it when
-            your identity ends. We don&apos;t record your IP address or which browser or device you
-            use.
+            your identity ends. We don&apos;t record which browser or device you use.
+          </li>
+          <li>
+            <strong>Your IP address.</strong> Only to count how many requests come from one network
+            in a short while, so that nobody can flood Twittesia. It is kept with that count, never
+            with your identity or your content.
           </li>
           <li>
             <strong>Usage and performance.</strong> Page views and loading performance, measured
@@ -84,6 +88,10 @@ export default function PrivacyPage() {
           </li>
           <li>
             <strong>Sessions.</strong> Until they expire or you leave.
+          </li>
+          <li>
+            <strong>Request counts.</strong> Your IP address and how many requests came from it, for
+            a day at most.
           </li>
         </ul>
       </LegalSection>

@@ -3,12 +3,14 @@
 import { redis } from "@/shared/lib/redis/server";
 import type { ActionResponse } from "@/shared/types/action-response";
 import type { BaseActionErrorCode } from "@/shared/types/base-action-error-code";
+import { isRateLimited } from "@/shared/utils/is-rate-limited";
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import { getSession } from "@/features/auth/queries/get-session";
 import { toHandleKey } from "@/features/auth/utils/to-handle-key";
 import { toIdentityKey } from "@/features/auth/utils/to-identity-key";
 import { CREATE_COMMENT_SCRIPT } from "@/features/comments/constants/create-comment-script";
+import { createCommentRateLimits } from "@/features/comments/lib/create-comment-rate-limits";
 import { createCommentSchema } from "@/features/comments/schemas/create-comment-schema";
 import type { CreateCommentInput } from "@/features/comments/types/create-comment-input";
 import type { PostComment } from "@/features/comments/types/post-comment";
@@ -51,6 +53,16 @@ export const createComment = async (
     return {
       data: null,
       error: { code: "UNAUTHORIZED", message: "You need an identity to do that" },
+    };
+  }
+
+  if (await isRateLimited({ limits: createCommentRateLimits, identityId: session.user.id })) {
+    return {
+      data: null,
+      error: {
+        code: "RATE_LIMITED",
+        message: "You're commenting too fast. Try again in a few minutes.",
+      },
     };
   }
 

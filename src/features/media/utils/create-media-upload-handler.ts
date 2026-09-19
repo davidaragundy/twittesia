@@ -4,6 +4,7 @@ import { BlobError, uploadHandler } from "@upstash/blob";
 
 import { bucket } from "@/shared/lib/blob/server";
 import { redis } from "@/shared/lib/redis/server";
+import { isRateLimited } from "@/shared/utils/is-rate-limited";
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import { BLOB_EXPIRY_KEY } from "@/features/media/constants/blob-expiry-key";
@@ -12,6 +13,7 @@ import { LAND_UPLOAD_SCRIPT } from "@/features/media/constants/land-upload-scrip
 import { MEDIA_CACHE_MAX_AGE_SECONDS } from "@/features/media/constants/media-cache-max-age-seconds";
 import { MEDIA_RULES } from "@/features/media/constants/media-rules";
 import { PENDING_MEDIA_GRACE_MS } from "@/features/media/constants/pending-media-grace-ms";
+import { uploadRateLimits } from "@/features/media/lib/upload-rate-limits";
 import { mediaKindSchema } from "@/features/media/schemas/media-kind-schema";
 import type { UploadClaim } from "@/features/media/types/upload-claim";
 import { toMediaPathname } from "@/features/media/utils/to-media-pathname";
@@ -48,6 +50,14 @@ export const createMediaUploadHandler = ({ getUploaderId }: Props) =>
       return uploaderId;
     },
     onBeforeUpload: async ({ ctx, route, file }) => {
+      // Here rather than in context, which also runs when an upload finishes: only a new upload
+      // counts against the limits
+      if (await isRateLimited({ limits: uploadRateLimits, identityId: ctx })) {
+        throw new BlobError("rate_limited", {
+          message: "Too many uploads for now. Try again later.",
+        });
+      }
+
       const kind = mediaKindSchema.parse(route);
 
       if (!MEDIA_RULES[kind].extensions[file.type]) {

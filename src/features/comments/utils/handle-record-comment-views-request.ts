@@ -2,10 +2,12 @@ import "server-only";
 
 import { NextResponse } from "next/server";
 
+import { isRateLimited } from "@/shared/utils/is-rate-limited";
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import { getSession } from "@/features/auth/queries/get-session";
 import { recordCommentViews } from "@/features/comments/utils/record-comment-views";
+import { viewRateLimits } from "@/features/posts/lib/view-rate-limits";
 import { recordViewsSchema } from "@/features/posts/schemas/record-views-schema";
 
 // A route handler rather than a server action, for the same reasons as post views: actions are
@@ -15,6 +17,10 @@ export const handleRecordCommentViewsRequest = async (request: Request) => {
 
   if (!session) {
     return NextResponse.json({ message: "You need an identity to do that" }, { status: 401 });
+  }
+
+  if (await isRateLimited({ limits: viewRateLimits, identityId: session.user.id })) {
+    return NextResponse.json({ message: "Too many views at once" }, { status: 429 });
   }
 
   const { data: body, error: bodyError } = await tryCatch(request.json());

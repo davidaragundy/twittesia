@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { upload } from "@upstash/blob/browser";
+import { BlobError, upload } from "@upstash/blob/browser";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -30,8 +30,13 @@ export const useUploadMediaMutation = () => {
           return { pathname: blob.path, width: draft.width, height: draft.height };
         }),
       ),
-    onError: () => {
-      toast.error("Couldn't upload your files", { description: "Please try again in a moment." });
+    onError: (error) => {
+      toast.error("Couldn't upload your files", {
+        description:
+          BlobError.is(error) && error.code === "rate_limited"
+            ? error.message
+            : "Please try again in a moment.",
+      });
     },
     onSettled: () => setProgress({}),
   });
