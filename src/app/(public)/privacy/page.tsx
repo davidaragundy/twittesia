@@ -14,7 +14,7 @@ export default function PrivacyPage() {
   return (
     <LegalPage
       title="Privacy Policy"
-      effectiveDate="September 18, 2026"
+      effectiveDate="September 19, 2026"
       intro="Twittesia never asks who you are. There is no sign-up, no email address, no password and no social login. This policy explains the little we do collect, why, who helps us process it and how long we keep it."
     >
       <LegalSection title="1. What we collect">
@@ -98,7 +98,8 @@ export default function PrivacyPage() {
             <strong>Vercel</strong> hosts Twittesia and provides Analytics and Speed Insights.
           </li>
           <li>
-            <strong>Neon</strong> hosts the database.
+            <strong>Upstash</strong> stores your identity, your session, and your posts and
+            comments, each until it expires.
           </li>
           <li>
             <strong>Vercel Blob</strong> stores the files you attach. Your browser sends them to it

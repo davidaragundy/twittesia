@@ -17,9 +17,8 @@ Requirements:
 - **pnpm** — the version pinned in the `packageManager` field of
   [package.json](./package.json). Enable it with `corepack enable`.
 
-Copy the environment template and fill in each value. `DATABASE_URL` is the
-pooled connection the app uses, and `DATABASE_URL_UNPOOLED` the direct
-connection migrations run over. The `BLOB_` variables and `VERCEL_OIDC_TOKEN`
+Copy the environment template and fill in each value. The `BLOB_` variables
+and `VERCEL_OIDC_TOKEN`
 come from a public Vercel Blob store connected to the project with the
 Development environment and the webhook public key included, and the
 `UPSTASH_REDIS_` variables from the project's Upstash Redis database;
@@ -29,11 +28,9 @@ Development environment and the webhook public key included, and the
 cp .env.example .env.local
 ```
 
-Bring your database up to the current schema, and create the Redis search
-index:
+Create the Redis search index:
 
 ```bash
-pnpm exec drizzle-kit migrate
 pnpm redis:indexes
 ```
 
@@ -54,7 +51,6 @@ branch names are checked from your first commit.
 | Command          | What it does                                      |
 | ---------------- | ------------------------------------------------- |
 | `pnpm dev`       | Dev server                                        |
-| `pnpm dev:email` | Preview server for the email templates            |
 | `pnpm build`     | Production build                                  |
 | `pnpm start`     | Serve a production build                          |
 | `pnpm lint`      | oxlint across the repository                      |

@@ -63,13 +63,11 @@ new area of the domain exists. _Review._
 kinds:
 
 `components`, `hooks`, `schemas`, `types`, `constants`, `queries`, `actions`,
-`utils`, `styles`, `context`, `lib`, `emails`
+`utils`, `styles`, `context`, `lib`
 
 - `context` holds React contexts, created with `createContext`.
-- `lib` holds configured instances of third-party libraries — the database,
-  Redis, the email provider — and nothing else.
-- `emails` holds React Email templates, each the default export of its file, so
-  `pnpm dev:email` can preview the folder.
+- `lib` holds configured instances of third-party libraries, such as Redis, and
+  nothing else.
 
 The list may grow, but only for a concept that does not already have a word —
 one word per concept. `services/` and `helpers/` are therefore excluded: they
@@ -149,7 +147,7 @@ the exception. _Review._
 `Code` every error code it can return. Callers branch on `error.code`, never on
 `error.message`, which is for people to read. _Review._
 
-**CS-22.** A call that can throw — a database query, a Redis command, a browser
+**CS-22.** A call that can throw — a Redis command, a search query, a browser
 API such as the clipboard — goes through `tryCatch` from
 `@/shared/utils/try-catch`, and its failure is handled where it happens. Queries
 don't retry a 4xx response. _Review._
@@ -162,7 +160,6 @@ don't retry a 4xx response. _Review._
 | Import order                               | `pre-commit`, on staged files, autofixed |
 | Framework lint rules                       | `pre-commit` and CI                      |
 | Types                                      | CI                                       |
-| Migrations match the schema                | CI                                       |
 | Commit message format                      | `commit-msg`                             |
 | Branch name, and refusing pushes to `main` | `pre-push`                               |
 
