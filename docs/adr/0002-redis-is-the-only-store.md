@@ -28,7 +28,8 @@ each, and realtime and full-text search later without another service.
 - **Reads are denormalised.** A post carries its author's handle and name, its
   counts, its popularity score, its reactions in the order they were first added,
   and its media, so a page is one search query plus one set per item for the
-  reader's own reactions. Renaming rewrites the author's copies.
+  reader's own reactions. An identity keeps the name and handle it was given, so
+  the copies never go stale.
 - **One search index, over posts and comments.** The free plan allows a single
   index, so a `type` field tells the two apart. Indexing lags a write by about
   half a second, so a writer sees their own content through the client's cache,

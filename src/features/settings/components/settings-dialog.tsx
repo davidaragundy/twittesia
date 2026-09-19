@@ -21,8 +21,7 @@ import {
 import { Spinner } from "@/shared/components/ui/spinner";
 import { ToggleGroup, ToggleGroupItem } from "@/shared/components/ui/toggle-group";
 
-import { ChangeNameForm } from "@/features/settings/components/change-name-form";
-import { ChangeUsernameForm } from "@/features/settings/components/change-username-form";
+import { AccountDetails } from "@/features/settings/components/account-details";
 import { SETTINGS_DIALOG_DESCRIPTION } from "@/features/settings/constants/settings-dialog-description";
 import { SETTINGS_DIALOG_TITLE } from "@/features/settings/constants/settings-dialog-title";
 import { SETTINGS_SECTIONS } from "@/features/settings/constants/settings-sections";
@@ -47,13 +46,7 @@ export function SettingsDialog() {
     </nav>
   );
 
-  // Each of these forms is a single field, so its own label and description head it
-  const content = tab === "account" && (
-    <div className="flex flex-col gap-14">
-      <ChangeNameForm />
-      <ChangeUsernameForm />
-    </div>
-  );
+  const content = tab === "account" && <AccountDetails />;
 
   if (isMobile) {
     return (

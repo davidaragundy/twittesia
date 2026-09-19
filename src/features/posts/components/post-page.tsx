@@ -20,7 +20,7 @@ export async function PostPage({ params }: Props) {
   // Any other failure goes to the route's error boundary, which offers a retry
   if (error) throw new Error(error.message);
 
-  // A handle in the URL that isn't the author's, such as after a rename, points to the real one
+  // A handle in the URL that isn't the author's points to the real one
   if (post.author && post.author.username !== username) {
     redirect(getPostPath({ username: post.author.username, postId }));
   }
