@@ -2,6 +2,7 @@ import "server-only";
 
 import { redis } from "@/shared/lib/redis/server";
 import type { ActionResponse } from "@/shared/types/action-response";
+import { generateId } from "@/shared/utils/generate-id";
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import { MEDIA_RULES } from "@/features/media/constants/media-rules";
@@ -77,7 +78,7 @@ export const confirmMediaUploads = async ({
     }
 
     confirmed.push({
-      id: crypto.randomUUID(),
+      id: generateId(),
       kind: claim.kind,
       url: landed.url,
       contentType: landed.contentType,

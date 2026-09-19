@@ -2,12 +2,12 @@ import "server-only";
 
 import { redis } from "@/shared/lib/redis/server";
 import type { ActionResponse } from "@/shared/types/action-response";
+import { generateId } from "@/shared/utils/generate-id";
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import { MAX_HANDLE_ATTEMPTS } from "@/features/auth/constants/max-handle-attempts";
 import type { Identity } from "@/features/auth/types/identity";
 import { generateHandle } from "@/features/auth/utils/generate-handle";
-import { generateRandomString } from "@/features/auth/utils/generate-random-string";
 import { getDisplayName } from "@/features/auth/utils/get-display-name";
 import { getIdentityExpiry } from "@/features/auth/utils/get-identity-expiry";
 import { toHandleKey } from "@/features/auth/utils/to-handle-key";
@@ -23,7 +23,7 @@ export const createIdentity = async (): Promise<
     error: { code: "FAILED_TO_CREATE_IDENTITY" as const, message: "Couldn't start an identity" },
   };
 
-  const id = generateRandomString();
+  const id = generateId();
   const createdAt = Date.now();
   const expiresAt = Math.ceil(getIdentityExpiry({ createdAt }) / 1_000);
 

@@ -1,4 +1,4 @@
-import { nanoid } from "nanoid";
+import { generateId } from "@/shared/utils/generate-id";
 
 import { MEDIA_RULES } from "@/features/media/constants/media-rules";
 import type { MediaKind } from "@/features/media/types/media-kind";
@@ -10,4 +10,4 @@ interface Props {
 
 // A path nobody can guess or collide with, and that says nothing about who uploaded it
 export const toMediaPathname = ({ kind, contentType }: Props) =>
-  `media/${nanoid()}.${MEDIA_RULES[kind].extensions[contentType]}`;
+  `media/${generateId()}.${MEDIA_RULES[kind].extensions[contentType]}`;

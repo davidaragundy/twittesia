@@ -1,4 +1,4 @@
-import { nanoid } from "nanoid";
+import { generateId } from "@/shared/utils/generate-id";
 
 import { BYTES_PER_MEGABYTE } from "@/features/media/constants/bytes-per-megabyte";
 import { MEDIA_RULES } from "@/features/media/constants/media-rules";
@@ -40,5 +40,5 @@ export const createMediaDraft = async ({
   const previewUrl = URL.createObjectURL(file);
   const { width, height } = await readMediaDimensions({ kind, previewUrl });
 
-  return { draft: { id: nanoid(), file, kind, previewUrl, width, height }, error: null };
+  return { draft: { id: generateId(), file, kind, previewUrl, width, height }, error: null };
 };
