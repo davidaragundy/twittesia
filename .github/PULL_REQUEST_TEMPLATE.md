@@ -23,7 +23,7 @@ Include the URL or route to open, what to click, and what should happen.
 
 <!--
 Anything that could break, anything environment-dependent, required env vars,
-migrations, or a note that this is safe and self-contained.
+search index changes, or a note that this is safe and self-contained.
 -->
 
 ## Checklist
@@ -34,5 +34,5 @@ migrations, or a note that this is safe and self-contained.
 - [ ] Everything is in English
 - [ ] `pnpm lint` and `pnpm typecheck` both pass
 - [ ] `pnpm build` succeeds, if the change could affect the build
-- [ ] A schema change ships with its generated migration, and the migration only adds
+- [ ] A change to the search index schema says to run `pnpm redis:indexes --recreate`
 - [ ] Acceptance criteria on the linked issue are met

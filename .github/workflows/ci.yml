@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   verify:
-    name: Lint, typecheck and migrations
+    name: Lint and typecheck
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -43,15 +43,3 @@ jobs:
       - name: Typecheck
         if: ${{ !cancelled() }}
         run: pnpm typecheck
-
-      # Generating needs no database: any new file means schema.ts changed
-      # without a committed migration.
-      - name: Migrations match the schema
-        if: ${{ !cancelled() }}
-        run: |
-          pnpm exec drizzle-kit generate
-          if [ -n "$(git status --porcelain -- src/shared/lib/drizzle/migrations)" ]; then
-            echo "::error::schema.ts has changes without a migration. Run 'pnpm exec drizzle-kit generate' and commit src/shared/lib/drizzle/migrations/."
-            git status --porcelain -- src/shared/lib/drizzle/migrations
-            exit 1
-          fi

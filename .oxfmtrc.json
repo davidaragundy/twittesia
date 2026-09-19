@@ -4,7 +4,6 @@
     ".agents/",
     ".claude/",
     "skills-lock.json",
-    "src/shared/lib/drizzle/migrations/",
     "src/shared/components/ui/",
     "src/shared/hooks/use-mobile.ts"
   ],
