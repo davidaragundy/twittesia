@@ -4,7 +4,7 @@ import type { ActionResponse } from "@/shared/types/action-response";
 import { tryCatch } from "@/shared/utils/try-catch";
 
 import type { FeedPost } from "@/features/posts/types/feed-post";
-import { readPostHashes } from "@/features/posts/utils/read-post-hashes";
+import { readContentHashes } from "@/features/posts/utils/read-content-hashes";
 import { toFeedPost } from "@/features/posts/utils/to-feed-post";
 import { toPostKey } from "@/features/posts/utils/to-post-key";
 
@@ -19,7 +19,7 @@ export const getPost = async ({
   viewerId,
 }: Props): Promise<ActionResponse<FeedPost, "POST_NOT_FOUND" | "FAILED_TO_LOAD_POST">> => {
   const { data, error } = await tryCatch(
-    readPostHashes({ keys: [toPostKey({ id: postId })], viewerId }),
+    readContentHashes({ keys: [toPostKey({ id: postId })], viewerId }),
   );
 
   if (error) {
