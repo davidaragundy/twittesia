@@ -131,10 +131,9 @@ export default function PrivacyPage() {
 
       <LegalSection title="7. Your rights">
         <p>
-          You can change your display name and handle in your settings, and delete any post you
-          wrote. Leaving ends your identity immediately. Everything else deletes itself within a
-          day, and afterwards we hold nothing that would let us find your information again, or
-          connect it to you if you asked us to. Questions go to{" "}
+          You can delete any post or comment you wrote. Leaving ends your identity immediately.
+          Everything else deletes itself within a day, and afterwards we hold nothing that would let
+          us find your information again, or connect it to you if you asked us to. Questions go to{" "}
           <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
         </p>
       </LegalSection>
