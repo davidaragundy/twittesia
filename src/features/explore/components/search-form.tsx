@@ -10,6 +10,7 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from "@/shared/components/ui/input-group";
+import { Spinner } from "@/shared/components/ui/spinner";
 
 import { MAX_SEARCH_QUERY_LENGTH } from "@/features/explore/constants/max-search-query-length";
 import { SEARCH_SCOPES } from "@/features/explore/constants/search-scopes";
@@ -22,14 +23,17 @@ interface Props {
 }
 
 export const SearchForm = ({ query, scope }: Props) => {
-  const { value, setValue, onSubmit, onScopeChange, onClear } = useSearchForm({ query, scope });
+  const { value, setValue, onSubmit, onScopeChange, onClear, isSearching } = useSearchForm({
+    query,
+    scope,
+  });
 
   return (
     <div className="flex flex-col gap-4">
       <form onSubmit={onSubmit} role="search">
         <InputGroup>
           <InputGroupAddon>
-            <HugeiconsIcon icon={Search01Icon} />
+            {isSearching ? <Spinner /> : <HugeiconsIcon icon={Search01Icon} />}
           </InputGroupAddon>
           <InputGroupInput
             name="q"

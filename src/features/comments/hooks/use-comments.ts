@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useScrollToHash } from "@/shared/hooks/use-scroll-to-hash";
 
@@ -36,6 +36,23 @@ export const useComments = ({ postId, initialPage, viewerId }: Props) => {
       sort === DEFAULT_COMMENT_SORT ? { pages: [initialPage], pageParams: [null] } : undefined,
   });
 
+  // Loads the next page once the end of the list comes into view, as the feed does
+  const endRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const end = endRef.current;
+
+    if (!end || !hasNextPage) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) fetchNextPage();
+    });
+
+    observer.observe(end);
+
+    return () => observer.disconnect();
+  }, [fetchNextPage, hasNextPage]);
+
   const comments = data?.pages.flatMap((page) => page.comments) ?? [];
   const { containerRef } = useViewTracking({
     ids: comments.map((comment) => comment.id),
@@ -45,11 +62,11 @@ export const useComments = ({ postId, initialPage, viewerId }: Props) => {
   return {
     comments,
     containerRef,
+    endRef,
     sort,
     setSort,
     isPending,
     hasNextPage,
     isFetchingNextPage,
-    showMore: () => fetchNextPage(),
   };
 };

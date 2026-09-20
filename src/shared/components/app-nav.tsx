@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Suspense } from "react";
 
 import { NavButton } from "@/shared/components/nav-button";
+import { NavPending } from "@/shared/components/nav-pending";
 import type { NavLink } from "@/shared/types/nav-link";
 
 type Props = {
@@ -48,6 +49,7 @@ function NavLinks({
     >
       <HugeiconsIcon icon={link.icon} />
       {link.label}
+      <NavPending />
     </NavButton>
   ));
 }

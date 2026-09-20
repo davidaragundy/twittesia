@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 
 import type { SearchScope } from "@/features/explore/types/search-scope";
 import { toExplorePath } from "@/features/explore/utils/to-explore-path";
@@ -17,19 +17,24 @@ interface Props {
 export const useSearchForm = ({ query, scope }: Props) => {
   const router = useRouter();
   const [value, setValue] = useState(query);
+  // A search is a navigation, and a navigation to a page that has to be read takes a moment;
+  // the box says so rather than looking as though nothing happened
+  const [isSearching, startSearching] = useTransition();
+
+  const search = (next: string) => startSearching(() => router.push(next));
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    router.push(toExplorePath({ query: value.trim(), scope }));
+    search(toExplorePath({ query: value.trim(), scope }));
   };
 
   const onScopeChange = (next: SearchScope) =>
-    router.push(toExplorePath({ query: query.trim(), scope: next }));
+    search(toExplorePath({ query: query.trim(), scope: next }));
 
   const onClear = () => {
     setValue("");
-    router.push(toExplorePath({ query: "", scope }));
+    search(toExplorePath({ query: "", scope }));
   };
 
-  return { value, setValue, onSubmit, onScopeChange, onClear };
+  return { value, setValue, onSubmit, onScopeChange, onClear, isSearching };
 };
