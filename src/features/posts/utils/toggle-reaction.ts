@@ -26,8 +26,8 @@ export const toggleReaction = async ({
   const { data, error } = await tryCatch(
     redis.eval<string[], number>(
       TOGGLE_REACTION_SCRIPT,
-      [targetKey, toReactedKey({ targetKey, identityId })],
-      [emoji, String(Date.now()), String(RANK_SCORE_WEIGHT)],
+      [targetKey, toReactedKey({ targetKey })],
+      [emoji, identityId, String(Date.now()), String(RANK_SCORE_WEIGHT)],
     ),
   );
 

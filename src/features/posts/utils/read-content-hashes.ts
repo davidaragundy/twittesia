@@ -27,7 +27,7 @@ export const readContentHashes = async ({ keys, viewerId }: Props) => {
 
   for (const key of keys) {
     pipeline.hgetall(key);
-    if (viewerId) pipeline.smembers(toReactedKey({ targetKey: key, identityId: viewerId }));
+    if (viewerId) pipeline.hget(toReactedKey({ targetKey: key }), viewerId);
   }
 
   const replies = await pipeline.exec();
@@ -35,6 +35,6 @@ export const readContentHashes = async ({ keys, viewerId }: Props) => {
 
   return keys.map((_, index) => ({
     hash: toHashRecord({ reply: replies[index * stride] }),
-    mine: viewerId ? (replies[index * stride + 1] as string[]) : [],
+    mine: viewerId ? (JSON.parse((replies[index * stride + 1] as string) || "[]") as string[]) : [],
   }));
 };

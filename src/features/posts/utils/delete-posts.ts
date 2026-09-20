@@ -7,14 +7,14 @@ import { tryCatch } from "@/shared/utils/try-catch";
 import { markMediaDue } from "@/features/media/utils/mark-media-due";
 import { POSTS_PER_COMMENT_QUERY } from "@/features/posts/constants/posts-per-comment-query";
 import { queryContentKeys } from "@/features/posts/utils/query-content-keys";
+import { toReactedKey } from "@/features/posts/utils/to-reacted-key";
 
 interface Props {
   keys: string[];
 }
 
 /**
- * Deletes posts with every comment on them, whoever wrote it. What hangs off either, who reacted
- * and who viewed, expires by itself.
+ * Deletes posts with every comment on them, whoever wrote it, and who reacted to each.
  *
  * Their files become due before the hashes that list them go, so a failure halfway leaves files
  * swept early rather than files nobody will ever sweep. The caller runs the sweep.
@@ -71,7 +71,11 @@ export const deletePosts = async ({
     mediaPaths: [...postMediaPaths, ...commentMediaPaths],
   });
 
-  const { error } = await tryCatch(redis.del(...keys, ...commentKeys));
+  const contentKeys = [...keys, ...commentKeys];
+
+  const { error } = await tryCatch(
+    redis.del(...contentKeys, ...contentKeys.map((targetKey) => toReactedKey({ targetKey }))),
+  );
 
   if (error) return failure;
 
