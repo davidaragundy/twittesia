@@ -1,8 +1,9 @@
 "use client";
 
+import { cn } from "cn";
+
 import { CHARACTER_COUNT_RING_GEOMETRY } from "@/shared/constants/character-count-ring-geometry";
 import { useCharacterCountRing } from "@/shared/hooks/use-character-count-ring";
-import { cn } from "@/shared/utils/cn";
 
 type Props = {
   length: number;

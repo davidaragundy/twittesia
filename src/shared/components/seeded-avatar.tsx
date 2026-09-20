@@ -1,3 +1,5 @@
+import { cn } from "cn";
+
 import { SeededAvatarBlush } from "@/shared/components/seeded-avatar-blush";
 import { SeededAvatarBody } from "@/shared/components/seeded-avatar-body";
 import { SeededAvatarExtra } from "@/shared/components/seeded-avatar-extra";
@@ -5,7 +7,6 @@ import { SeededAvatarEyes } from "@/shared/components/seeded-avatar-eyes";
 import { SeededAvatarMouth } from "@/shared/components/seeded-avatar-mouth";
 import { SEEDED_AVATAR_SIZES } from "@/shared/constants/seeded-avatar-sizes";
 import { useSeededAvatar } from "@/shared/hooks/use-seeded-avatar";
-import { cn } from "@/shared/utils/cn";
 
 type Props = {
   seed: string;
