@@ -16,7 +16,7 @@ export const ProfileCommentItem = ({ comment }: Props) => (
         href={getPostPath({ username: comment.postAuthorUsername, postId: comment.postId })}
         className="px-4 pt-4 text-xs text-muted-foreground transition-colors hover:text-foreground sm:px-5"
       >
-        On <span className="[font-feature-settings:'calt'_0]">@{comment.postAuthorUsername}</span>
+        On <span className="handle">@{comment.postAuthorUsername}</span>
         &apos;s post
       </Link>
     )}

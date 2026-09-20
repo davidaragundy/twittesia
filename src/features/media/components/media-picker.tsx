@@ -30,6 +30,7 @@ export const MediaPicker = ({ onPick, multiple, disabled }: Props) => {
         hidden
       />
       <InputGroupButton
+        shape="round"
         type="button"
         variant="ghost"
         size="icon-sm"
@@ -37,7 +38,6 @@ export const MediaPicker = ({ onPick, multiple, disabled }: Props) => {
         disabled={disabled}
         aria-label="Attach images, video or audio"
         title="Attach images, video or audio"
-        className="rounded-full"
       >
         <HugeiconsIcon icon={ImageAdd02Icon} />
       </InputGroupButton>

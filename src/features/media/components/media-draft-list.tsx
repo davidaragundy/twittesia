@@ -31,7 +31,7 @@ export const MediaDraftList = ({ drafts, progress, isUploading, onRemove }: Prop
               aria-valuenow={Math.round(progress[draft.id] ?? 0)}
               aria-valuemin={0}
               aria-valuemax={100}
-              className="absolute inset-0 flex items-center justify-center bg-background/60 text-xs font-medium tabular-nums backdrop-blur-[1px]"
+              className="absolute inset-0 flex items-center justify-center bg-background/60 text-xs font-medium tabular-nums backdrop-blur-2xs"
             >
               {Math.round(progress[draft.id] ?? 0)}%
             </div>

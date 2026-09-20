@@ -61,10 +61,10 @@ export const MicrophoneCapture = ({ onCapture }: Props) => {
         <span
           aria-hidden
           className={cn(
-            "absolute inset-0 rounded-full transition-transform duration-75",
+            "absolute inset-0 scale-(--voice-level) rounded-full transition duration-75",
             isRecording ? "bg-destructive/15" : "bg-primary/10",
           )}
-          style={{ transform: `scale(${0.6 + level * 0.4})` }}
+          style={{ "--voice-level": 0.6 + level * 0.4 } as React.CSSProperties}
         />
         <span className="relative flex size-24 items-center justify-center rounded-full bg-muted text-muted-foreground ring-1 ring-foreground/5">
           {stream ? (

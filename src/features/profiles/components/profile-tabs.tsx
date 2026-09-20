@@ -9,8 +9,8 @@ interface Props {
 }
 
 export const ProfileTabs = ({ posts, comments }: Props) => (
-  <Tabs defaultValue="posts" className="gap-8">
-    <TabsList className="self-center">
+  <Tabs defaultValue="posts">
+    <TabsList className="mb-6 self-center">
       <TabsTrigger value="posts">Posts</TabsTrigger>
       <TabsTrigger value="comments">Comments</TabsTrigger>
     </TabsList>

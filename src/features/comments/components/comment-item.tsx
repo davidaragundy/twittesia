@@ -48,7 +48,7 @@ export const CommentItem = ({ comment }: Props) => {
             >
               {author.name}
             </Link>
-            <span className="min-w-0 truncate [font-feature-settings:'calt'_0] text-sm text-muted-foreground">
+            <span className="min-w-0 truncate handle text-sm text-muted-foreground">
               @{author.displayUsername}
             </span>
             <span aria-hidden className="shrink-0 text-sm text-muted-foreground/60">

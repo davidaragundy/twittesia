@@ -14,7 +14,7 @@ export function AccountDetails() {
   const session = useSession();
 
   return (
-    <FieldGroup className="gap-14">
+    <FieldGroup>
       <Field data-disabled>
         <FieldLabel htmlFor="account-details-name">Name</FieldLabel>
         <InputGroup>

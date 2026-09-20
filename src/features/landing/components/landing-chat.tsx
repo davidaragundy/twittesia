@@ -4,7 +4,6 @@ import {
   Item,
   ItemContent,
   ItemDescription,
-  ItemGroup,
   ItemMedia,
   ItemTitle,
 } from "@/shared/components/ui/item";
@@ -29,7 +28,7 @@ export const LandingChat = () => (
       </p>
     </div>
 
-    <ItemGroup className="grid gap-8 sm:grid-cols-2">
+    <div className="grid gap-8 sm:grid-cols-2">
       {LANDING_CHAT_POINTS.map((point) => (
         <Item key={point.title} variant="outline">
           <ItemMedia variant="icon">
@@ -39,11 +38,10 @@ export const LandingChat = () => (
             <ItemTitle>
               <h3>{point.title}</h3>
             </ItemTitle>
-            {/* These say something worth reading in full, so they are not cut off */}
-            <ItemDescription className="line-clamp-none">{point.description}</ItemDescription>
+            <ItemDescription variant="full">{point.description}</ItemDescription>
           </ItemContent>
         </Item>
       ))}
-    </ItemGroup>
+    </div>
   </section>
 );

@@ -42,7 +42,7 @@ export const JoinInvite = ({ chatId, creatorName, creatorHandle, isFull, hasIden
 
       <div className="flex flex-col gap-2">
         <h1 className="text-2xl font-semibold tracking-tight">{creatorName} invited you</h1>
-        <p className="[font-feature-settings:'calt'_0] text-muted-foreground">@{creatorHandle}</p>
+        <p className="handle text-muted-foreground">@{creatorHandle}</p>
       </div>
 
       <p className="max-w-md text-sm text-muted-foreground">

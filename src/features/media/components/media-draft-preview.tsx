@@ -43,7 +43,7 @@ export const MediaDraftPreview = ({ draft }: Props) => {
   return (
     <div className="flex size-full flex-col items-center justify-center gap-1.5 p-2 text-muted-foreground">
       <HugeiconsIcon icon={MusicNote03Icon} className="size-5" />
-      <span className="w-full truncate text-center text-[0.6875rem]">{draft.file.name}</span>
+      <span className="w-full truncate text-center text-2xs">{draft.file.name}</span>
     </div>
   );
 };

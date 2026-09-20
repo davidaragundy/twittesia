@@ -50,7 +50,23 @@
     "typescript/no-wrapper-object-types": "error",
     "typescript/prefer-as-const": "error",
     "typescript/prefer-namespace-keyword": "error",
-    "typescript/triple-slash-reference": "error"
+    "typescript/triple-slash-reference": "error",
+    "shadcn/no-restyle": [
+      "error",
+      {
+        "allow": ["layout"]
+      }
+    ],
+    "shadcn/no-raw-colors": "error",
+    "shadcn/no-arbitrary-values": [
+      "error",
+      {
+        "allow": ["layout"]
+      }
+    ],
+    "shadcn/no-inline-styles": "error",
+    "shadcn/require-static-classes": "error",
+    "shadcn/no-unknown-classes": "warn"
   },
   "overrides": [
     {
@@ -131,6 +147,14 @@
         "prefer-const": "error",
         "prefer-rest-params": "error",
         "prefer-spread": "error"
+      }
+    },
+    {
+      "files": ["src/shared/components/ui/**"],
+      "rules": {
+        "shadcn/no-restyle": "off",
+        "shadcn/no-arbitrary-values": "off",
+        "shadcn/require-static-classes": "off"
       }
     }
   ]

@@ -30,8 +30,10 @@ export const ChatListItem = ({ chat, viewerId }: Props) => {
       </ItemMedia>
       <ItemContent>
         <ItemTitle>{other ? other.name : "Waiting for someone"}</ItemTitle>
-        <ItemDescription className="[font-feature-settings:'calt'_0]">
-          {other ? `@${other.handle}` : "Nobody has been let in yet"}
+        <ItemDescription>
+          <span className="handle">
+            {other ? `@${other.handle}` : "Nobody has been let in yet"}
+          </span>
         </ItemDescription>
       </ItemContent>
       {/* The clock differs between the server and the browser by a moment */}

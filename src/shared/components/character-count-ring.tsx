@@ -24,7 +24,7 @@ export const CharacterCountRing = ({ length, max }: Props) => {
           aria-live="polite"
           className={cn(
             "text-xs font-medium tabular-nums",
-            tone === "warning" ? "text-amber-600 dark:text-amber-400" : "text-destructive",
+            tone === "warning" ? "text-warning" : "text-destructive",
           )}
         >
           {remaining}
@@ -56,9 +56,9 @@ export const CharacterCountRing = ({ length, max }: Props) => {
           strokeDasharray={circumference}
           strokeDashoffset={dashOffset}
           className={cn(
-            "transition-[stroke-dashoffset,stroke] duration-200",
+            "transition-stroke duration-200",
             tone === "normal" && "stroke-foreground",
-            tone === "warning" && "stroke-amber-500",
+            tone === "warning" && "stroke-warning",
             tone === "over" && "stroke-destructive",
           )}
         />

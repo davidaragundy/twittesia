@@ -83,7 +83,7 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
               </span>
             )}
             {author && (
-              <span className="min-w-0 truncate [font-feature-settings:'calt'_0] text-sm text-muted-foreground">
+              <span className="min-w-0 truncate handle text-sm text-muted-foreground">
                 @{author.displayUsername}
               </span>
             )}

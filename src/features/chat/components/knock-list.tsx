@@ -38,7 +38,7 @@ export const KnockList = ({ chatId, knocks }: Props) => {
   }
 
   return (
-    <ItemGroup className="gap-3">
+    <ItemGroup>
       {knocks.map((knock) => (
         <Item key={knock.identityId} variant="outline">
           <ItemMedia>
@@ -46,8 +46,8 @@ export const KnockList = ({ chatId, knocks }: Props) => {
           </ItemMedia>
           <ItemContent>
             <ItemTitle>{knock.name}</ItemTitle>
-            <ItemDescription className="[font-feature-settings:'calt'_0]">
-              @{knock.handle}
+            <ItemDescription>
+              <span className="handle">@{knock.handle}</span>
             </ItemDescription>
           </ItemContent>
           <ItemActions>

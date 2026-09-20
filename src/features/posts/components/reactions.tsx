@@ -16,12 +16,11 @@ export const Reactions = ({ reactions, onToggle }: Props) => (
     {reactions.map(({ emoji, count, isMine }) => (
       <Toggle
         key={emoji}
-        variant="outline"
+        variant="reaction"
         size="sm"
         pressed={isMine}
         onPressedChange={() => onToggle(emoji)}
         aria-label={`${emoji} ${count}`}
-        className="h-8 gap-1.5 rounded-full border-border/70 px-3 text-sm tabular-nums hover:bg-muted aria-pressed:border-primary/30 aria-pressed:bg-primary/[0.07] dark:aria-pressed:bg-primary/10"
       >
         <span className="text-base leading-none">{emoji}</span>
         {count}

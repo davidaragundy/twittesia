@@ -21,7 +21,7 @@ interface Props {
 export const ChatList = ({ chats, viewerId }: Props) => {
   if (!chats.length) {
     return (
-      <Empty className="py-16">
+      <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
             <HugeiconsIcon icon={BubbleChatIcon} />
@@ -36,7 +36,7 @@ export const ChatList = ({ chats, viewerId }: Props) => {
   }
 
   return (
-    <ItemGroup className="gap-3">
+    <ItemGroup>
       {chats.map((chat) => (
         <ChatListItem key={chat.id} chat={chat} viewerId={viewerId} />
       ))}

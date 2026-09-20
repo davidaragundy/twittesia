@@ -39,12 +39,11 @@ export const ProfileComments = ({ username, displayUsername, initialPage }: Prop
         />
       </div>
 
-      {isPending && <Skeleton className="h-24 w-full rounded-3xl" />}
+      {isPending && <Skeleton shape="card" className="h-24 w-full" />}
 
       {!isPending && !comments.length && (
         <p className="py-10 text-center text-sm text-muted-foreground">
-          <span className="[font-feature-settings:'calt'_0]">@{displayUsername}</span> has no
-          comments left alive.
+          <span className="handle">@{displayUsername}</span> has no comments left alive.
         </p>
       )}
 
@@ -61,7 +60,8 @@ export const ProfileComments = ({ username, displayUsername, initialPage }: Prop
           variant="ghost"
           onClick={showMore}
           disabled={isFetchingNextPage}
-          className="self-center rounded-full"
+          shape="round"
+          className="self-center"
         >
           {isFetchingNextPage && <Spinner data-icon="inline-start" />}
           Show more comments

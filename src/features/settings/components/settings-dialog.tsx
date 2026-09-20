@@ -87,7 +87,7 @@ export function SettingsDialog({ params }: Props) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange} onOpenChangeComplete={onOpenChangeComplete}>
-      <DialogContent className="gap-10 p-10 sm:max-w-4xl">
+      <DialogContent size="xl" className="sm:max-w-4xl">
         <DialogHeader>
           <DialogTitle>{SETTINGS_DIALOG_TITLE}</DialogTitle>
           <DialogDescription>{SETTINGS_DIALOG_DESCRIPTION}</DialogDescription>

@@ -74,7 +74,7 @@ export const Feed = ({ initialPage, authorId, empty, initialSort, viewerId }: Pr
       {!isPending &&
         !posts.length &&
         (empty ?? (
-          <Empty className="py-16">
+          <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
                 <HugeiconsIcon icon={Home01Icon} />

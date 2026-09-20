@@ -11,7 +11,7 @@ import {
 
 // What someone searching far faster than anyone reads gets instead of results
 export const SearchLimited = () => (
-  <Empty className="py-16">
+  <Empty>
     <EmptyHeader>
       <EmptyMedia variant="icon">
         <HugeiconsIcon icon={Clock01Icon} />

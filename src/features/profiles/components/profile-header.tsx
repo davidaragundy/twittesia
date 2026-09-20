@@ -18,7 +18,7 @@ export const ProfileHeader = ({ profile }: Props) => {
 
       <div className="flex flex-col gap-1">
         <h1 className="text-2xl font-semibold tracking-tight">{profile.name}</h1>
-        <p className="[font-feature-settings:'calt'_0] text-muted-foreground">@{profile.handle}</p>
+        <p className="handle text-muted-foreground">@{profile.handle}</p>
       </div>
 
       {/* The clock differs between the server and the browser by a moment */}

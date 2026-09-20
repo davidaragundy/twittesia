@@ -10,7 +10,6 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
@@ -33,7 +32,7 @@ export function NavUser({ menuItems }: Props) {
       <SeededAvatar seed={user.username ?? user.id} size="sm" />
       <div className="grid flex-1 text-left text-sm leading-tight">
         <span className="truncate font-medium">{user.name}</span>
-        <span className="truncate [font-feature-settings:'calt'_0] text-xs text-muted-foreground">
+        <span className="truncate handle text-xs text-muted-foreground">
           @{user.displayUsername}
         </span>
       </div>
@@ -42,15 +41,13 @@ export function NavUser({ menuItems }: Props) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<NavButton className="h-auto py-3" />}>
+      <DropdownMenuTrigger render={<NavButton className="h-auto min-h-12" />}>
         {identity}
         <HugeiconsIcon icon={UnfoldMoreIcon} />
       </DropdownMenuTrigger>
       <DropdownMenuContent side="top" align="start" sideOffset={8} className="min-w-56">
         <DropdownMenuGroup>
-          <DropdownMenuLabel className="p-0 font-normal">
-            <div className="flex items-center gap-2 px-1 py-1.5">{identity}</div>
-          </DropdownMenuLabel>
+          <div className="flex items-center gap-2 px-1 py-1.5">{identity}</div>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>{menuItems}</DropdownMenuGroup>
