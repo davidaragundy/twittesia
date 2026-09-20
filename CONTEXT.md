@@ -85,6 +85,25 @@ _Avoid_: query, lookup
 The page a user searches from, which shows the most popular posts until they do.
 _Avoid_: discover, browse, trending
 
+### Chat
+
+**Chat**:
+A private conversation between exactly two users, opened by one of them and
+lasting a day at most. Nothing said in it is stored: it is carried between the
+two of them and kept nowhere.
+_Avoid_: room, thread, DM, conversation
+
+**Invite**:
+The link that offers a chat to one person. Half of it is a secret the browser
+never sends to Twittesia, which is what the chat is encrypted with. It admits
+one person, and is spent once someone is let in.
+_Avoid_: share link, token
+
+**Knock**:
+Someone with an invite asking to be let into the chat. The person who started it
+sees the handle asking and decides; nobody is let in any other way.
+_Avoid_: request, join request, apply
+
 ### Time
 
 **Lifespan**:
