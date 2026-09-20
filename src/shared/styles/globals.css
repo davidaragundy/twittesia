@@ -15,7 +15,22 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* A generated handle reads as the letters it is made of, so the typeface's contextual
+   alternates are off wherever one is shown */
+@utility handle {
+  font-feature-settings: "calt" 0;
+}
+
+/* The character count ring animates only what it draws with */
+@utility transition-stroke {
+  transition-property: stroke-dashoffset, stroke;
+  transition-timing-function: var(--default-transition-timing-function);
+  transition-duration: var(--default-transition-duration);
+}
+
 @theme inline {
+  --text-2xs: 0.6875rem;
+  --blur-2xs: 1px;
   --font-heading: var(--font-sans);
   --font-sans: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -35,6 +50,8 @@
   --color-input: var(--input);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
+  --color-warning: var(--warning);
+  --color-success: var(--success);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -74,6 +91,8 @@
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
+  --warning: oklch(66.6% 0.179 58.318);
+  --success: oklch(69.6% 0.17 162.48);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
@@ -109,6 +128,8 @@
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
+  --warning: oklch(82.8% 0.189 84.429);
+  --success: oklch(76.5% 0.177 163.223);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);

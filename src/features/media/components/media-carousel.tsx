@@ -33,16 +33,12 @@ export const MediaCarousel = ({ media }: Props) => {
       setApi={setApi}
       opts={MEDIA_CAROUSEL_OPTIONS}
       aria-label="Attached media"
-      className="group/carousel flex flex-col gap-3"
+      className="flex flex-col"
     >
       <div className="relative">
-        <CarouselContent className="-ml-2">
+        <CarouselContent>
           {media.map((item, index) => (
-            <CarouselItem
-              key={item.id}
-              aria-label={`${index + 1} of ${media.length}`}
-              className="pl-2"
-            >
+            <CarouselItem key={item.id} aria-label={`${index + 1} of ${media.length}`}>
               <MediaSlide media={item} aspectRatio={aspectRatio} />
             </CarouselItem>
           ))}
@@ -54,15 +50,17 @@ export const MediaCarousel = ({ media }: Props) => {
 
         <CarouselPrevious
           variant="secondary"
-          className="left-3 bg-background/80 opacity-0 backdrop-blur transition-opacity group-hover/carousel:opacity-100 focus-visible:opacity-100 disabled:opacity-0! pointer-coarse:hidden"
+          appearance="floating"
+          className="left-3 pointer-coarse:hidden"
         />
         <CarouselNext
           variant="secondary"
-          className="right-3 bg-background/80 opacity-0 backdrop-blur transition-opacity group-hover/carousel:opacity-100 focus-visible:opacity-100 disabled:opacity-0! pointer-coarse:hidden"
+          appearance="floating"
+          className="right-3 pointer-coarse:hidden"
         />
       </div>
 
-      <div className="flex justify-center gap-1.5">
+      <div className="mt-3 flex justify-center gap-1.5">
         {media.map((item, index) => (
           <button
             key={item.id}

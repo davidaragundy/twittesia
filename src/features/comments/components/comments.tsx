@@ -40,7 +40,7 @@ export const Comments = ({ postId, initialPage, viewerId }: Props) => {
         />
       </div>
 
-      {isPending && <Skeleton className="h-24 w-full rounded-3xl" />}
+      {isPending && <Skeleton shape="card" className="h-24 w-full" />}
 
       {!isPending && !comments.length && (
         <p className="py-10 text-center text-sm text-muted-foreground">
@@ -61,7 +61,8 @@ export const Comments = ({ postId, initialPage, viewerId }: Props) => {
           variant="ghost"
           onClick={showMore}
           disabled={isFetchingNextPage}
-          className="self-center rounded-full"
+          shape="round"
+          className="self-center"
         >
           {isFetchingNextPage && <Spinner data-icon="inline-start" />}
           Show more comments

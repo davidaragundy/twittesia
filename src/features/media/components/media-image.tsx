@@ -17,13 +17,20 @@ interface Props {
 // image transformations on content that is gone within a day. Opens full size on a tap.
 export const MediaImage = ({ media, className, style }: Props) => (
   <Dialog>
+    {/* The button is ours, so the frame around the image is styled here rather than on the
+        dialog's trigger */}
     <DialogTrigger
-      aria-label="Open image"
-      className={cn(
-        "relative block overflow-hidden bg-muted outline-none focus-visible:ring-3 focus-visible:ring-ring/30",
-        className,
-      )}
-      style={style}
+      render={
+        <button
+          type="button"
+          aria-label="Open image"
+          className={cn(
+            "relative block overflow-hidden bg-muted outline-none focus-visible:ring-3 focus-visible:ring-ring/30",
+            className,
+          )}
+          style={style}
+        />
+      }
     >
       <Image
         src={media.url}
@@ -36,7 +43,11 @@ export const MediaImage = ({ media, className, style }: Props) => (
 
     {/* An explicit width: centred from the middle of the screen, a shrink-to-fit popup could
         never be wider than half of it */}
-    <DialogContent className="w-[min(calc(100vw-2rem),64rem)] max-w-none bg-transparent p-0 shadow-none ring-0 sm:max-w-none">
+    <DialogContent
+      variant="bare"
+      size="none"
+      className="w-[min(calc(100vw-2rem),64rem)] max-w-none sm:max-w-none"
+    >
       <DialogTitle className="sr-only">Attached image</DialogTitle>
       <Image
         src={media.url}

@@ -25,11 +25,10 @@ export const ReactionPickerPanel = ({ mine, onSelect, className }: Props) => (
         <Button
           key={emoji}
           type="button"
-          variant="ghost"
+          variant="emoji"
           size="icon-lg"
           aria-pressed={mine.has(emoji)}
           onClick={() => onSelect(emoji)}
-          className="rounded-2xl text-2xl aria-pressed:bg-muted"
         >
           {emoji}
         </Button>

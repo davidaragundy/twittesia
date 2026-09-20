@@ -4,7 +4,6 @@ import {
   Item,
   ItemContent,
   ItemDescription,
-  ItemGroup,
   ItemMedia,
   ItemTitle,
 } from "@/shared/components/ui/item";
@@ -17,7 +16,7 @@ export const LandingHighlights = () => (
       What you can do
     </h2>
 
-    <ItemGroup className="grid gap-8 sm:grid-cols-2">
+    <div className="grid gap-8 sm:grid-cols-2">
       {LANDING_HIGHLIGHTS.map((highlight) => (
         <Item key={highlight.title}>
           <ItemMedia variant="icon">
@@ -27,10 +26,10 @@ export const LandingHighlights = () => (
             <ItemTitle>
               <h3>{highlight.title}</h3>
             </ItemTitle>
-            <ItemDescription className="line-clamp-none">{highlight.description}</ItemDescription>
+            <ItemDescription variant="full">{highlight.description}</ItemDescription>
           </ItemContent>
         </Item>
       ))}
-    </ItemGroup>
+    </div>
   </section>
 );

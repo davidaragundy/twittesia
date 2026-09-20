@@ -39,7 +39,7 @@ export const MediaCaptureShell = ({
     return (
       <Drawer open={isOpen} onOpenChange={onOpenChange}>
         <DrawerContent>
-          <DrawerHeader className="gap-1 px-6 pt-6">
+          <DrawerHeader size="lg">
             <DrawerTitle>{title}</DrawerTitle>
             <DrawerDescription>{description}</DrawerDescription>
           </DrawerHeader>
@@ -51,8 +51,8 @@ export const MediaCaptureShell = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="gap-6 p-6 sm:max-w-xl">
-        <DialogHeader className="gap-1">
+      <DialogContent className="sm:max-w-xl">
+        <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>

@@ -23,8 +23,8 @@ export const ChatDoor = ({ chatId, creator, handle, isWaiting }: Props) => {
         <Spinner />
         <p className="font-medium">Waiting for {creator.name}</p>
         <p className="max-w-sm text-sm text-muted-foreground">
-          They see <span className="[font-feature-settings:'calt'_0]">@{handle}</span> asking to
-          join. This page opens the moment they let you in.
+          They see <span className="handle">@{handle}</span> asking to join. This page opens the
+          moment they let you in.
         </p>
       </div>
     );

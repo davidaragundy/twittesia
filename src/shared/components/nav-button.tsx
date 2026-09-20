@@ -11,11 +11,8 @@ export function NavButton({ isActive = false, className, ...props }: Props) {
   return (
     <Button
       variant={isActive ? "secondary" : "ghost"}
-      size="lg"
-      className={cn(
-        "h-12 w-full justify-start gap-3 px-4 text-lg [&_svg:not([class*='size-'])]:size-6",
-        className,
-      )}
+      size="nav"
+      className={cn("w-full justify-start", className)}
       aria-current={isActive ? "page" : undefined}
       {...props}
     />

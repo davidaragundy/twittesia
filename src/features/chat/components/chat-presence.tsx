@@ -14,11 +14,7 @@ export const ChatPresence = ({ name, isHere, isConnected }: Props) => (
       aria-hidden
       className={cn(
         "size-2 shrink-0 rounded-full",
-        !isConnected
-          ? "bg-muted-foreground/40"
-          : isHere
-            ? "bg-emerald-500"
-            : "bg-muted-foreground/40",
+        !isConnected ? "bg-muted-foreground/40" : isHere ? "bg-success" : "bg-muted-foreground/40",
       )}
     />
     <span className="truncate">

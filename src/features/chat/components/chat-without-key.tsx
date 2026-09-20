@@ -12,7 +12,7 @@ import {
 // A tab that never had the key half of the invite, or no longer has it. There is nothing to fall
 // back to: the key was never anywhere else, and nothing here will send in the clear.
 export const ChatWithoutKey = () => (
-  <Empty className="py-16">
+  <Empty>
     <EmptyHeader>
       <EmptyMedia variant="icon">
         <HugeiconsIcon icon={KeyframeIcon} />

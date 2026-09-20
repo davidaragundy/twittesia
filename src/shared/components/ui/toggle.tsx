@@ -11,6 +11,9 @@ const toggleVariants = cva(
       variant: {
         default: "bg-transparent",
         outline: "border border-input bg-transparent hover:bg-muted",
+        // An emoji and its count, which reads as one pill and shows whether the reader added it
+        reaction:
+          "gap-1.5 rounded-full border border-border/70 bg-transparent tabular-nums hover:bg-muted aria-pressed:border-primary/30 aria-pressed:bg-primary/[0.07] dark:aria-pressed:bg-primary/10",
       },
       size: {
         default:

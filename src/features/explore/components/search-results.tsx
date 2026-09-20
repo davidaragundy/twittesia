@@ -35,7 +35,7 @@ export const SearchResults = ({ query, scope, initialPage }: Props) => {
 
   if (!results.length) {
     return (
-      <Empty className="py-16">
+      <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
             <HugeiconsIcon icon={Search01Icon} />

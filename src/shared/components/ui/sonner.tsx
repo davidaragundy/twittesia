@@ -11,7 +11,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
       theme={theme as ToasterProps["theme"]}
-      className="toaster group"
+      className="group"
       // Top center keeps toasts clear of the bottom drawers and form buttons on mobile
       position="top-center"
       icons={{

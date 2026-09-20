@@ -17,7 +17,7 @@ import { CHATS_PATH } from "@/features/chat/constants/chats-path";
 // A chat that has ended, either because someone ended it or because it reached its expiry. There
 // is nothing left of it: what was said was never written down, and the chat itself is gone.
 export const ChatEnded = () => (
-  <Empty className="py-16">
+  <Empty>
     <EmptyHeader>
       <EmptyMedia variant="icon">
         <HugeiconsIcon icon={BubbleChatCancelIcon} />

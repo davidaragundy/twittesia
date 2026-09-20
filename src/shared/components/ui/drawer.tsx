@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { Drawer as DrawerPrimitive } from "@base-ui/react/drawer"
+import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "cn"
 
 type DrawerContextProps = {
@@ -163,24 +164,58 @@ function DrawerContent({
   )
 }
 
-function DrawerHeader({ className, ...props }: React.ComponentProps<"div">) {
+const drawerHeaderVariants = cva(
+  "flex shrink-0 flex-col group-data-[swipe-axis=y]/drawer-popup:text-center md:text-left",
+  {
+    variants: {
+      size: {
+        default: "gap-0.5 p-4 pb-0 md:gap-1.5",
+        // A drawer that stands in for a dialog, with the room a dialog has
+        lg: "gap-2 px-6 pt-6",
+      },
+    },
+    defaultVariants: {
+      size: "default",
+    },
+  }
+)
+
+function DrawerHeader({
+  className,
+  size = "default",
+  ...props
+}: React.ComponentProps<"div"> & VariantProps<typeof drawerHeaderVariants>) {
   return (
     <div
       data-slot="drawer-header"
-      className={cn(
-        "flex shrink-0 flex-col gap-0.5 p-4 pb-0 group-data-[swipe-axis=y]/drawer-popup:text-center md:gap-1.5 md:text-left",
-        className
-      )}
+      className={cn(drawerHeaderVariants({ size, className }))}
       {...props}
     />
   )
 }
 
-function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
+const drawerFooterVariants = cva("mt-auto flex shrink-0 flex-col", {
+  variants: {
+    size: {
+      default: "gap-2 p-4 pt-0",
+      // Room for the actions, and for a thumb below them
+      lg: "gap-2 px-6 pt-6 pb-8",
+    },
+  },
+  defaultVariants: {
+    size: "default",
+  },
+})
+
+function DrawerFooter({
+  className,
+  size = "default",
+  ...props
+}: React.ComponentProps<"div"> & VariantProps<typeof drawerFooterVariants>) {
   return (
     <div
       data-slot="drawer-footer"
-      className={cn("mt-auto flex shrink-0 flex-col gap-2 p-4 pt-0", className)}
+      className={cn(drawerFooterVariants({ size, className }))}
       {...props}
     />
   )

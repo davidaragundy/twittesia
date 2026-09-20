@@ -37,7 +37,7 @@ export const ChatComposer = ({ chatId, isConnected, chatKey }: Props) => {
         control={form.control}
         disabled={isPending}
         render={({ field }) => (
-          <InputGroup className="has-data-[align=block-end]:rounded-3xl has-[textarea]:rounded-3xl">
+          <InputGroup size="lg">
             <label htmlFor="chat-composer-body" className="sr-only">
               Say something
             </label>
@@ -52,19 +52,20 @@ export const ChatComposer = ({ chatId, isConnected, chatKey }: Props) => {
                 onType();
               }}
               onKeyDown={onKeyDown}
-              className="max-h-40 min-h-12 px-4 pt-3.5 text-base md:text-base"
+              size="lg"
+              className="max-h-40 min-h-12"
             />
-            <InputGroupAddon align="block-end" className="gap-3 px-3 pb-2.5">
+            <InputGroupAddon align="block-end" size="lg">
               <div className="ml-auto flex items-center gap-3">
                 <CharacterCountRing length={length} max={MAX_MESSAGE_LENGTH} />
                 <InputGroupButton
                   type="submit"
                   variant="default"
                   size="icon-sm"
+                  shape="round"
                   disabled={!canSubmit}
                   aria-label="Send"
                   title="Send"
-                  className="rounded-full"
                 >
                   {isPending ? <Spinner /> : <HugeiconsIcon icon={ArrowUp02Icon} />}
                 </InputGroupButton>

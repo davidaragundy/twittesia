@@ -1,3 +1,6 @@
+/* eslint-disable shadcn/no-inline-styles -- Satori renders this image, not a browser:
+   it has no stylesheet and no classes, so inline styles are the only way to style it.
+   See https://nextjs.org/docs/app/api-reference/functions/image-response */
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 

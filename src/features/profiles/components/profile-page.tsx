@@ -58,7 +58,7 @@ export const ProfilePage = async ({ username }: Props) => {
               initialPage={posts.data}
               authorId={profile.id}
               empty={
-                <Empty className="py-16">
+                <Empty>
                   <EmptyHeader>
                     <EmptyMedia variant="icon">
                       <HugeiconsIcon icon={NoteIcon} />

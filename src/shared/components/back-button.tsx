@@ -15,7 +15,7 @@ export function BackButton({ fallbackHref, label }: Props) {
   const { goBack } = useBackButton({ fallbackHref });
 
   return (
-    <Button variant="ghost" onClick={goBack} className="-ml-3 self-start rounded-full">
+    <Button variant="ghost" shape="round" onClick={goBack} className="-ml-3 self-start">
       <HugeiconsIcon icon={ArrowLeft01Icon} data-icon="inline-start" />
       {label}
     </Button>

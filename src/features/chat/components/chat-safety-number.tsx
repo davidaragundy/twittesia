@@ -23,23 +23,23 @@ export const ChatSafetyNumber = ({ safetyNumber, otherName }: Props) => {
 
   return (
     <Popover>
-      <PopoverTrigger
-        render={<Button variant="ghost" size="sm" className="text-muted-foreground" />}
-      >
+      <PopoverTrigger render={<Button variant="muted" size="sm" />}>
         <HugeiconsIcon icon={ShieldKeyIcon} />
         Encrypted
       </PopoverTrigger>
-      <PopoverContent align="end" className="flex w-80 flex-col gap-3">
-        <div className="flex flex-col gap-1">
-          <p className="text-sm font-medium">Safety number</p>
-          <p className="text-sm text-muted-foreground">
-            Read this out to {otherName}. If their number is the same, nobody is between you — not
-            even Twittesia, which never sees the key half of the invite.
+      <PopoverContent align="end" className="w-80">
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-1">
+            <p className="text-sm font-medium">Safety number</p>
+            <p className="text-sm text-muted-foreground">
+              Read this out to {otherName}. If their number is the same, nobody is between you — not
+              even Twittesia, which never sees the key half of the invite.
+            </p>
+          </div>
+          <p className="rounded-lg bg-muted px-3 py-2 text-center font-mono text-sm tracking-wider">
+            {safetyNumber}
           </p>
         </div>
-        <p className="rounded-lg bg-muted px-3 py-2 text-center font-mono text-sm tracking-wider">
-          {safetyNumber}
-        </p>
       </PopoverContent>
     </Popover>
   );

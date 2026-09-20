@@ -24,6 +24,7 @@ export const MediaCaptureButtons = ({ onCapture, disabled }: Props) => {
   return (
     <>
       <InputGroupButton
+        shape="round"
         type="button"
         variant="ghost"
         size="icon-sm"
@@ -31,11 +32,11 @@ export const MediaCaptureButtons = ({ onCapture, disabled }: Props) => {
         disabled={disabled}
         aria-label="Take a photo or video"
         title="Take a photo or video"
-        className="rounded-full"
       >
         <HugeiconsIcon icon={Camera01Icon} />
       </InputGroupButton>
       <InputGroupButton
+        shape="round"
         type="button"
         variant="ghost"
         size="icon-sm"
@@ -43,7 +44,6 @@ export const MediaCaptureButtons = ({ onCapture, disabled }: Props) => {
         disabled={disabled}
         aria-label="Record audio"
         title="Record audio"
-        className="rounded-full"
       >
         <HugeiconsIcon icon={Mic01Icon} />
       </InputGroupButton>

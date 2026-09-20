@@ -25,11 +25,11 @@ export const ReactionPicker = ({ reactions, onToggle }: Props) => {
   const trigger = (
     <Button
       type="button"
-      variant="ghost"
+      variant="muted"
       size="icon-sm"
       aria-label="Add reaction"
       title="Add reaction"
-      className="rounded-full text-muted-foreground"
+      shape="round"
     />
   );
 
@@ -52,7 +52,7 @@ export const ReactionPicker = ({ reactions, onToggle }: Props) => {
       <PopoverTrigger render={trigger}>
         <HugeiconsIcon icon={SmileIcon} />
       </PopoverTrigger>
-      <PopoverContent align="start" className="w-auto gap-0 overflow-hidden p-0">
+      <PopoverContent align="start" size="none" className="w-auto overflow-hidden">
         <ReactionPickerPanel mine={mine} onSelect={select} />
       </PopoverContent>
     </Popover>
