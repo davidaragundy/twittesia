@@ -4,10 +4,17 @@ import { PUBLIC_ROUTE_PATHS } from "@/features/auth/constants/public-route-paths
 interface Props {
   pathname: string;
   hasSession: boolean;
+  // Paths under which everything is open to everyone, for pages whose own address is the only
+  // thing identifying them. The caller names them: auth does not know what they are for.
+  publicPrefixes?: string[];
 }
 
-export const resolveAuthRouteAccess = ({ pathname, hasSession }: Props) => {
-  if (PUBLIC_ROUTE_PATHS.has(pathname)) {
+export const resolveAuthRouteAccess = ({ pathname, hasSession, publicPrefixes = [] }: Props) => {
+  const isPublic =
+    PUBLIC_ROUTE_PATHS.has(pathname) ||
+    publicPrefixes.some((prefix) => pathname.startsWith(`${prefix}/`));
+
+  if (isPublic) {
     return { action: "allow" as const };
   }
 

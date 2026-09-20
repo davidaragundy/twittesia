@@ -47,7 +47,7 @@ who depends on it. _Review._
 a folder is created when its first file is, never upfront.
 
 `auth`, `settings`, `profiles`, `posts`, `comments`, `media`, `landing`,
-`explore`
+`explore`, `chat`
 
 `landing` owns how Twittesia presents itself to people who have not started yet:
 the landing page's copy, highlights and structured data.
@@ -55,6 +55,10 @@ the landing page's copy, highlights and structured data.
 `explore` owns finding content: the search box, what a search means, and the
 results, which mix posts and comments. It imports `posts` and `comments` for
 their cards; neither imports it.
+
+`chat` owns talking to one person privately: starting a chat, the invite that
+offers it, knocking and being let in, and the conversation itself. It imports
+`auth` for who is asking; nothing imports it.
 
 `media` owns the files attached to posts and comments: authorising their
 uploads, confirming they arrived, showing them, and deleting them

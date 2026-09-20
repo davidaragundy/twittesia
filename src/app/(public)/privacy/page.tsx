@@ -30,6 +30,14 @@ export default function PrivacyPage() {
             not you are still here.
           </li>
           <li>
+            <strong>Your chats, but not what you say in them.</strong> When you start a chat we keep
+            which two identities are in it, when it began and when it ends, and the handles of
+            anyone waiting to be let in. Nothing said in a chat is stored, by us or by anyone we
+            use: messages pass between the two browsers and are kept nowhere. The key they are
+            encrypted with lives in the part of the invite link after <code>#</code>, which your
+            browser never sends us.
+          </li>
+          <li>
             <strong>Your camera and microphone.</strong> Only while the camera or recorder window is
             open, and only once your browser has asked you. What they capture stays on your device
             until you attach it and send it; closing the window turns them off.
