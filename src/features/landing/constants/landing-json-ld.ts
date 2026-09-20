@@ -12,5 +12,15 @@ export const LANDING_JSON_LD = {
   applicationCategory: "SocialNetworkingApplication",
   operatingSystem: "Any",
   isAccessibleForFree: true,
+  // What a search result can say Twittesia does, in the same words the page uses
+  featureList: [
+    "Posts that are deleted after 24 hours",
+    "Comments and emoji reactions",
+    "Images, video and audio",
+    "Full-text search on Explore",
+    "Pages that update live",
+    "Private chats, encrypted in the browser and stored nowhere",
+    "No account, no email address and no password",
+  ],
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
 };
