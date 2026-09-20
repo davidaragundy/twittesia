@@ -18,6 +18,7 @@ import { RANK_SCORE_WEIGHT } from "@/features/posts/constants/rank-score-weight"
 import { deleteRateLimits } from "@/features/posts/lib/delete-rate-limits";
 import { emitContentRemoved } from "@/features/posts/utils/emit-content-removed";
 import { toPostKey } from "@/features/posts/utils/to-post-key";
+import { toReactedKey } from "@/features/posts/utils/to-reacted-key";
 
 // Only the author can delete a comment. Someone else's comment reads as already gone, so nobody
 // learns anything by trying.
@@ -64,7 +65,7 @@ export const deleteComment = async (
   const { data: deleted, error } = await tryCatch(
     redis.eval<string[], number>(
       DELETE_COMMENT_SCRIPT,
-      [key, toPostKey({ id: postId }), BLOB_EXPIRY_KEY],
+      [key, toPostKey({ id: postId }), BLOB_EXPIRY_KEY, toReactedKey({ targetKey: key })],
       [session.user.id, String(RANK_SCORE_WEIGHT), String(Date.now())],
     ),
   );

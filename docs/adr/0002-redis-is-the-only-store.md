@@ -31,14 +31,15 @@ each, and realtime and full-text search later without another service.
   content itself, so what it shows is always what the store holds.
 - **Each count uses the smallest structure that answers it.** Views only need how
   many, so they are a counter on the hash and nothing else. Reactions need who, to
-  show a reader their own, so they are kept.
+  show a reader their own, so who reacted is kept as one hash per post or comment,
+  a field per reader: deleting one deletes the other, and neither has to be found.
 - **Leaving ends an identity, not what it wrote.** A post carries the name and
   handle that wrote it, so it reads the same afterwards; it goes at its own
   expiry, within a day. The handle is left reserved until then, so nobody new can
   be given a name that older posts still show as someone else's.
 - **Reads are denormalised.** A post carries its author's handle and name, its
   counts, its popularity score, its reactions in the order they were first added,
-  and its media, so a page is one search query plus one set per item for the
+  and its media, so a page is one search query plus one field per item for the
   reader's own reactions. An identity keeps the name and handle it was given, so
   the copies never go stale.
 - **One search index, over posts and comments.** The free plan allows a single

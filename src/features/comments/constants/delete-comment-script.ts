@@ -2,11 +2,14 @@
 // and brings its files forward to be deleted now. Anyone else's comment, or one already gone, is
 // left alone.
 //
-// KEYS[1] the comment, KEYS[2] its post, KEYS[3] the files due for deletion
+// Who reacted to it goes with it, in the same step.
+//
+// KEYS[1] the comment, KEYS[2] its post, KEYS[3] the files due for deletion,
+// KEYS[4] who reacted to the comment
 // ARGV[1] the reader, ARGV[2] the rank's score weight, ARGV[3] now in milliseconds
 // Returns 1 when deleted, 0 otherwise
 export const DELETE_COMMENT_SCRIPT = `
-local comment, post = KEYS[1], KEYS[2]
+local comment, post, reacted = KEYS[1], KEYS[2], KEYS[4]
 local reader, weight = ARGV[1], tonumber(ARGV[2])
 
 local owned = redis.call("HMGET", comment, "authorId", "mediaPaths")
@@ -16,7 +19,7 @@ for _, path in ipairs(cjson.decode(owned[2] or "[]")) do
   redis.call("ZADD", KEYS[3], "XX", ARGV[3], path)
 end
 
-redis.call("DEL", comment)
+redis.call("DEL", comment, reacted)
 
 local fields = redis.call("HMGET", post, "createdAt", "reactionCount")
 if fields[1] then
