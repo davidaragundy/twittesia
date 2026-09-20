@@ -1,6 +1,7 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["nextjs", "typescript"],
+  "jsPlugins": ["@shadcn/lint"],
   "categories": {
     "correctness": "off"
   },
