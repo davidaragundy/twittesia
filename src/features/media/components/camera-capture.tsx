@@ -131,7 +131,6 @@ export const CameraCapture = ({ onCapture }: Props) => {
               size="icon-lg"
               onClick={flip}
               aria-label="Switch camera"
-              shape="round"
               className="justify-self-end"
             >
               <HugeiconsIcon icon={CameraRotated01Icon} className="size-5" />

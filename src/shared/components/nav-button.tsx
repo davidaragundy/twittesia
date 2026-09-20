@@ -11,7 +11,6 @@ export function NavButton({ isActive = false, className, ...props }: Props) {
   return (
     <Button
       variant={isActive ? "secondary" : "ghost"}
-      size="nav"
       className={cn("w-full justify-start", className)}
       aria-current={isActive ? "page" : undefined}
       {...props}

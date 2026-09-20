@@ -10,6 +10,8 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { cn } from "cn";
 
+import { Button } from "@/shared/components/ui/button";
+
 import { MediaSeekBar } from "@/features/media/components/media-seek-bar";
 import { useMediaVideo } from "@/features/media/hooks/use-media-video";
 import type { Media } from "@/features/media/types/media";
@@ -58,48 +60,55 @@ export const MediaVideo = ({ media, aspectRatio, className }: Props) => {
       />
 
       {!isPlaying && (
-        <button
+        <Button
           type="button"
+          size="icon-lg"
           onClick={togglePlay}
           aria-label="Play"
-          className="absolute inset-0 m-auto flex size-14 items-center justify-center rounded-full bg-background/85 text-foreground shadow-lg backdrop-blur transition-transform hover:scale-105 focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none"
+          className="absolute inset-0 m-auto"
         >
-          <HugeiconsIcon icon={PlayIcon} className="size-6 translate-x-0.5" />
-        </button>
+          <HugeiconsIcon icon={PlayIcon} />
+        </Button>
       )}
 
       <div
         className={cn(
-          "absolute inset-x-0 bottom-0 flex items-center gap-2 bg-linear-to-t from-black/75 to-transparent px-3 pt-10 pb-3 text-white transition-opacity",
+          "dark absolute inset-x-0 bottom-0 flex items-center gap-2 bg-linear-to-t from-black/75 to-transparent px-3 pt-10 pb-3 text-foreground transition-opacity",
           isPlaying &&
             "opacity-0 group-focus-within/video:opacity-100 group-hover/video:opacity-100",
         )}
       >
-        <button
+        <Button
           type="button"
+          variant="ghost"
+          size="icon-sm"
           onClick={togglePlay}
           aria-label={isPlaying ? "Pause" : "Play"}
-          className="flex size-8 shrink-0 items-center justify-center rounded-full transition-colors hover:bg-white/15"
+          className="shrink-0"
         >
-          <HugeiconsIcon icon={isPlaying ? PauseIcon : PlayIcon} className="size-4" />
-        </button>
+          <HugeiconsIcon icon={isPlaying ? PauseIcon : PlayIcon} />
+        </Button>
         <MediaSeekBar currentTime={currentTime} duration={duration} onSeek={seek} />
-        <button
+        <Button
           type="button"
+          variant="ghost"
+          size="icon-sm"
           onClick={toggleMute}
           aria-label={isMuted ? "Unmute" : "Mute"}
-          className="flex size-8 shrink-0 items-center justify-center rounded-full transition-colors hover:bg-white/15"
+          className="shrink-0"
         >
-          <HugeiconsIcon icon={isMuted ? VolumeMute02Icon : VolumeHighIcon} className="size-4" />
-        </button>
-        <button
+          <HugeiconsIcon icon={isMuted ? VolumeMute02Icon : VolumeHighIcon} />
+        </Button>
+        <Button
           type="button"
+          variant="ghost"
+          size="icon-sm"
           onClick={enterFullscreen}
           aria-label="Full screen"
-          className="flex size-8 shrink-0 items-center justify-center rounded-full transition-colors hover:bg-white/15"
+          className="shrink-0"
         >
-          <HugeiconsIcon icon={FullScreenIcon} className="size-4" />
-        </button>
+          <HugeiconsIcon icon={FullScreenIcon} />
+        </Button>
       </div>
     </div>
   );

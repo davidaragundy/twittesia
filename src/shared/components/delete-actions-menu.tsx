@@ -23,10 +23,9 @@ export const DeleteActionsMenu = ({ subject, onDelete }: Props) => (
       render={
         <Button
           type="button"
-          variant="muted"
+          variant="ghost"
           size="icon-sm"
           aria-label={`${subject} actions`}
-          shape="round"
           className="-mt-1 -mr-1"
         />
       }

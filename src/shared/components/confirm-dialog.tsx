@@ -58,13 +58,11 @@ export const ConfirmDialog = ({
     return (
       <Drawer open={isOpen} onOpenChange={onOpenChange}>
         <DrawerContent>
-          <DrawerHeader size="lg">
+          <DrawerHeader>
             <DrawerTitle>{title}</DrawerTitle>
             <DrawerDescription>{description}</DrawerDescription>
           </DrawerHeader>
-          <DrawerFooter size="lg" className="flex-col-reverse">
-            {actions}
-          </DrawerFooter>
+          <DrawerFooter className="flex-col-reverse">{actions}</DrawerFooter>
         </DrawerContent>
       </Drawer>
     );
@@ -72,7 +70,7 @@ export const ConfirmDialog = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent size="lg" className="sm:max-w-md" showCloseButton={false}>
+      <DialogContent className="sm:max-w-md" showCloseButton={false}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

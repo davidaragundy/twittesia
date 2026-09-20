@@ -43,11 +43,7 @@ export const MediaImage = ({ media, className, style }: Props) => (
 
     {/* An explicit width: centred from the middle of the screen, a shrink-to-fit popup could
         never be wider than half of it */}
-    <DialogContent
-      variant="bare"
-      size="none"
-      className="w-[min(calc(100vw-2rem),64rem)] max-w-none sm:max-w-none"
-    >
+    <DialogContent className="w-[min(calc(100vw-2rem),64rem)] max-w-none sm:max-w-none">
       <DialogTitle className="sr-only">Attached image</DialogTitle>
       <Image
         src={media.url}

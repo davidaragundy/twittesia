@@ -1,6 +1,8 @@
 "use client";
 
 import { SeededAvatar } from "@/shared/components/seeded-avatar";
+import { Badge } from "@/shared/components/ui/badge";
+import { Separator } from "@/shared/components/ui/separator";
 
 import { ChatComposer } from "@/features/chat/components/chat-composer";
 import { ChatEnded } from "@/features/chat/components/chat-ended";
@@ -39,7 +41,7 @@ export const ChatRoom = ({ chatId, viewerId, other, expiresAt }: Props) => {
 
   return (
     <div className="flex min-h-[70svh] flex-col gap-4">
-      <div className="flex items-center gap-3 border-b pb-4">
+      <div className="flex items-center gap-3">
         <SeededAvatar seed={other.handle} className="size-10 shrink-0" />
         <div className="flex min-w-0 flex-col gap-0.5">
           <p className="truncate leading-none font-medium">{other.name}</p>
@@ -49,12 +51,9 @@ export const ChatRoom = ({ chatId, viewerId, other, expiresAt }: Props) => {
         <div className="ml-auto flex shrink-0 items-center gap-1">
           {/* The clock runs in the browser, so the first paint has nothing to disagree with */}
           {timeLeft && (
-            <span
-              className="hidden text-xs whitespace-nowrap text-muted-foreground sm:inline"
-              suppressHydrationWarning
-            >
+            <Badge variant="outline" className="hidden sm:inline-flex" suppressHydrationWarning>
               Ends in {timeLeft}
-            </span>
+            </Badge>
           )}
 
           <ChatSafetyNumber safetyNumber={safetyNumber} otherName={other.name} />
@@ -62,6 +61,8 @@ export const ChatRoom = ({ chatId, viewerId, other, expiresAt }: Props) => {
           <EndChatButton chatId={chatId} />
         </div>
       </div>
+
+      <Separator />
 
       {hasSecret ? (
         <>

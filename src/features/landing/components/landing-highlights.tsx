@@ -26,7 +26,7 @@ export const LandingHighlights = () => (
             <ItemTitle>
               <h3>{highlight.title}</h3>
             </ItemTitle>
-            <ItemDescription variant="full">{highlight.description}</ItemDescription>
+            <ItemDescription>{highlight.description}</ItemDescription>
           </ItemContent>
         </Item>
       ))}

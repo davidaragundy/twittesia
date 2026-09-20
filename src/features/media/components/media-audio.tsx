@@ -41,7 +41,6 @@ export const MediaAudio = ({ media, className }: Props) => {
         size="icon"
         onClick={togglePlay}
         aria-label={isPlaying ? "Pause" : "Play"}
-        shape="round"
         className="size-10 shrink-0"
       >
         <HugeiconsIcon icon={isPlaying ? PauseIcon : PlayIcon} className="size-4" />
@@ -56,11 +55,10 @@ export const MediaAudio = ({ media, className }: Props) => {
 
       <Button
         type="button"
-        variant="muted"
+        variant="ghost"
         size="icon-sm"
         onClick={toggleMute}
         aria-label={isMuted ? "Unmute" : "Mute"}
-        shape="round"
         className="shrink-0"
       >
         <HugeiconsIcon icon={isMuted ? VolumeMute02Icon : VolumeHighIcon} className="size-4" />

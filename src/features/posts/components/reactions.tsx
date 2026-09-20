@@ -16,7 +16,7 @@ export const Reactions = ({ reactions, onToggle }: Props) => (
     {reactions.map(({ emoji, count, isMine }) => (
       <Toggle
         key={emoji}
-        variant="reaction"
+        variant="outline"
         size="sm"
         pressed={isMine}
         onPressedChange={() => onToggle(emoji)}

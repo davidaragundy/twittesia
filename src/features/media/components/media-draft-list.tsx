@@ -1,6 +1,8 @@
 import { Cancel01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
+import { Button } from "@/shared/components/ui/button";
+
 import { MediaDraftPreview } from "@/features/media/components/media-draft-preview";
 import type { MediaDraft } from "@/features/media/types/media-draft";
 
@@ -36,15 +38,17 @@ export const MediaDraftList = ({ drafts, progress, isUploading, onRemove }: Prop
               {Math.round(progress[draft.id] ?? 0)}%
             </div>
           ) : (
-            <button
+            <Button
               type="button"
+              variant="secondary"
+              size="icon-xs"
               onClick={() => onRemove(draft.id)}
               aria-label={`Remove ${draft.file.name}`}
               title="Remove"
-              className="absolute top-1.5 right-1.5 flex size-6 items-center justify-center rounded-full bg-background/80 backdrop-blur transition-colors hover:bg-background"
+              className="absolute top-1.5 right-1.5"
             >
-              <HugeiconsIcon icon={Cancel01Icon} className="size-3.5" />
-            </button>
+              <HugeiconsIcon icon={Cancel01Icon} />
+            </Button>
           )}
         </li>
       ))}
