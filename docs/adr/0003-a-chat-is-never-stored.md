@@ -42,9 +42,18 @@ at the door.
   two people and no more: the first person let in closes it, and everyone else
   waiting is dropped. Who is let in is a decision its creator makes by handle,
   because a link can be forwarded and a handle is all anyone has to go on.
+- **Everything about a chat is an event, not a key.** Whether someone is here,
+  whether they are writing, and whether a message reached the other page all come
+  from the connection: the acknowledgement is published by the connection that
+  forwarded the message, and carries its id and nothing else. Reaching the other
+  page is the most that can honestly be said, because a read receipt would need
+  somewhere to record what was read.
 - **A chat cannot be read back.** Nothing catches up a page that was closed, and
   nothing shows a conversation to someone who joins later, because there is
   nothing to show. A tab that loses the secret cannot ask for it again.
+- **Either person can end a chat.** It goes for both of them at once and cannot
+  be reopened; what was said was never written down, so the chat record is all
+  there is to delete. A chat also ends at its expiry, and the two read the same.
 - **What is kept is only what lets two people in.** `chat:{id}` holds the two
   identities, their handles and names, when it began and when it ends;
   `knocks:chat:{id}` holds a field per person waiting, and goes the moment someone

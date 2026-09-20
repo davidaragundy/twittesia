@@ -110,6 +110,12 @@ moment and written down nowhere, so one sent while the other page is closed is
 gone, and neither side can read a conversation back.
 _Avoid_: text, chat message, DM
 
+**Delivery**:
+Whether a message reached the other page, said by that page's own connection.
+Nothing records what was read, so this is as much as a chat can honestly say
+about a message.
+_Avoid_: read receipt, seen, ack
+
 **Safety number**:
 The number both sides of a chat show once they have agreed a key, from the two
 public keys and the invite's secret. Two people who read it to each other and
