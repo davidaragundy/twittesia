@@ -28,11 +28,16 @@ at the door.
   which the rest of the app does: every event it emits is `XADD`ed into a Redis
   stream first.
 - **The key lives in the link, not on a server.** An invite is
-  `/join/{chat}#{secret}`, and browsers never send the part after `#`. The two
-  sides derive what they encrypt with from that secret and from a key exchange
-  between them, so the server relays ciphertext it has no way to open — including
-  against itself, since substituting a public key gets it nothing without the
-  secret it never saw.
+  `/join/{chat}#{secret}`, and browsers never send the part after `#`. Each side
+  makes an ECDH pair when its page opens and puts the public half on the channel;
+  the shared secret from that exchange and the invite's secret go through HKDF
+  into one AES-GCM key. The server relays ciphertext it has no way to open —
+  including against itself, since substituting a public key gets it nothing
+  without the secret it never saw, and the safety number the two people compare
+  would stop matching.
+- **A page without the secret sends nothing.** The secret lives in the tab that
+  opened the invite and nowhere else, so a tab that never had it cannot take part.
+  It says so rather than falling back to anything weaker.
 - **The invite is the whole of the security, and it is spent once.** A chat holds
   two people and no more: the first person let in closes it, and everyone else
   waiting is dropped. Who is let in is a decision its creator makes by handle,

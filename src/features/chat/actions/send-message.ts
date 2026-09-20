@@ -14,24 +14,27 @@ import { publishChatEvent } from "@/features/chat/utils/publish-chat-event";
 
 interface Props {
   chatId: string;
-  body: string;
+  // The message, already encrypted by the browser, and the nonce it was encrypted with
+  cipher: string;
+  iv: string;
 }
 
 /**
  * Says something to the one other person in a chat.
  *
- * The message is put on the chat's channel and nowhere else: it reaches whoever is listening at
- * that moment, and if nobody is, it is gone. Nothing here writes it down, and nothing reads it
- * back later.
+ * What arrives here is already a box and a nonce: the text was encrypted in the browser with a
+ * key derived partly from the secret in the invite, which never reaches a server. This passes it
+ * on without being able to read it, and writes it down nowhere.
  *
  * It comes back to the sender the same way it goes to the other side, so what a page shows is
  * what actually left it rather than what it hoped to send.
  */
 export const sendMessage = async ({
   chatId,
-  body,
+  cipher,
+  iv,
 }: Props): Promise<ActionResponse<null, "CHAT_NOT_FOUND" | BaseActionErrorCode>> => {
-  const input = sendMessageSchema.safeParse({ chatId, body });
+  const input = sendMessageSchema.safeParse({ chatId, cipher, iv });
 
   if (!input.success) {
     return {
@@ -68,7 +71,8 @@ export const sendMessage = async ({
       type: "message",
       id: generateId(),
       authorId: session.user.id,
-      body: input.data.body,
+      cipher: input.data.cipher,
+      iv: input.data.iv,
       sentAt: Date.now(),
     },
   });
