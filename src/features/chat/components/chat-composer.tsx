@@ -24,7 +24,7 @@ interface Props {
 }
 
 export const ChatComposer = ({ chatId, isConnected, chatKey }: Props) => {
-  const { form, onSubmit, onKeyDown, isPending, canSubmit, length } = useChatComposer({
+  const { form, onSubmit, onKeyDown, onType, isPending, canSubmit, length } = useChatComposer({
     chatId,
     isConnected,
     chatKey,
@@ -47,6 +47,10 @@ export const ChatComposer = ({ chatId, isConnected, chatKey }: Props) => {
               placeholder={
                 !isConnected ? "Reconnecting…" : chatKey ? "Say something" : "Agreeing a key…"
               }
+              onChange={(event) => {
+                field.onChange(event);
+                onType();
+              }}
               onKeyDown={onKeyDown}
               className="max-h-40 min-h-12 px-4 pt-3.5 text-base md:text-base"
             />

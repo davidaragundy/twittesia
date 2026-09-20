@@ -5,4 +5,6 @@ export type ChatMessage = {
   body: string;
   sentAt: Date;
   isMine: boolean;
+  // Whether the other page acknowledged it. Nobody there means it was lost, which is the deal.
+  isDelivered: boolean;
 };

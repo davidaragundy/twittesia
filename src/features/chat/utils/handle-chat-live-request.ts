@@ -22,6 +22,10 @@ import { toChatChannel } from "@/features/chat/utils/to-chat-channel";
  * Presence comes out of the connection rather than out of a key. Opening one says so on the
  * channel and asks whoever is already there to say so back; closing one says so too. Someone with
  * the room open twice is here until the last of them closes, near enough.
+ *
+ * It also answers for the page behind it: a message it forwards is acknowledged on the channel,
+ * so the sender is told their message reached the other page rather than only that it left
+ * theirs. The acknowledgement carries the message's id and nothing else.
  */
 export const handleChatLiveRequest = async (
   request: Request,
@@ -95,6 +99,14 @@ export const handleChatLiveRequest = async (
         if (event.data.type === "here" && event.data.reply && event.data.identityId !== viewerId) {
           publish({ type: "here", identityId: viewerId, reply: false });
         }
+
+        // The other side's message got here, which is the most anyone can honestly be told
+        if (event.data.type === "message" && event.data.authorId !== viewerId) {
+          publish({ type: "received", identityId: viewerId, messageId: event.data.id });
+        }
+
+        // The chat is gone, so there is nothing left to hold this open
+        if (event.data.type === "ended") close();
       });
 
       subscriber.on("error", close);

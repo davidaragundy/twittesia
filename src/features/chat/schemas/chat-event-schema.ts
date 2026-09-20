@@ -25,6 +25,14 @@ export const chatEventSchema = z.discriminatedUnion("type", [
     reply: z.boolean(),
   }),
   z.object({ type: z.literal("away"), identityId: z.uuid() }),
+  z.object({ type: z.literal("typing"), identityId: z.uuid() }),
+  z.object({
+    type: z.literal("received"),
+    identityId: z.uuid(),
+    // Which message reached the other page, and nothing about what it said
+    messageId: z.uuid(),
+  }),
+  z.object({ type: z.literal("ended"), identityId: z.uuid() }),
   z.object({
     type: z.literal("key"),
     identityId: z.uuid(),

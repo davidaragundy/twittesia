@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
+import { TYPING_FORGET_MS } from "@/features/chat/constants/typing-forget-ms";
 import { useChatCrypto } from "@/features/chat/hooks/use-chat-crypto";
 import { chatEventSchema } from "@/features/chat/schemas/chat-event-schema";
 import type { ChatMessage } from "@/features/chat/types/chat-message";
@@ -29,7 +30,9 @@ interface Props {
 export const useChatLive = ({ chatId, viewerId, otherId }: Props) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isOtherHere, setOtherHere] = useState(false);
+  const [isOtherTyping, setOtherTyping] = useState(false);
   const [isConnected, setConnected] = useState(false);
+  const [isEnded, setEnded] = useState(false);
   const { key, safetyNumber, hasSecret, isReady, announce, onKeyEvent } = useChatCrypto({
     chatId,
     otherId,
@@ -38,6 +41,7 @@ export const useChatLive = ({ chatId, viewerId, otherId }: Props) => {
   const opener = useRef(key);
   // Messages are opened one at a time, so they land in the order they arrived
   const queue = useRef<Promise<void>>(Promise.resolve());
+  const typing = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   viewer.current = viewerId;
   opener.current = key;
@@ -80,8 +84,12 @@ export const useChatLive = ({ chatId, viewerId, otherId }: Props) => {
               body,
               sentAt: new Date(data.sentAt),
               isMine: data.authorId === viewer.current,
+              isDelivered: false,
             },
           ]);
+
+          // The other side is writing no longer: they said it
+          setOtherTyping(false);
         });
 
         return;
@@ -92,15 +100,44 @@ export const useChatLive = ({ chatId, viewerId, otherId }: Props) => {
         return;
       }
 
+      if (data.type === "ended") {
+        setEnded(true);
+        setOtherTyping(false);
+        return;
+      }
+
       if (data.identityId !== otherId) return;
 
+      if (data.type === "received") {
+        setMessages((current) =>
+          current.map((message) =>
+            message.id === data.messageId ? { ...message, isDelivered: true } : message,
+          ),
+        );
+
+        return;
+      }
+
+      if (data.type === "typing") {
+        setOtherTyping(true);
+        clearTimeout(typing.current);
+        typing.current = setTimeout(() => setOtherTyping(false), TYPING_FORGET_MS);
+
+        return;
+      }
+
       setOtherHere(data.type === "here");
+
+      if (data.type === "away") setOtherTyping(false);
 
       // Whoever is already here says who they are, so an arriving page can agree a key with them
       if (data.type === "here" && data.reply) void announce({ reply: false });
     };
 
-    return () => source.close();
+    return () => {
+      clearTimeout(typing.current);
+      source.close();
+    };
   }, [announce, chatId, onKeyEvent, otherId]);
 
   // This page says who it is as soon as it has both a key to offer and somewhere to offer it
@@ -110,5 +147,14 @@ export const useChatLive = ({ chatId, viewerId, otherId }: Props) => {
     void announce({ reply: true });
   }, [announce, isConnected, isReady]);
 
-  return { messages, isOtherHere, isConnected, key, safetyNumber, hasSecret };
+  return {
+    messages,
+    isOtherHere,
+    isOtherTyping,
+    isConnected,
+    isEnded,
+    key,
+    safetyNumber,
+    hasSecret,
+  };
 };

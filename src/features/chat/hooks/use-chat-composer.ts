@@ -3,6 +3,7 @@ import type { KeyboardEvent } from "react";
 import { useForm, useWatch } from "react-hook-form";
 
 import { useSendMessageMutation } from "@/features/chat/hooks/use-send-message-mutation";
+import { useTypingAnnouncer } from "@/features/chat/hooks/use-typing-announcer";
 import { messageFormSchema } from "@/features/chat/schemas/message-form-schema";
 import type { MessageFormValues } from "@/features/chat/types/message-form-values";
 
@@ -22,6 +23,7 @@ export const useChatComposer = ({ chatId, isConnected, chatKey }: Props) => {
   });
 
   const { mutate, isPending } = useSendMessageMutation({ chatId, chatKey });
+  const announceTyping = useTypingAnnouncer({ chatId });
 
   // Read at the top, like every other form hook: a formState read buried in the returned object
   // gets memoized against the stable form, and never sees the field become valid
@@ -37,6 +39,11 @@ export const useChatComposer = ({ chatId, isConnected, chatKey }: Props) => {
     form.reset({ body: "" });
   };
 
+  // The other side is told someone is writing, never what they are writing
+  const onType = () => {
+    if (chatKey) announceTyping();
+  };
+
   const onKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key !== "Enter" || event.shiftKey) return;
 
@@ -45,5 +52,5 @@ export const useChatComposer = ({ chatId, isConnected, chatKey }: Props) => {
     if (canSubmit) void form.handleSubmit(onSubmit)();
   };
 
-  return { form, onSubmit, onKeyDown, isPending, canSubmit, length: body?.length ?? 0 };
+  return { form, onSubmit, onKeyDown, onType, isPending, canSubmit, length: body?.length ?? 0 };
 };

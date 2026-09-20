@@ -24,7 +24,7 @@ export const ChatSafetyNumber = ({ safetyNumber, otherName }: Props) => {
   return (
     <Popover>
       <PopoverTrigger
-        render={<Button variant="ghost" size="sm" className="ml-auto text-muted-foreground" />}
+        render={<Button variant="ghost" size="sm" className="text-muted-foreground" />}
       >
         <HugeiconsIcon icon={ShieldKeyIcon} />
         Encrypted
