@@ -1,5 +1,7 @@
 "use client";
 
+import { cn } from "cn";
+
 import { Button } from "@/shared/components/ui/button";
 import {
   EmojiPicker,
@@ -7,7 +9,6 @@ import {
   EmojiPickerFooter,
   EmojiPickerSearch,
 } from "@/shared/components/ui/emoji-picker";
-import { cn } from "@/shared/utils/cn";
 
 import { QUICK_REACTIONS } from "@/features/posts/constants/quick-reactions";
 

@@ -1,5 +1,6 @@
+import { cn } from "cn";
+
 import { Button } from "@/shared/components/ui/button";
-import { cn } from "@/shared/utils/cn";
 
 type Props = {
   isActive?: boolean;

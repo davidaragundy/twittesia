@@ -1,4 +1,4 @@
-import { cn } from "@/shared/utils/cn";
+import { cn } from "cn";
 
 import { MESSAGE_TIME_FORMAT } from "@/features/chat/constants/message-time-format";
 import type { ChatMessage } from "@/features/chat/types/chat-message";

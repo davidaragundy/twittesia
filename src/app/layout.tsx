@@ -1,11 +1,11 @@
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { cn } from "cn";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 
 import { Providers } from "@/shared/components/providers";
 import { BASE_URL } from "@/shared/constants/base-url";
-import { cn } from "@/shared/utils/cn";
 
 import "@/shared/styles/globals.css";
 
