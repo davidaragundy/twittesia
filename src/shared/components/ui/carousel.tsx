@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "cn"
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
@@ -79,9 +78,6 @@ function Carousel({
 
   const handleKeyDown = React.useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
-      // A slider inside a slide uses the arrows itself
-      if ((event.target as HTMLElement).closest("[data-slot=slider]")) return
-
       if (event.key === "ArrowLeft") {
         event.preventDefault()
         scrollPrev()
@@ -125,7 +121,7 @@ function Carousel({
     >
       <div
         onKeyDownCapture={handleKeyDown}
-        className={cn("group/carousel relative", className)}
+        className={cn("relative", className)}
         role="region"
         aria-roledescription="carousel"
         data-slot="carousel"
@@ -176,28 +172,12 @@ function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-const carouselControlVariants = cva("absolute touch-manipulation rounded-full", {
-  variants: {
-    appearance: {
-      default: "",
-      // Over the media rather than beside it: there while the reader is on the carousel, gone
-      // while they are not, and gone entirely when there is nowhere to go
-      floating:
-        "bg-background/80 opacity-0 backdrop-blur transition-opacity group-hover/carousel:opacity-100 focus-visible:opacity-100 disabled:opacity-0!",
-    },
-  },
-  defaultVariants: {
-    appearance: "default",
-  },
-})
-
 function CarouselPrevious({
   className,
   variant = "outline",
   size = "icon-sm",
-  appearance = "default",
   ...props
-}: React.ComponentProps<typeof Button> & VariantProps<typeof carouselControlVariants>) {
+}: React.ComponentProps<typeof Button>) {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel()
 
   return (
@@ -206,7 +186,7 @@ function CarouselPrevious({
       variant={variant}
       size={size}
       className={cn(
-        carouselControlVariants({ appearance }),
+        "absolute touch-manipulation rounded-full",
         orientation === "horizontal"
           ? "inset-y-0 -left-12 my-auto"
           : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
@@ -226,9 +206,8 @@ function CarouselNext({
   className,
   variant = "outline",
   size = "icon-sm",
-  appearance = "default",
   ...props
-}: React.ComponentProps<typeof Button> & VariantProps<typeof carouselControlVariants>) {
+}: React.ComponentProps<typeof Button>) {
   const { orientation, scrollNext, canScrollNext } = useCarousel()
 
   return (
@@ -237,7 +216,7 @@ function CarouselNext({
       variant={variant}
       size={size}
       className={cn(
-        carouselControlVariants({ appearance }),
+        "absolute touch-manipulation rounded-full",
         orientation === "horizontal"
           ? "inset-y-0 -right-12 my-auto"
           : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",

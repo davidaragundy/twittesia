@@ -5,7 +5,7 @@ import { FeedSkeleton } from "@/features/posts/components/feed-skeleton";
 export const ProfilePageSkeleton = () => (
   <div className="flex flex-col gap-12 py-4">
     <div className="flex flex-col items-center gap-6">
-      <Skeleton shape="round" className="size-24" />
+      <Skeleton className="size-24" />
 
       <div className="flex flex-col items-center gap-2">
         <Skeleton className="h-7 w-40" />
@@ -24,7 +24,7 @@ export const ProfilePageSkeleton = () => (
       ))}
     </div>
 
-    <Skeleton shape="round" className="h-9 w-48 self-center" />
+    <Skeleton className="h-9 w-48 self-center" />
 
     <FeedSkeleton />
   </div>

@@ -39,7 +39,7 @@ export const MediaCaptureShell = ({
     return (
       <Drawer open={isOpen} onOpenChange={onOpenChange}>
         <DrawerContent>
-          <DrawerHeader size="lg">
+          <DrawerHeader>
             <DrawerTitle>{title}</DrawerTitle>
             <DrawerDescription>{description}</DrawerDescription>
           </DrawerHeader>

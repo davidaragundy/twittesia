@@ -24,7 +24,6 @@ export const MediaCaptureButtons = ({ onCapture, disabled }: Props) => {
   return (
     <>
       <InputGroupButton
-        shape="round"
         type="button"
         variant="ghost"
         size="icon-sm"
@@ -36,7 +35,6 @@ export const MediaCaptureButtons = ({ onCapture, disabled }: Props) => {
         <HugeiconsIcon icon={Camera01Icon} />
       </InputGroupButton>
       <InputGroupButton
-        shape="round"
         type="button"
         variant="ghost"
         size="icon-sm"

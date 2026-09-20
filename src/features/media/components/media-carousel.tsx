@@ -2,6 +2,7 @@
 
 import { cn } from "cn";
 
+import { Badge } from "@/shared/components/ui/badge";
 import {
   Carousel,
   CarouselContent,
@@ -44,20 +45,12 @@ export const MediaCarousel = ({ media }: Props) => {
           ))}
         </CarouselContent>
 
-        <span className="pointer-events-none absolute top-3 right-3 rounded-full bg-background/80 px-2.5 py-1 text-xs font-medium tabular-nums backdrop-blur">
+        <Badge variant="secondary" className="pointer-events-none absolute top-3 right-3">
           {selected + 1}/{media.length}
-        </span>
+        </Badge>
 
-        <CarouselPrevious
-          variant="secondary"
-          appearance="floating"
-          className="left-3 pointer-coarse:hidden"
-        />
-        <CarouselNext
-          variant="secondary"
-          appearance="floating"
-          className="right-3 pointer-coarse:hidden"
-        />
+        <CarouselPrevious variant="secondary" className="left-3 pointer-coarse:hidden" />
+        <CarouselNext variant="secondary" className="right-3 pointer-coarse:hidden" />
       </div>
 
       <div className="mt-3 flex justify-center gap-1.5">

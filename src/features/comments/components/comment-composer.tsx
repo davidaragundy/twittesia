@@ -52,7 +52,7 @@ export const CommentComposer = ({ postId, viewerHandle }: Props) => {
         control={form.control}
         disabled={isPending}
         render={({ field }) => (
-          <InputGroup size="lg">
+          <InputGroup>
             <label htmlFor="comment-composer-content" className="sr-only">
               Write a comment
             </label>
@@ -62,7 +62,6 @@ export const CommentComposer = ({ postId, viewerHandle }: Props) => {
               placeholder="Write a comment"
               aria-invalid={length > 0 && !canSubmit && !isPending}
               onKeyDown={onKeyDown}
-              size="lg"
               className="max-h-60 min-h-12"
             />
             <MediaDraftList
@@ -71,7 +70,7 @@ export const CommentComposer = ({ postId, viewerHandle }: Props) => {
               isUploading={isUploading}
               onRemove={removeDraft}
             />
-            <InputGroupAddon align="block-end" size="lg">
+            <InputGroupAddon align="block-end">
               <div className="flex items-center gap-0.5">
                 <MediaPicker
                   onPick={addFiles}
@@ -86,7 +85,6 @@ export const CommentComposer = ({ postId, viewerHandle }: Props) => {
                   type="submit"
                   variant="default"
                   size="icon-sm"
-                  shape="round"
                   disabled={!canSubmit}
                   aria-label="Comment"
                   title="Comment"

@@ -23,7 +23,7 @@ export const ChatSafetyNumber = ({ safetyNumber, otherName }: Props) => {
 
   return (
     <Popover>
-      <PopoverTrigger render={<Button variant="muted" size="sm" />}>
+      <PopoverTrigger render={<Button variant="ghost" size="sm" />}>
         <HugeiconsIcon icon={ShieldKeyIcon} />
         Encrypted
       </PopoverTrigger>

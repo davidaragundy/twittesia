@@ -38,7 +38,7 @@ export const LandingChat = () => (
             <ItemTitle>
               <h3>{point.title}</h3>
             </ItemTitle>
-            <ItemDescription variant="full">{point.description}</ItemDescription>
+            <ItemDescription>{point.description}</ItemDescription>
           </ItemContent>
         </Item>
       ))}

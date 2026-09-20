@@ -49,7 +49,7 @@ export const PostComposer = () => {
         control={form.control}
         disabled={isPending}
         render={({ field }) => (
-          <InputGroup size="xl">
+          <InputGroup>
             <label htmlFor="post-composer-content" className="sr-only">
               What&apos;s on your mind?
             </label>
@@ -59,7 +59,6 @@ export const PostComposer = () => {
               placeholder="What's on your mind?"
               aria-invalid={length > 0 && !canSubmit && !isPending}
               onKeyDown={onKeyDown}
-              size="xl"
               className="max-h-72 min-h-20"
             />
             <MediaDraftList
@@ -68,7 +67,7 @@ export const PostComposer = () => {
               isUploading={isUploading}
               onRemove={removeDraft}
             />
-            <InputGroupAddon align="block-end" size="xl">
+            <InputGroupAddon align="block-end">
               <div className="flex items-center gap-0.5">
                 <MediaPicker
                   onPick={addFiles}
@@ -83,7 +82,6 @@ export const PostComposer = () => {
               <div className="ml-auto flex items-center gap-3">
                 <CharacterCountRing length={length} max={MAX_POST_LENGTH} />
                 <InputGroupButton
-                  shape="round"
                   type="submit"
                   variant="default"
                   size="icon-sm"

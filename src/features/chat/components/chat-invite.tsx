@@ -4,6 +4,7 @@ import { Alert01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
 import { CopyToClipboard } from "@/shared/components/copy-to-clipboard";
+import { Alert, AlertDescription, AlertTitle } from "@/shared/components/ui/alert";
 import { Label } from "@/shared/components/ui/label";
 
 import { useChatInvite } from "@/features/chat/hooks/use-chat-invite";
@@ -23,13 +24,13 @@ export const ChatInvite = ({ chatId }: Props) => {
 
   if (!invite) {
     return (
-      <div className="flex items-start gap-3 rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
-        <HugeiconsIcon icon={Alert01Icon} className="mt-0.5 size-4 shrink-0" />
-        <p>
-          This tab no longer has the key half of the link, so it cannot be shown again. Start
-          another chat to get a new one.
-        </p>
-      </div>
+      <Alert>
+        <HugeiconsIcon icon={Alert01Icon} />
+        <AlertTitle>The key is gone from this tab</AlertTitle>
+        <AlertDescription>
+          The link cannot be shown again. Start another chat to get a new one.
+        </AlertDescription>
+      </Alert>
     );
   }
 

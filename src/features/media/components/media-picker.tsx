@@ -30,7 +30,6 @@ export const MediaPicker = ({ onPick, multiple, disabled }: Props) => {
         hidden
       />
       <InputGroupButton
-        shape="round"
         type="button"
         variant="ghost"
         size="icon-sm"
