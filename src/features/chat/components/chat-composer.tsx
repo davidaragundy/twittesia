@@ -19,12 +19,15 @@ import { useChatComposer } from "@/features/chat/hooks/use-chat-composer";
 interface Props {
   chatId: string;
   isConnected: boolean;
+  // What the two sides agreed on, once they have: there is no sending before that
+  chatKey: CryptoKey | null;
 }
 
-export const ChatComposer = ({ chatId, isConnected }: Props) => {
+export const ChatComposer = ({ chatId, isConnected, chatKey }: Props) => {
   const { form, onSubmit, onKeyDown, isPending, canSubmit, length } = useChatComposer({
     chatId,
     isConnected,
+    chatKey,
   });
 
   return (
@@ -41,7 +44,9 @@ export const ChatComposer = ({ chatId, isConnected }: Props) => {
             <InputGroupTextarea
               {...field}
               id="chat-composer-body"
-              placeholder={isConnected ? "Say something" : "Reconnecting…"}
+              placeholder={
+                !isConnected ? "Reconnecting…" : chatKey ? "Say something" : "Agreeing a key…"
+              }
               onKeyDown={onKeyDown}
               className="max-h-40 min-h-12 px-4 pt-3.5 text-base md:text-base"
             />

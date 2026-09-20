@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
+import { useChatCrypto } from "@/features/chat/hooks/use-chat-crypto";
 import { chatEventSchema } from "@/features/chat/schemas/chat-event-schema";
 import type { ChatMessage } from "@/features/chat/types/chat-message";
+import { decryptMessage } from "@/features/chat/utils/decrypt-message";
 import { toChatLivePath } from "@/features/chat/utils/to-chat-live-path";
 
 interface Props {
@@ -14,20 +16,31 @@ interface Props {
 /**
  * The conversation, for as long as this page is open.
  *
- * Messages live in this component's state and nowhere else: not in a store, not in this browser.
- * Closing the page ends the conversation as far as anything is concerned, and reopening it starts
- * an empty one.
+ * Messages arrive as boxes and are opened here, with a key this page agreed with the other side
+ * and nothing else has. They live in this component's state and nowhere else: not in a store, not
+ * in this browser. Closing the page ends the conversation as far as anything is concerned, and
+ * reopening it starts an empty one.
  *
  * The connection reopens by itself — the browser does that for a stream that ends — and the page
- * says whether it is up, because a message sent while it is down never happened.
+ * says whether it is up, because a message sent while it is down never happened. The keys are
+ * agreed again each time, so what was said before a reconnection cannot be opened after it, and
+ * there is nothing kept that would let anyone try.
  */
 export const useChatLive = ({ chatId, viewerId, otherId }: Props) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isOtherHere, setOtherHere] = useState(false);
   const [isConnected, setConnected] = useState(false);
+  const { key, safetyNumber, hasSecret, isReady, announce, onKeyEvent } = useChatCrypto({
+    chatId,
+    otherId,
+  });
   const viewer = useRef(viewerId);
+  const opener = useRef(key);
+  // Messages are opened one at a time, so they land in the order they arrived
+  const queue = useRef<Promise<void>>(Promise.resolve());
 
   viewer.current = viewerId;
+  opener.current = key;
 
   useEffect(() => {
     const source = new EventSource(toChatLivePath({ chatId }));
@@ -47,26 +60,55 @@ export const useChatLive = ({ chatId, viewerId, otherId }: Props) => {
       const data = parsed.data;
 
       if (data.type === "message") {
-        setMessages((current) => [
-          ...current,
-          {
-            id: data.id,
-            body: data.body,
-            sentAt: new Date(data.sentAt),
-            isMine: data.authorId === viewer.current,
-          },
-        ]);
+        queue.current = queue.current.then(async () => {
+          if (!opener.current) return;
 
+          const body = await decryptMessage({
+            key: opener.current,
+            cipher: data.cipher,
+            iv: data.iv,
+          });
+
+          // A message this page cannot open is one it was not meant to: it is left out rather
+          // than shown as anything
+          if (body === null) return;
+
+          setMessages((current) => [
+            ...current,
+            {
+              id: data.id,
+              body,
+              sentAt: new Date(data.sentAt),
+              isMine: data.authorId === viewer.current,
+            },
+          ]);
+        });
+
+        return;
+      }
+
+      if (data.type === "key") {
+        void onKeyEvent(data);
         return;
       }
 
       if (data.identityId !== otherId) return;
 
       setOtherHere(data.type === "here");
+
+      // Whoever is already here says who they are, so an arriving page can agree a key with them
+      if (data.type === "here" && data.reply) void announce({ reply: false });
     };
 
     return () => source.close();
-  }, [chatId, otherId]);
+  }, [announce, chatId, onKeyEvent, otherId]);
 
-  return { messages, isOtherHere, isConnected };
+  // This page says who it is as soon as it has both a key to offer and somewhere to offer it
+  useEffect(() => {
+    if (!isConnected || !isReady) return;
+
+    void announce({ reply: true });
+  }, [announce, isConnected, isReady]);
+
+  return { messages, isOtherHere, isConnected, key, safetyNumber, hasSecret };
 };

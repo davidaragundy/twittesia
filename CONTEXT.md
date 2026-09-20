@@ -110,6 +110,12 @@ moment and written down nowhere, so one sent while the other page is closed is
 gone, and neither side can read a conversation back.
 _Avoid_: text, chat message, DM
 
+**Safety number**:
+The number both sides of a chat show once they have agreed a key, from the two
+public keys and the invite's secret. Two people who read it to each other and
+find it the same know nobody is between them.
+_Avoid_: fingerprint, verification code
+
 **Presence**:
 Whether the other person has the chat open. It comes from their connection
 rather than from anything kept, so it says nothing about where they were a

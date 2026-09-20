@@ -1,0 +1,1 @@
+export const SAFETY_NUMBER_GROUP_DIGITS = 5;
