@@ -26,7 +26,8 @@ export default function PrivacyPage() {
           </li>
           <li>
             <strong>Your content.</strong> The posts and comments you create, and the images, video
-            and audio you attach to them. Leaving deletes them along with your identity.
+            and audio you attach to them. They are deleted 24 hours after you write them, whether or
+            not you are still here.
           </li>
           <li>
             <strong>Your camera and microphone.</strong> Only while the camera or recorder window is
@@ -83,8 +84,8 @@ export default function PrivacyPage() {
           </li>
           <li>
             <strong>Your identity.</strong> It stops working 24 hours after it was created, and is
-            deleted once the last thing it wrote has expired. There is no way to recover it and no
-            way for us to restore it.
+            deleted then, or as soon as you leave. There is no way to recover it and no way for us
+            to restore it.
           </li>
           <li>
             <strong>Sessions.</strong> Until they expire or you leave.
@@ -137,7 +138,7 @@ export default function PrivacyPage() {
 
       <LegalSection title="7. Your rights">
         <p>
-          You can delete any post or comment you wrote. Leaving ends your identity immediately.
+          You can delete any post or comment you wrote, and leaving ends your identity immediately.
           Everything else deletes itself within a day, and afterwards we hold nothing that would let
           us find your information again, or connect it to you if you asked us to. Questions go to{" "}
           <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
