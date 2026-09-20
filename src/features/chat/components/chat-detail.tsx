@@ -18,7 +18,7 @@ interface Props {
 export const ChatDetail = ({ initialView, viewerId, viewerHandle }: Props) => {
   const { chat, role, knocks, isWaiting, other } = useChatDetail({ initialView, viewerId });
 
-  if (other) return <ChatRoom other={other} />;
+  if (other) return <ChatRoom chatId={chat.id} viewerId={viewerId} other={other} />;
 
   if (role === "creator") {
     return (

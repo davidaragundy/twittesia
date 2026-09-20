@@ -1,0 +1,69 @@
+"use client";
+
+import { ArrowUp02Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Controller } from "react-hook-form";
+
+import { CharacterCountRing } from "@/shared/components/character-count-ring";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupTextarea,
+} from "@/shared/components/ui/input-group";
+import { Spinner } from "@/shared/components/ui/spinner";
+
+import { MAX_MESSAGE_LENGTH } from "@/features/chat/constants/max-message-length";
+import { useChatComposer } from "@/features/chat/hooks/use-chat-composer";
+
+interface Props {
+  chatId: string;
+  isConnected: boolean;
+}
+
+export const ChatComposer = ({ chatId, isConnected }: Props) => {
+  const { form, onSubmit, onKeyDown, isPending, canSubmit, length } = useChatComposer({
+    chatId,
+    isConnected,
+  });
+
+  return (
+    <form onSubmit={form.handleSubmit(onSubmit)}>
+      <Controller
+        name="body"
+        control={form.control}
+        disabled={isPending}
+        render={({ field }) => (
+          <InputGroup className="has-data-[align=block-end]:rounded-3xl has-[textarea]:rounded-3xl">
+            <label htmlFor="chat-composer-body" className="sr-only">
+              Say something
+            </label>
+            <InputGroupTextarea
+              {...field}
+              id="chat-composer-body"
+              placeholder={isConnected ? "Say something" : "Reconnecting…"}
+              onKeyDown={onKeyDown}
+              className="max-h-40 min-h-12 px-4 pt-3.5 text-base md:text-base"
+            />
+            <InputGroupAddon align="block-end" className="gap-3 px-3 pb-2.5">
+              <div className="ml-auto flex items-center gap-3">
+                <CharacterCountRing length={length} max={MAX_MESSAGE_LENGTH} />
+                <InputGroupButton
+                  type="submit"
+                  variant="default"
+                  size="icon-sm"
+                  disabled={!canSubmit}
+                  aria-label="Send"
+                  title="Send"
+                  className="rounded-full"
+                >
+                  {isPending ? <Spinner /> : <HugeiconsIcon icon={ArrowUp02Icon} />}
+                </InputGroupButton>
+              </div>
+            </InputGroupAddon>
+          </InputGroup>
+        )}
+      />
+    </form>
+  );
+};

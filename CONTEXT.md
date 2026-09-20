@@ -104,6 +104,18 @@ Someone with an invite asking to be let into the chat. The person who started it
 sees the handle asking and decides; nobody is let in any other way.
 _Avoid_: request, join request, apply
 
+**Message**:
+One thing someone says in a chat. It is carried to whoever is listening at that
+moment and written down nowhere, so one sent while the other page is closed is
+gone, and neither side can read a conversation back.
+_Avoid_: text, chat message, DM
+
+**Presence**:
+Whether the other person has the chat open. It comes from their connection
+rather than from anything kept, so it says nothing about where they were a
+moment ago.
+_Avoid_: status, online, last seen
+
 ### Time
 
 **Lifespan**:
