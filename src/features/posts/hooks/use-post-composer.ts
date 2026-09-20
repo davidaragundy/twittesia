@@ -30,6 +30,7 @@ export const usePostComposer = () => {
   const { mutateAsync: uploadMedia, isPending: isUploading, progress } = useUploadMediaMutation();
   const { mutate, isPending: isPublishing } = useCreatePostMutation({
     form,
+    user: session?.user,
     onPublished: clearDrafts,
   });
 

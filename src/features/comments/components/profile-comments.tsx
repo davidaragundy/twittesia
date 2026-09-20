@@ -1,7 +1,6 @@
 "use client";
 
 import { SegmentedControl } from "@/shared/components/segmented-control";
-import { Button } from "@/shared/components/ui/button";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Spinner } from "@/shared/components/ui/spinner";
 
@@ -17,16 +16,8 @@ interface Props {
 }
 
 export const ProfileComments = ({ username, displayUsername, initialPage }: Props) => {
-  const {
-    comments,
-    containerRef,
-    sort,
-    setSort,
-    isPending,
-    hasNextPage,
-    isFetchingNextPage,
-    showMore,
-  } = useProfileComments({ username, initialPage });
+  const { comments, containerRef, sort, setSort, isPending, isFetchingNextPage, endRef } =
+    useProfileComments({ username, initialPage });
 
   return (
     <div className="flex flex-col gap-4">
@@ -55,17 +46,10 @@ export const ProfileComments = ({ username, displayUsername, initialPage }: Prop
         </div>
       )}
 
-      {hasNextPage && (
-        <Button
-          variant="ghost"
-          onClick={showMore}
-          disabled={isFetchingNextPage}
-          className="self-center"
-        >
-          {isFetchingNextPage && <Spinner data-icon="inline-start" />}
-          Show more comments
-        </Button>
-      )}
+      {/* The next page is read as this comes into view, so there is nothing to press */}
+      <div ref={endRef} aria-hidden className="h-px" />
+
+      {isFetchingNextPage && <Spinner className="self-center" />}
     </div>
   );
 };

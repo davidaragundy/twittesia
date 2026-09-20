@@ -8,6 +8,8 @@ import { ConfirmDialog } from "@/shared/components/confirm-dialog";
 import { DeleteActionsMenu } from "@/shared/components/delete-actions-menu";
 import { SeededAvatar } from "@/shared/components/seeded-avatar";
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
+import { Spinner } from "@/shared/components/ui/spinner";
+import { cn } from "@/shared/utils/cn";
 import { formatRelativeTime } from "@/shared/utils/format-relative-time";
 
 import { MediaGallery } from "@/features/media/components/media-gallery";
@@ -50,9 +52,13 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
       aria-labelledby={`post-${post.id}-author`}
       aria-posinset={position}
       aria-setsize={total}
-      data-view-id={post.id}
+      data-view-id={post.isPending ? undefined : post.id}
       data-view-mine={post.isMine}
-      className="flex gap-4 px-4 py-5 sm:px-5"
+      className={cn(
+        "flex gap-4 px-4 py-5 transition-opacity sm:px-5",
+        // On its way: it reads, but there is nothing to do to it yet
+        post.isPending && "opacity-60",
+      )}
     >
       {author ? (
         <Link href={`/${author.username}`} className="shrink-0" tabIndex={-1} aria-hidden>
@@ -101,7 +107,9 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
               <span className="shrink-0 text-sm text-muted-foreground">{time}</span>
             )}
           </div>
-          {post.isMine && <DeleteActionsMenu subject="Post" onDelete={requestDelete} />}
+          {post.isMine && !post.isPending && (
+            <DeleteActionsMenu subject="Post" onDelete={requestDelete} />
+          )}
         </header>
 
         {post.content && (
@@ -113,7 +121,7 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
         <MediaGallery media={post.media} />
 
         <footer className="flex flex-wrap items-center justify-between gap-3">
-          <PostReactions post={post} />
+          {post.isPending ? <Spinner /> : <PostReactions post={post} />}
           <div className="flex items-center gap-4 text-xs text-muted-foreground tabular-nums">
             {author && (
               <Link

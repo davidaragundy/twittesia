@@ -13,6 +13,9 @@ export type FeedPost = {
   } | null;
   // Whether the reader wrote it, and so can delete it
   isMine: boolean;
+  // Set while a post the reader just wrote is still on its way to the store. It is shown, but
+  // there is nothing to react to or delete until it lands.
+  isPending?: boolean;
   // In the order of POST_REACTION_KEYS, only those at least one user added
   reactions: Reaction[];
   // In the order they were attached
