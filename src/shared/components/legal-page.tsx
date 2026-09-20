@@ -5,17 +5,23 @@ type Props = {
   children: React.ReactNode;
 };
 
+/**
+ * A document: its title, when it took effect, and its sections.
+ *
+ * Everything inside reads the way typeset says a document reads — headings, paragraphs, lists,
+ * links and bold — so nothing here says it again. The effective date is the exception: it is
+ * about the page rather than part of it, and keeps the size of a caption.
+ */
 export function LegalPage({ title, effectiveDate, intro, children }: Props) {
   return (
-    <article className="mx-auto flex w-full max-w-2xl flex-col gap-16 py-20 sm:py-28">
-      <header className="flex flex-col gap-6">
-        <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl">{title}</h1>
-        <p className="text-sm text-muted-foreground">Effective {effectiveDate}</p>
-        <p className="text-lg leading-relaxed text-muted-foreground [&_a]:text-foreground [&_a]:underline [&_a]:underline-offset-4">
-          {intro}
-        </p>
-      </header>
-      <div className="flex flex-col gap-14">{children}</div>
+    <article className="typeset typeset-docs mx-auto w-full max-w-[37em] py-20 sm:py-28">
+      <h1>{title}</h1>
+
+      <p className="not-typeset text-sm text-muted-foreground">Effective {effectiveDate}</p>
+
+      <p>{intro}</p>
+
+      {children}
     </article>
   );
 }
