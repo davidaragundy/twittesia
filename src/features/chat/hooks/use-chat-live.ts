@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
+import { CHAT_PRESENCE_FORGET_MS } from "@/features/chat/constants/chat-presence-forget-ms";
 import { TYPING_FORGET_MS } from "@/features/chat/constants/typing-forget-ms";
 import { useChatCrypto } from "@/features/chat/hooks/use-chat-crypto";
 import { chatEventSchema } from "@/features/chat/schemas/chat-event-schema";
@@ -42,6 +43,7 @@ export const useChatLive = ({ chatId, viewerId, otherId }: Props) => {
   // Messages are opened one at a time, so they land in the order they arrived
   const queue = useRef<Promise<void>>(Promise.resolve());
   const typing = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const presence = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   viewer.current = viewerId;
   opener.current = key;
@@ -56,6 +58,17 @@ export const useChatLive = ({ chatId, viewerId, otherId }: Props) => {
       setOtherHere(false);
     };
 
+    // Anything from the other side says they are still here; silence long enough says they left,
+    // even when their leaving never reached us
+    const seen = () => {
+      setOtherHere(true);
+      clearTimeout(presence.current);
+      presence.current = setTimeout(() => {
+        setOtherHere(false);
+        setOtherTyping(false);
+      }, CHAT_PRESENCE_FORGET_MS);
+    };
+
     source.onmessage = (event) => {
       const parsed = chatEventSchema.safeParse(JSON.parse(event.data || "null"));
 
@@ -64,6 +77,8 @@ export const useChatLive = ({ chatId, viewerId, otherId }: Props) => {
       const data = parsed.data;
 
       if (data.type === "message") {
+        if (data.authorId === otherId) seen();
+
         queue.current = queue.current.then(async () => {
           if (!opener.current) return;
 
@@ -108,6 +123,15 @@ export const useChatLive = ({ chatId, viewerId, otherId }: Props) => {
 
       if (data.identityId !== otherId) return;
 
+      if (data.type === "away") {
+        clearTimeout(presence.current);
+        setOtherHere(false);
+        setOtherTyping(false);
+        return;
+      }
+
+      seen();
+
       if (data.type === "received") {
         setMessages((current) =>
           current.map((message) =>
@@ -126,16 +150,13 @@ export const useChatLive = ({ chatId, viewerId, otherId }: Props) => {
         return;
       }
 
-      setOtherHere(data.type === "here");
-
-      if (data.type === "away") setOtherTyping(false);
-
       // Whoever is already here says who they are, so an arriving page can agree a key with them
       if (data.type === "here" && data.reply) void announce({ reply: false });
     };
 
     return () => {
       clearTimeout(typing.current);
+      clearTimeout(presence.current);
       source.close();
     };
   }, [announce, chatId, onKeyEvent, otherId]);

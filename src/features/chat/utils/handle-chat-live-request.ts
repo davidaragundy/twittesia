@@ -6,6 +6,7 @@ import { redis } from "@/shared/lib/redis/server";
 
 import { getSession } from "@/features/auth/queries/get-session";
 import { CHAT_HEARTBEAT_MS } from "@/features/chat/constants/chat-heartbeat-ms";
+import { CHAT_PRESENCE_INTERVAL_MS } from "@/features/chat/constants/chat-presence-interval-ms";
 import { getChat } from "@/features/chat/queries/get-chat";
 import { chatEventSchema } from "@/features/chat/schemas/chat-event-schema";
 import { chatIdSchema } from "@/features/chat/schemas/chat-id-schema";
@@ -54,7 +55,14 @@ export const handleChatLiveRequest = async (
   const encoder = new TextEncoder();
   const subscriber = redis.subscribe<string>([channel]);
 
+  // Set once the stream starts, for the browser going away, which can arrive as either signal
+  let closeStream = () => {};
+
   const stream = new ReadableStream({
+    // The browser closed the page or the connection: said here, where the stream learns it first
+    cancel() {
+      closeStream();
+    },
     start(controller) {
       let isOpen = true;
 
@@ -76,6 +84,7 @@ export const handleChatLiveRequest = async (
 
         isOpen = false;
         clearInterval(heartbeat);
+        clearInterval(presence);
         clearTimeout(untilExpiry);
         publish({ type: "away", identityId: viewerId });
         subscriber.removeAllListeners();
@@ -113,11 +122,19 @@ export const handleChatLiveRequest = async (
 
       const heartbeat = setInterval(() => write(": ping\n\n"), CHAT_HEARTBEAT_MS);
 
+      // Still here, said again now and then: the other side stops counting this room as here
+      // when these stop, whether or not anything noticed it close
+      const presence = setInterval(
+        () => publish({ type: "here", identityId: viewerId, reply: false }),
+        CHAT_PRESENCE_INTERVAL_MS,
+      );
+
       // A chat ends at its expiry, so the connection does too rather than hanging on to a chat
       // that is no longer there
       const untilExpiry = setTimeout(close, Math.max(chat.expiresAt.getTime() - Date.now(), 0));
 
       request.signal.addEventListener("abort", close);
+      closeStream = close;
 
       write(": open\n\n");
       publish({ type: "here", identityId: viewerId, reply: true });
