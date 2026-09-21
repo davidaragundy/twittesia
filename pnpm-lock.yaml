@@ -124,6 +124,9 @@ importers:
       '@next/env':
         specifier: ^16.3.5
         version: 16.3.5
+      '@shadcn/react':
+        specifier: ^0.3.1
+        version: 0.3.1(@types/react@19.3.0)(react@19.3.0)
       '@tanstack/react-query':
         specifier: ^5.103.1
         version: 5.103.1(react@19.3.0)
@@ -1638,6 +1641,17 @@ packages:
       eslint: '>=9.30.0'
     peerDependenciesMeta:
       eslint:
+        optional: true
+
+  '@shadcn/react@0.3.1':
+    resolution: {integrity: sha512-2gOR0HDMtWeRsCZfNDaU0YDFdgH3zsDQ6lz67Fv/y/qjY9y+R8kJqAn6q56phqv7/zHi0wqURjntrNO9zL7vnQ==}
+    peerDependencies:
+      '@types/react': '>=19'
+      react: '>=19'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      react:
         optional: true
 
   '@simple-libs/child-process-utils@2.0.0':
@@ -4798,6 +4812,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
       - typescript
+
+  '@shadcn/react@0.3.1(@types/react@19.3.0)(react@19.3.0)':
+    optionalDependencies:
+      '@types/react': 19.3.0
+      react: 19.3.0
 
   '@simple-libs/child-process-utils@2.0.0':
     dependencies:
