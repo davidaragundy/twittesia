@@ -3,7 +3,7 @@
 import { ImageAdd02Icon } from "@hugeicons/core-free-icons";
 
 import { Icon } from "@/shared/components/icon";
-import { InputGroupButton } from "@/shared/components/ui/input-group";
+import { Button } from "@/shared/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
 
 import { MEDIA_ACCEPT } from "@/features/media/constants/media-accept";
@@ -33,7 +33,7 @@ export const MediaPicker = ({ onPick, multiple, disabled }: Props) => {
       <Tooltip>
         <TooltipTrigger
           render={
-            <InputGroupButton
+            <Button
               type="button"
               variant="ghost"
               size="icon-sm"

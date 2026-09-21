@@ -12,9 +12,13 @@ export const CommentsSkeleton = () => (
 
     <div className="flex gap-3">
       <Skeleton className="size-8 shrink-0" />
-      <div className="flex flex-1 flex-col gap-2">
-        <Skeleton className="mt-2 h-4 w-28" />
-        <Skeleton className="h-24 w-full" />
+      <div className="flex flex-1 flex-col gap-3 pt-2">
+        <Skeleton className="h-4 w-28" />
+        <Skeleton className="h-4 w-40" />
+        <div className="flex justify-between pt-2">
+          <Skeleton className="h-8 w-28" />
+          <Skeleton className="h-8 w-24" />
+        </div>
       </div>
     </div>
 

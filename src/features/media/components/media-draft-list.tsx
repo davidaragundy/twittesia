@@ -19,7 +19,7 @@ export const MediaDraftList = ({ drafts, progress, isUploading, onRemove }: Prop
   if (!drafts.length) return null;
 
   return (
-    <ul aria-label="Attached files" className="flex w-full gap-2 overflow-x-auto px-4 pt-1 pb-2">
+    <ul aria-label="Attached files" className="flex w-full gap-2 overflow-x-auto py-1">
       {drafts.map((draft) => (
         <li
           key={draft.id}

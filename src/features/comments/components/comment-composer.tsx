@@ -1,17 +1,10 @@
 "use client";
 
-import { ArrowUp02Icon } from "@hugeicons/core-free-icons";
 import { Controller } from "react-hook-form";
 
 import { CharacterCountRing } from "@/shared/components/character-count-ring";
-import { Icon } from "@/shared/components/icon";
 import { SeededAvatar } from "@/shared/components/seeded-avatar";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupTextarea,
-} from "@/shared/components/ui/input-group";
+import { Button } from "@/shared/components/ui/button";
 import { Kbd, KbdGroup } from "@/shared/components/ui/kbd";
 import { Spinner } from "@/shared/components/ui/spinner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
@@ -30,6 +23,7 @@ interface Props {
   viewerName: string;
 }
 
+// The comment before it is one, drawn as the comment it becomes, with nothing around it
 export const CommentComposer = ({ postId, viewerHandle, viewerName }: Props) => {
   const {
     form,
@@ -47,7 +41,6 @@ export const CommentComposer = ({ postId, viewerHandle, viewerName }: Props) => 
   } = useCommentComposer({ postId });
 
   return (
-    // Laid out like the comment it becomes: the avatar, the name, then what it will say
     <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-3">
       <SeededAvatar seed={viewerHandle} />
 
@@ -59,62 +52,53 @@ export const CommentComposer = ({ postId, viewerHandle, viewerName }: Props) => 
           control={form.control}
           disabled={isPending}
           render={({ field }) => (
-            <InputGroup>
+            <>
               <label htmlFor="comment-composer-content" className="sr-only">
                 Write a comment
               </label>
-              <InputGroupTextarea
+              <textarea
                 {...field}
                 id="comment-composer-content"
                 placeholder="Write a comment"
                 aria-invalid={length > 0 && !canSubmit && !isPending}
                 onKeyDown={onKeyDown}
-                className="max-h-60 min-h-12"
+                rows={1}
+                className="field-sizing-content max-h-60 min-h-7 w-full resize-none bg-transparent text-base leading-relaxed outline-none placeholder:text-muted-foreground disabled:opacity-50"
               />
-              <MediaDraftList
-                drafts={drafts}
-                progress={progress}
-                isUploading={isUploading}
-                onRemove={removeDraft}
-              />
-              <InputGroupAddon align="block-end">
-                <div className="flex items-center gap-0.5">
-                  <MediaPicker
-                    onPick={addFiles}
-                    multiple={MAX_COMMENT_MEDIA > 1}
-                    disabled={!canAttach}
-                  />
-                  <MediaCaptureButtons onCapture={addFiles} disabled={!canAttach} />
-                </div>
-                <div className="ml-auto flex items-center gap-3">
-                  <CharacterCountRing length={length} max={MAX_COMMENT_LENGTH} />
-                  <Tooltip>
-                    <TooltipTrigger
-                      render={
-                        <InputGroupButton
-                          type="submit"
-                          variant="default"
-                          size="icon-sm"
-                          disabled={!canSubmit}
-                          aria-label="Comment"
-                        />
-                      }
-                    >
-                      {isPending ? <Spinner /> : <Icon icon={ArrowUp02Icon} />}
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      Comment
-                      <KbdGroup>
-                        <Kbd>⌘</Kbd>
-                        <Kbd>Enter</Kbd>
-                      </KbdGroup>
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
-              </InputGroupAddon>
-            </InputGroup>
+            </>
           )}
         />
+
+        <MediaDraftList
+          drafts={drafts}
+          progress={progress}
+          isUploading={isUploading}
+          onRemove={removeDraft}
+        />
+
+        {/* Where the comment's actions will be, pulled left the same way */}
+        <div className="-ml-2 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1">
+            <MediaPicker onPick={addFiles} multiple={MAX_COMMENT_MEDIA > 1} disabled={!canAttach} />
+            <MediaCaptureButtons onCapture={addFiles} disabled={!canAttach} />
+          </div>
+          <div className="flex items-center gap-3">
+            <CharacterCountRing length={length} max={MAX_COMMENT_LENGTH} />
+            <Tooltip>
+              <TooltipTrigger render={<Button type="submit" size="sm" disabled={!canSubmit} />}>
+                {isPending && <Spinner data-icon="inline-start" />}
+                Comment
+              </TooltipTrigger>
+              <TooltipContent>
+                Comment
+                <KbdGroup>
+                  <Kbd>⌘</Kbd>
+                  <Kbd>Enter</Kbd>
+                </KbdGroup>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </div>
       </div>
     </form>
   );
