@@ -3,7 +3,8 @@ import { Skeleton } from "@/shared/components/ui/skeleton";
 
 // A chat as it will arrive: who is on the other side, the conversation and the composer
 export const ChatRoomSkeleton = () => (
-  <div className="flex min-h-[70svh] flex-col gap-4">
+  // Sized like the room, so nothing moves when it arrives
+  <div className="-mb-20 flex h-[calc(100svh-7rem)] flex-col gap-4">
     <div className="flex items-center gap-3">
       <Skeleton className="size-10 shrink-0" />
       <div className="flex flex-col gap-1.5">
@@ -19,13 +20,22 @@ export const ChatRoomSkeleton = () => (
 
     <Separator />
 
-    <div className="flex flex-1 flex-col justify-end gap-4 py-4">
-      {/* Alternating sides and lengths, so the outline reads as a conversation */}
-      <Skeleton className="h-10 w-48 max-w-[80%]" />
-      <Skeleton className="h-10 w-64 max-w-[80%]" />
-      <Skeleton className="h-10 w-40 max-w-[80%] self-end" />
-      <Skeleton className="h-10 w-56 max-w-[80%]" />
-      <Skeleton className="h-10 w-60 max-w-[80%] self-end" />
+    <div className="flex flex-1 flex-col justify-end gap-8 overflow-hidden">
+      {/* Runs from alternating sides, so the outline reads as a conversation */}
+      <div className="flex flex-col gap-2">
+        <Skeleton className="h-10 w-48 max-w-[80%]" />
+        <Skeleton className="h-10 w-64 max-w-[80%]" />
+      </div>
+      <div className="flex flex-col items-end gap-2">
+        <Skeleton className="h-10 w-40 max-w-[80%]" />
+      </div>
+      <div className="flex flex-col gap-2">
+        <Skeleton className="h-16 w-72 max-w-[80%]" />
+      </div>
+      <div className="flex flex-col items-end gap-2">
+        <Skeleton className="h-10 w-56 max-w-[80%]" />
+        <Skeleton className="h-10 w-36 max-w-[80%]" />
+      </div>
     </div>
 
     <Skeleton className="h-24 w-full" />
