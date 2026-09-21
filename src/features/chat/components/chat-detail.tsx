@@ -26,7 +26,7 @@ export const ChatDetail = ({ initialView, viewerId, viewerHandle }: Props) => {
 
   if (role === "creator") {
     return (
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-10">
         <ChatInvite chatId={chat.id} />
         <KnockList chatId={chat.id} knocks={knocks} />
       </div>

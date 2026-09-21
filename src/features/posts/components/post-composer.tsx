@@ -5,6 +5,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
 import { CharacterCountRing } from "@/shared/components/character-count-ring";
+import { SeededAvatar } from "@/shared/components/seeded-avatar";
 import {
   InputGroup,
   InputGroupAddon,
@@ -25,6 +26,7 @@ import { usePostComposer } from "@/features/posts/hooks/use-post-composer";
 export const PostComposer = () => {
   const {
     form,
+    user,
     onSubmit,
     onKeyDown,
     isPending,
@@ -39,7 +41,9 @@ export const PostComposer = () => {
   } = usePostComposer();
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)}>
+    <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-4">
+      {user && <SeededAvatar seed={user.username ?? user.id} size="lg" className="mt-1" />}
+
       <Controller
         name="content"
         control={form.control}

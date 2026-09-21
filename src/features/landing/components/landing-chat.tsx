@@ -28,7 +28,7 @@ export const LandingChat = () => (
       </p>
     </div>
 
-    <div className="grid gap-8 sm:grid-cols-2">
+    <div className="grid gap-3 sm:grid-cols-2">
       {LANDING_CHAT_POINTS.map((point) => (
         <Item key={point.title} variant="muted">
           <ItemMedia variant="icon">

@@ -14,7 +14,7 @@ export const ProfileCommentItem = ({ comment }: Props) => (
     {comment.postAuthorUsername && (
       <Link
         href={getPostPath({ username: comment.postAuthorUsername, postId: comment.postId })}
-        className="px-5 pt-3 text-xs text-muted-foreground transition-colors hover:text-foreground"
+        className="pb-2 pl-12 text-xs text-muted-foreground transition-colors hover:text-foreground"
       >
         On <span className="handle">@{comment.postAuthorUsername}</span>
         &apos;s post

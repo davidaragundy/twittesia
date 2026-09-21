@@ -23,7 +23,9 @@ export async function CommentsSection({ params }: Props) {
         Comments
       </h2>
 
-      {session && <CommentComposer postId={postId} />}
+      {session && (
+        <CommentComposer postId={postId} viewerHandle={session.user.username ?? session.user.id} />
+      )}
 
       {error ? (
         <p className="text-sm text-muted-foreground">Couldn&apos;t load the comments.</p>

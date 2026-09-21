@@ -42,7 +42,9 @@ export async function SettingsPage({ params }: Props) {
           </Button>
         ))}
       </nav>
-      <SettingsContent section={section} />
+      <div className="rounded-3xl bg-muted/30 p-6">
+        <SettingsContent section={section} />
+      </div>
     </div>
   );
 }

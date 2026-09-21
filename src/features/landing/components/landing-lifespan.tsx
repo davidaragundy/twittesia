@@ -6,9 +6,9 @@ export const LandingLifespan = () => (
       The lifespan of everything
     </h2>
 
-    <ol className="grid gap-10 sm:grid-cols-3">
+    <ol className="grid gap-3 sm:grid-cols-3">
       {LIFESPAN_STEPS.map((step) => (
-        <li key={step.time} className="flex flex-col gap-1">
+        <li key={step.time} className="flex flex-col gap-1 rounded-3xl bg-muted/30 p-6">
           <span className="text-2xl font-semibold tracking-tight">{step.time}</span>
           <span className="text-muted-foreground">{step.label}</span>
         </li>

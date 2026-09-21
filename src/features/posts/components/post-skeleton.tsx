@@ -2,9 +2,9 @@ import { Skeleton } from "@/shared/components/ui/skeleton";
 
 // The shape of one post: avatar, byline, a few lines and its reactions
 export const PostSkeleton = () => (
-  <div className="flex gap-4 rounded-3xl bg-muted/40 p-5">
+  <div className="flex gap-4">
     <Skeleton className="size-10 shrink-0" />
-    <div className="flex flex-1 flex-col gap-3">
+    <div className="flex flex-1 flex-col gap-3 rounded-3xl bg-muted/30 p-5">
       <Skeleton className="h-4 w-56" />
       <Skeleton className="h-4 w-full" />
       <Skeleton className="h-4 w-2/3" />

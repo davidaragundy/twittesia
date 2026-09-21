@@ -45,7 +45,7 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
       data-view-id={post.isPending ? undefined : post.id}
       data-view-mine={post.isMine}
       className={cn(
-        "flex gap-4 rounded-3xl bg-muted/40 p-5 transition-colors hover:bg-muted/60",
+        "flex gap-4",
         // On its way: it breathes until it lands, and there is nothing to do to it yet
         post.isPending && "animate-pulse",
       )}
@@ -62,7 +62,7 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
         </Avatar>
       )}
 
-      <div className="flex min-w-0 flex-1 flex-col gap-3">
+      <div className="flex min-w-0 flex-1 flex-col gap-3 rounded-3xl bg-muted/30 p-5 transition-colors hover:bg-muted/50">
         <header className="flex items-start justify-between gap-3">
           <div className="flex min-w-0 items-baseline gap-2 leading-tight">
             {author ? (

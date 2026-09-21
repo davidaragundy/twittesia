@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 
 import { TabBarButton } from "@/shared/components/tab-bar-button";
 import type { NavLink } from "@/shared/types/nav-link";
+import { isNavLinkActive } from "@/shared/utils/is-nav-link-active";
 
 type Props = {
   links: NavLink[];
@@ -20,12 +21,12 @@ export function TabBar({ links, children }: Props) {
   return (
     <nav
       aria-label="Main"
-      className="fixed inset-x-0 bottom-5 z-40 mx-auto flex w-fit items-center gap-1 rounded-full bg-popover/80 p-1.5 shadow-lg backdrop-blur-xl md:hidden"
+      className="fixed inset-x-0 bottom-5 z-40 mx-auto flex w-fit items-center gap-1 rounded-full bg-secondary/80 p-1.5 shadow-lg backdrop-blur-xl md:hidden"
     >
       {links.map((link) => (
         <TabBarButton
           key={link.href}
-          isActive={pathname === link.href}
+          isActive={isNavLinkActive({ href: link.href, pathname })}
           label={link.label}
           icon={<HugeiconsIcon icon={link.icon} />}
           render={<Link href={link.href} />}

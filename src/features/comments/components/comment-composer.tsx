@@ -5,6 +5,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
 import { CharacterCountRing } from "@/shared/components/character-count-ring";
+import { SeededAvatar } from "@/shared/components/seeded-avatar";
 import {
   InputGroup,
   InputGroupAddon,
@@ -24,9 +25,11 @@ import { MediaPicker } from "@/features/media/components/media-picker";
 
 interface Props {
   postId: string;
+  // The writer's handle, for their avatar
+  viewerHandle: string;
 }
 
-export const CommentComposer = ({ postId }: Props) => {
+export const CommentComposer = ({ postId, viewerHandle }: Props) => {
   const {
     form,
     onSubmit,
@@ -43,7 +46,9 @@ export const CommentComposer = ({ postId }: Props) => {
   } = useCommentComposer({ postId });
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)}>
+    <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-4">
+      <SeededAvatar seed={viewerHandle} className="mt-1.5" />
+
       <Controller
         name="content"
         control={form.control}

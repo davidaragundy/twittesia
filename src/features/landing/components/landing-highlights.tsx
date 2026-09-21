@@ -16,9 +16,9 @@ export const LandingHighlights = () => (
       What you can do
     </h2>
 
-    <div className="grid gap-8 sm:grid-cols-2">
+    <div className="grid gap-3 sm:grid-cols-2">
       {LANDING_HIGHLIGHTS.map((highlight) => (
-        <Item key={highlight.title}>
+        <Item key={highlight.title} variant="muted">
           <ItemMedia variant="icon">
             <HugeiconsIcon icon={highlight.icon} />
           </ItemMedia>
