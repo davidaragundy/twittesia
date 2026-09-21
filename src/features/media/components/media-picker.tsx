@@ -4,6 +4,7 @@ import { ImageAdd02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
 import { InputGroupButton } from "@/shared/components/ui/input-group";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
 
 import { MEDIA_ACCEPT } from "@/features/media/constants/media-accept";
 import { useMediaPicker } from "@/features/media/hooks/use-media-picker";
@@ -29,17 +30,23 @@ export const MediaPicker = ({ onPick, multiple, disabled }: Props) => {
         tabIndex={-1}
         hidden
       />
-      <InputGroupButton
-        type="button"
-        variant="ghost"
-        size="icon-sm"
-        onClick={open}
-        disabled={disabled}
-        aria-label="Attach images, video or audio"
-        title="Attach images, video or audio"
-      >
-        <HugeiconsIcon icon={ImageAdd02Icon} />
-      </InputGroupButton>
+      <Tooltip>
+        <TooltipTrigger
+          render={
+            <InputGroupButton
+              type="button"
+              variant="ghost"
+              size="icon-sm"
+              onClick={open}
+              disabled={disabled}
+              aria-label="Attach images, video or audio"
+            />
+          }
+        >
+          <HugeiconsIcon icon={ImageAdd02Icon} />
+        </TooltipTrigger>
+        <TooltipContent>Attach images, video or audio</TooltipContent>
+      </Tooltip>
     </>
   );
 };

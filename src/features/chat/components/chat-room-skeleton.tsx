@@ -4,7 +4,7 @@ import { Skeleton } from "@/shared/components/ui/skeleton";
 // A chat as it will arrive: who is on the other side, the conversation and the composer
 export const ChatRoomSkeleton = () => (
   // Sized like the room, so nothing moves when it arrives
-  <div className="-mb-20 flex h-[calc(100svh-7rem)] flex-col gap-4">
+  <div className="-mb-20 flex h-[calc(100svh-11rem)] flex-col gap-4 md:h-[calc(100svh-7rem)]">
     <div className="flex items-center gap-3">
       <Skeleton className="size-10 shrink-0" />
       <div className="flex flex-col gap-1.5">

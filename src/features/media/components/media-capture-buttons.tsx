@@ -4,6 +4,7 @@ import { Camera01Icon, Mic01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
 import { InputGroupButton } from "@/shared/components/ui/input-group";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
 
 import { CameraCapture } from "@/features/media/components/camera-capture";
 import { MediaCaptureShell } from "@/features/media/components/media-capture-shell";
@@ -23,28 +24,40 @@ export const MediaCaptureButtons = ({ onCapture, disabled }: Props) => {
 
   return (
     <>
-      <InputGroupButton
-        type="button"
-        variant="ghost"
-        size="icon-sm"
-        onClick={openCamera}
-        disabled={disabled}
-        aria-label="Take a photo or video"
-        title="Take a photo or video"
-      >
-        <HugeiconsIcon icon={Camera01Icon} />
-      </InputGroupButton>
-      <InputGroupButton
-        type="button"
-        variant="ghost"
-        size="icon-sm"
-        onClick={openMicrophone}
-        disabled={disabled}
-        aria-label="Record audio"
-        title="Record audio"
-      >
-        <HugeiconsIcon icon={Mic01Icon} />
-      </InputGroupButton>
+      <Tooltip>
+        <TooltipTrigger
+          render={
+            <InputGroupButton
+              type="button"
+              variant="ghost"
+              size="icon-sm"
+              onClick={openCamera}
+              disabled={disabled}
+              aria-label="Take a photo or video"
+            />
+          }
+        >
+          <HugeiconsIcon icon={Camera01Icon} />
+        </TooltipTrigger>
+        <TooltipContent>Take a photo or video</TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger
+          render={
+            <InputGroupButton
+              type="button"
+              variant="ghost"
+              size="icon-sm"
+              onClick={openMicrophone}
+              disabled={disabled}
+              aria-label="Record audio"
+            />
+          }
+        >
+          <HugeiconsIcon icon={Mic01Icon} />
+        </TooltipTrigger>
+        <TooltipContent>Record audio</TooltipContent>
+      </Tooltip>
 
       <MediaCaptureShell
         isOpen={open === "camera"}

@@ -11,7 +11,9 @@ import {
   InputGroupButton,
   InputGroupTextarea,
 } from "@/shared/components/ui/input-group";
+import { Kbd, KbdGroup } from "@/shared/components/ui/kbd";
 import { Spinner } from "@/shared/components/ui/spinner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
 
 import { MAX_MESSAGE_LENGTH } from "@/features/chat/constants/max-message-length";
 import { useChatComposer } from "@/features/chat/hooks/use-chat-composer";
@@ -57,16 +59,27 @@ export const ChatComposer = ({ chatId, isConnected, chatKey }: Props) => {
             <InputGroupAddon align="block-end">
               <div className="ml-auto flex items-center gap-3">
                 <CharacterCountRing length={length} max={MAX_MESSAGE_LENGTH} />
-                <InputGroupButton
-                  type="submit"
-                  variant="default"
-                  size="icon-sm"
-                  disabled={!canSubmit}
-                  aria-label="Send"
-                  title="Send"
-                >
-                  {isPending ? <Spinner /> : <HugeiconsIcon icon={ArrowUp02Icon} />}
-                </InputGroupButton>
+                <Tooltip>
+                  <TooltipTrigger
+                    render={
+                      <InputGroupButton
+                        type="submit"
+                        variant="default"
+                        size="icon-sm"
+                        disabled={!canSubmit}
+                        aria-label="Send"
+                      />
+                    }
+                  >
+                    {isPending ? <Spinner /> : <HugeiconsIcon icon={ArrowUp02Icon} />}
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    Send
+                    <KbdGroup>
+                      <Kbd>Enter</Kbd>
+                    </KbdGroup>
+                  </TooltipContent>
+                </Tooltip>
               </div>
             </InputGroupAddon>
           </InputGroup>

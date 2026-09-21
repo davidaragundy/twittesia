@@ -12,7 +12,9 @@ import {
   InputGroupButton,
   InputGroupTextarea,
 } from "@/shared/components/ui/input-group";
+import { Kbd, KbdGroup } from "@/shared/components/ui/kbd";
 import { Spinner } from "@/shared/components/ui/spinner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
 
 import { MAX_COMMENT_LENGTH } from "@/features/comments/constants/max-comment-length";
 import { MAX_COMMENT_MEDIA } from "@/features/comments/constants/max-comment-media";
@@ -81,16 +83,28 @@ export const CommentComposer = ({ postId, viewerHandle }: Props) => {
               </div>
               <div className="ml-auto flex items-center gap-3">
                 <CharacterCountRing length={length} max={MAX_COMMENT_LENGTH} />
-                <InputGroupButton
-                  type="submit"
-                  variant="default"
-                  size="icon-sm"
-                  disabled={!canSubmit}
-                  aria-label="Comment"
-                  title="Comment"
-                >
-                  {isPending ? <Spinner /> : <HugeiconsIcon icon={ArrowUp02Icon} />}
-                </InputGroupButton>
+                <Tooltip>
+                  <TooltipTrigger
+                    render={
+                      <InputGroupButton
+                        type="submit"
+                        variant="default"
+                        size="icon-sm"
+                        disabled={!canSubmit}
+                        aria-label="Comment"
+                      />
+                    }
+                  >
+                    {isPending ? <Spinner /> : <HugeiconsIcon icon={ArrowUp02Icon} />}
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    Comment
+                    <KbdGroup>
+                      <Kbd>⌘</Kbd>
+                      <Kbd>Enter</Kbd>
+                    </KbdGroup>
+                  </TooltipContent>
+                </Tooltip>
               </div>
             </InputGroupAddon>
           </InputGroup>

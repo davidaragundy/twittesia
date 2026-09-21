@@ -6,6 +6,8 @@ import { AppNav } from "@/shared/components/app-nav";
 import { MobileNav } from "@/shared/components/mobile-nav";
 import { NavButton } from "@/shared/components/nav-button";
 import { SiteHeader } from "@/shared/components/site-header";
+import { TabBar } from "@/shared/components/tab-bar";
+import { TabBarButton } from "@/shared/components/tab-bar-button";
 import { APP_NAV_LINKS } from "@/shared/constants/app-nav-links";
 
 import { LeaveNavButton } from "@/features/auth/components/leave-nav-button";
@@ -14,6 +16,7 @@ import { NavUserSkeleton } from "@/features/auth/components/nav-user-skeleton";
 import { SessionGuard } from "@/features/auth/components/session-guard";
 import { SessionProvider } from "@/features/auth/components/session-provider";
 import { ProfileNavLink } from "@/features/profiles/components/profile-nav-link";
+import { ProfileTabLink } from "@/features/profiles/components/profile-tab-link";
 import { LeaveDialog } from "@/features/settings/components/leave-dialog";
 import { SettingsMenuItem } from "@/features/settings/components/settings-menu-item";
 import { SettingsNavButton } from "@/features/settings/components/settings-nav-button";
@@ -22,21 +25,6 @@ import { SettingsNavButton } from "@/features/settings/components/settings-nav-b
 // loading state shows the instant it is clicked. Each part that needs the session reads it
 // inside its own <Suspense> boundary; the reads share one lookup per request.
 export default function Layout({ children, modal }: LayoutProps<"/">) {
-  const profileLink = (
-    <Suspense
-      fallback={
-        <NavButton disabled>
-          <HugeiconsIcon icon={UserIcon} />
-          Profile
-        </NavButton>
-      }
-    >
-      <SessionProvider>
-        <ProfileNavLink />
-      </SessionProvider>
-    </Suspense>
-  );
-
   return (
     <>
       <div className="mx-auto flex min-h-svh w-full max-w-4xl flex-col px-6 sm:px-10">
@@ -46,10 +34,8 @@ export default function Layout({ children, modal }: LayoutProps<"/">) {
           <SiteHeader
             leading={
               <MobileNav
-                links={APP_NAV_LINKS}
                 actions={
                   <>
-                    {profileLink}
                     <SettingsNavButton />
                     <LeaveNavButton />
                   </>
@@ -62,7 +48,20 @@ export default function Layout({ children, modal }: LayoutProps<"/">) {
 
         <div className="flex flex-1 gap-12">
           <aside className="sticky top-20 hidden h-[calc(100svh-5rem)] w-60 shrink-0 flex-col justify-between pt-4 pb-12 md:flex">
-            <AppNav links={APP_NAV_LINKS}>{profileLink}</AppNav>
+            <AppNav links={APP_NAV_LINKS}>
+              <Suspense
+                fallback={
+                  <NavButton disabled>
+                    <HugeiconsIcon icon={UserIcon} />
+                    Profile
+                  </NavButton>
+                }
+              >
+                <SessionProvider>
+                  <ProfileNavLink />
+                </SessionProvider>
+              </Suspense>
+            </AppNav>
             <Suspense fallback={<NavUserSkeleton />}>
               <SessionProvider>
                 <NavUser menuItems={<SettingsMenuItem />} />
@@ -75,6 +74,18 @@ export default function Layout({ children, modal }: LayoutProps<"/">) {
           </main>
         </div>
       </div>
+
+      <TabBar links={APP_NAV_LINKS}>
+        <Suspense
+          fallback={
+            <TabBarButton disabled label="Profile" icon={<HugeiconsIcon icon={UserIcon} />} />
+          }
+        >
+          <SessionProvider>
+            <ProfileTabLink />
+          </SessionProvider>
+        </Suspense>
+      </TabBar>
 
       <Suspense>
         <SessionGuard />

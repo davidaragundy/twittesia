@@ -40,9 +40,10 @@ export const ChatRoom = ({ chatId, viewerId, other, expiresAt }: Props) => {
   if (isEnded || hasExpired) return <ChatEnded />;
 
   return (
-    // As tall as the window under the header, so the header and composer stay put while the
-    // conversation scrolls between them; it takes back most of the page's bottom padding to fit
-    <div className="-mb-20 flex h-[calc(100svh-7rem)] flex-col gap-4">
+    // As tall as the window between the header and, on a phone, the tab bar, so the header and
+    // composer stay put while the conversation scrolls between them; it takes back most of the
+    // page's bottom padding to fit
+    <div className="-mb-20 flex h-[calc(100svh-11rem)] flex-col gap-4 md:h-[calc(100svh-7rem)]">
       <div className="flex items-center gap-3">
         <SeededAvatar seed={other.handle} className="size-10 shrink-0" />
         <div className="flex min-w-0 flex-col gap-0.5">
