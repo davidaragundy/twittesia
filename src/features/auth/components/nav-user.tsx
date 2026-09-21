@@ -1,8 +1,8 @@
 "use client";
 
 import { Logout01Icon, UnfoldMoreIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
+import { Icon } from "@/shared/components/icon";
 import { NavButton } from "@/shared/components/nav-button";
 import { SeededAvatar } from "@/shared/components/seeded-avatar";
 import {
@@ -10,7 +10,6 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
@@ -43,18 +42,16 @@ export function NavUser({ menuItems }: Props) {
     <DropdownMenu>
       <DropdownMenuTrigger render={<NavButton className="h-auto min-h-12" />}>
         {identity}
-        <HugeiconsIcon icon={UnfoldMoreIcon} />
+        <Icon icon={UnfoldMoreIcon} />
       </DropdownMenuTrigger>
       <DropdownMenuContent side="top" align="start" sideOffset={8} className="min-w-56">
         <DropdownMenuGroup>
           <div className="flex items-center gap-2 px-1 py-1.5">{identity}</div>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
         <DropdownMenuGroup>{menuItems}</DropdownMenuGroup>
-        <DropdownMenuSeparator />
         {/* Opens the confirmation; the menu closes behind it */}
         <DropdownMenuItem variant="destructive" onClick={openLeave}>
-          <HugeiconsIcon icon={Logout01Icon} />
+          <Icon icon={Logout01Icon} />
           Leave
           <DropdownMenuShortcut>⌘O</DropdownMenuShortcut>
         </DropdownMenuItem>

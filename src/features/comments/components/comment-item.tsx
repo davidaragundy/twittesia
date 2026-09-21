@@ -1,15 +1,14 @@
 "use client";
 
-import { ViewIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 
 import { ConfirmDialog } from "@/shared/components/confirm-dialog";
 import { DeleteActionsMenu } from "@/shared/components/delete-actions-menu";
 import { RelativeTime } from "@/shared/components/relative-time";
 import { SeededAvatar } from "@/shared/components/seeded-avatar";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
+import { ViewCount } from "@/shared/components/view-count";
 
+import { CommentReactionPicker } from "@/features/comments/components/comment-reaction-picker";
 import { CommentReactions } from "@/features/comments/components/comment-reactions";
 import { DELETE_COMMENT_DIALOG_COPY } from "@/features/comments/constants/delete-comment-dialog-copy";
 import { useCommentItem } from "@/features/comments/hooks/use-comment-item";
@@ -32,26 +31,24 @@ export const CommentItem = ({ comment }: Props) => {
       aria-labelledby={`comment-${comment.id}-author`}
       data-view-id={comment.id}
       data-view-mine={comment.isMine}
-      className="flex gap-4 px-4 py-4 sm:px-5"
+      // Reaches into the margins so its hover can be round without moving the text
+      className="-mx-4 flex gap-3 rounded-3xl px-4 py-3 transition-colors hover:bg-muted/40"
     >
       <Link href={`/${author.username}`} className="shrink-0" tabIndex={-1} aria-hidden>
         <SeededAvatar seed={author.username} />
       </Link>
 
       <div className="flex min-w-0 flex-1 flex-col gap-2">
-        <header className="flex items-start justify-between gap-3">
-          <div className="flex min-w-0 items-baseline gap-2 leading-tight">
+        <header className="flex min-h-8 items-center gap-3">
+          <div className="flex min-w-0 flex-1 items-baseline gap-1.5">
             <Link
               id={`comment-${comment.id}-author`}
               href={`/${author.username}`}
-              className="max-w-[60%] shrink-0 truncate font-semibold hover:underline"
+              className="truncate font-semibold hover:underline"
             >
               {author.name}
             </Link>
-            <span className="min-w-0 truncate handle text-sm text-muted-foreground">
-              @{author.displayUsername}
-            </span>
-            <span aria-hidden className="shrink-0 text-sm text-muted-foreground/60">
+            <span aria-hidden className="text-sm text-muted-foreground">
               ·
             </span>
             <span className="shrink-0 text-sm text-muted-foreground">
@@ -69,23 +66,16 @@ export const CommentItem = ({ comment }: Props) => {
 
         <MediaGallery media={comment.media} />
 
-        <footer className="flex flex-wrap items-center justify-between gap-3">
-          <CommentReactions comment={comment} />
-          <Tooltip>
-            <TooltipTrigger
-              render={
-                <span
-                  role="img"
-                  aria-label={formatViewCount(comment.viewCount)}
-                  className="flex items-center gap-1.5 text-xs text-muted-foreground tabular-nums"
-                />
-              }
-            >
-              <HugeiconsIcon icon={ViewIcon} className="size-3.5" />
-              {VIEW_COUNT_FORMAT.format(comment.viewCount)}
-            </TooltipTrigger>
-            <TooltipContent>{formatViewCount(comment.viewCount)}</TooltipContent>
-          </Tooltip>
+        <CommentReactions comment={comment} />
+
+        {/* One row that never wraps, pulled left by the buttons' own padding so their icons line
+            up with the text */}
+        <footer className="-ml-2 flex items-center justify-between gap-2">
+          <CommentReactionPicker comment={comment} />
+          <ViewCount
+            count={VIEW_COUNT_FORMAT.format(comment.viewCount)}
+            label={formatViewCount(comment.viewCount)}
+          />
         </footer>
       </div>
 

@@ -1,9 +1,9 @@
 "use client";
 
 import { ImageAdd02Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
-import { InputGroupButton } from "@/shared/components/ui/input-group";
+import { Icon } from "@/shared/components/icon";
+import { Button } from "@/shared/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
 
 import { MEDIA_ACCEPT } from "@/features/media/constants/media-accept";
@@ -33,7 +33,7 @@ export const MediaPicker = ({ onPick, multiple, disabled }: Props) => {
       <Tooltip>
         <TooltipTrigger
           render={
-            <InputGroupButton
+            <Button
               type="button"
               variant="ghost"
               size="icon-sm"
@@ -43,7 +43,7 @@ export const MediaPicker = ({ onPick, multiple, disabled }: Props) => {
             />
           }
         >
-          <HugeiconsIcon icon={ImageAdd02Icon} />
+          <Icon icon={ImageAdd02Icon} />
         </TooltipTrigger>
         <TooltipContent>Attach images, video or audio</TooltipContent>
       </Tooltip>

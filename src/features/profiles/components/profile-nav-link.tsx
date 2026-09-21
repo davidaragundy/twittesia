@@ -1,10 +1,10 @@
 "use client";
 
 import { UserIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { Icon } from "@/shared/components/icon";
 import { NavButton } from "@/shared/components/nav-button";
 
 import { useSession } from "@/features/auth/hooks/use-session";
@@ -20,7 +20,7 @@ export function ProfileNavLink() {
 
   return (
     <NavButton isActive={pathname === href} render={<Link href={href} />} nativeButton={false}>
-      <HugeiconsIcon icon={UserIcon} />
+      <Icon icon={UserIcon} />
       Profile
     </NavButton>
   );

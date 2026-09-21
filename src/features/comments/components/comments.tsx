@@ -1,6 +1,6 @@
 "use client";
 
-import { SegmentedControl } from "@/shared/components/segmented-control";
+import { SortMenu } from "@/shared/components/sort-menu";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Spinner } from "@/shared/components/ui/spinner";
 
@@ -14,22 +14,24 @@ interface Props {
   initialPage: CommentsPage;
   // The reader, so their own comments never arrive as news
   viewerId?: string | null;
+  // Where the reader writes one, under the heading, when they can
+  composer?: React.ReactNode;
 }
 
-export const Comments = ({ postId, initialPage, viewerId }: Props) => {
+export const Comments = ({ postId, initialPage, viewerId, composer }: Props) => {
   const { comments, containerRef, sort, setSort, isPending, isFetchingNextPage, endRef } =
     useComments({ postId, initialPage, viewerId });
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex justify-end">
-        <SegmentedControl
-          label="Order comments by"
-          options={COMMENT_SORTS}
-          value={sort}
-          onChange={setSort}
-        />
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center justify-between gap-4">
+        <h2 id="comments-title" className="text-lg font-semibold tracking-tight">
+          Comments
+        </h2>
+        <SortMenu label="Sort comments" options={COMMENT_SORTS} value={sort} onChange={setSort} />
       </div>
+
+      {composer}
 
       {isPending && <Skeleton className="h-24 w-full" />}
 
@@ -40,7 +42,7 @@ export const Comments = ({ postId, initialPage, viewerId }: Props) => {
       )}
 
       {!isPending && !!comments.length && (
-        <div ref={containerRef} className="-mx-4 flex flex-col sm:-mx-5">
+        <div ref={containerRef} className="flex flex-col gap-1">
           {comments.map((comment) => (
             <CommentItem key={comment.id} comment={comment} />
           ))}

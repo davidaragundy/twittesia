@@ -1,6 +1,6 @@
 import { Cancel01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
+import { Icon } from "@/shared/components/icon";
 import { Button } from "@/shared/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
 
@@ -19,11 +19,11 @@ export const MediaDraftList = ({ drafts, progress, isUploading, onRemove }: Prop
   if (!drafts.length) return null;
 
   return (
-    <ul aria-label="Attached files" className="flex w-full gap-2 overflow-x-auto px-4 pt-1 pb-2">
+    <ul aria-label="Attached files" className="flex w-full gap-2 overflow-x-auto py-1">
       {drafts.map((draft) => (
         <li
           key={draft.id}
-          className="relative size-20 shrink-0 overflow-hidden rounded-2xl bg-muted ring-1 ring-foreground/5 sm:size-24"
+          className="relative size-20 shrink-0 overflow-hidden rounded-2xl bg-muted sm:size-24"
         >
           <MediaDraftPreview draft={draft} />
 
@@ -52,7 +52,7 @@ export const MediaDraftList = ({ drafts, progress, isUploading, onRemove }: Prop
                   />
                 }
               >
-                <HugeiconsIcon icon={Cancel01Icon} />
+                <Icon icon={Cancel01Icon} />
               </TooltipTrigger>
               <TooltipContent>Remove</TooltipContent>
             </Tooltip>

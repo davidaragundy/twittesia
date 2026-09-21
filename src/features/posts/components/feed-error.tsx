@@ -1,9 +1,9 @@
 "use client";
 
 import { Alert02Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { useRouter } from "next/navigation";
 
+import { Icon } from "@/shared/components/icon";
 import { Button } from "@/shared/components/ui/button";
 import {
   Empty,
@@ -21,7 +21,7 @@ export const FeedError = () => {
     <Empty>
       <EmptyHeader>
         <EmptyMedia variant="icon">
-          <HugeiconsIcon icon={Alert02Icon} />
+          <Icon icon={Alert02Icon} />
         </EmptyMedia>
         <EmptyTitle>Couldn&apos;t load the feed</EmptyTitle>
         <EmptyDescription>Something went wrong on our side.</EmptyDescription>

@@ -1,9 +1,9 @@
 "use client";
 
 import { Camera01Icon, Mic01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
-import { InputGroupButton } from "@/shared/components/ui/input-group";
+import { Icon } from "@/shared/components/icon";
+import { Button } from "@/shared/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
 
 import { CameraCapture } from "@/features/media/components/camera-capture";
@@ -27,7 +27,7 @@ export const MediaCaptureButtons = ({ onCapture, disabled }: Props) => {
       <Tooltip>
         <TooltipTrigger
           render={
-            <InputGroupButton
+            <Button
               type="button"
               variant="ghost"
               size="icon-sm"
@@ -37,14 +37,14 @@ export const MediaCaptureButtons = ({ onCapture, disabled }: Props) => {
             />
           }
         >
-          <HugeiconsIcon icon={Camera01Icon} />
+          <Icon icon={Camera01Icon} />
         </TooltipTrigger>
         <TooltipContent>Take a photo or video</TooltipContent>
       </Tooltip>
       <Tooltip>
         <TooltipTrigger
           render={
-            <InputGroupButton
+            <Button
               type="button"
               variant="ghost"
               size="icon-sm"
@@ -54,7 +54,7 @@ export const MediaCaptureButtons = ({ onCapture, disabled }: Props) => {
             />
           }
         >
-          <HugeiconsIcon icon={Mic01Icon} />
+          <Icon icon={Mic01Icon} />
         </TooltipTrigger>
         <TooltipContent>Record audio</TooltipContent>
       </Tooltip>

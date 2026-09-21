@@ -10,7 +10,7 @@ type Props = {
 export function TabBarButton({ isActive = false, label, icon, ...props }: Props) {
   return (
     <Button
-      variant={isActive ? "secondary" : "ghost"}
+      variant={isActive ? "default" : "ghost"}
       size={isActive ? "lg" : "icon-lg"}
       aria-label={isActive ? undefined : label}
       aria-current={isActive ? "page" : undefined}

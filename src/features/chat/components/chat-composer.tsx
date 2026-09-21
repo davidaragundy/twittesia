@@ -1,10 +1,10 @@
 "use client";
 
 import { ArrowUp02Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
 import { CharacterCountRing } from "@/shared/components/character-count-ring";
+import { Icon } from "@/shared/components/icon";
 import {
   InputGroup,
   InputGroupAddon,
@@ -71,7 +71,7 @@ export const ChatComposer = ({ chatId, isConnected, chatKey }: Props) => {
                       />
                     }
                   >
-                    {isPending ? <Spinner /> : <HugeiconsIcon icon={ArrowUp02Icon} />}
+                    {isPending ? <Spinner /> : <Icon icon={ArrowUp02Icon} />}
                   </TooltipTrigger>
                   <TooltipContent>
                     Send

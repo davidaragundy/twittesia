@@ -1,9 +1,9 @@
 "use client";
 
 import { Mic01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { cn } from "cn";
 
+import { Icon } from "@/shared/components/icon";
 import { Button } from "@/shared/components/ui/button";
 import { Spinner } from "@/shared/components/ui/spinner";
 
@@ -66,12 +66,8 @@ export const MicrophoneCapture = ({ onCapture }: Props) => {
           )}
           style={{ "--voice-level": 0.6 + level * 0.4 } as React.CSSProperties}
         />
-        <span className="relative flex size-24 items-center justify-center rounded-full bg-muted text-muted-foreground ring-1 ring-foreground/5">
-          {stream ? (
-            <HugeiconsIcon icon={Mic01Icon} className="size-9" />
-          ) : (
-            <Spinner className="size-6" />
-          )}
+        <span className="relative flex size-24 items-center justify-center rounded-full bg-muted text-muted-foreground">
+          {stream ? <Icon icon={Mic01Icon} className="size-9" /> : <Spinner className="size-6" />}
         </span>
       </div>
 

@@ -1,9 +1,9 @@
 "use client";
 
 import { ArrowUp01Icon, Home01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
-import { SegmentedControl } from "@/shared/components/segmented-control";
+import { Icon } from "@/shared/components/icon";
+import { SortMenu } from "@/shared/components/sort-menu";
 import { Button } from "@/shared/components/ui/button";
 import {
   Empty,
@@ -52,19 +52,15 @@ export const Feed = ({ initialPage, authorId, empty, initialSort, viewerId }: Pr
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex justify-end">
-        <SegmentedControl
-          label="Order posts by"
-          options={FEED_SORTS}
-          value={sort}
-          onChange={setSort}
-        />
+      {/* The order heads the list it orders, pulled left so its label lines up with the posts */}
+      <div className="-ml-2.5 flex">
+        <SortMenu label="Sort posts" options={FEED_SORTS} value={sort} onChange={setSort} />
       </div>
 
       {/* Offered rather than shown: nothing moves under the reader until they ask for it */}
       {!!newPostCount && (
         <Button variant="secondary" className="self-center" onClick={showNewPosts}>
-          <HugeiconsIcon icon={ArrowUp01Icon} />
+          <Icon icon={ArrowUp01Icon} />
           {newPostCount === 1 ? "1 new post" : `${newPostCount} new posts`}
         </Button>
       )}
@@ -77,7 +73,7 @@ export const Feed = ({ initialPage, authorId, empty, initialSort, viewerId }: Pr
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <HugeiconsIcon icon={Home01Icon} />
+                <Icon icon={Home01Icon} />
               </EmptyMedia>
               <EmptyTitle>Nothing here yet</EmptyTitle>
               <EmptyDescription>
@@ -94,7 +90,7 @@ export const Feed = ({ initialPage, authorId, empty, initialSort, viewerId }: Pr
             role="feed"
             aria-label="Posts"
             aria-busy={isFetchingNextPage}
-            className="-mx-4 flex flex-col gap-1 sm:-mx-5"
+            className="flex flex-col gap-1"
           >
             {posts.map((post, index) => (
               <PostItem

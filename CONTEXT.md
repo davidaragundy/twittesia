@@ -90,7 +90,7 @@ _Avoid_: discover, browse, trending
 **Chat**:
 A private conversation between exactly two users, opened by one of them and
 lasting a day at most. Nothing said in it is stored: it is carried between the
-two of them and kept nowhere.
+two of them and kept nowhere. Only the user who opened it can end it early.
 _Avoid_: room, thread, DM, conversation
 
 **Invite**:

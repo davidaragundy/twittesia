@@ -1,7 +1,7 @@
-import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { Icon } from "@/shared/components/icon";
 import { Button } from "@/shared/components/ui/button";
 
 import { SettingsContent } from "@/features/settings/components/settings-content";
@@ -37,7 +37,7 @@ export async function SettingsPage({ params }: Props) {
             render={<Link href={toSettingsPath({ section: item.value })} replace />}
             nativeButton={false}
           >
-            <HugeiconsIcon icon={item.icon} />
+            <Icon icon={item.icon} />
             {item.label}
           </Button>
         ))}

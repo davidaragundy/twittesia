@@ -29,6 +29,6 @@ export const LANDING_CHAT_POINTS = [
     icon: Clock01Icon,
     title: "Kept nowhere, gone within a day",
     description:
-      "Messages pass between the two of you and are stored nowhere, so neither we nor you can read one back. The chat ends within a day, or when either of you ends it.",
+      "Messages pass between the two of you and are stored nowhere, so neither we nor you can read one back. The chat ends within a day, or sooner if whoever started it ends it.",
   },
 ];

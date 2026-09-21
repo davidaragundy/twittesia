@@ -14,7 +14,7 @@ export const ChatsPageSkeleton = () => (
 
     <ItemGroup>
       {[0, 1, 2].map((index) => (
-        <Item key={index} variant="outline">
+        <Item key={index} variant="muted">
           <ItemMedia>
             <Skeleton className="size-10" />
           </ItemMedia>

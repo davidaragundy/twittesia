@@ -1,10 +1,10 @@
 "use client";
 
 import { Copy02Icon, Tick02Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { Icon } from "@/shared/components/icon";
 import {
   InputGroup,
   InputGroupAddon,
@@ -45,7 +45,7 @@ export const CopyToClipboard = ({ id, value }: Props) => {
               <InputGroupButton aria-label="Copy" size="icon-xs" onClick={handleCopyToClipboard} />
             }
           >
-            <HugeiconsIcon icon={isCopied ? Tick02Icon : Copy02Icon} />
+            <Icon icon={isCopied ? Tick02Icon : Copy02Icon} />
           </TooltipTrigger>
           <TooltipContent>{isCopied ? "Copied" : "Copy"}</TooltipContent>
         </Tooltip>

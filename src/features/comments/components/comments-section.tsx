@@ -17,20 +17,30 @@ export async function CommentsSection({ params }: Props) {
     <section
       id="comments"
       aria-labelledby="comments-title"
-      className="flex scroll-mt-24 flex-col gap-8"
+      className="flex scroll-mt-24 flex-col gap-6"
     >
-      <h2 id="comments-title" className="text-lg font-semibold tracking-tight">
-        Comments
-      </h2>
-
-      {session && (
-        <CommentComposer postId={postId} viewerHandle={session.user.username ?? session.user.id} />
-      )}
-
       {error ? (
-        <p className="text-sm text-muted-foreground">Couldn&apos;t load the comments.</p>
+        <>
+          <h2 id="comments-title" className="text-lg font-semibold tracking-tight">
+            Comments
+          </h2>
+          <p className="text-sm text-muted-foreground">Couldn&apos;t load the comments.</p>
+        </>
       ) : (
-        <Comments postId={postId} initialPage={data} viewerId={session?.user.id} />
+        <Comments
+          postId={postId}
+          initialPage={data}
+          viewerId={session?.user.id}
+          composer={
+            session && (
+              <CommentComposer
+                postId={postId}
+                viewerHandle={session.user.username ?? session.user.id}
+                viewerName={session.user.name}
+              />
+            )
+          }
+        />
       )}
     </section>
   );

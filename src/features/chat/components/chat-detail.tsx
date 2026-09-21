@@ -3,6 +3,7 @@
 import { ChatDoor } from "@/features/chat/components/chat-door";
 import { ChatInvite } from "@/features/chat/components/chat-invite";
 import { ChatRoom } from "@/features/chat/components/chat-room";
+import { EndChatButton } from "@/features/chat/components/end-chat-button";
 import { KnockList } from "@/features/chat/components/knock-list";
 import { useChatDetail } from "@/features/chat/hooks/use-chat-detail";
 import type { ChatView } from "@/features/chat/types/chat-view";
@@ -20,15 +21,24 @@ export const ChatDetail = ({ initialView, viewerId, viewerHandle }: Props) => {
 
   if (other) {
     return (
-      <ChatRoom chatId={chat.id} viewerId={viewerId} other={other} expiresAt={chat.expiresAt} />
+      <ChatRoom
+        chatId={chat.id}
+        viewerId={viewerId}
+        other={other}
+        expiresAt={chat.expiresAt}
+        canEnd={role === "creator"}
+      />
     );
   }
 
   if (role === "creator") {
     return (
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-10">
         <ChatInvite chatId={chat.id} />
         <KnockList chatId={chat.id} knocks={knocks} />
+        <div className="flex justify-center">
+          <EndChatButton chatId={chat.id} isLabelled />
+        </div>
       </div>
     );
   }

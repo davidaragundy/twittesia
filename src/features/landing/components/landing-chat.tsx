@@ -1,5 +1,4 @@
-import { HugeiconsIcon } from "@hugeicons/react";
-
+import { Icon } from "@/shared/components/icon";
 import {
   Item,
   ItemContent,
@@ -30,9 +29,9 @@ export const LandingChat = () => (
 
     <div className="grid gap-8 sm:grid-cols-2">
       {LANDING_CHAT_POINTS.map((point) => (
-        <Item key={point.title} variant="outline">
+        <Item key={point.title}>
           <ItemMedia variant="icon">
-            <HugeiconsIcon icon={point.icon} />
+            <Icon icon={point.icon} />
           </ItemMedia>
           <ItemContent>
             <ItemTitle>

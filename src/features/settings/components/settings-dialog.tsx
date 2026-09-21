@@ -1,7 +1,6 @@
 "use client";
 
-import { HugeiconsIcon } from "@hugeicons/react";
-
+import { Icon } from "@/shared/components/icon";
 import { NavButton } from "@/shared/components/nav-button";
 import {
   Dialog,
@@ -45,7 +44,7 @@ export function SettingsDialog({ params }: Props) {
           isActive={section === item.value}
           onClick={() => onTabChange(item.value)}
         >
-          <HugeiconsIcon icon={item.icon} />
+          <Icon icon={item.icon} />
           {item.label}
         </NavButton>
       ))}
@@ -71,7 +70,7 @@ export function SettingsDialog({ params }: Props) {
             >
               {SETTINGS_SECTIONS.map((item) => (
                 <ToggleGroupItem key={item.value} value={item.value}>
-                  <HugeiconsIcon icon={item.icon} />
+                  <Icon icon={item.icon} />
                   {item.label}
                 </ToggleGroupItem>
               ))}

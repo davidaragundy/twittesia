@@ -1,7 +1,7 @@
 import { BubbleChatCancelIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 
+import { Icon } from "@/shared/components/icon";
 import { Button } from "@/shared/components/ui/button";
 import {
   Empty,
@@ -20,7 +20,7 @@ export const ChatEnded = () => (
   <Empty>
     <EmptyHeader>
       <EmptyMedia variant="icon">
-        <HugeiconsIcon icon={BubbleChatCancelIcon} />
+        <Icon icon={BubbleChatCancelIcon} />
       </EmptyMedia>
       <EmptyTitle>This chat has ended</EmptyTitle>
       <EmptyDescription>
@@ -28,7 +28,7 @@ export const ChatEnded = () => (
       </EmptyDescription>
     </EmptyHeader>
     <EmptyContent>
-      <Button variant="outline" render={<Link href={CHATS_PATH} />} nativeButton={false}>
+      <Button variant="secondary" render={<Link href={CHATS_PATH} />} nativeButton={false}>
         Back to chats
       </Button>
     </EmptyContent>

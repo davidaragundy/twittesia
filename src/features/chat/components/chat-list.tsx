@@ -1,6 +1,6 @@
 import { BubbleChatIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
+import { Icon } from "@/shared/components/icon";
 import {
   Empty,
   EmptyDescription,
@@ -24,7 +24,7 @@ export const ChatList = ({ chats, viewerId }: Props) => {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <HugeiconsIcon icon={BubbleChatIcon} />
+            <Icon icon={BubbleChatIcon} />
           </EmptyMedia>
           <EmptyTitle>No chats yet</EmptyTitle>
           <EmptyDescription>

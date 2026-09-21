@@ -1,12 +1,13 @@
 "use client";
 
-import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { Icon } from "@/shared/components/icon";
 import { NavButton } from "@/shared/components/nav-button";
 import { NavPending } from "@/shared/components/nav-pending";
 import type { NavLink } from "@/shared/types/nav-link";
+import { isNavLinkActive } from "@/shared/utils/is-nav-link-active";
 
 type Props = {
   links: NavLink[];
@@ -22,11 +23,11 @@ export function AppNav({ links, children }: Props) {
       {links.map((link) => (
         <NavButton
           key={link.href}
-          isActive={pathname === link.href}
+          isActive={isNavLinkActive({ href: link.href, pathname })}
           render={<Link href={link.href} />}
           nativeButton={false}
         >
-          <HugeiconsIcon icon={link.icon} />
+          <Icon icon={link.icon} />
           {link.label}
           <NavPending />
         </NavButton>

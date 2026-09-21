@@ -1,7 +1,7 @@
 import { NoteIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { notFound } from "next/navigation";
 
+import { Icon } from "@/shared/components/icon";
 import {
   Empty,
   EmptyDescription,
@@ -44,10 +44,10 @@ export const ProfilePage = async ({ username }: Props) => {
   ]);
 
   return (
-    <div className="flex flex-col gap-12 py-4">
-      <ProfileHeader profile={profile} />
-
-      {stats.data && <ProfileCounts stats={stats.data} />}
+    <div className="flex flex-col gap-10">
+      <ProfileHeader profile={profile}>
+        {stats.data && <ProfileCounts stats={stats.data} />}
+      </ProfileHeader>
 
       <ProfileTabs
         posts={
@@ -57,11 +57,12 @@ export const ProfilePage = async ({ username }: Props) => {
             <Feed
               initialPage={posts.data}
               authorId={profile.id}
+              viewerId={viewerId}
               empty={
                 <Empty>
                   <EmptyHeader>
                     <EmptyMedia variant="icon">
-                      <HugeiconsIcon icon={NoteIcon} />
+                      <Icon icon={NoteIcon} />
                     </EmptyMedia>
                     <EmptyTitle>Nothing left to read</EmptyTitle>
                     <EmptyDescription>

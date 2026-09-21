@@ -1,5 +1,4 @@
-import { HugeiconsIcon } from "@hugeicons/react";
-
+import { Icon } from "@/shared/components/icon";
 import {
   Item,
   ItemContent,
@@ -20,7 +19,7 @@ export const LandingHighlights = () => (
       {LANDING_HIGHLIGHTS.map((highlight) => (
         <Item key={highlight.title}>
           <ItemMedia variant="icon">
-            <HugeiconsIcon icon={highlight.icon} />
+            <Icon icon={highlight.icon} />
           </ItemMedia>
           <ItemContent>
             <ItemTitle>

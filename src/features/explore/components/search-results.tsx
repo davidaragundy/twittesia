@@ -1,8 +1,8 @@
 "use client";
 
 import { Search01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
+import { Icon } from "@/shared/components/icon";
 import {
   Empty,
   EmptyDescription,
@@ -38,7 +38,7 @@ export const SearchResults = ({ query, scope, initialPage }: Props) => {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <HugeiconsIcon icon={Search01Icon} />
+            <Icon icon={Search01Icon} />
           </EmptyMedia>
           <EmptyTitle>Nothing matches that</EmptyTitle>
           <EmptyDescription>
@@ -55,7 +55,7 @@ export const SearchResults = ({ query, scope, initialPage }: Props) => {
         role="feed"
         aria-label="Search results"
         aria-busy={isFetchingNextPage}
-        className="-mx-4 flex flex-col gap-1 sm:-mx-5"
+        className="flex flex-col gap-1"
       >
         {results.map((result, index) => (
           <SearchResultItem

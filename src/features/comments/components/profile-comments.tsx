@@ -1,6 +1,6 @@
 "use client";
 
-import { SegmentedControl } from "@/shared/components/segmented-control";
+import { SortMenu } from "@/shared/components/sort-menu";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Spinner } from "@/shared/components/ui/spinner";
 
@@ -21,13 +21,8 @@ export const ProfileComments = ({ username, displayUsername, initialPage }: Prop
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex justify-end">
-        <SegmentedControl
-          label="Order comments by"
-          options={COMMENT_SORTS}
-          value={sort}
-          onChange={setSort}
-        />
+      <div className="-ml-2.5 flex">
+        <SortMenu label="Sort comments" options={COMMENT_SORTS} value={sort} onChange={setSort} />
       </div>
 
       {isPending && <Skeleton className="h-24 w-full" />}
@@ -39,7 +34,7 @@ export const ProfileComments = ({ username, displayUsername, initialPage }: Prop
       )}
 
       {!isPending && !!comments.length && (
-        <div ref={containerRef} className="-mx-4 flex flex-col sm:-mx-5">
+        <div ref={containerRef} className="flex flex-col gap-1">
           {comments.map((comment) => (
             <ProfileCommentItem key={comment.id} comment={comment} />
           ))}

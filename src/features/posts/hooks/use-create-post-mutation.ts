@@ -80,6 +80,12 @@ export const useCreatePostMutation = ({ form, user, onPublished }: Props) => {
       queryClient.setQueriesData<FeedData>({ queryKey: FEED_QUERY_KEY }, (feed) =>
         prependFeedPost({ feed: drop(feed), post: created as FeedPost }),
       );
+
+      // A post with files waited for the server, so the composer only empties now
+      if (!context?.pendingId) {
+        form.reset({ content: "" });
+        onPublished();
+      }
     },
     onError: (_error, _input, context) => {
       if (context?.pendingId) {

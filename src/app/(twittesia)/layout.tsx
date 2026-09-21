@@ -1,22 +1,21 @@
 import { UserIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { Suspense } from "react";
 
 import { AppNav } from "@/shared/components/app-nav";
-import { MobileNav } from "@/shared/components/mobile-nav";
+import { Icon } from "@/shared/components/icon";
 import { NavButton } from "@/shared/components/nav-button";
 import { SiteHeader } from "@/shared/components/site-header";
 import { TabBar } from "@/shared/components/tab-bar";
 import { TabBarButton } from "@/shared/components/tab-bar-button";
 import { APP_NAV_LINKS } from "@/shared/constants/app-nav-links";
 
+import { AccountDrawer } from "@/features/auth/components/account-drawer";
 import { LeaveNavButton } from "@/features/auth/components/leave-nav-button";
 import { NavUser } from "@/features/auth/components/nav-user";
 import { NavUserSkeleton } from "@/features/auth/components/nav-user-skeleton";
 import { SessionGuard } from "@/features/auth/components/session-guard";
 import { SessionProvider } from "@/features/auth/components/session-provider";
 import { ProfileNavLink } from "@/features/profiles/components/profile-nav-link";
-import { ProfileTabLink } from "@/features/profiles/components/profile-tab-link";
 import { LeaveDialog } from "@/features/settings/components/leave-dialog";
 import { SettingsMenuItem } from "@/features/settings/components/settings-menu-item";
 import { SettingsNavButton } from "@/features/settings/components/settings-nav-button";
@@ -30,20 +29,8 @@ export default function Layout({ children, modal }: LayoutProps<"/">) {
       <div className="mx-auto flex min-h-svh w-full max-w-4xl flex-col px-6 sm:px-10">
         {/* The page scrolls as a whole, so the wheel works over the margins too, and the header
             and sidebar stay in place */}
-        <div className="sticky top-0 z-40 bg-background">
-          <SiteHeader
-            leading={
-              <MobileNav
-                actions={
-                  <>
-                    <SettingsNavButton />
-                    <LeaveNavButton />
-                  </>
-                }
-              />
-            }
-            logoHref="/home"
-          />
+        <div className="sticky top-0 z-40 bg-background/80 backdrop-blur-xl">
+          <SiteHeader logoHref="/home" />
         </div>
 
         <div className="flex flex-1 gap-12">
@@ -52,7 +39,7 @@ export default function Layout({ children, modal }: LayoutProps<"/">) {
               <Suspense
                 fallback={
                   <NavButton disabled>
-                    <HugeiconsIcon icon={UserIcon} />
+                    <Icon icon={UserIcon} />
                     Profile
                   </NavButton>
                 }
@@ -69,7 +56,8 @@ export default function Layout({ children, modal }: LayoutProps<"/">) {
             </Suspense>
           </aside>
 
-          <main className="flex max-w-xl min-w-0 flex-1 flex-col gap-12 pt-4 pb-24">
+          {/* On a phone, room at the bottom for the floating tab bar */}
+          <main className="flex max-w-xl min-w-0 flex-1 flex-col gap-12 pt-4 pb-36 md:pb-24">
             {children}
           </main>
         </div>
@@ -77,12 +65,18 @@ export default function Layout({ children, modal }: LayoutProps<"/">) {
 
       <TabBar links={APP_NAV_LINKS}>
         <Suspense
-          fallback={
-            <TabBarButton disabled label="Profile" icon={<HugeiconsIcon icon={UserIcon} />} />
-          }
+          fallback={<TabBarButton disabled label="Profile" icon={<Icon icon={UserIcon} />} />}
         >
           <SessionProvider>
-            <ProfileTabLink />
+            <AccountDrawer
+              actions={
+                <>
+                  <ProfileNavLink />
+                  <SettingsNavButton />
+                  <LeaveNavButton />
+                </>
+              }
+            />
           </SessionProvider>
         </Suspense>
       </TabBar>

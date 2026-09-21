@@ -1,6 +1,6 @@
 import { KeyframeIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
+import { Icon } from "@/shared/components/icon";
 import {
   Empty,
   EmptyDescription,
@@ -15,7 +15,7 @@ export const ChatWithoutKey = () => (
   <Empty>
     <EmptyHeader>
       <EmptyMedia variant="icon">
-        <HugeiconsIcon icon={KeyframeIcon} />
+        <Icon icon={KeyframeIcon} />
       </EmptyMedia>
       <EmptyTitle>This tab doesn&apos;t have the key</EmptyTitle>
       <EmptyDescription>
