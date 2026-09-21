@@ -1,8 +1,8 @@
 "use client";
 
 import { ShieldKeyIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
+import { Icon } from "@/shared/components/icon";
 import { Button } from "@/shared/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover";
 
@@ -24,7 +24,7 @@ export const ChatSafetyNumber = ({ safetyNumber, otherName }: Props) => {
   return (
     <Popover>
       <PopoverTrigger render={<Button variant="ghost" size="sm" />}>
-        <HugeiconsIcon icon={ShieldKeyIcon} />
+        <Icon icon={ShieldKeyIcon} />
         Encrypted
       </PopoverTrigger>
       <PopoverContent align="end" className="w-80">

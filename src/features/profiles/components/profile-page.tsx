@@ -1,7 +1,7 @@
 import { NoteIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { notFound } from "next/navigation";
 
+import { Icon } from "@/shared/components/icon";
 import {
   Empty,
   EmptyDescription,
@@ -62,7 +62,7 @@ export const ProfilePage = async ({ username }: Props) => {
                 <Empty>
                   <EmptyHeader>
                     <EmptyMedia variant="icon">
-                      <HugeiconsIcon icon={NoteIcon} />
+                      <Icon icon={NoteIcon} />
                     </EmptyMedia>
                     <EmptyTitle>Nothing left to read</EmptyTitle>
                     <EmptyDescription>

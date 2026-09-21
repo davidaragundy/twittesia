@@ -1,10 +1,10 @@
 "use client";
 
 import { Camera01Icon, CameraRotated01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { cn } from "cn";
 import Image from "next/image";
 
+import { Icon } from "@/shared/components/icon";
 import { SegmentedControl } from "@/shared/components/segmented-control";
 import { Button } from "@/shared/components/ui/button";
 import { Spinner } from "@/shared/components/ui/spinner";
@@ -133,7 +133,7 @@ export const CameraCapture = ({ onCapture }: Props) => {
               aria-label="Switch camera"
               className="justify-self-end"
             >
-              <HugeiconsIcon icon={CameraRotated01Icon} className="size-5" />
+              <Icon icon={CameraRotated01Icon} className="size-5" />
             </Button>
           ) : (
             <span />

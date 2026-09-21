@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type KeyboardEvent, useId } from "react";
+import type { KeyboardEvent } from "react";
 import { useForm, useWatch } from "react-hook-form";
 
 import { tryCatch } from "@/shared/utils/try-catch";
@@ -12,16 +12,9 @@ import { useCreatePostMutation } from "@/features/posts/hooks/use-create-post-mu
 import { createPostFormSchema } from "@/features/posts/schemas/create-post-form-schema";
 import type { CreatePostFormValues } from "@/features/posts/types/create-post-form-values";
 
-interface Props {
-  // Called once the post is on its way, for a composer that should close then
-  onPublished?: () => void;
-}
-
 // Suspends until the session resolves: render it below a <Suspense> boundary
-export const usePostComposer = ({ onPublished }: Props = {}) => {
+export const usePostComposer = () => {
   const session = useSession();
-  // More than one composer can be on the page, as the feed's and the dialog's
-  const id = useId();
 
   const form = useForm<CreatePostFormValues>({
     mode: "onChange",
@@ -38,10 +31,7 @@ export const usePostComposer = ({ onPublished }: Props = {}) => {
   const { mutate, isPending: isPublishing } = useCreatePostMutation({
     form,
     user: session?.user,
-    onPublished: () => {
-      clearDrafts();
-      onPublished?.();
-    },
+    onPublished: clearDrafts,
   });
 
   // Read at the top, like every other form hook: a formState read buried in the returned object
@@ -73,7 +63,6 @@ export const usePostComposer = ({ onPublished }: Props = {}) => {
   };
 
   return {
-    id,
     form,
     user: session?.user,
     onSubmit,

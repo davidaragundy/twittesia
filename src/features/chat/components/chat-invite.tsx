@@ -1,9 +1,9 @@
 "use client";
 
 import { Alert01Icon, Share08Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
 import { CopyToClipboard } from "@/shared/components/copy-to-clipboard";
+import { Icon } from "@/shared/components/icon";
 import { Alert, AlertDescription, AlertTitle } from "@/shared/components/ui/alert";
 import { Button } from "@/shared/components/ui/button";
 import { Skeleton } from "@/shared/components/ui/skeleton";
@@ -28,7 +28,7 @@ export const ChatInvite = ({ chatId }: Props) => {
   if (!invite) {
     return (
       <Alert>
-        <HugeiconsIcon icon={Alert01Icon} />
+        <Icon icon={Alert01Icon} />
         <AlertTitle>The key is gone from this tab</AlertTitle>
         <AlertDescription>
           The link cannot be shown again. Start another chat to get a new one.
@@ -59,7 +59,7 @@ export const ChatInvite = ({ chatId }: Props) => {
         <CopyToClipboard id="chat-invite" value={invite} />
         {canShare && (
           <Button variant="secondary" onClick={share}>
-            <HugeiconsIcon icon={Share08Icon} data-icon="inline-start" />
+            <Icon icon={Share08Icon} data-icon="inline-start" />
             Share invite
           </Button>
         )}

@@ -1,6 +1,7 @@
 import { MusicNote03Icon, PlayIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import Image from "next/image";
+
+import { Icon } from "@/shared/components/icon";
 
 import type { MediaDraft } from "@/features/media/types/media-draft";
 
@@ -34,7 +35,7 @@ export const MediaDraftPreview = ({ draft }: Props) => {
           className="size-full object-cover"
         />
         <span className="absolute bottom-1.5 left-1.5 flex size-6 items-center justify-center rounded-full bg-background/80 backdrop-blur">
-          <HugeiconsIcon icon={PlayIcon} className="size-3" />
+          <Icon icon={PlayIcon} className="size-3" />
         </span>
       </>
     );
@@ -42,7 +43,7 @@ export const MediaDraftPreview = ({ draft }: Props) => {
 
   return (
     <div className="flex size-full flex-col items-center justify-center gap-1.5 p-2 text-muted-foreground">
-      <HugeiconsIcon icon={MusicNote03Icon} className="size-5" />
+      <Icon icon={MusicNote03Icon} className="size-5" />
       <span className="w-full truncate text-center text-2xs">{draft.file.name}</span>
     </div>
   );

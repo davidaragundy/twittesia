@@ -1,7 +1,7 @@
 import { Search01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 
+import { Icon } from "@/shared/components/icon";
 import { Button } from "@/shared/components/ui/button";
 import {
   Empty,
@@ -17,7 +17,7 @@ export default function NotFound() {
     <Empty>
       <EmptyHeader>
         <EmptyMedia variant="icon">
-          <HugeiconsIcon icon={Search01Icon} />
+          <Icon icon={Search01Icon} />
         </EmptyMedia>
         <EmptyTitle>Page not found</EmptyTitle>
         <EmptyDescription>It may have reached its expiry, or it never existed.</EmptyDescription>

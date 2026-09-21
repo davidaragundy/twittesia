@@ -1,19 +1,20 @@
 "use client";
 
-import { AnonymousIcon, BubbleChatIcon, ViewIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
+import { AnonymousIcon, BubbleChatIcon } from "@hugeicons/core-free-icons";
 import Link from "next/link";
 
 import { ConfirmDialog } from "@/shared/components/confirm-dialog";
 import { DeleteActionsMenu } from "@/shared/components/delete-actions-menu";
+import { Icon } from "@/shared/components/icon";
 import { RelativeTime } from "@/shared/components/relative-time";
 import { SeededAvatar } from "@/shared/components/seeded-avatar";
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
 import { Button } from "@/shared/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
+import { ViewCount } from "@/shared/components/view-count";
 import { cn } from "@/shared/utils/cn";
 
 import { MediaGallery } from "@/features/media/components/media-gallery";
+import { PostReactionPicker } from "@/features/posts/components/post-reaction-picker";
 import { PostReactions } from "@/features/posts/components/post-reactions";
 import { DELETE_POST_DIALOG_COPY } from "@/features/posts/constants/delete-post-dialog-copy";
 import { VIEW_COUNT_FORMAT } from "@/features/posts/constants/view-count-format";
@@ -46,7 +47,8 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
       data-view-id={post.isPending ? undefined : post.id}
       data-view-mine={post.isMine}
       className={cn(
-        "flex gap-4",
+        // Reaches into the margins so its hover can be round without moving the text
+        "-mx-4 flex gap-4 rounded-3xl px-4 py-4 transition-colors hover:bg-muted/40",
         // On its way: it breathes until it lands, and there is nothing to do to it yet
         post.isPending && "animate-pulse",
       )}
@@ -58,14 +60,14 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
       ) : (
         <Avatar size="lg" className="shrink-0">
           <AvatarFallback>
-            <HugeiconsIcon icon={AnonymousIcon} className="size-5" />
+            <Icon icon={AnonymousIcon} />
           </AvatarFallback>
         </Avatar>
       )}
 
-      <div className="flex min-w-0 flex-1 flex-col gap-3 rounded-3xl bg-muted/30 px-5 pt-4 pb-3 transition-colors hover:bg-muted/50">
-        <header className="flex items-start justify-between gap-3">
-          <div className="flex min-w-0 flex-col gap-0.5">
+      <div className="flex min-w-0 flex-1 flex-col gap-2">
+        <header className="flex items-center gap-3">
+          <div className="flex min-w-0 flex-1 items-baseline gap-1.5">
             {author ? (
               <Link
                 id={`post-${post.id}-author`}
@@ -79,20 +81,19 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
                 Someone who left
               </span>
             )}
-            <div className="flex min-w-0 items-center gap-1.5 text-sm text-muted-foreground">
-              {author && <span className="truncate handle">@{author.displayUsername}</span>}
-              {author && <span aria-hidden>·</span>}
-              {author ? (
-                <Link
-                  href={getPostPath({ username: author.username, postId: post.id })}
-                  className="shrink-0 hover:text-foreground"
-                >
-                  {time}
-                </Link>
-              ) : (
-                <span className="shrink-0">{time}</span>
-              )}
-            </div>
+            <span aria-hidden className="text-sm text-muted-foreground">
+              ·
+            </span>
+            {author ? (
+              <Link
+                href={getPostPath({ username: author.username, postId: post.id })}
+                className="shrink-0 text-sm text-muted-foreground hover:text-foreground"
+              >
+                {time}
+              </Link>
+            ) : (
+              <span className="shrink-0 text-sm text-muted-foreground">{time}</span>
+            )}
           </div>
           {post.isMine && !post.isPending && (
             <DeleteActionsMenu subject="Post" onDelete={requestDelete} />
@@ -107,9 +108,12 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
 
         <MediaGallery media={post.media} />
 
-        {/* Pulled left by the buttons' own padding, so their icons line up with the text */}
-        <footer className="-ml-2 flex flex-wrap items-center justify-between gap-2">
-          <div className="flex flex-wrap items-center gap-1">
+        <PostReactions post={post} disabled={post.isPending} />
+
+        {/* One row that never wraps, pulled left by the buttons' own padding so their icons line
+            up with the text */}
+        <footer className="-ml-2 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1">
             {author && (
               <Button
                 variant="ghost"
@@ -123,27 +127,16 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
                 }
                 nativeButton={false}
               >
-                <HugeiconsIcon icon={BubbleChatIcon} data-icon="inline-start" />
+                <Icon icon={BubbleChatIcon} data-icon="inline-start" />
                 {post.commentCount}
               </Button>
             )}
-            <PostReactions post={post} disabled={post.isPending} />
+            <PostReactionPicker post={post} disabled={post.isPending} />
           </div>
-          <Tooltip>
-            <TooltipTrigger
-              render={
-                <span
-                  role="img"
-                  aria-label={formatViewCount(post.viewCount)}
-                  className="flex items-center gap-1.5 text-xs text-muted-foreground tabular-nums"
-                />
-              }
-            >
-              <HugeiconsIcon icon={ViewIcon} className="size-3.5" />
-              {VIEW_COUNT_FORMAT.format(post.viewCount)}
-            </TooltipTrigger>
-            <TooltipContent>{formatViewCount(post.viewCount)}</TooltipContent>
-          </Tooltip>
+          <ViewCount
+            count={VIEW_COUNT_FORMAT.format(post.viewCount)}
+            label={formatViewCount(post.viewCount)}
+          />
         </footer>
       </div>
 

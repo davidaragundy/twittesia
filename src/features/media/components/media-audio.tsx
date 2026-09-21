@@ -7,9 +7,9 @@ import {
   VolumeHighIcon,
   VolumeMute02Icon,
 } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { cn } from "cn";
 
+import { Icon } from "@/shared/components/icon";
 import { Button } from "@/shared/components/ui/button";
 
 import { MediaSeekBar } from "@/features/media/components/media-seek-bar";
@@ -38,10 +38,10 @@ export const MediaAudio = ({ media, className }: Props) => {
         aria-label={isPlaying ? "Pause" : "Play"}
         className="size-10 shrink-0"
       >
-        <HugeiconsIcon icon={isPlaying ? PauseIcon : PlayIcon} className="size-4" />
+        <Icon icon={isPlaying ? PauseIcon : PlayIcon} className="size-4" />
       </Button>
 
-      <HugeiconsIcon
+      <Icon
         icon={MusicNote03Icon}
         className="hidden size-4 shrink-0 text-muted-foreground sm:block"
       />
@@ -56,7 +56,7 @@ export const MediaAudio = ({ media, className }: Props) => {
         aria-label={isMuted ? "Unmute" : "Mute"}
         className="shrink-0"
       >
-        <HugeiconsIcon icon={isMuted ? VolumeMute02Icon : VolumeHighIcon} className="size-4" />
+        <Icon icon={isMuted ? VolumeMute02Icon : VolumeHighIcon} className="size-4" />
       </Button>
     </div>
   );

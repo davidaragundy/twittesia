@@ -1,9 +1,9 @@
 "use client";
 
 import { Delete02Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
 import { ConfirmDialog } from "@/shared/components/confirm-dialog";
+import { Icon } from "@/shared/components/icon";
 import { Button } from "@/shared/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
 
@@ -23,7 +23,7 @@ export const EndChatButton = ({ chatId, isLabelled = false }: Props) => {
     <>
       {isLabelled ? (
         <Button variant="ghost" onClick={() => onOpenChange(true)}>
-          <HugeiconsIcon icon={Delete02Icon} data-icon="inline-start" />
+          <Icon icon={Delete02Icon} data-icon="inline-start" />
           End this chat
         </Button>
       ) : (
@@ -38,7 +38,7 @@ export const EndChatButton = ({ chatId, isLabelled = false }: Props) => {
               />
             }
           >
-            <HugeiconsIcon icon={Delete02Icon} />
+            <Icon icon={Delete02Icon} />
           </TooltipTrigger>
           <TooltipContent>End this chat</TooltipContent>
         </Tooltip>

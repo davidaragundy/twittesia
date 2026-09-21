@@ -1,8 +1,8 @@
 "use client";
 
 import { BubbleChatLockIcon, ShieldKeyIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
+import { Icon } from "@/shared/components/icon";
 import {
   Empty,
   EmptyDescription,
@@ -48,7 +48,7 @@ export const ChatMessages = ({ messages, otherName, isOtherTyping, isOtherHere }
               <MessageScrollerItem>
                 <Marker className="justify-center">
                   <MarkerIcon>
-                    <HugeiconsIcon icon={ShieldKeyIcon} />
+                    <Icon icon={ShieldKeyIcon} />
                   </MarkerIcon>
                   <MarkerContent>Only the two of you can read this</MarkerContent>
                 </Marker>
@@ -58,7 +58,7 @@ export const ChatMessages = ({ messages, otherName, isOtherTyping, isOtherHere }
                 <Empty>
                   <EmptyHeader>
                     <EmptyMedia variant="icon">
-                      <HugeiconsIcon icon={BubbleChatLockIcon} />
+                      <Icon icon={BubbleChatLockIcon} />
                     </EmptyMedia>
                     <EmptyTitle>Nothing here, and nothing kept</EmptyTitle>
                     <EmptyDescription>

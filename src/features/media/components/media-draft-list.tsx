@@ -1,6 +1,6 @@
 import { Cancel01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
+import { Icon } from "@/shared/components/icon";
 import { Button } from "@/shared/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
 
@@ -52,7 +52,7 @@ export const MediaDraftList = ({ drafts, progress, isUploading, onRemove }: Prop
                   />
                 }
               >
-                <HugeiconsIcon icon={Cancel01Icon} />
+                <Icon icon={Cancel01Icon} />
               </TooltipTrigger>
               <TooltipContent>Remove</TooltipContent>
             </Tooltip>

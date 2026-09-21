@@ -1,8 +1,8 @@
 "use client";
 
 import { SmileIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
+import { Icon } from "@/shared/components/icon";
 import { Button } from "@/shared/components/ui/button";
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "@/shared/components/ui/drawer";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover";
@@ -38,7 +38,7 @@ export const ReactionPicker = ({ reactions, onToggle, disabled }: Props) => {
     return (
       <Drawer open={isOpen} onOpenChange={onOpenChange}>
         <DrawerTrigger render={button}>
-          <HugeiconsIcon icon={SmileIcon} />
+          <Icon icon={SmileIcon} />
         </DrawerTrigger>
         <DrawerContent>
           <DrawerTitle className="sr-only">Add reaction</DrawerTitle>
@@ -52,7 +52,7 @@ export const ReactionPicker = ({ reactions, onToggle, disabled }: Props) => {
     <Popover open={isOpen} onOpenChange={onOpenChange}>
       <Tooltip>
         <TooltipTrigger render={<PopoverTrigger render={button} />}>
-          <HugeiconsIcon icon={SmileIcon} />
+          <Icon icon={SmileIcon} />
         </TooltipTrigger>
         <TooltipContent>Add reaction</TooltipContent>
       </Tooltip>

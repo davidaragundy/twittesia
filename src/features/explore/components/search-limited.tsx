@@ -1,6 +1,6 @@
 import { Clock01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
+import { Icon } from "@/shared/components/icon";
 import {
   Empty,
   EmptyDescription,
@@ -14,7 +14,7 @@ export const SearchLimited = () => (
   <Empty>
     <EmptyHeader>
       <EmptyMedia variant="icon">
-        <HugeiconsIcon icon={Clock01Icon} />
+        <Icon icon={Clock01Icon} />
       </EmptyMedia>
       <EmptyTitle>Too many searches</EmptyTitle>
       <EmptyDescription>Give it a moment, then search again.</EmptyDescription>

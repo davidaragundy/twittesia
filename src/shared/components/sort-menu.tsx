@@ -1,8 +1,8 @@
 "use client";
 
 import { ArrowDown01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
+import { Icon } from "@/shared/components/icon";
 import { Button } from "@/shared/components/ui/button";
 import {
   DropdownMenu,
@@ -47,9 +47,9 @@ export function SortMenu<Value extends string>({
           />
         }
       >
-        <HugeiconsIcon icon={current.icon} data-icon="inline-start" />
+        <Icon icon={current.icon} data-icon="inline-start" />
         {current.label}
-        <HugeiconsIcon icon={ArrowDown01Icon} data-icon="inline-end" />
+        <Icon icon={ArrowDown01Icon} data-icon="inline-end" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-48">
         <DropdownMenuGroup>
@@ -57,7 +57,7 @@ export function SortMenu<Value extends string>({
           <DropdownMenuRadioGroup value={value} onValueChange={select}>
             {options.map((option) => (
               <DropdownMenuRadioItem key={option.value} value={option.value}>
-                <HugeiconsIcon icon={option.icon} />
+                <Icon icon={option.icon} />
                 {option.label}
               </DropdownMenuRadioItem>
             ))}

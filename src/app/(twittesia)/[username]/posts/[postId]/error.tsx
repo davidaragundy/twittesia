@@ -1,8 +1,8 @@
 "use client";
 
 import { Alert02Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
+import { Icon } from "@/shared/components/icon";
 import { Button } from "@/shared/components/ui/button";
 import {
   Empty,
@@ -23,7 +23,7 @@ export default function Error({ retry }: Props) {
       <title>Twittesia | Error</title>
       <EmptyHeader>
         <EmptyMedia variant="icon">
-          <HugeiconsIcon icon={Alert02Icon} />
+          <Icon icon={Alert02Icon} />
         </EmptyMedia>
         <EmptyTitle>Something went wrong</EmptyTitle>
         <EmptyDescription>We couldn&apos;t load this post. Try again.</EmptyDescription>

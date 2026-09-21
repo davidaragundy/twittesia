@@ -1,8 +1,8 @@
 "use client";
 
 import { AtIcon, UserIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
+import { Icon } from "@/shared/components/icon";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/shared/components/ui/field";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/shared/components/ui/input-group";
 
@@ -19,7 +19,7 @@ export function AccountDetails() {
         <FieldLabel htmlFor="account-details-name">Name</FieldLabel>
         <InputGroup>
           <InputGroupAddon>
-            <HugeiconsIcon icon={UserIcon} />
+            <Icon icon={UserIcon} />
           </InputGroupAddon>
           <InputGroupInput id="account-details-name" value={session?.user.name ?? ""} disabled />
         </InputGroup>
@@ -31,7 +31,7 @@ export function AccountDetails() {
         <FieldLabel htmlFor="account-details-username">Username</FieldLabel>
         <InputGroup>
           <InputGroupAddon>
-            <HugeiconsIcon icon={AtIcon} />
+            <Icon icon={AtIcon} />
           </InputGroupAddon>
           <InputGroupInput
             id="account-details-username"

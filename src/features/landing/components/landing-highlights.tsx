@@ -1,5 +1,4 @@
-import { HugeiconsIcon } from "@hugeicons/react";
-
+import { Icon } from "@/shared/components/icon";
 import {
   Item,
   ItemContent,
@@ -16,11 +15,11 @@ export const LandingHighlights = () => (
       What you can do
     </h2>
 
-    <div className="grid gap-3 sm:grid-cols-2">
+    <div className="grid gap-8 sm:grid-cols-2">
       {LANDING_HIGHLIGHTS.map((highlight) => (
-        <Item key={highlight.title} variant="muted">
+        <Item key={highlight.title}>
           <ItemMedia variant="icon">
-            <HugeiconsIcon icon={highlight.icon} />
+            <Icon icon={highlight.icon} />
           </ItemMedia>
           <ItemContent>
             <ItemTitle>

@@ -1,7 +1,6 @@
 "use client";
 
 import { SortMenu } from "@/shared/components/sort-menu";
-import { StickyBar } from "@/shared/components/sticky-bar";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Spinner } from "@/shared/components/ui/spinner";
 
@@ -22,9 +21,9 @@ export const ProfileComments = ({ username, displayUsername, initialPage }: Prop
 
   return (
     <div className="flex flex-col gap-4">
-      <StickyBar>
+      <div className="-ml-2.5 flex">
         <SortMenu label="Sort comments" options={COMMENT_SORTS} value={sort} onChange={setSort} />
-      </StickyBar>
+      </div>
 
       {isPending && <Skeleton className="h-24 w-full" />}
 
@@ -35,7 +34,7 @@ export const ProfileComments = ({ username, displayUsername, initialPage }: Prop
       )}
 
       {!isPending && !!comments.length && (
-        <div ref={containerRef} className="flex flex-col gap-3">
+        <div ref={containerRef} className="flex flex-col gap-1">
           {comments.map((comment) => (
             <ProfileCommentItem key={comment.id} comment={comment} />
           ))}

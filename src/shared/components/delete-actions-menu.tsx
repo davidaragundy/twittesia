@@ -1,8 +1,8 @@
 "use client";
 
 import { Delete02Icon, MoreHorizontalIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
+import { Icon } from "@/shared/components/icon";
 import { Button } from "@/shared/components/ui/button";
 import {
   DropdownMenu,
@@ -26,15 +26,15 @@ export const DeleteActionsMenu = ({ subject, onDelete }: Props) => (
           variant="ghost"
           size="icon-sm"
           aria-label={`${subject} actions`}
-          className="-mt-1 -mr-1"
+          className="-my-1.5 -mr-2"
         />
       }
     >
-      <HugeiconsIcon icon={MoreHorizontalIcon} />
+      <Icon icon={MoreHorizontalIcon} />
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end" className="min-w-44">
       <DropdownMenuItem variant="destructive" onClick={onDelete}>
-        <HugeiconsIcon icon={Delete02Icon} />
+        <Icon icon={Delete02Icon} />
         Delete {subject.toLowerCase()}
       </DropdownMenuItem>
     </DropdownMenuContent>

@@ -1,10 +1,10 @@
 "use client";
 
 import { ArrowUp02Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { Controller } from "react-hook-form";
 
 import { CharacterCountRing } from "@/shared/components/character-count-ring";
+import { Icon } from "@/shared/components/icon";
 import { SeededAvatar } from "@/shared/components/seeded-avatar";
 import {
   InputGroup,
@@ -23,15 +23,8 @@ import { MAX_POST_LENGTH } from "@/features/posts/constants/max-post-length";
 import { MAX_POST_MEDIA } from "@/features/posts/constants/max-post-media";
 import { usePostComposer } from "@/features/posts/hooks/use-post-composer";
 
-interface Props {
-  onPublished?: () => void;
-  // For a composer that opens to be written in, such as the one in the dialog
-  autoFocus?: boolean;
-}
-
-export const PostComposer = ({ onPublished, autoFocus }: Props) => {
+export const PostComposer = () => {
   const {
-    id,
     form,
     user,
     onSubmit,
@@ -45,7 +38,7 @@ export const PostComposer = ({ onPublished, autoFocus }: Props) => {
     addFiles,
     removeDraft,
     canAttach,
-  } = usePostComposer({ onPublished });
+  } = usePostComposer();
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-4">
@@ -57,13 +50,12 @@ export const PostComposer = ({ onPublished, autoFocus }: Props) => {
         disabled={isPending}
         render={({ field }) => (
           <InputGroup>
-            <label htmlFor={id} className="sr-only">
+            <label htmlFor="post-composer-content" className="sr-only">
               What&apos;s on your mind?
             </label>
             <InputGroupTextarea
               {...field}
-              id={id}
-              autoFocus={autoFocus}
+              id="post-composer-content"
               placeholder="What's on your mind?"
               aria-invalid={length > 0 && !canSubmit && !isPending}
               onKeyDown={onKeyDown}
@@ -101,7 +93,7 @@ export const PostComposer = ({ onPublished, autoFocus }: Props) => {
                       />
                     }
                   >
-                    {isPending ? <Spinner /> : <HugeiconsIcon icon={ArrowUp02Icon} />}
+                    {isPending ? <Spinner /> : <Icon icon={ArrowUp02Icon} />}
                   </TooltipTrigger>
                   <TooltipContent>
                     Post

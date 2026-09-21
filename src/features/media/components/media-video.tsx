@@ -7,9 +7,9 @@ import {
   VolumeHighIcon,
   VolumeMute02Icon,
 } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { cn } from "cn";
 
+import { Icon } from "@/shared/components/icon";
 import { Button } from "@/shared/components/ui/button";
 
 import { MediaSeekBar } from "@/features/media/components/media-seek-bar";
@@ -67,7 +67,7 @@ export const MediaVideo = ({ media, aspectRatio, className }: Props) => {
           aria-label="Play"
           className="absolute inset-0 m-auto"
         >
-          <HugeiconsIcon icon={PlayIcon} />
+          <Icon icon={PlayIcon} />
         </Button>
       )}
 
@@ -86,7 +86,7 @@ export const MediaVideo = ({ media, aspectRatio, className }: Props) => {
           aria-label={isPlaying ? "Pause" : "Play"}
           className="shrink-0"
         >
-          <HugeiconsIcon icon={isPlaying ? PauseIcon : PlayIcon} />
+          <Icon icon={isPlaying ? PauseIcon : PlayIcon} />
         </Button>
         <MediaSeekBar currentTime={currentTime} duration={duration} onSeek={seek} />
         <Button
@@ -97,7 +97,7 @@ export const MediaVideo = ({ media, aspectRatio, className }: Props) => {
           aria-label={isMuted ? "Unmute" : "Mute"}
           className="shrink-0"
         >
-          <HugeiconsIcon icon={isMuted ? VolumeMute02Icon : VolumeHighIcon} />
+          <Icon icon={isMuted ? VolumeMute02Icon : VolumeHighIcon} />
         </Button>
         <Button
           type="button"
@@ -107,7 +107,7 @@ export const MediaVideo = ({ media, aspectRatio, className }: Props) => {
           aria-label="Full screen"
           className="shrink-0"
         >
-          <HugeiconsIcon icon={FullScreenIcon} />
+          <Icon icon={FullScreenIcon} />
         </Button>
       </div>
     </div>

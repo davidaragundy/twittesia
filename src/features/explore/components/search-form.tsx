@@ -1,10 +1,9 @@
 "use client";
 
 import { Cancel01Icon, Search01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
+import { Icon } from "@/shared/components/icon";
 import { SortMenu } from "@/shared/components/sort-menu";
-import { StickyBar } from "@/shared/components/sticky-bar";
 import {
   InputGroup,
   InputGroupAddon,
@@ -30,12 +29,12 @@ export const SearchForm = ({ query, scope }: Props) => {
   });
 
   return (
-    // The search stays in reach while the results scroll, with what it covers beside it
-    <StickyBar>
+    // What a search covers sits beside it, once there is something to narrow
+    <div className="flex items-center gap-2">
       <form onSubmit={onSubmit} role="search" className="flex-1">
         <InputGroup>
           <InputGroupAddon>
-            {isSearching ? <Spinner /> : <HugeiconsIcon icon={Search01Icon} />}
+            {isSearching ? <Spinner /> : <Icon icon={Search01Icon} />}
           </InputGroupAddon>
           <InputGroupInput
             name="q"
@@ -56,7 +55,7 @@ export const SearchForm = ({ query, scope }: Props) => {
                 aria-label="Clear search"
                 onClick={onClear}
               >
-                <HugeiconsIcon icon={Cancel01Icon} />
+                <Icon icon={Cancel01Icon} />
               </InputGroupButton>
             </InputGroupAddon>
           )}
@@ -72,6 +71,6 @@ export const SearchForm = ({ query, scope }: Props) => {
           onChange={onScopeChange}
         />
       )}
-    </StickyBar>
+    </div>
   );
 };

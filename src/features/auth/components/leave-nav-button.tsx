@@ -1,8 +1,8 @@
 "use client";
 
 import { Logout01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
+import { Icon } from "@/shared/components/icon";
 import { NavButton } from "@/shared/components/nav-button";
 
 import { writeLeaveOpen } from "@/features/auth/utils/write-leave-open";
@@ -12,7 +12,7 @@ import { writeLeaveOpen } from "@/features/auth/utils/write-leave-open";
 export function LeaveNavButton() {
   return (
     <NavButton onClick={() => writeLeaveOpen(true)} variant="ghost">
-      <HugeiconsIcon icon={Logout01Icon} />
+      <Icon icon={Logout01Icon} />
       Leave
     </NavButton>
   );

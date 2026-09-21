@@ -1,5 +1,6 @@
 import { MusicNote03Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
+
+import { Icon } from "@/shared/components/icon";
 
 import { MediaAudio } from "@/features/media/components/media-audio";
 import { MediaImage } from "@/features/media/components/media-image";
@@ -32,7 +33,7 @@ export const MediaSlide = ({ media, aspectRatio }: Props) => {
       style={{ "--media-aspect": aspectRatio } as React.CSSProperties}
     >
       <span className="flex size-16 items-center justify-center rounded-full bg-background/70 text-muted-foreground">
-        <HugeiconsIcon icon={MusicNote03Icon} className="size-7" />
+        <Icon icon={MusicNote03Icon} className="size-7" />
       </span>
       <MediaAudio media={media} className="w-full max-w-sm" />
     </div>

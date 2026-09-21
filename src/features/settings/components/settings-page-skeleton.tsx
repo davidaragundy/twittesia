@@ -10,8 +10,6 @@ export const SettingsPageSkeleton = () => (
       <Skeleton className="h-5 w-full max-w-sm" />
     </div>
     <Skeleton className="h-9 w-28" />
-    <div className="rounded-3xl bg-muted/30 p-6">
-      <AccountDetailsSkeleton />
-    </div>
+    <AccountDetailsSkeleton />
   </div>
 );

@@ -1,8 +1,8 @@
 "use client";
 
 import { BubbleChatAddIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
+import { Icon } from "@/shared/components/icon";
 import { Button } from "@/shared/components/ui/button";
 import { Spinner } from "@/shared/components/ui/spinner";
 
@@ -13,11 +13,7 @@ export const StartChatButton = () => {
 
   return (
     <Button onClick={() => mutate()} disabled={isPending}>
-      {isPending ? (
-        <Spinner data-icon="inline-start" />
-      ) : (
-        <HugeiconsIcon icon={BubbleChatAddIcon} />
-      )}
+      {isPending ? <Spinner data-icon="inline-start" /> : <Icon icon={BubbleChatAddIcon} />}
       Start a chat
     </Button>
   );
