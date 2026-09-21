@@ -1,7 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
-
-import { Spinner } from "@/shared/components/ui/spinner";
 
 import { SessionProvider } from "@/features/auth/components/session-provider";
 import { SettingsPage } from "@/features/settings/components/settings-page";
@@ -17,10 +14,8 @@ export const generateStaticParams = () =>
 // Loaded directly, shared or refreshed: settings as a page rather than a dialog
 export default function SettingsRoute({ params }: PageProps<"/settings/[section]">) {
   return (
-    <Suspense fallback={<Spinner className="self-center" />}>
-      <SessionProvider>
-        <SettingsPage params={params} />
-      </SessionProvider>
-    </Suspense>
+    <SessionProvider>
+      <SettingsPage params={params} />
+    </SessionProvider>
   );
 }

@@ -18,9 +18,9 @@ import { LeaveDialog } from "@/features/settings/components/leave-dialog";
 import { SettingsMenuItem } from "@/features/settings/components/settings-menu-item";
 import { SettingsNavButton } from "@/features/settings/components/settings-nav-button";
 
-// Not async: nothing here waits for the request, so the whole shell prerenders. Each part
-// that needs the session reads it inside its own <Suspense> boundary; the reads share one
-// lookup per request.
+// Not async: nothing here waits for the request, so the shell streams at once and a page's
+// loading state shows the instant it is clicked. Each part that needs the session reads it
+// inside its own <Suspense> boundary; the reads share one lookup per request.
 export default function Layout({ children, modal }: LayoutProps<"/">) {
   const profileLink = (
     <Suspense

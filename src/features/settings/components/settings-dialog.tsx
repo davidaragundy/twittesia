@@ -1,7 +1,6 @@
 "use client";
 
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Suspense } from "react";
 
 import { NavButton } from "@/shared/components/nav-button";
 import {
@@ -18,7 +17,6 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/shared/components/ui/drawer";
-import { Spinner } from "@/shared/components/ui/spinner";
 import { ToggleGroup, ToggleGroupItem } from "@/shared/components/ui/toggle-group";
 
 import { SettingsContent } from "@/features/settings/components/settings-content";
@@ -78,7 +76,7 @@ export function SettingsDialog({ params }: Props) {
                 </ToggleGroupItem>
               ))}
             </ToggleGroup>
-            <Suspense fallback={<Spinner className="self-center" />}>{content}</Suspense>
+            {content}
           </div>
         </DrawerContent>
       </Drawer>
@@ -95,7 +93,7 @@ export function SettingsDialog({ params }: Props) {
         <div className="flex gap-20">
           <div className="w-44 shrink-0">{navigation}</div>
           <div className="-mr-10 no-scrollbar max-h-[70vh] min-w-0 flex-1 overflow-y-auto pr-10">
-            <Suspense fallback={<Spinner />}>{content}</Suspense>
+            {content}
           </div>
         </div>
       </DialogContent>

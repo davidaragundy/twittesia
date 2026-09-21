@@ -1,7 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
-
-import { Spinner } from "@/shared/components/ui/spinner";
 
 import { JoinPage } from "@/features/chat/components/join-page";
 
@@ -12,9 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function JoinRoute({ params }: PageProps<"/join/[chatId]">) {
-  return (
-    <Suspense fallback={<Spinner className="mx-auto mt-24" />}>
-      <JoinPage params={params} />
-    </Suspense>
-  );
+  return <JoinPage params={params} />;
 }
