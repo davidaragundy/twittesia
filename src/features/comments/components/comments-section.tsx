@@ -36,6 +36,7 @@ export async function CommentsSection({ params }: Props) {
               <CommentComposer
                 postId={postId}
                 viewerHandle={session.user.username ?? session.user.id}
+                viewerName={session.user.name}
               />
             )
           }

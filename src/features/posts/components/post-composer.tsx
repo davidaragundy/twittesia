@@ -41,73 +41,78 @@ export const PostComposer = () => {
   } = usePostComposer();
 
   return (
+    // Laid out like the post it becomes: the avatar, the name, then what it will say
     <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-4">
-      {user && <SeededAvatar seed={user.username ?? user.id} size="lg" className="mt-1" />}
+      {user && <SeededAvatar seed={user.username ?? user.id} size="lg" />}
 
-      <Controller
-        name="content"
-        control={form.control}
-        disabled={isPending}
-        render={({ field }) => (
-          <InputGroup>
-            <label htmlFor="post-composer-content" className="sr-only">
-              What&apos;s on your mind?
-            </label>
-            <InputGroupTextarea
-              {...field}
-              id="post-composer-content"
-              placeholder="What's on your mind?"
-              aria-invalid={length > 0 && !canSubmit && !isPending}
-              onKeyDown={onKeyDown}
-              className="max-h-72 min-h-20"
-            />
-            <MediaDraftList
-              drafts={drafts}
-              progress={progress}
-              isUploading={isUploading}
-              onRemove={removeDraft}
-            />
-            <InputGroupAddon align="block-end">
-              <div className="flex items-center gap-0.5">
-                <MediaPicker
-                  onPick={addFiles}
-                  multiple={MAX_POST_MEDIA > 1}
-                  disabled={!canAttach}
-                />
-                <MediaCaptureButtons onCapture={addFiles} disabled={!canAttach} />
-              </div>
-              <span className="hidden text-xs text-muted-foreground sm:inline">
-                ⌘ Enter to post
-              </span>
-              <div className="ml-auto flex items-center gap-3">
-                <CharacterCountRing length={length} max={MAX_POST_LENGTH} />
-                <Tooltip>
-                  <TooltipTrigger
-                    render={
-                      <InputGroupButton
-                        type="submit"
-                        variant="default"
-                        size="icon-sm"
-                        disabled={!canSubmit}
-                        aria-label="Post"
-                      />
-                    }
-                  >
-                    {isPending ? <Spinner /> : <Icon icon={ArrowUp02Icon} />}
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    Post
-                    <KbdGroup>
-                      <Kbd>⌘</Kbd>
-                      <Kbd>Enter</Kbd>
-                    </KbdGroup>
-                  </TooltipContent>
-                </Tooltip>
-              </div>
-            </InputGroupAddon>
-          </InputGroup>
-        )}
-      />
+      <div className="flex min-w-0 flex-1 flex-col gap-2">
+        {user && <p className="truncate font-semibold">{user.name}</p>}
+
+        <Controller
+          name="content"
+          control={form.control}
+          disabled={isPending}
+          render={({ field }) => (
+            <InputGroup>
+              <label htmlFor="post-composer-content" className="sr-only">
+                What&apos;s on your mind?
+              </label>
+              <InputGroupTextarea
+                {...field}
+                id="post-composer-content"
+                placeholder="What's on your mind?"
+                aria-invalid={length > 0 && !canSubmit && !isPending}
+                onKeyDown={onKeyDown}
+                className="max-h-72 min-h-20"
+              />
+              <MediaDraftList
+                drafts={drafts}
+                progress={progress}
+                isUploading={isUploading}
+                onRemove={removeDraft}
+              />
+              <InputGroupAddon align="block-end">
+                <div className="flex items-center gap-0.5">
+                  <MediaPicker
+                    onPick={addFiles}
+                    multiple={MAX_POST_MEDIA > 1}
+                    disabled={!canAttach}
+                  />
+                  <MediaCaptureButtons onCapture={addFiles} disabled={!canAttach} />
+                </div>
+                <span className="hidden text-xs text-muted-foreground sm:inline">
+                  ⌘ Enter to post
+                </span>
+                <div className="ml-auto flex items-center gap-3">
+                  <CharacterCountRing length={length} max={MAX_POST_LENGTH} />
+                  <Tooltip>
+                    <TooltipTrigger
+                      render={
+                        <InputGroupButton
+                          type="submit"
+                          variant="default"
+                          size="icon-sm"
+                          disabled={!canSubmit}
+                          aria-label="Post"
+                        />
+                      }
+                    >
+                      {isPending ? <Spinner /> : <Icon icon={ArrowUp02Icon} />}
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      Post
+                      <KbdGroup>
+                        <Kbd>⌘</Kbd>
+                        <Kbd>Enter</Kbd>
+                      </KbdGroup>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+              </InputGroupAddon>
+            </InputGroup>
+          )}
+        />
+      </div>
     </form>
   );
 };
