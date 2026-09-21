@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { BackButton } from "@/shared/components/back-button";
+import { Separator } from "@/shared/components/ui/separator";
 
 import { CommentsSection } from "@/features/comments/components/comments-section";
 import { CommentsSkeleton } from "@/features/comments/components/comments-skeleton";
@@ -18,11 +19,18 @@ export default function PostRoute({ params }: PageProps<"/[username]/posts/[post
     <div className="flex flex-col gap-6">
       <BackButton fallbackHref="/home" label="Back" />
 
-      <Suspense fallback={<PostSkeleton />}>
+      <Suspense
+        fallback={
+          // Lined up with the post, which reaches into the page's margins
+          <div className="-mx-4 sm:-mx-5">
+            <PostSkeleton />
+          </div>
+        }
+      >
         <PostPage params={params} />
       </Suspense>
 
-      <div className="h-px bg-border/60" />
+      <Separator />
 
       <Suspense fallback={<CommentsSkeleton />}>
         <CommentsSection params={params} />

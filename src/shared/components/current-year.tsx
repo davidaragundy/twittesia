@@ -1,8 +1,4 @@
-import { connection } from "next/server";
-
-// Reads the clock per request, so render it inside <Suspense> to keep the rest of the shell static
-export async function CurrentYear() {
-  await connection();
-
+// Read when the page renders, which for a static page is at build and at each revalidation
+export function CurrentYear() {
   return new Date().getFullYear();
 }
