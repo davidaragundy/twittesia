@@ -23,8 +23,15 @@ import { MAX_POST_LENGTH } from "@/features/posts/constants/max-post-length";
 import { MAX_POST_MEDIA } from "@/features/posts/constants/max-post-media";
 import { usePostComposer } from "@/features/posts/hooks/use-post-composer";
 
-export const PostComposer = () => {
+interface Props {
+  onPublished?: () => void;
+  // For a composer that opens to be written in, such as the one in the dialog
+  autoFocus?: boolean;
+}
+
+export const PostComposer = ({ onPublished, autoFocus }: Props) => {
   const {
+    id,
     form,
     user,
     onSubmit,
@@ -38,7 +45,7 @@ export const PostComposer = () => {
     addFiles,
     removeDraft,
     canAttach,
-  } = usePostComposer();
+  } = usePostComposer({ onPublished });
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-4">
@@ -50,12 +57,13 @@ export const PostComposer = () => {
         disabled={isPending}
         render={({ field }) => (
           <InputGroup>
-            <label htmlFor="post-composer-content" className="sr-only">
+            <label htmlFor={id} className="sr-only">
               What&apos;s on your mind?
             </label>
             <InputGroupTextarea
               {...field}
-              id="post-composer-content"
+              id={id}
+              autoFocus={autoFocus}
               placeholder="What's on your mind?"
               aria-invalid={length > 0 && !canSubmit && !isPending}
               onKeyDown={onKeyDown}

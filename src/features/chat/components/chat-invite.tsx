@@ -54,13 +54,13 @@ export const ChatInvite = ({ chatId }: Props) => {
 
       <div className="flex flex-col gap-3">
         <label htmlFor="chat-invite" className="sr-only">
-          Invite link
+          Invite
         </label>
         <CopyToClipboard id="chat-invite" value={invite} />
         {canShare && (
           <Button variant="secondary" onClick={share}>
             <HugeiconsIcon icon={Share08Icon} data-icon="inline-start" />
-            Share link
+            Share invite
           </Button>
         )}
       </div>

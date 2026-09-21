@@ -38,25 +38,23 @@ export const CommentItem = ({ comment }: Props) => {
         <SeededAvatar seed={author.username} />
       </Link>
 
-      <div className="flex min-w-0 flex-1 flex-col gap-2 rounded-3xl bg-muted/30 p-5 transition-colors hover:bg-muted/50">
+      <div className="flex min-w-0 flex-1 flex-col gap-3 rounded-3xl bg-muted/30 px-5 pt-4 pb-3 transition-colors hover:bg-muted/50">
         <header className="flex items-start justify-between gap-3">
-          <div className="flex min-w-0 items-baseline gap-2 leading-tight">
+          <div className="flex min-w-0 flex-col gap-0.5">
             <Link
               id={`comment-${comment.id}-author`}
               href={`/${author.username}`}
-              className="max-w-[60%] shrink-0 truncate font-semibold hover:underline"
+              className="truncate font-semibold hover:underline"
             >
               {author.name}
             </Link>
-            <span className="min-w-0 truncate handle text-sm text-muted-foreground">
-              @{author.displayUsername}
-            </span>
-            <span aria-hidden className="shrink-0 text-sm text-muted-foreground/60">
-              ·
-            </span>
-            <span className="shrink-0 text-sm text-muted-foreground">
-              <RelativeTime date={comment.createdAt} />
-            </span>
+            <div className="flex min-w-0 items-center gap-1.5 text-sm text-muted-foreground">
+              <span className="truncate handle">@{author.displayUsername}</span>
+              <span aria-hidden>·</span>
+              <span className="shrink-0">
+                <RelativeTime date={comment.createdAt} />
+              </span>
+            </div>
           </div>
           {comment.isMine && <DeleteActionsMenu subject="Comment" onDelete={requestDelete} />}
         </header>
@@ -69,7 +67,8 @@ export const CommentItem = ({ comment }: Props) => {
 
         <MediaGallery media={comment.media} />
 
-        <footer className="flex flex-wrap items-center justify-between gap-3">
+        {/* Pulled left by the buttons' own padding, so their icons line up with the text */}
+        <footer className="-ml-2 flex flex-wrap items-center justify-between gap-2">
           <CommentReactions comment={comment} />
           <Tooltip>
             <TooltipTrigger

@@ -1,6 +1,7 @@
 "use client";
 
-import { SegmentedControl } from "@/shared/components/segmented-control";
+import { SortMenu } from "@/shared/components/sort-menu";
+import { StickyBar } from "@/shared/components/sticky-bar";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Spinner } from "@/shared/components/ui/spinner";
 
@@ -22,14 +23,9 @@ export const Comments = ({ postId, initialPage, viewerId }: Props) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex justify-end">
-        <SegmentedControl
-          label="Order comments by"
-          options={COMMENT_SORTS}
-          value={sort}
-          onChange={setSort}
-        />
-      </div>
+      <StickyBar>
+        <SortMenu label="Sort comments" options={COMMENT_SORTS} value={sort} onChange={setSort} />
+      </StickyBar>
 
       {isPending && <Skeleton className="h-24 w-full" />}
 

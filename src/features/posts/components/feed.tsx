@@ -3,7 +3,8 @@
 import { ArrowUp01Icon, Home01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
-import { SegmentedControl } from "@/shared/components/segmented-control";
+import { SortMenu } from "@/shared/components/sort-menu";
+import { StickyBar } from "@/shared/components/sticky-bar";
 import { Button } from "@/shared/components/ui/button";
 import {
   Empty,
@@ -52,14 +53,9 @@ export const Feed = ({ initialPage, authorId, empty, initialSort, viewerId }: Pr
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex justify-end">
-        <SegmentedControl
-          label="Order posts by"
-          options={FEED_SORTS}
-          value={sort}
-          onChange={setSort}
-        />
-      </div>
+      <StickyBar>
+        <SortMenu label="Sort posts" options={FEED_SORTS} value={sort} onChange={setSort} />
+      </StickyBar>
 
       {/* Offered rather than shown: nothing moves under the reader until they ask for it */}
       {!!newPostCount && (

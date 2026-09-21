@@ -20,10 +20,12 @@ interface Props {
   // The other person: a chat only ever has one
   other: ChatParticipant;
   expiresAt: Date;
+  // Whether the reader started the chat, which is what lets them end it
+  canEnd: boolean;
 }
 
 // Where the conversation happens, for as long as this page is open
-export const ChatRoom = ({ chatId, viewerId, other, expiresAt }: Props) => {
+export const ChatRoom = ({ chatId, viewerId, other, expiresAt, canEnd }: Props) => {
   const {
     messages,
     isOtherHere,
@@ -60,7 +62,7 @@ export const ChatRoom = ({ chatId, viewerId, other, expiresAt }: Props) => {
 
           <ChatSafetyNumber safetyNumber={safetyNumber} otherName={other.name} />
 
-          <EndChatButton chatId={chatId} />
+          {canEnd && <EndChatButton chatId={chatId} />}
         </div>
       </div>
 

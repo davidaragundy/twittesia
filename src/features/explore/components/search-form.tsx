@@ -3,7 +3,8 @@
 import { Cancel01Icon, Search01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
-import { SegmentedControl } from "@/shared/components/segmented-control";
+import { SortMenu } from "@/shared/components/sort-menu";
+import { StickyBar } from "@/shared/components/sticky-bar";
 import {
   InputGroup,
   InputGroupAddon,
@@ -29,8 +30,9 @@ export const SearchForm = ({ query, scope }: Props) => {
   });
 
   return (
-    <div className="flex flex-col gap-4">
-      <form onSubmit={onSubmit} role="search">
+    // The search stays in reach while the results scroll, with what it covers beside it
+    <StickyBar>
+      <form onSubmit={onSubmit} role="search" className="flex-1">
         <InputGroup>
           <InputGroupAddon>
             {isSearching ? <Spinner /> : <HugeiconsIcon icon={Search01Icon} />}
@@ -63,15 +65,13 @@ export const SearchForm = ({ query, scope }: Props) => {
 
       {/* Nothing to narrow until something has been searched for */}
       {!!query && (
-        <div className="flex justify-end">
-          <SegmentedControl
-            label="Search in"
-            options={[...SEARCH_SCOPES]}
-            value={scope}
-            onChange={onScopeChange}
-          />
-        </div>
+        <SortMenu
+          label="Search in"
+          options={SEARCH_SCOPES}
+          value={scope}
+          onChange={onScopeChange}
+        />
       )}
-    </div>
+    </StickyBar>
   );
 };

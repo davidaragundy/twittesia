@@ -9,6 +9,7 @@ import { DeleteActionsMenu } from "@/shared/components/delete-actions-menu";
 import { RelativeTime } from "@/shared/components/relative-time";
 import { SeededAvatar } from "@/shared/components/seeded-avatar";
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
+import { Button } from "@/shared/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
 import { cn } from "@/shared/utils/cn";
 
@@ -62,14 +63,14 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
         </Avatar>
       )}
 
-      <div className="flex min-w-0 flex-1 flex-col gap-3 rounded-3xl bg-muted/30 p-5 transition-colors hover:bg-muted/50">
+      <div className="flex min-w-0 flex-1 flex-col gap-3 rounded-3xl bg-muted/30 px-5 pt-4 pb-3 transition-colors hover:bg-muted/50">
         <header className="flex items-start justify-between gap-3">
-          <div className="flex min-w-0 items-baseline gap-2 leading-tight">
+          <div className="flex min-w-0 flex-col gap-0.5">
             {author ? (
               <Link
                 id={`post-${post.id}-author`}
                 href={`/${author.username}`}
-                className="max-w-[60%] shrink-0 truncate font-semibold hover:underline"
+                className="truncate font-semibold hover:underline"
               >
                 {author.name}
               </Link>
@@ -78,24 +79,20 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
                 Someone who left
               </span>
             )}
-            {author && (
-              <span className="min-w-0 truncate handle text-sm text-muted-foreground">
-                @{author.displayUsername}
-              </span>
-            )}
-            <span aria-hidden className="shrink-0 text-sm text-muted-foreground/60">
-              ·
-            </span>
-            {author ? (
-              <Link
-                href={getPostPath({ username: author.username, postId: post.id })}
-                className="shrink-0 text-sm text-muted-foreground hover:underline"
-              >
-                {time}
-              </Link>
-            ) : (
-              <span className="shrink-0 text-sm text-muted-foreground">{time}</span>
-            )}
+            <div className="flex min-w-0 items-center gap-1.5 text-sm text-muted-foreground">
+              {author && <span className="truncate handle">@{author.displayUsername}</span>}
+              {author && <span aria-hidden>·</span>}
+              {author ? (
+                <Link
+                  href={getPostPath({ username: author.username, postId: post.id })}
+                  className="shrink-0 hover:text-foreground"
+                >
+                  {time}
+                </Link>
+              ) : (
+                <span className="shrink-0">{time}</span>
+              )}
+            </div>
           </div>
           {post.isMine && !post.isPending && (
             <DeleteActionsMenu subject="Post" onDelete={requestDelete} />
@@ -110,35 +107,43 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
 
         <MediaGallery media={post.media} />
 
-        <footer className="flex flex-wrap items-center justify-between gap-3">
-          <PostReactions post={post} disabled={post.isPending} />
-          <div className="flex items-center gap-4 text-xs text-muted-foreground tabular-nums">
+        {/* Pulled left by the buttons' own padding, so their icons line up with the text */}
+        <footer className="-ml-2 flex flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center gap-1">
             {author && (
-              <Link
-                href={`${getPostPath({ username: author.username, postId: post.id })}#comments`}
+              <Button
+                variant="ghost"
+                size="sm"
+                disabled={post.isPending}
                 aria-label={formatCommentCount(post.commentCount)}
-                className="flex items-center gap-1.5 rounded-full hover:text-foreground"
-              >
-                <HugeiconsIcon icon={BubbleChatIcon} className="size-3.5" />
-                {post.commentCount}
-              </Link>
-            )}
-            <Tooltip>
-              <TooltipTrigger
                 render={
-                  <span
-                    role="img"
-                    aria-label={formatViewCount(post.viewCount)}
-                    className="flex items-center gap-1.5"
+                  <Link
+                    href={`${getPostPath({ username: author.username, postId: post.id })}#comments`}
                   />
                 }
+                nativeButton={false}
               >
-                <HugeiconsIcon icon={ViewIcon} className="size-3.5" />
-                {VIEW_COUNT_FORMAT.format(post.viewCount)}
-              </TooltipTrigger>
-              <TooltipContent>{formatViewCount(post.viewCount)}</TooltipContent>
-            </Tooltip>
+                <HugeiconsIcon icon={BubbleChatIcon} data-icon="inline-start" />
+                {post.commentCount}
+              </Button>
+            )}
+            <PostReactions post={post} disabled={post.isPending} />
           </div>
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <span
+                  role="img"
+                  aria-label={formatViewCount(post.viewCount)}
+                  className="flex items-center gap-1.5 text-xs text-muted-foreground tabular-nums"
+                />
+              }
+            >
+              <HugeiconsIcon icon={ViewIcon} className="size-3.5" />
+              {VIEW_COUNT_FORMAT.format(post.viewCount)}
+            </TooltipTrigger>
+            <TooltipContent>{formatViewCount(post.viewCount)}</TooltipContent>
+          </Tooltip>
         </footer>
       </div>
 

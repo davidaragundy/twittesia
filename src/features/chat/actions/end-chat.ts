@@ -19,14 +19,15 @@ interface Props {
 }
 
 /**
- * Ends a chat now rather than at its expiry, for either of the two people in it.
+ * Ends a chat now rather than at its expiry. Only the person who started it can, and they can at
+ * any point: while the invite is still out, or with someone in it.
  *
  * There is nothing to delete but the chat itself: what was said was never written down. Both
  * rooms are told, so neither is left talking to a chat that has gone, and the connections close
  * on their own once there is nothing to be in.
  *
- * Either side may do it, and it cannot be undone: a chat that has ended reads the same as one
- * that never existed.
+ * It cannot be undone: a chat that has ended reads the same as one that never existed. The guest
+ * leaves by closing the page; the chat is not theirs to end.
  */
 export const endChat = async ({
   chatId,
@@ -50,6 +51,13 @@ export const endChat = async ({
 
   if (!chat || !isChatParticipant({ chat, identityId: session.user.id })) {
     return { data: null, error: { code: "CHAT_NOT_FOUND", message: "That chat has gone" } };
+  }
+
+  if (chat.creator.id !== session.user.id) {
+    return {
+      data: null,
+      error: { code: "UNAUTHORIZED", message: "Only whoever started a chat can end it" },
+    };
   }
 
   const transaction = redis

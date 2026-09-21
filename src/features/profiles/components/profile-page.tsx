@@ -44,10 +44,10 @@ export const ProfilePage = async ({ username }: Props) => {
   ]);
 
   return (
-    <div className="flex flex-col gap-12 py-4">
-      <ProfileHeader profile={profile} />
-
-      {stats.data && <ProfileCounts stats={stats.data} />}
+    <div className="flex flex-col gap-10">
+      <ProfileHeader profile={profile}>
+        {stats.data && <ProfileCounts stats={stats.data} />}
+      </ProfileHeader>
 
       <ProfileTabs
         posts={
@@ -57,6 +57,7 @@ export const ProfilePage = async ({ username }: Props) => {
             <Feed
               initialPage={posts.data}
               authorId={profile.id}
+              viewerId={viewerId}
               empty={
                 <Empty>
                   <EmptyHeader>
