@@ -7,10 +7,9 @@ const UNITS = [
 
 const formatter = new Intl.RelativeTimeFormat("en", { numeric: "auto", style: "narrow" });
 
-// "3h ago", "now". Render it with suppressHydrationWarning: the server and the browser read
-// their own clocks, so the two can land a minute apart.
-export const formatRelativeTime = (date: Date) => {
-  const elapsed = date.getTime() - Date.now();
+// "3h ago", "now", measured from `now`
+export const formatRelativeTime = (date: Date, now: number) => {
+  const elapsed = date.getTime() - now;
 
   for (const { unit, ms } of UNITS) {
     if (Math.abs(elapsed) >= ms) return formatter.format(Math.round(elapsed / ms), unit);

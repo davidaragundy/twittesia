@@ -6,6 +6,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { Button } from "@/shared/components/ui/button";
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "@/shared/components/ui/drawer";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
 
 import { ReactionPickerPanel } from "@/features/posts/components/reaction-picker-panel";
 import { useReactionPicker } from "@/features/posts/hooks/use-reaction-picker";
@@ -14,28 +15,29 @@ import type { Reaction } from "@/features/posts/types/reaction";
 interface Props {
   reactions: Reaction[];
   onToggle: (emoji: string) => void;
+  disabled?: boolean;
 }
 
-export const ReactionPicker = ({ reactions, onToggle }: Props) => {
+export const ReactionPicker = ({ reactions, onToggle, disabled }: Props) => {
   const { isMobile, isOpen, onOpenChange, select, mine } = useReactionPicker({
     reactions,
     onToggle,
   });
 
-  const trigger = (
+  const button = (
     <Button
       type="button"
       variant="ghost"
       size="icon-sm"
       aria-label="Add reaction"
-      title="Add reaction"
+      disabled={disabled}
     />
   );
 
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={onOpenChange}>
-        <DrawerTrigger render={trigger}>
+        <DrawerTrigger render={button}>
           <HugeiconsIcon icon={SmileIcon} />
         </DrawerTrigger>
         <DrawerContent>
@@ -48,9 +50,12 @@ export const ReactionPicker = ({ reactions, onToggle }: Props) => {
 
   return (
     <Popover open={isOpen} onOpenChange={onOpenChange}>
-      <PopoverTrigger render={trigger}>
-        <HugeiconsIcon icon={SmileIcon} />
-      </PopoverTrigger>
+      <Tooltip>
+        <TooltipTrigger render={<PopoverTrigger render={button} />}>
+          <HugeiconsIcon icon={SmileIcon} />
+        </TooltipTrigger>
+        <TooltipContent>Add reaction</TooltipContent>
+      </Tooltip>
       <PopoverContent align="start" className="w-auto overflow-hidden">
         <ReactionPickerPanel mine={mine} onSelect={select} />
       </PopoverContent>

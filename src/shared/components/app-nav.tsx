@@ -10,12 +10,11 @@ import type { NavLink } from "@/shared/types/nav-link";
 
 type Props = {
   links: NavLink[];
-  onNavigate?: () => void;
   // Entries after the links that aren't pages, such as Settings or Sign out
   children?: React.ReactNode;
 };
 
-export function AppNav({ links, onNavigate, children }: Props) {
+export function AppNav({ links, children }: Props) {
   const pathname = usePathname();
 
   return (
@@ -24,7 +23,7 @@ export function AppNav({ links, onNavigate, children }: Props) {
         <NavButton
           key={link.href}
           isActive={pathname === link.href}
-          render={<Link href={link.href} onClick={onNavigate} />}
+          render={<Link href={link.href} />}
           nativeButton={false}
         >
           <HugeiconsIcon icon={link.icon} />

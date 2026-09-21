@@ -2,6 +2,7 @@ import { Cancel01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
 import { Button } from "@/shared/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
 
 import { MediaDraftPreview } from "@/features/media/components/media-draft-preview";
 import type { MediaDraft } from "@/features/media/types/media-draft";
@@ -38,17 +39,23 @@ export const MediaDraftList = ({ drafts, progress, isUploading, onRemove }: Prop
               {Math.round(progress[draft.id] ?? 0)}%
             </div>
           ) : (
-            <Button
-              type="button"
-              variant="secondary"
-              size="icon-xs"
-              onClick={() => onRemove(draft.id)}
-              aria-label={`Remove ${draft.file.name}`}
-              title="Remove"
-              className="absolute top-1.5 right-1.5"
-            >
-              <HugeiconsIcon icon={Cancel01Icon} />
-            </Button>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="icon-xs"
+                    onClick={() => onRemove(draft.id)}
+                    aria-label={`Remove ${draft.file.name}`}
+                    className="absolute top-1.5 right-1.5"
+                  />
+                }
+              >
+                <HugeiconsIcon icon={Cancel01Icon} />
+              </TooltipTrigger>
+              <TooltipContent>Remove</TooltipContent>
+            </Tooltip>
           )}
         </li>
       ))}

@@ -4,7 +4,6 @@ import { Menu01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
 
-import { AppNav } from "@/shared/components/app-nav";
 import { Button } from "@/shared/components/ui/button";
 import {
   Drawer,
@@ -14,17 +13,15 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/shared/components/ui/drawer";
-import type { NavLink } from "@/shared/types/nav-link";
 
 type Props = {
-  links: NavLink[];
-  // Extra menu entries, such as Settings and Sign out, composed by the route
+  // What isn't a page, such as Settings and Leave, composed by the route. The pages themselves
+  // are in the tab bar.
   actions: React.ReactNode;
 };
 
-export function MobileNav({ links, actions }: Props) {
+export function MobileNav({ actions }: Props) {
   const [isOpen, setIsOpen] = useState(false);
-  const close = () => setIsOpen(false);
 
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
@@ -36,14 +33,12 @@ export function MobileNav({ links, actions }: Props) {
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>Menu</DrawerTitle>
-          <DrawerDescription className="sr-only">Go to a page of Twittesia.</DrawerDescription>
+          <DrawerDescription className="sr-only">
+            Settings, and leaving Twittesia.
+          </DrawerDescription>
         </DrawerHeader>
-        <div className="overflow-y-auto px-4 pt-2 pb-10">
-          <AppNav links={links} onNavigate={close}>
-            <div className="contents" onClick={close}>
-              {actions}
-            </div>
-          </AppNav>
+        <div className="flex flex-col gap-2 px-4 pt-2 pb-10" onClick={() => setIsOpen(false)}>
+          {actions}
         </div>
       </DrawerContent>
     </Drawer>

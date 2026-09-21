@@ -1,8 +1,7 @@
+import { RelativeTime } from "@/shared/components/relative-time";
 import { SeededAvatar } from "@/shared/components/seeded-avatar";
-import { formatRelativeTime } from "@/shared/utils/format-relative-time";
 
 import { getIdentityExpiry } from "@/features/auth/utils/get-identity-expiry";
-import { POST_DATE_FORMAT } from "@/features/posts/constants/post-date-format";
 import type { Profile } from "@/features/profiles/types/profile";
 
 interface Props {
@@ -21,16 +20,8 @@ export const ProfileHeader = ({ profile }: Props) => {
         <p className="handle text-muted-foreground">@{profile.handle}</p>
       </div>
 
-      {/* The clock differs between the server and the browser by a moment */}
       <p className="text-sm text-muted-foreground">
-        This identity ends{" "}
-        <time
-          dateTime={expiresAt.toISOString()}
-          title={POST_DATE_FORMAT.format(expiresAt)}
-          suppressHydrationWarning
-        >
-          {formatRelativeTime(expiresAt)}
-        </time>
+        This identity ends <RelativeTime date={expiresAt} />
       </p>
     </div>
   );

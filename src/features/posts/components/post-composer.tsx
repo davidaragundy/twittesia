@@ -12,7 +12,9 @@ import {
   InputGroupButton,
   InputGroupTextarea,
 } from "@/shared/components/ui/input-group";
+import { Kbd, KbdGroup } from "@/shared/components/ui/kbd";
 import { Spinner } from "@/shared/components/ui/spinner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
 
 import { MediaCaptureButtons } from "@/features/media/components/media-capture-buttons";
 import { MediaDraftList } from "@/features/media/components/media-draft-list";
@@ -81,16 +83,28 @@ export const PostComposer = () => {
               </span>
               <div className="ml-auto flex items-center gap-3">
                 <CharacterCountRing length={length} max={MAX_POST_LENGTH} />
-                <InputGroupButton
-                  type="submit"
-                  variant="default"
-                  size="icon-sm"
-                  disabled={!canSubmit}
-                  aria-label="Post"
-                  title="Post"
-                >
-                  {isPending ? <Spinner /> : <HugeiconsIcon icon={ArrowUp02Icon} />}
-                </InputGroupButton>
+                <Tooltip>
+                  <TooltipTrigger
+                    render={
+                      <InputGroupButton
+                        type="submit"
+                        variant="default"
+                        size="icon-sm"
+                        disabled={!canSubmit}
+                        aria-label="Post"
+                      />
+                    }
+                  >
+                    {isPending ? <Spinner /> : <HugeiconsIcon icon={ArrowUp02Icon} />}
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    Post
+                    <KbdGroup>
+                      <Kbd>⌘</Kbd>
+                      <Kbd>Enter</Kbd>
+                    </KbdGroup>
+                  </TooltipContent>
+                </Tooltip>
               </div>
             </InputGroupAddon>
           </InputGroup>

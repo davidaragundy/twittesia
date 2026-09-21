@@ -24,7 +24,8 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
         >
           <TooltipProvider>
             {children}
-            <Toaster />
+            {/* Clear of the tab bar on a phone */}
+            <Toaster mobileOffset={{ bottom: 80 }} />
           </TooltipProvider>
         </ThemeProvider>
       </RealtimeProvider>

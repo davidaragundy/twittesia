@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { RelativeTime } from "@/shared/components/relative-time";
 import { SeededAvatar } from "@/shared/components/seeded-avatar";
 import { Badge } from "@/shared/components/ui/badge";
 import {
@@ -9,7 +10,6 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/shared/components/ui/item";
-import { formatRelativeTime } from "@/shared/utils/format-relative-time";
 
 import type { Chat } from "@/features/chat/types/chat";
 import { toChatPath } from "@/features/chat/utils/to-chat-path";
@@ -36,9 +36,8 @@ export const ChatListItem = ({ chat, viewerId }: Props) => {
           </span>
         </ItemDescription>
       </ItemContent>
-      {/* The clock differs between the server and the browser by a moment */}
-      <Badge variant="outline" suppressHydrationWarning>
-        Ends {formatRelativeTime(chat.expiresAt)}
+      <Badge variant="outline">
+        Ends <RelativeTime date={chat.expiresAt} />
       </Badge>
     </Item>
   );

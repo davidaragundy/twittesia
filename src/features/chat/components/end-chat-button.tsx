@@ -5,6 +5,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 
 import { ConfirmDialog } from "@/shared/components/confirm-dialog";
 import { Button } from "@/shared/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
 
 import { useEndChatDialog } from "@/features/chat/hooks/use-end-chat-dialog";
 
@@ -18,15 +19,21 @@ export const EndChatButton = ({ chatId }: Props) => {
 
   return (
     <>
-      <Button
-        variant="ghost"
-        size="icon-sm"
-        aria-label="End this chat"
-        title="End this chat"
-        onClick={() => onOpenChange(true)}
-      >
-        <HugeiconsIcon icon={Delete02Icon} />
-      </Button>
+      <Tooltip>
+        <TooltipTrigger
+          render={
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              aria-label="End this chat"
+              onClick={() => onOpenChange(true)}
+            />
+          }
+        >
+          <HugeiconsIcon icon={Delete02Icon} />
+        </TooltipTrigger>
+        <TooltipContent>End this chat</TooltipContent>
+      </Tooltip>
 
       <ConfirmDialog
         isOpen={isOpen}

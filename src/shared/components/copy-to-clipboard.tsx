@@ -11,6 +11,7 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from "@/shared/components/ui/input-group";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
 import { tryCatch } from "@/shared/utils/try-catch";
 
 type Props = {
@@ -38,14 +39,16 @@ export const CopyToClipboard = ({ id, value }: Props) => {
     <InputGroup>
       <InputGroupInput id={id} value={value} readOnly />
       <InputGroupAddon align="inline-end">
-        <InputGroupButton
-          aria-label="Copy"
-          title="Copy"
-          size="icon-xs"
-          onClick={handleCopyToClipboard}
-        >
-          <HugeiconsIcon icon={isCopied ? Tick02Icon : Copy02Icon} />
-        </InputGroupButton>
+        <Tooltip>
+          <TooltipTrigger
+            render={
+              <InputGroupButton aria-label="Copy" size="icon-xs" onClick={handleCopyToClipboard} />
+            }
+          >
+            <HugeiconsIcon icon={isCopied ? Tick02Icon : Copy02Icon} />
+          </TooltipTrigger>
+          <TooltipContent>{isCopied ? "Copied" : "Copy"}</TooltipContent>
+        </Tooltip>
       </InputGroupAddon>
     </InputGroup>
   );

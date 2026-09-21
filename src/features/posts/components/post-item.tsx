@@ -6,16 +6,15 @@ import Link from "next/link";
 
 import { ConfirmDialog } from "@/shared/components/confirm-dialog";
 import { DeleteActionsMenu } from "@/shared/components/delete-actions-menu";
+import { RelativeTime } from "@/shared/components/relative-time";
 import { SeededAvatar } from "@/shared/components/seeded-avatar";
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
-import { Spinner } from "@/shared/components/ui/spinner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
 import { cn } from "@/shared/utils/cn";
-import { formatRelativeTime } from "@/shared/utils/format-relative-time";
 
 import { MediaGallery } from "@/features/media/components/media-gallery";
 import { PostReactions } from "@/features/posts/components/post-reactions";
 import { DELETE_POST_DIALOG_COPY } from "@/features/posts/constants/delete-post-dialog-copy";
-import { POST_DATE_FORMAT } from "@/features/posts/constants/post-date-format";
 import { VIEW_COUNT_FORMAT } from "@/features/posts/constants/view-count-format";
 import { usePostItem } from "@/features/posts/hooks/use-post-item";
 import type { FeedPost } from "@/features/posts/types/feed-post";
@@ -36,16 +35,7 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
     usePostItem({ postId: post.id, onDeleted });
   const { author } = post;
 
-  // The clock differs between the server and the browser by a moment
-  const time = (
-    <time
-      dateTime={post.createdAt.toISOString()}
-      title={POST_DATE_FORMAT.format(post.createdAt)}
-      suppressHydrationWarning
-    >
-      {formatRelativeTime(post.createdAt)}
-    </time>
-  );
+  const time = <RelativeTime date={post.createdAt} />;
 
   return (
     <article
@@ -55,9 +45,9 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
       data-view-id={post.isPending ? undefined : post.id}
       data-view-mine={post.isMine}
       className={cn(
-        "flex gap-4 px-4 py-5 transition-opacity sm:px-5",
-        // On its way: it reads, but there is nothing to do to it yet
-        post.isPending && "opacity-60",
+        "flex gap-4 px-4 py-5 sm:px-5",
+        // On its way: it breathes until it lands, and there is nothing to do to it yet
+        post.isPending && "animate-pulse",
       )}
     >
       {author ? (
@@ -121,7 +111,7 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
         <MediaGallery media={post.media} />
 
         <footer className="flex flex-wrap items-center justify-between gap-3">
-          {post.isPending ? <Spinner /> : <PostReactions post={post} />}
+          <PostReactions post={post} disabled={post.isPending} />
           <div className="flex items-center gap-4 text-xs text-muted-foreground tabular-nums">
             {author && (
               <Link
@@ -133,15 +123,21 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
                 {post.commentCount}
               </Link>
             )}
-            <span
-              role="img"
-              aria-label={formatViewCount(post.viewCount)}
-              title={formatViewCount(post.viewCount)}
-              className="flex items-center gap-1.5"
-            >
-              <HugeiconsIcon icon={ViewIcon} className="size-3.5" />
-              {VIEW_COUNT_FORMAT.format(post.viewCount)}
-            </span>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <span
+                    role="img"
+                    aria-label={formatViewCount(post.viewCount)}
+                    className="flex items-center gap-1.5"
+                  />
+                }
+              >
+                <HugeiconsIcon icon={ViewIcon} className="size-3.5" />
+                {VIEW_COUNT_FORMAT.format(post.viewCount)}
+              </TooltipTrigger>
+              <TooltipContent>{formatViewCount(post.viewCount)}</TooltipContent>
+            </Tooltip>
           </div>
         </footer>
       </div>
