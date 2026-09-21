@@ -9,32 +9,30 @@ import type { NavLink } from "@/shared/types/nav-link";
 
 type Props = {
   links: NavLink[];
-  // Tabs after the links that need the session, such as the reader's own profile
+  // Tabs after the links that need the session, such as the reader's account
   children?: React.ReactNode;
 };
 
-// The main pages under the thumb on a phone, where the sidebar doesn't fit
+// Every page and the account, under the thumb on a phone: a pill floating over the page
 export function TabBar({ links, children }: Props) {
   const pathname = usePathname();
 
   return (
     <nav
       aria-label="Main"
-      className="fixed inset-x-0 bottom-0 z-40 border-t bg-background md:hidden"
+      className="fixed inset-x-0 bottom-5 z-40 mx-auto flex w-fit items-center gap-1 rounded-full bg-popover/80 p-1.5 shadow-lg backdrop-blur-xl md:hidden"
     >
-      <div className="mx-auto flex h-16 max-w-md items-center justify-around px-4">
-        {links.map((link) => (
-          <TabBarButton
-            key={link.href}
-            isActive={pathname === link.href}
-            label={link.label}
-            icon={<HugeiconsIcon icon={link.icon} />}
-            render={<Link href={link.href} />}
-            nativeButton={false}
-          />
-        ))}
-        {children}
-      </div>
+      {links.map((link) => (
+        <TabBarButton
+          key={link.href}
+          isActive={pathname === link.href}
+          label={link.label}
+          icon={<HugeiconsIcon icon={link.icon} />}
+          render={<Link href={link.href} />}
+          nativeButton={false}
+        />
+      ))}
+      {children}
     </nav>
   );
 }

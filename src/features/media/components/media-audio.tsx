@@ -28,12 +28,7 @@ export const MediaAudio = ({ media, className }: Props) => {
     useMediaPlayback<HTMLAudioElement>();
 
   return (
-    <div
-      className={cn(
-        "flex items-center gap-3 rounded-3xl bg-muted/60 p-2 pr-3 ring-1 ring-foreground/5",
-        className,
-      )}
-    >
+    <div className={cn("flex items-center gap-3 rounded-3xl bg-muted/60 p-2 pr-3", className)}>
       <audio ref={mediaRef} src={media.url} preload="metadata" aria-label="Attached audio" />
 
       <Button

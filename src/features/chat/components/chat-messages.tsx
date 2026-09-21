@@ -46,7 +46,7 @@ export const ChatMessages = ({ messages, otherName, isOtherTyping, isOtherHere }
           <MessageScrollerContent>
             {runs.length ? (
               <MessageScrollerItem>
-                <Marker variant="separator">
+                <Marker className="justify-center">
                   <MarkerIcon>
                     <HugeiconsIcon icon={ShieldKeyIcon} />
                   </MarkerIcon>

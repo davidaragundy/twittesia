@@ -40,7 +40,7 @@ export const KnockList = ({ chatId, knocks }: Props) => {
   return (
     <ItemGroup>
       {knocks.map((knock) => (
-        <Item key={knock.identityId} variant="outline">
+        <Item key={knock.identityId} variant="muted">
           <ItemMedia>
             <SeededAvatar seed={knock.handle} className="size-10" />
           </ItemMedia>

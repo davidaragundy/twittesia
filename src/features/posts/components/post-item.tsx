@@ -45,7 +45,7 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
       data-view-id={post.isPending ? undefined : post.id}
       data-view-mine={post.isMine}
       className={cn(
-        "flex gap-4 px-4 py-5 sm:px-5",
+        "flex gap-4 rounded-3xl bg-muted/40 p-5 transition-colors hover:bg-muted/60",
         // On its way: it breathes until it lands, and there is nothing to do to it yet
         post.isPending && "animate-pulse",
       )}

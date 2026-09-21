@@ -66,7 +66,7 @@ export const MicrophoneCapture = ({ onCapture }: Props) => {
           )}
           style={{ "--voice-level": 0.6 + level * 0.4 } as React.CSSProperties}
         />
-        <span className="relative flex size-24 items-center justify-center rounded-full bg-muted text-muted-foreground ring-1 ring-foreground/5">
+        <span className="relative flex size-24 items-center justify-center rounded-full bg-muted text-muted-foreground">
           {stream ? (
             <HugeiconsIcon icon={Mic01Icon} className="size-9" />
           ) : (

@@ -32,7 +32,7 @@ export const CommentItem = ({ comment }: Props) => {
       aria-labelledby={`comment-${comment.id}-author`}
       data-view-id={comment.id}
       data-view-mine={comment.isMine}
-      className="flex gap-4 px-4 py-4 sm:px-5"
+      className="flex gap-4 rounded-3xl bg-muted/40 p-5 transition-colors hover:bg-muted/60"
     >
       <Link href={`/${author.username}`} className="shrink-0" tabIndex={-1} aria-hidden>
         <SeededAvatar seed={author.username} />

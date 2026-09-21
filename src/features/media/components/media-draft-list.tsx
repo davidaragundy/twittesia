@@ -23,7 +23,7 @@ export const MediaDraftList = ({ drafts, progress, isUploading, onRemove }: Prop
       {drafts.map((draft) => (
         <li
           key={draft.id}
-          className="relative size-20 shrink-0 overflow-hidden rounded-2xl bg-muted ring-1 ring-foreground/5 sm:size-24"
+          className="relative size-20 shrink-0 overflow-hidden rounded-2xl bg-muted sm:size-24"
         >
           <MediaDraftPreview draft={draft} />
 

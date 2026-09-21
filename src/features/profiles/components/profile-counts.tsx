@@ -7,16 +7,16 @@ interface Props {
 
 // Only what is still alive, which is the only thing anyone can read anyway
 export const ProfileCounts = ({ stats }: Props) => (
-  <dl className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-center">
+  <dl className="grid grid-cols-4 gap-2 text-center">
     {[
       { label: "Posts", value: stats.postCount },
       { label: "Comments", value: stats.commentCount },
       { label: "Reactions", value: stats.reactionCount },
       { label: "Views", value: stats.viewCount },
     ].map(({ label, value }) => (
-      <div key={label} className="flex flex-col gap-1">
-        <dt className="text-xs tracking-wide text-muted-foreground uppercase">{label}</dt>
-        <dd className="text-lg font-semibold tabular-nums">{PROFILE_COUNT_FORMAT.format(value)}</dd>
+      <div key={label} className="flex flex-col-reverse gap-1 rounded-3xl bg-muted/40 px-2 py-4">
+        <dt className="truncate text-xs text-muted-foreground">{label}</dt>
+        <dd className="text-xl font-semibold tabular-nums">{PROFILE_COUNT_FORMAT.format(value)}</dd>
       </div>
     ))}
   </dl>

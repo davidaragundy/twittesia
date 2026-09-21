@@ -9,7 +9,6 @@ import {
   EmojiPickerFooter,
   EmojiPickerSearch,
 } from "@/shared/components/ui/emoji-picker";
-import { Separator } from "@/shared/components/ui/separator";
 
 import { QUICK_REACTIONS } from "@/features/posts/constants/quick-reactions";
 
@@ -36,7 +35,6 @@ export const ReactionPickerPanel = ({ mine, onSelect, className }: Props) => (
       ))}
     </div>
 
-    <Separator />
     <EmojiPicker className="h-80 w-full" columns={8} onEmojiSelect={({ emoji }) => onSelect(emoji)}>
       <EmojiPickerSearch placeholder="Search emoji" />
       <EmojiPickerContent />

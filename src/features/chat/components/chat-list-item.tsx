@@ -24,7 +24,7 @@ export const ChatListItem = ({ chat, viewerId }: Props) => {
   const other = chat.creator.id === viewerId ? chat.guest : chat.creator;
 
   return (
-    <Item render={<Link href={toChatPath({ id: chat.id })} />} variant="outline">
+    <Item render={<Link href={toChatPath({ id: chat.id })} />} variant="muted">
       <ItemMedia>
         <SeededAvatar seed={other?.handle ?? chat.id} className="size-10" />
       </ItemMedia>
@@ -36,7 +36,7 @@ export const ChatListItem = ({ chat, viewerId }: Props) => {
           </span>
         </ItemDescription>
       </ItemContent>
-      <Badge variant="outline">
+      <Badge variant="secondary">
         Ends <RelativeTime date={chat.expiresAt} />
       </Badge>
     </Item>

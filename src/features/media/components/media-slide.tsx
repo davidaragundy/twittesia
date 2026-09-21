@@ -17,7 +17,7 @@ export const MediaSlide = ({ media, aspectRatio }: Props) => {
     return (
       <MediaImage
         media={media}
-        className="aspect-(--media-aspect) w-full rounded-3xl ring-1 ring-foreground/5"
+        className="aspect-(--media-aspect) w-full rounded-3xl"
         style={{ "--media-aspect": aspectRatio } as React.CSSProperties}
       />
     );
@@ -28,10 +28,10 @@ export const MediaSlide = ({ media, aspectRatio }: Props) => {
   // Wide enough margins that the carousel's arrows never sit on the player
   return (
     <div
-      className="flex aspect-(--media-aspect) flex-col items-center justify-center gap-5 rounded-3xl bg-muted/40 px-4 ring-1 ring-foreground/5 sm:px-16"
+      className="flex aspect-(--media-aspect) flex-col items-center justify-center gap-5 rounded-3xl bg-muted/40 px-4 sm:px-16"
       style={{ "--media-aspect": aspectRatio } as React.CSSProperties}
     >
-      <span className="flex size-16 items-center justify-center rounded-full bg-background/70 text-muted-foreground ring-1 ring-foreground/5">
+      <span className="flex size-16 items-center justify-center rounded-full bg-background/70 text-muted-foreground">
         <HugeiconsIcon icon={MusicNote03Icon} className="size-7" />
       </span>
       <MediaAudio media={media} className="w-full max-w-sm" />

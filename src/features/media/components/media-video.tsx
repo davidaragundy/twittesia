@@ -44,7 +44,7 @@ export const MediaVideo = ({ media, aspectRatio, className }: Props) => {
     <div
       ref={containerRef}
       className={cn(
-        "group/video relative aspect-(--media-aspect) overflow-hidden rounded-3xl bg-black ring-1 ring-foreground/5",
+        "group/video relative aspect-(--media-aspect) overflow-hidden rounded-3xl bg-black",
         className,
       )}
       style={{ "--media-aspect": aspectRatio ?? getMediaAspectRatio(media) } as React.CSSProperties}

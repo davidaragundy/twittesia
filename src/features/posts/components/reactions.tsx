@@ -18,7 +18,6 @@ export const Reactions = ({ reactions, onToggle, disabled }: Props) => (
     {reactions.map(({ emoji, count, isMine }) => (
       <Toggle
         key={emoji}
-        variant="outline"
         size="sm"
         pressed={isMine}
         disabled={disabled}

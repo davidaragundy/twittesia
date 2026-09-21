@@ -12,7 +12,7 @@ export const PostDetail = ({ initialPost }: Props) => {
   const { post, containerRef, onDeleted } = usePostDetail({ initialPost });
 
   return (
-    <div ref={containerRef} className="-mx-4 sm:-mx-5">
+    <div ref={containerRef}>
       <PostItem post={post} position={1} total={1} onDeleted={onDeleted} />
     </div>
   );

@@ -15,11 +15,14 @@ export const ProfilePageSkeleton = () => (
       <Skeleton className="h-5 w-44" />
     </div>
 
-    <div className="flex flex-wrap justify-center gap-10">
+    <div className="grid grid-cols-4 gap-2">
       {[0, 1, 2, 3].map((index) => (
-        <div key={index} className="flex flex-col items-center gap-2">
-          <Skeleton className="h-3 w-16" />
-          <Skeleton className="h-6 w-10" />
+        <div
+          key={index}
+          className="flex flex-col items-center gap-2 rounded-3xl bg-muted/40 px-2 py-4"
+        >
+          <Skeleton className="h-6 w-8" />
+          <Skeleton className="h-3 w-12" />
         </div>
       ))}
     </div>

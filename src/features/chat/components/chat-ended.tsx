@@ -28,7 +28,7 @@ export const ChatEnded = () => (
       </EmptyDescription>
     </EmptyHeader>
     <EmptyContent>
-      <Button variant="outline" render={<Link href={CHATS_PATH} />} nativeButton={false}>
+      <Button variant="secondary" render={<Link href={CHATS_PATH} />} nativeButton={false}>
         Back to chats
       </Button>
     </EmptyContent>

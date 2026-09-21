@@ -52,7 +52,7 @@ export const CameraCapture = ({ onCapture }: Props) => {
         )}
 
         {capture?.media.kind === "video" && (
-          <MediaVideo media={capture.media} className="size-full rounded-none ring-0" />
+          <MediaVideo media={capture.media} className="size-full rounded-none" />
         )}
 
         {!capture && (

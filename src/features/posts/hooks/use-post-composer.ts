@@ -64,7 +64,6 @@ export const usePostComposer = () => {
 
   return {
     form,
-    user: session?.user,
     onSubmit,
     onKeyDown,
     isPending,

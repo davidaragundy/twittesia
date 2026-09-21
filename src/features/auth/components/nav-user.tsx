@@ -10,7 +10,6 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
@@ -49,9 +48,7 @@ export function NavUser({ menuItems }: Props) {
         <DropdownMenuGroup>
           <div className="flex items-center gap-2 px-1 py-1.5">{identity}</div>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
         <DropdownMenuGroup>{menuItems}</DropdownMenuGroup>
-        <DropdownMenuSeparator />
         {/* Opens the confirmation; the menu closes behind it */}
         <DropdownMenuItem variant="destructive" onClick={openLeave}>
           <HugeiconsIcon icon={Logout01Icon} />

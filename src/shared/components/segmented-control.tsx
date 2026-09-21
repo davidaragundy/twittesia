@@ -21,9 +21,8 @@ export const SegmentedControl = <Value extends string>({
   <ToggleGroup
     aria-label={label}
     disabled={disabled}
-    variant="outline"
     size="sm"
-    spacing={0}
+    spacing={1}
     value={[value]}
     onValueChange={([next]) => {
       const chosen = options.find((option) => option.value === next);
