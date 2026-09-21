@@ -1,4 +1,4 @@
-import { Bubble, BubbleContent, BubbleGroup } from "@/shared/components/ui/bubble";
+import { Bubble, BubbleContent } from "@/shared/components/ui/bubble";
 import { Message, MessageContent, MessageFooter } from "@/shared/components/ui/message";
 
 import { MESSAGE_TIME_FORMAT } from "@/features/chat/constants/message-time-format";
@@ -23,13 +23,11 @@ export const ChatMessageRun = ({ run, lastMineId, isOtherHere }: Props) => {
   return (
     <Message align={isMine ? "end" : "start"}>
       <MessageContent>
-        <BubbleGroup>
-          {run.map((message) => (
-            <Bubble key={message.id} variant={isMine ? "default" : "muted"}>
-              <BubbleContent className="whitespace-pre-wrap">{message.body}</BubbleContent>
-            </Bubble>
-          ))}
-        </BubbleGroup>
+        {run.map((message) => (
+          <Bubble key={message.id} variant={isMine ? "default" : "muted"}>
+            <BubbleContent className="whitespace-pre-wrap">{message.body}</BubbleContent>
+          </Bubble>
+        ))}
         <MessageFooter>
           <time dateTime={last.sentAt.toISOString()} suppressHydrationWarning>
             {MESSAGE_TIME_FORMAT.format(last.sentAt)}
