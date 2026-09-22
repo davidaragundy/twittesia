@@ -17,9 +17,9 @@ import { MAX_POST_MEDIA } from "@/features/posts/constants/max-post-media";
 import { usePostComposer } from "@/features/posts/hooks/use-post-composer";
 
 /**
- * The post before it is one, drawn as the post it becomes: the same avatar, the same byline, the
- * text where the text will be, and the tools where the post's actions will be. No box around it,
- * so what is written already sits where it will be read.
+ * The post before it is one, drawn as the card it becomes: the same avatar and byline, the text
+ * where the text will be, and the tools where the post's actions will be, so what is written
+ * already sits where it will be read.
  */
 export const PostComposer = () => {
   const {
@@ -39,12 +39,17 @@ export const PostComposer = () => {
   } = usePostComposer();
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-4">
-      {user && <SeededAvatar seed={user.username ?? user.id} size="lg" />}
-
-      <div className="flex min-w-0 flex-1 flex-col gap-2">
+    <form
+      onSubmit={form.handleSubmit(onSubmit)}
+      // A card like the one it becomes, a shade deeper while it is being written in
+      className="flex flex-col gap-4 rounded-3xl bg-muted/30 p-5 transition-colors focus-within:bg-muted/45"
+    >
+      <header className="flex items-center gap-3">
+        {user && <SeededAvatar seed={user.username ?? user.id} size="lg" />}
         {user && <p className="truncate font-semibold">{user.name}</p>}
+      </header>
 
+      <div className="flex min-w-0 flex-col gap-3">
         <Controller
           name="content"
           control={form.control}
@@ -74,8 +79,8 @@ export const PostComposer = () => {
           onRemove={removeDraft}
         />
 
-        {/* Where the post's actions will be, pulled left the same way */}
-        <div className="-ml-2 flex items-center justify-between gap-2">
+        {/* Where the post's actions will be, pulled out the same way */}
+        <div className="-mx-2 -mb-1 flex items-center justify-between gap-2">
           <div className="flex items-center gap-1">
             <MediaPicker onPick={addFiles} multiple={MAX_POST_MEDIA > 1} disabled={!canAttach} />
             <MediaCaptureButtons onCapture={addFiles} disabled={!canAttach} />

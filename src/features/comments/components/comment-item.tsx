@@ -33,59 +33,55 @@ export const CommentItem = ({ comment }: Props) => {
       data-view-id={comment.isPending ? undefined : comment.id}
       data-view-mine={comment.isMine}
       className={cn(
-        // Reaches into the margins so its hover can be round without moving the text
-        "-mx-4 flex gap-3 rounded-3xl px-4 py-4 transition-colors hover:bg-muted/40",
+        // A card like a post's, a size smaller
+        "flex flex-col gap-3 rounded-3xl bg-muted/30 p-4 transition-colors hover:bg-muted/45 sm:p-5",
         // On its way: it breathes until it lands, and there is nothing to do to it yet
         comment.isPending && "animate-pulse",
       )}
     >
-      <Link href={`/${author.username}`} className="shrink-0" tabIndex={-1} aria-hidden>
-        <SeededAvatar seed={author.username} />
-      </Link>
-
-      <div className="flex min-w-0 flex-1 flex-col gap-2">
-        <header className="flex min-h-8 items-center gap-3">
-          <div className="flex min-w-0 flex-1 items-baseline gap-1.5">
-            <Link
-              id={`comment-${comment.id}-author`}
-              href={`/${author.username}`}
-              className="truncate font-semibold hover:underline"
-            >
-              {author.name}
-            </Link>
-            <span aria-hidden className="text-sm text-muted-foreground">
-              ·
-            </span>
-            <span className="shrink-0 text-sm text-muted-foreground">
-              <RelativeTime date={comment.createdAt} />
-            </span>
-          </div>
-          {comment.isMine && !comment.isPending && (
-            <DeleteActionsMenu subject="Comment" onDelete={requestDelete} />
-          )}
-        </header>
-
-        {comment.content && (
-          <p className="text-base leading-relaxed break-words whitespace-pre-wrap">
-            {comment.content}
-          </p>
+      <header className="flex min-h-8 items-center gap-3">
+        <Link href={`/${author.username}`} className="shrink-0" tabIndex={-1} aria-hidden>
+          <SeededAvatar seed={author.username} />
+        </Link>
+        <div className="flex min-w-0 flex-1 items-baseline gap-1.5">
+          <Link
+            id={`comment-${comment.id}-author`}
+            href={`/${author.username}`}
+            className="truncate font-semibold hover:underline"
+          >
+            {author.name}
+          </Link>
+          <span aria-hidden className="text-sm text-muted-foreground">
+            ·
+          </span>
+          <span className="shrink-0 text-sm text-muted-foreground">
+            <RelativeTime date={comment.createdAt} />
+          </span>
+        </div>
+        {comment.isMine && !comment.isPending && (
+          <DeleteActionsMenu subject="Comment" onDelete={requestDelete} />
         )}
+      </header>
 
-        <MediaGallery media={comment.media} />
+      {comment.content && (
+        <p className="text-base leading-relaxed break-words whitespace-pre-wrap">
+          {comment.content}
+        </p>
+      )}
 
-        <CommentReactions comment={comment} />
+      <MediaGallery media={comment.media} />
 
-        {/* One row that never wraps, pulled left by the buttons' own padding so their icons line
-            up with the text */}
-        <footer className="-ml-2 flex items-center justify-between gap-2">
-          <CommentReactionPicker comment={comment} disabled={comment.isPending} />
-          <ViewCount
-            count={comment.viewCount ? VIEW_COUNT_FORMAT.format(comment.viewCount) : undefined}
-            label={formatViewCount(comment.viewCount)}
-          />
-        </footer>
-      </div>
+      <CommentReactions comment={comment} />
 
+      {/* One row that never wraps, pulled out by the buttons' own padding so their icons line
+            up with the text's edges */}
+      <footer className="-mx-2 -mb-1 flex items-center justify-between gap-2">
+        <CommentReactionPicker comment={comment} disabled={comment.isPending} />
+        <ViewCount
+          count={comment.viewCount ? VIEW_COUNT_FORMAT.format(comment.viewCount) : undefined}
+          label={formatViewCount(comment.viewCount)}
+        />
+      </footer>
       {comment.isMine && (
         <ConfirmDialog
           isOpen={isDeleteOpen}

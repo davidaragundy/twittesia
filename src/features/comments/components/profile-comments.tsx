@@ -36,7 +36,7 @@ export const ProfileComments = ({ username, displayUsername, initialPage }: Prop
       )}
 
       {!isPending && !!comments.length && (
-        <div ref={containerRef} className="flex flex-col gap-2">
+        <div ref={containerRef} className="flex flex-col gap-3">
           {comments.map((comment) => (
             <ProfileCommentItem key={comment.id} comment={comment} />
           ))}
