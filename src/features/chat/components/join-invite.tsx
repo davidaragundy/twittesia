@@ -1,5 +1,6 @@
 "use client";
 
+import { Panel } from "@/shared/components/panel";
 import { SeededAvatar } from "@/shared/components/seeded-avatar";
 import { Spinner } from "@/shared/components/ui/spinner";
 
@@ -27,17 +28,17 @@ export const JoinInvite = ({ chatId, creatorName, creatorHandle, isFull, hasIden
 
   if (isFull) {
     return (
-      <div className="flex flex-1 flex-col items-center justify-center gap-3 py-24 text-center">
+      <Panel className="my-auto w-full max-w-xl items-center gap-3 self-center py-16 text-center">
         <h1 className="text-3xl font-bold tracking-tight text-balance">This invite is spent</h1>
         <p className="max-w-sm text-sm text-muted-foreground">
           Someone is already in this chat, and a chat only ever has two people in it.
         </p>
-      </div>
+      </Panel>
     );
   }
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-6 py-24 text-center">
+    <Panel className="my-auto w-full max-w-xl items-center gap-6 self-center py-12 text-center sm:py-16">
       <SeededAvatar seed={creatorHandle} className="size-20" />
 
       <div className="flex flex-col gap-2">
@@ -57,6 +58,6 @@ export const JoinInvite = ({ chatId, creatorName, creatorHandle, isFull, hasIden
       ) : (
         <StartButton returnPath={chatPath} label="Start an identity to join" />
       )}
-    </div>
+    </Panel>
   );
 };

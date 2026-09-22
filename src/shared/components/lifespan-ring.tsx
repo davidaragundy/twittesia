@@ -30,6 +30,8 @@ export function LifespanRing({ startsAt, endsAt, size = 14, details, children }:
           <span
             role="img"
             aria-label={label}
+            // The label counts minutes, which the server and the browser can land either side of
+            suppressHydrationWarning
             className="relative inline-flex shrink-0 items-center justify-center"
           />
         }

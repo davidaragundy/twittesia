@@ -2,7 +2,7 @@ import { Skeleton } from "@/shared/components/ui/skeleton";
 
 // An invitation as it will arrive: who sent it, what it is, and the one thing to do
 export const JoinInviteSkeleton = () => (
-  <div className="flex flex-1 flex-col items-center justify-center gap-6 py-24">
+  <div className="my-auto flex w-full max-w-xl flex-col items-center gap-6 self-center rounded-3xl bg-muted/30 px-5 py-12 sm:py-16">
     <Skeleton className="size-20" />
 
     <div className="flex flex-col items-center gap-2">

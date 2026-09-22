@@ -2,6 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
 import { useRealtime } from "@/features/posts/lib/realtime-client";
+import { findCachedPost } from "@/features/posts/utils/find-cached-post";
 import { removeCachedPost } from "@/features/posts/utils/remove-cached-post";
 import { setCachedPostCommentCount } from "@/features/posts/utils/set-cached-post-comment-count";
 import { setCachedPostReactions } from "@/features/posts/utils/set-cached-post-reactions";
@@ -9,6 +10,8 @@ import { setCachedPostReactions } from "@/features/posts/utils/set-cached-post-r
 interface Props {
   // The reader, so their own writing never arrives as news
   viewerId?: string | null;
+  // One person's feed only offers that person's posts
+  authorId?: string;
 }
 
 /**
@@ -17,10 +20,14 @@ interface Props {
  *
  * Reactions arrive as the whole set of emoji and their counts, so a page that missed an event
  * still lands on what the store holds.
+ *
+ * New posts are kept by id rather than counted: the channel replays what a page missed when it
+ * reconnects, so the same post can arrive twice, or arrive when it is already on screen, and a
+ * post can be deleted before anyone asks to see it.
  */
-export const useFeedEvents = ({ viewerId }: Props) => {
+export const useFeedEvents = ({ viewerId, authorId }: Props) => {
   const queryClient = useQueryClient();
-  const [newPostCount, setNewPostCount] = useState(0);
+  const [newPostIds, setNewPostIds] = useState<ReadonlySet<string>>(new Set());
 
   useRealtime({
     events: ["content.posted", "content.commented", "content.removed", "content.reacted"],
@@ -28,7 +35,10 @@ export const useFeedEvents = ({ viewerId }: Props) => {
       if (data.authorId === viewerId) return;
 
       if (event === "content.posted") {
-        setNewPostCount((count) => count + 1);
+        if (authorId && data.authorId !== authorId) return;
+        if (findCachedPost({ queryClient, postId: data.id })) return;
+
+        setNewPostIds((ids) => (ids.has(data.id) ? ids : new Set(ids).add(data.id)));
         return;
       }
 
@@ -42,7 +52,17 @@ export const useFeedEvents = ({ viewerId }: Props) => {
       }
 
       if (event === "content.removed") {
-        if (data.type === "post") removeCachedPost({ queryClient, postId: data.id });
+        if (data.type === "post") {
+          removeCachedPost({ queryClient, postId: data.id });
+          setNewPostIds((ids) => {
+            if (!ids.has(data.id)) return ids;
+
+            const next = new Set(ids);
+
+            next.delete(data.id);
+            return next;
+          });
+        }
 
         // A comment leaving changes the count of the post it was on, which the feed shows
         if (data.type === "comment" && data.postId && data.commentCount !== null) {
@@ -62,5 +82,5 @@ export const useFeedEvents = ({ viewerId }: Props) => {
     },
   });
 
-  return { newPostCount, forgetNewPosts: () => setNewPostCount(0) };
+  return { newPostCount: newPostIds.size, forgetNewPosts: () => setNewPostIds(new Set()) };
 };

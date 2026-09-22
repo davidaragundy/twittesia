@@ -1,6 +1,7 @@
 import { FireIcon } from "@hugeicons/core-free-icons";
 
 import { Icon } from "@/shared/components/icon";
+import { Panel } from "@/shared/components/panel";
 import {
   Empty,
   EmptyDescription,
@@ -28,17 +29,19 @@ export async function PopularPosts() {
       initialSort="popular"
       viewerId={session?.user.id}
       empty={
-        <Empty>
-          <EmptyHeader>
-            <EmptyMedia variant="icon">
-              <Icon icon={FireIcon} />
-            </EmptyMedia>
-            <EmptyTitle>Quiet right now</EmptyTitle>
-            <EmptyDescription>
-              Nothing is alive to explore. Whatever gets said next shows up here.
-            </EmptyDescription>
-          </EmptyHeader>
-        </Empty>
+        <Panel className="py-4">
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Icon icon={FireIcon} />
+              </EmptyMedia>
+              <EmptyTitle>Quiet right now</EmptyTitle>
+              <EmptyDescription>
+                Nothing is alive to explore. Whatever gets said next shows up here.
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        </Panel>
       }
     />
   );

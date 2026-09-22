@@ -1,8 +1,7 @@
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 
 import { DEFAULT_FEED_SORT } from "@/features/posts/constants/default-feed-sort";
-import { FEED_QUERY_KEY } from "@/features/posts/constants/feed-query-key";
 import { useFeedEvents } from "@/features/posts/hooks/use-feed-events";
 import type { FeedPage } from "@/features/posts/types/feed-page";
 import type { FeedSort } from "@/features/posts/types/feed-sort";
@@ -26,10 +25,9 @@ export const useFeed = ({
   initialSort = DEFAULT_FEED_SORT,
   viewerId,
 }: Props) => {
-  const queryClient = useQueryClient();
   const [sort, setSort] = useState<FeedSort>(initialSort);
 
-  const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =
+  const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, isPending, refetch } =
     useInfiniteQuery({
       queryKey: toFeedQueryKey({ sort, authorId }),
       queryFn: ({ pageParam }) => fetchFeedPage({ cursor: pageParam, sort, authorId }),
@@ -56,11 +54,12 @@ export const useFeed = ({
     return () => observer.disconnect();
   }, [fetchNextPage, hasNextPage]);
 
-  const { newPostCount, forgetNewPosts } = useFeedEvents({ viewerId });
+  const { newPostCount, forgetNewPosts } = useFeedEvents({ viewerId, authorId });
 
+  // Read again from the top, and taken there: only this feed, in the order it is in
   const showNewPosts = () => {
     forgetNewPosts();
-    queryClient.invalidateQueries({ queryKey: FEED_QUERY_KEY });
+    void refetch();
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -68,7 +67,8 @@ export const useFeed = ({
 
   return {
     posts,
-    newPostCount,
+    // New posts go at the top of the latest ones; in any other order they would land elsewhere
+    newPostCount: sort === "latest" ? newPostCount : 0,
     showNewPosts,
     postIds: posts.map((post) => post.id),
     sort,
