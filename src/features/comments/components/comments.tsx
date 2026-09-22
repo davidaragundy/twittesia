@@ -19,7 +19,7 @@ interface Props {
 }
 
 export const Comments = ({ postId, initialPage, viewerId, composer }: Props) => {
-  const { comments, containerRef, sort, setSort, isPending, isFetchingNextPage, endRef } =
+  const { comments, containerRef, sort, setSort, isPending, canSort, isFetchingNextPage, endRef } =
     useComments({ postId, initialPage, viewerId });
 
   return (
@@ -28,7 +28,9 @@ export const Comments = ({ postId, initialPage, viewerId, composer }: Props) => 
         <h2 id="comments-title" className="text-lg font-semibold tracking-tight">
           Comments
         </h2>
-        <SortMenu label="Sort comments" options={COMMENT_SORTS} value={sort} onChange={setSort} />
+        {canSort && (
+          <SortMenu label="Sort comments" options={COMMENT_SORTS} value={sort} onChange={setSort} />
+        )}
       </div>
 
       {composer}

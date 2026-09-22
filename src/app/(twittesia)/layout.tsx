@@ -15,6 +15,7 @@ import { NavUser } from "@/features/auth/components/nav-user";
 import { NavUserSkeleton } from "@/features/auth/components/nav-user-skeleton";
 import { SessionGuard } from "@/features/auth/components/session-guard";
 import { SessionProvider } from "@/features/auth/components/session-provider";
+import { WelcomeToast } from "@/features/auth/components/welcome-toast";
 import { ProfileNavLink } from "@/features/profiles/components/profile-nav-link";
 import { LeaveDialog } from "@/features/settings/components/leave-dialog";
 import { SettingsMenuItem } from "@/features/settings/components/settings-menu-item";
@@ -83,6 +84,12 @@ export default function Layout({ children, modal }: LayoutProps<"/">) {
 
       <Suspense>
         <SessionGuard />
+      </Suspense>
+
+      <Suspense>
+        <SessionProvider>
+          <WelcomeToast />
+        </SessionProvider>
       </Suspense>
 
       {modal}

@@ -7,6 +7,7 @@ import { DeleteActionsMenu } from "@/shared/components/delete-actions-menu";
 import { RelativeTime } from "@/shared/components/relative-time";
 import { SeededAvatar } from "@/shared/components/seeded-avatar";
 import { ViewCount } from "@/shared/components/view-count";
+import { cn } from "@/shared/utils/cn";
 
 import { CommentReactionPicker } from "@/features/comments/components/comment-reaction-picker";
 import { CommentReactions } from "@/features/comments/components/comment-reactions";
@@ -29,10 +30,14 @@ export const CommentItem = ({ comment }: Props) => {
   return (
     <article
       aria-labelledby={`comment-${comment.id}-author`}
-      data-view-id={comment.id}
+      data-view-id={comment.isPending ? undefined : comment.id}
       data-view-mine={comment.isMine}
-      // Reaches into the margins so its hover can be round without moving the text
-      className="-mx-4 flex gap-3 rounded-3xl px-4 py-3 transition-colors hover:bg-muted/40"
+      className={cn(
+        // Reaches into the margins so its hover can be round without moving the text
+        "-mx-4 flex gap-3 rounded-3xl px-4 py-3 transition-colors hover:bg-muted/40",
+        // On its way: it breathes until it lands, and there is nothing to do to it yet
+        comment.isPending && "animate-pulse",
+      )}
     >
       <Link href={`/${author.username}`} className="shrink-0" tabIndex={-1} aria-hidden>
         <SeededAvatar seed={author.username} />
@@ -55,7 +60,9 @@ export const CommentItem = ({ comment }: Props) => {
               <RelativeTime date={comment.createdAt} />
             </span>
           </div>
-          {comment.isMine && <DeleteActionsMenu subject="Comment" onDelete={requestDelete} />}
+          {comment.isMine && !comment.isPending && (
+            <DeleteActionsMenu subject="Comment" onDelete={requestDelete} />
+          )}
         </header>
 
         {comment.content && (
@@ -71,7 +78,7 @@ export const CommentItem = ({ comment }: Props) => {
         {/* One row that never wraps, pulled left by the buttons' own padding so their icons line
             up with the text */}
         <footer className="-ml-2 flex items-center justify-between gap-2">
-          <CommentReactionPicker comment={comment} />
+          <CommentReactionPicker comment={comment} disabled={comment.isPending} />
           <ViewCount
             count={VIEW_COUNT_FORMAT.format(comment.viewCount)}
             label={formatViewCount(comment.viewCount)}

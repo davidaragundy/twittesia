@@ -7,6 +7,7 @@ import { tryCatch } from "@/shared/utils/try-catch";
 
 import { START_ERROR_PARAM } from "@/features/auth/constants/start-error-param";
 import { START_RETURN_FIELD } from "@/features/auth/constants/start-return-field";
+import { WELCOME_PARAM } from "@/features/auth/constants/welcome-param";
 import { startRateLimits } from "@/features/auth/lib/start-rate-limits";
 import { getSession } from "@/features/auth/queries/get-session";
 import { createIdentity } from "@/features/auth/utils/create-identity";
@@ -50,5 +51,10 @@ export const handleStart = async (request: Request) => {
 
   await setSessionCookie(session);
 
-  return NextResponse.redirect(new URL(destination, request.url), 303);
+  // Only a new identity is welcomed: the return path never carries a query of its own
+  const landing = new URL(destination, request.url);
+
+  landing.searchParams.set(WELCOME_PARAM, "1");
+
+  return NextResponse.redirect(landing, 303);
 };

@@ -1,21 +1,26 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { KeyboardEvent } from "react";
+import { type KeyboardEvent, useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 
 import { tryCatch } from "@/shared/utils/try-catch";
 
+import { COMMENT_COMPOSER_ID } from "@/features/comments/constants/comment-composer-id";
 import { MAX_COMMENT_MEDIA } from "@/features/comments/constants/max-comment-media";
 import { useCreateCommentMutation } from "@/features/comments/hooks/use-create-comment-mutation";
 import { commentFormSchema } from "@/features/comments/schemas/comment-form-schema";
 import type { CommentFormValues } from "@/features/comments/types/comment-form-values";
+import type { PostComment } from "@/features/comments/types/post-comment";
 import { useMediaDrafts } from "@/features/media/hooks/use-media-drafts";
 import { useUploadMediaMutation } from "@/features/media/hooks/use-upload-media-mutation";
+import { POST_COMMENTS_ANCHOR } from "@/features/posts/constants/post-comments-anchor";
 
 interface Props {
   postId: string;
+  // Who is writing, for the comment shown before the server has it
+  author: PostComment["author"];
 }
 
-export const useCommentComposer = ({ postId }: Props) => {
+export const useCommentComposer = ({ postId, author }: Props) => {
   const form = useForm<CommentFormValues>({
     mode: "onChange",
     resolver: zodResolver(commentFormSchema),
@@ -29,8 +34,17 @@ export const useCommentComposer = ({ postId }: Props) => {
   const { mutate, isPending: isPublishing } = useCreateCommentMutation({
     postId,
     form,
+    author,
     onPublished: clearDrafts,
   });
+
+  // Arriving from a post's comment count is arriving to write one: the box is ready, without
+  // fighting the scroll that brings the comments into view
+  useEffect(() => {
+    if (window.location.hash !== `#${POST_COMMENTS_ANCHOR}`) return;
+
+    document.getElementById(COMMENT_COMPOSER_ID)?.focus({ preventScroll: true });
+  }, []);
 
   // Read at the top, like every other form hook: a formState read buried in the returned object
   // gets memoized against the stable form, and never sees the field become valid

@@ -42,6 +42,7 @@ export const Feed = ({ initialPage, authorId, empty, initialSort, viewerId }: Pr
     sort,
     setSort,
     isPending,
+    canSort,
     hasNextPage,
     isFetchingNextPage,
     endRef,
@@ -53,9 +54,11 @@ export const Feed = ({ initialPage, authorId, empty, initialSort, viewerId }: Pr
   return (
     <div className="flex flex-col gap-6">
       {/* The order heads the list it orders, pulled left so its label lines up with the posts */}
-      <div className="-ml-2.5 flex">
-        <SortMenu label="Sort posts" options={FEED_SORTS} value={sort} onChange={setSort} />
-      </div>
+      {canSort && (
+        <div className="-ml-2.5 flex">
+          <SortMenu label="Sort posts" options={FEED_SORTS} value={sort} onChange={setSort} />
+        </div>
+      )}
 
       {/* Offered rather than shown: nothing moves under the reader until they ask for it */}
       {!!newPostCount && (

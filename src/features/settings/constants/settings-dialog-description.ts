@@ -1,1 +1,1 @@
-export const SETTINGS_DIALOG_DESCRIPTION = "Manage your identity, for as long as it lasts.";
+export const SETTINGS_DIALOG_DESCRIPTION = "Your identity, and how Twittesia looks on this device.";

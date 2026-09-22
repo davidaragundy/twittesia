@@ -6,10 +6,11 @@ import { ReactionPicker } from "@/features/posts/components/reaction-picker";
 
 interface Props {
   comment: PostComment;
+  disabled?: boolean;
 }
 
-export const CommentReactionPicker = ({ comment }: Props) => {
+export const CommentReactionPicker = ({ comment, disabled }: Props) => {
   const { toggle } = useCommentReactions({ postId: comment.postId, commentId: comment.id });
 
-  return <ReactionPicker reactions={comment.reactions} onToggle={toggle} />;
+  return <ReactionPicker reactions={comment.reactions} onToggle={toggle} disabled={disabled} />;
 };

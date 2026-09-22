@@ -13,6 +13,7 @@ import {
   DrawerTrigger,
 } from "@/shared/components/ui/drawer";
 
+import { IdentityExpiryBadge } from "@/features/auth/components/identity-expiry-badge";
 import { useAccountDrawer } from "@/features/auth/hooks/use-account-drawer";
 
 type Props = {
@@ -46,6 +47,9 @@ export function AccountDrawer({ actions }: Props) {
           <DrawerDescription>
             <span className="handle">@{user.displayUsername}</span>
           </DrawerDescription>
+          <div className="mt-2 flex justify-center">
+            <IdentityExpiryBadge expiresAt={new Date(user.expiresAt)} />
+          </div>
         </DrawerHeader>
         {/* Anything chosen here leaves the drawer behind */}
         <nav aria-label="Profile" className="flex flex-col gap-1 px-4 pt-4 pb-10" onClick={close}>

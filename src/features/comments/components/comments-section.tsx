@@ -2,6 +2,7 @@ import { getSession } from "@/features/auth/queries/get-session";
 import { CommentComposer } from "@/features/comments/components/comment-composer";
 import { Comments } from "@/features/comments/components/comments";
 import { getCommentsPage } from "@/features/comments/queries/get-comments-page";
+import { POST_COMMENTS_ANCHOR } from "@/features/posts/constants/post-comments-anchor";
 
 interface Props {
   params: Promise<{ postId: string }>;
@@ -15,7 +16,7 @@ export async function CommentsSection({ params }: Props) {
 
   return (
     <section
-      id="comments"
+      id={POST_COMMENTS_ANCHOR}
       aria-labelledby="comments-title"
       className="flex scroll-mt-24 flex-col gap-6"
     >

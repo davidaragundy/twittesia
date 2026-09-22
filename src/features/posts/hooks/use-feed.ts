@@ -74,6 +74,9 @@ export const useFeed = ({
     sort,
     setSort,
     isPending,
+    // An order only means something with two things to put in it; while one is loading, the
+    // menu that asked for it stays
+    canSort: isPending || posts.length > 1 || !!hasNextPage,
     isError: !!error,
     hasNextPage,
     isFetchingNextPage,
