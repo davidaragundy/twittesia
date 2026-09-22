@@ -58,7 +58,7 @@ export const KnockList = ({ chatId, knocks }: Props) => {
             <ItemContent>
               <ItemTitle>{knock.name}</ItemTitle>
               <ItemDescription>
-                <span className="handle">@{knock.handle}</span>
+                <span className="block truncate handle">@{knock.handle}</span>
               </ItemDescription>
             </ItemContent>
             <ItemActions>

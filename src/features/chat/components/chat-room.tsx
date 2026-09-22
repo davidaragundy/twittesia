@@ -49,7 +49,7 @@ export const ChatRoom = ({ chatId, viewerId, other, expiresAt, canEnd }: Props) 
         <SeededAvatar seed={other.handle} className="size-10 shrink-0" />
         <div className="flex min-w-0 flex-col gap-0.5">
           <p className="truncate leading-none font-medium">{other.name}</p>
-          <ChatPresence name={other.name} isHere={isOtherHere} isConnected={isConnected} />
+          <ChatPresence isHere={isOtherHere} isConnected={isConnected} />
         </div>
 
         <div className="ml-auto flex shrink-0 items-center gap-1">

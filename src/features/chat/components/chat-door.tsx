@@ -1,5 +1,6 @@
 "use client";
 
+import { SeededAvatar } from "@/shared/components/seeded-avatar";
 import { Button } from "@/shared/components/ui/button";
 import { Spinner } from "@/shared/components/ui/spinner";
 
@@ -17,30 +18,37 @@ interface Props {
 export const ChatDoor = ({ chatId, creator, handle, isWaiting }: Props) => {
   const { mutate, isPending } = useKnockMutation({ chatId });
 
-  if (isWaiting) {
-    return (
-      <div className="flex flex-col items-center gap-3 py-12 text-center">
-        <Spinner />
-        <p className="font-medium">Waiting for {creator.name}</p>
-        <p className="max-w-sm text-sm text-muted-foreground">
-          They see <span className="handle">@{handle}</span> asking to join. This page opens the
-          moment they let you in.
+  return (
+    <div className="flex flex-1 flex-col items-center justify-center gap-8 py-16 text-center">
+      <SeededAvatar seed={creator.handle} className="size-20" />
+
+      <div className="flex max-w-sm flex-col gap-2">
+        <h1 className="text-2xl font-semibold tracking-tight">
+          {isWaiting ? `Waiting for ${creator.name}` : `${creator.name} invited you`}
+        </h1>
+        <p className="text-sm leading-relaxed text-muted-foreground">
+          {isWaiting ? (
+            <>
+              They see <span className="handle">@{handle}</span> asking to join. This page opens the
+              moment they let you in.
+            </>
+          ) : (
+            "A private chat for two. They decide who gets in, and all they will see is your handle."
+          )}
         </p>
       </div>
-    );
-  }
 
-  return (
-    <div className="flex flex-col items-center gap-4 py-12 text-center">
-      <p className="max-w-sm text-sm text-muted-foreground">
-        <span className="font-medium text-foreground">{creator.name}</span> invited one person to a
-        private chat. They decide who, and all they will see is your handle.
-      </p>
-
-      <Button onClick={() => mutate()} disabled={isPending}>
-        {isPending && <Spinner data-icon="inline-start" />}
-        Ask to join as @{handle}
-      </Button>
+      {isWaiting ? (
+        <p role="status" className="flex items-center gap-2 text-sm text-muted-foreground">
+          <Spinner />
+          <span className="shimmer">Asking to join</span>
+        </p>
+      ) : (
+        <Button size="lg" onClick={() => mutate()} disabled={isPending}>
+          {isPending && <Spinner data-icon="inline-start" />}
+          Ask to join
+        </Button>
+      )}
     </div>
   );
 };

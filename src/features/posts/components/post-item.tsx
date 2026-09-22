@@ -49,7 +49,7 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
       data-view-mine={post.isMine}
       className={cn(
         // Reaches into the margins so its hover can be round without moving the text
-        "-mx-4 flex gap-4 rounded-3xl px-4 py-4 transition-colors hover:bg-muted/40",
+        "-mx-4 flex gap-4 rounded-3xl px-4 py-5 transition-colors hover:bg-muted/40",
         // On its way: it breathes until it lands, and there is nothing to do to it yet
         post.isPending && "animate-pulse",
       )}

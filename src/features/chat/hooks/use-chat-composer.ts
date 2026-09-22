@@ -22,7 +22,7 @@ export const useChatComposer = ({ chatId, isConnected, chatKey }: Props) => {
     defaultValues: { body: "" },
   });
 
-  const { mutate, isPending } = useSendMessageMutation({
+  const { mutate } = useSendMessageMutation({
     chatId,
     chatKey,
     // Back in the box, unless something new has been started there since
@@ -61,5 +61,5 @@ export const useChatComposer = ({ chatId, isConnected, chatKey }: Props) => {
     if (canSubmit) void form.handleSubmit(onSubmit)();
   };
 
-  return { form, onSubmit, onKeyDown, onType, isPending, canSubmit, length: body?.length ?? 0 };
+  return { form, onSubmit, onKeyDown, onType, canSubmit, length: body?.length ?? 0 };
 };

@@ -8,6 +8,7 @@ import { LandingHero } from "@/features/landing/components/landing-hero";
 import { LandingHighlights } from "@/features/landing/components/landing-highlights";
 import { LandingLifespan } from "@/features/landing/components/landing-lifespan";
 import { LandingName } from "@/features/landing/components/landing-name";
+import { LandingPreview } from "@/features/landing/components/landing-preview";
 import { LANDING_DESCRIPTION } from "@/features/landing/constants/landing-description";
 import { LANDING_JSON_LD } from "@/features/landing/constants/landing-json-ld";
 import { LANDING_TITLE } from "@/features/landing/constants/landing-title";
@@ -43,7 +44,10 @@ export default function LandingPage() {
         }}
       />
 
-      <LandingHero />
+      <div className="flex flex-col gap-16 sm:gap-20">
+        <LandingHero />
+        <LandingPreview />
+      </div>
 
       <LandingHighlights />
 

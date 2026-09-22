@@ -1,3 +1,4 @@
+import { PageHeader } from "@/shared/components/page-header";
 import { isRateLimited } from "@/shared/utils/is-rate-limited";
 
 import { getSession } from "@/features/auth/queries/get-session";
@@ -32,7 +33,10 @@ export async function ExplorePage({ searchParams }: Props) {
 
   return (
     <div className="flex flex-col gap-10">
-      <SearchForm query={query} scope={scope} />
+      <div className="flex flex-col gap-6">
+        <PageHeader title="Explore" />
+        <SearchForm query={query} scope={scope} />
+      </div>
 
       {isLimited && <SearchLimited />}
 

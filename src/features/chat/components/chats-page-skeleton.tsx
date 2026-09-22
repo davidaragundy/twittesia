@@ -3,13 +3,13 @@ import { Skeleton } from "@/shared/components/ui/skeleton";
 
 // The chats page as it will arrive: its heading and button, then a few chats
 export const ChatsPageSkeleton = () => (
-  <div className="flex flex-col gap-8">
-    <div className="flex items-start justify-between gap-4">
-      <div className="flex flex-1 flex-col gap-2">
-        <Skeleton className="h-8 w-24" />
-        <Skeleton className="h-4 w-full max-w-sm" />
+  <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-2">
+      <div className="flex min-h-10 items-center justify-between gap-4">
+        <Skeleton className="h-8 w-28" />
+        <Skeleton className="h-9 w-32" />
       </div>
-      <Skeleton className="h-9 w-32 shrink-0" />
+      <Skeleton className="h-4 w-full max-w-sm" />
     </div>
 
     <ItemGroup>
