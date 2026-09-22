@@ -22,7 +22,14 @@ export const useChatComposer = ({ chatId, isConnected, chatKey }: Props) => {
     defaultValues: { body: "" },
   });
 
-  const { mutate, isPending } = useSendMessageMutation({ chatId, chatKey });
+  const { mutate, isPending } = useSendMessageMutation({
+    chatId,
+    chatKey,
+    // Back in the box, unless something new has been started there since
+    onFailed: (text) => {
+      if (!form.getValues("body")) form.setValue("body", text, { shouldValidate: true });
+    },
+  });
   const announceTyping = useTypingAnnouncer({ chatId });
 
   // Read at the top, like every other form hook: a formState read buried in the returned object
@@ -30,7 +37,9 @@ export const useChatComposer = ({ chatId, isConnected, chatKey }: Props) => {
   const { isValid } = form.formState;
 
   const body = useWatch({ control: form.control, name: "body" });
-  const canSubmit = isValid && !!body?.trim() && !isPending && isConnected && !!chatKey;
+  // Not held back by the message before it: people write in bursts, and the page sends one action
+  // at a time, so they still leave in the order they were written
+  const canSubmit = isValid && !!body?.trim() && isConnected && !!chatKey;
 
   // The message is cleared as it goes: it comes back over the connection like any other, so the
   // room shows what actually left rather than what was typed

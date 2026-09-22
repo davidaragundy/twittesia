@@ -8,9 +8,11 @@ interface Props {
   chatId: string;
   // What this page and the other side agreed on: the text is closed with it before it leaves
   chatKey: CryptoKey | null;
+  // Gives back what couldn't be sent, so it isn't lost with the box already cleared
+  onFailed: (body: string) => void;
 }
 
-export const useSendMessageMutation = ({ chatId, chatKey }: Props) =>
+export const useSendMessageMutation = ({ chatId, chatKey, onFailed }: Props) =>
   useMutation({
     mutationFn: async (body: string) => {
       // Nothing is sent before the two sides have agreed a key; the composer waits for it too
@@ -20,10 +22,14 @@ export const useSendMessageMutation = ({ chatId, chatKey }: Props) =>
 
       return sendMessage({ chatId, cipher, iv });
     },
-    onSuccess: ({ error }) => {
-      if (error) toast.error("Couldn't send that", { description: error.message });
+    onSuccess: ({ error }, body) => {
+      if (!error) return;
+
+      onFailed(body);
+      toast.error("Couldn't send that", { description: error.message });
     },
-    onError: () => {
+    onError: (_error, body) => {
+      onFailed(body);
       toast.error("Couldn't send that", { description: "Please try again in a moment." });
     },
   });

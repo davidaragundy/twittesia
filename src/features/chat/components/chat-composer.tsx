@@ -37,7 +37,6 @@ export const ChatComposer = ({ chatId, isConnected, chatKey }: Props) => {
       <Controller
         name="body"
         control={form.control}
-        disabled={isPending}
         render={({ field }) => (
           <InputGroup>
             <label htmlFor="chat-composer-body" className="sr-only">
