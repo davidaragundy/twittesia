@@ -5,6 +5,7 @@ import { cache } from "react";
 
 import { SESSION_COOKIE_NAME } from "@/features/auth/constants/session-cookie-name";
 import type { Session } from "@/features/auth/types/session";
+import { getIdentityExpiry } from "@/features/auth/utils/get-identity-expiry";
 import { validateSessionToken } from "@/features/auth/utils/validate-session-token";
 
 // Read per request, never cached across navigations, so a change shows on the next render.
@@ -27,6 +28,7 @@ export const getSession = cache(async (): Promise<Session | null> => {
       name: identity.name,
       username: identity.handle,
       displayUsername: identity.handle,
+      expiresAt: getIdentityExpiry({ createdAt: identity.createdAt }),
     },
     session: { id: sessionId },
   };

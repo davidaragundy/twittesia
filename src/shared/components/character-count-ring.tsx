@@ -18,7 +18,15 @@ export const CharacterCountRing = ({ length, max }: Props) => {
   const { size, radius, strokeWidth } = CHARACTER_COUNT_RING_GEOMETRY;
 
   return (
-    <div className="flex items-center gap-2">
+    // Nothing to count until something is written: it fades in with the first character, and its
+    // space is kept so nothing beside it moves
+    <div
+      aria-hidden={length === 0}
+      className={cn(
+        "flex items-center gap-2 transition-opacity duration-200",
+        length === 0 && "opacity-0",
+      )}
+    >
       {showCount && (
         <span
           aria-live="polite"

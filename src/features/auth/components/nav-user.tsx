@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
 
+import { IdentityExpiryBadge } from "@/features/auth/components/identity-expiry-badge";
 import { useNavUser } from "@/features/auth/hooks/use-nav-user";
 
 type Props = {
@@ -46,7 +47,12 @@ export function NavUser({ menuItems }: Props) {
       </DropdownMenuTrigger>
       <DropdownMenuContent side="top" align="start" sideOffset={8} className="min-w-56">
         <DropdownMenuGroup>
-          <div className="flex items-center gap-2 px-1 py-1.5">{identity}</div>
+          <div className="flex flex-col gap-2 px-1 py-1.5">
+            <div className="flex items-center gap-2">{identity}</div>
+            <div className="flex">
+              <IdentityExpiryBadge expiresAt={new Date(user.expiresAt)} />
+            </div>
+          </div>
         </DropdownMenuGroup>
         <DropdownMenuGroup>{menuItems}</DropdownMenuGroup>
         {/* Opens the confirmation; the menu closes behind it */}

@@ -1,12 +1,4 @@
-import { Icon } from "@/shared/components/icon";
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemMedia,
-  ItemTitle,
-} from "@/shared/components/ui/item";
-
+import { LandingFeature } from "@/features/landing/components/landing-feature";
 import { LANDING_CHAT_POINTS } from "@/features/landing/constants/landing-chat-points";
 
 // The part of the page about chats. Everything it claims is what the chat actually does.
@@ -27,19 +19,14 @@ export const LandingChat = () => (
       </p>
     </div>
 
-    <div className="grid gap-8 sm:grid-cols-2">
+    <div className="grid gap-x-10 gap-y-8 sm:grid-cols-2">
       {LANDING_CHAT_POINTS.map((point) => (
-        <Item key={point.title}>
-          <ItemMedia variant="icon">
-            <Icon icon={point.icon} />
-          </ItemMedia>
-          <ItemContent>
-            <ItemTitle>
-              <h3>{point.title}</h3>
-            </ItemTitle>
-            <ItemDescription>{point.description}</ItemDescription>
-          </ItemContent>
-        </Item>
+        <LandingFeature
+          key={point.title}
+          icon={point.icon}
+          title={point.title}
+          description={point.description}
+        />
       ))}
     </div>
   </section>

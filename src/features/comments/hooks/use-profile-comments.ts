@@ -58,6 +58,9 @@ export const useProfileComments = ({ username, initialPage }: Props) => {
     sort,
     setSort,
     isPending,
+    // An order only means something with two things to put in it; while one is loading, the
+    // menu that asked for it stays
+    canSort: isPending || comments.length > 1 || !!hasNextPage,
     hasNextPage,
     isFetchingNextPage,
   };

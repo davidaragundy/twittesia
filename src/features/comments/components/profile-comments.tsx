@@ -16,14 +16,16 @@ interface Props {
 }
 
 export const ProfileComments = ({ username, displayUsername, initialPage }: Props) => {
-  const { comments, containerRef, sort, setSort, isPending, isFetchingNextPage, endRef } =
+  const { comments, containerRef, sort, setSort, isPending, canSort, isFetchingNextPage, endRef } =
     useProfileComments({ username, initialPage });
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="-ml-2.5 flex">
-        <SortMenu label="Sort comments" options={COMMENT_SORTS} value={sort} onChange={setSort} />
-      </div>
+      {canSort && (
+        <div className="-ml-2.5 flex">
+          <SortMenu label="Sort comments" options={COMMENT_SORTS} value={sort} onChange={setSort} />
+        </div>
+      )}
 
       {isPending && <Skeleton className="h-24 w-full" />}
 

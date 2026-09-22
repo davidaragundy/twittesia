@@ -38,7 +38,11 @@ export const SearchForm = ({ query, scope }: Props) => {
           </InputGroupAddon>
           <InputGroupInput
             name="q"
-            type="search"
+            // Text rather than search, so the browser adds no clear button of its own beside
+            // ours; the keyboard still offers to search
+            type="text"
+            inputMode="search"
+            enterKeyHint="search"
             value={value}
             onChange={(event) => setValue(event.target.value)}
             maxLength={MAX_SEARCH_QUERY_LENGTH}

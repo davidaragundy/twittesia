@@ -17,6 +17,7 @@ import { MediaGallery } from "@/features/media/components/media-gallery";
 import { PostReactionPicker } from "@/features/posts/components/post-reaction-picker";
 import { PostReactions } from "@/features/posts/components/post-reactions";
 import { DELETE_POST_DIALOG_COPY } from "@/features/posts/constants/delete-post-dialog-copy";
+import { POST_COMMENTS_ANCHOR } from "@/features/posts/constants/post-comments-anchor";
 import { VIEW_COUNT_FORMAT } from "@/features/posts/constants/view-count-format";
 import { usePostItem } from "@/features/posts/hooks/use-post-item";
 import type { FeedPost } from "@/features/posts/types/feed-post";
@@ -122,7 +123,7 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
                 aria-label={formatCommentCount(post.commentCount)}
                 render={
                   <Link
-                    href={`${getPostPath({ username: author.username, postId: post.id })}#comments`}
+                    href={`${getPostPath({ username: author.username, postId: post.id })}#${POST_COMMENTS_ANCHOR}`}
                   />
                 }
                 nativeButton={false}

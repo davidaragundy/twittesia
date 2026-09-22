@@ -1,12 +1,4 @@
-import { Icon } from "@/shared/components/icon";
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemMedia,
-  ItemTitle,
-} from "@/shared/components/ui/item";
-
+import { LandingFeature } from "@/features/landing/components/landing-feature";
 import { LANDING_HIGHLIGHTS } from "@/features/landing/constants/landing-highlights";
 
 export const LandingHighlights = () => (
@@ -15,19 +7,14 @@ export const LandingHighlights = () => (
       What you can do
     </h2>
 
-    <div className="grid gap-8 sm:grid-cols-2">
+    <div className="grid gap-x-10 gap-y-8 sm:grid-cols-2">
       {LANDING_HIGHLIGHTS.map((highlight) => (
-        <Item key={highlight.title}>
-          <ItemMedia variant="icon">
-            <Icon icon={highlight.icon} />
-          </ItemMedia>
-          <ItemContent>
-            <ItemTitle>
-              <h3>{highlight.title}</h3>
-            </ItemTitle>
-            <ItemDescription>{highlight.description}</ItemDescription>
-          </ItemContent>
-        </Item>
+        <LandingFeature
+          key={highlight.title}
+          icon={highlight.icon}
+          title={highlight.title}
+          description={highlight.description}
+        />
       ))}
     </div>
   </section>

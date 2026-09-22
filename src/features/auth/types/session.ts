@@ -5,6 +5,8 @@ export type Session = {
     name: string;
     username: string;
     displayUsername: string;
+    // When the identity stops working, in milliseconds since the epoch
+    expiresAt: number;
   };
   session: { id: string };
 };

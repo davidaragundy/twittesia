@@ -19,4 +19,6 @@ export type PostComment = {
   media: Media[];
   // Users other than the author who saw it
   viewCount: number;
+  // Shown the moment it is written, before the server has it; there is nothing to do to it yet
+  isPending?: boolean;
 };

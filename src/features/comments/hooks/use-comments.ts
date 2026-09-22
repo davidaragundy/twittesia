@@ -10,6 +10,7 @@ import type { CommentSort } from "@/features/comments/types/comment-sort";
 import type { CommentsPage } from "@/features/comments/types/comments-page";
 import { fetchCommentsPage } from "@/features/comments/utils/fetch-comments-page";
 import { toCommentsQueryKey } from "@/features/comments/utils/to-comments-query-key";
+import { POST_COMMENTS_ANCHOR } from "@/features/posts/constants/post-comments-anchor";
 import { useViewTracking } from "@/features/posts/hooks/use-view-tracking";
 
 interface Props {
@@ -21,7 +22,7 @@ interface Props {
 }
 
 export const useComments = ({ postId, initialPage, viewerId }: Props) => {
-  useScrollToHash({ id: "comments" });
+  useScrollToHash({ id: POST_COMMENTS_ANCHOR });
   useCommentEvents({ postId, viewerId });
 
   const [sort, setSort] = useState<CommentSort>(DEFAULT_COMMENT_SORT);
@@ -66,6 +67,9 @@ export const useComments = ({ postId, initialPage, viewerId }: Props) => {
     sort,
     setSort,
     isPending,
+    // An order only means something with two things to put in it; while one is loading, the
+    // menu that asked for it stays
+    canSort: isPending || comments.length > 1 || !!hasNextPage,
     hasNextPage,
     isFetchingNextPage,
   };

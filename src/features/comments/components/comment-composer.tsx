@@ -9,6 +9,7 @@ import { Kbd, KbdGroup } from "@/shared/components/ui/kbd";
 import { Spinner } from "@/shared/components/ui/spinner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
 
+import { COMMENT_COMPOSER_ID } from "@/features/comments/constants/comment-composer-id";
 import { MAX_COMMENT_LENGTH } from "@/features/comments/constants/max-comment-length";
 import { MAX_COMMENT_MEDIA } from "@/features/comments/constants/max-comment-media";
 import { useCommentComposer } from "@/features/comments/hooks/use-comment-composer";
@@ -38,7 +39,10 @@ export const CommentComposer = ({ postId, viewerHandle, viewerName }: Props) => 
     addFiles,
     removeDraft,
     canAttach,
-  } = useCommentComposer({ postId });
+  } = useCommentComposer({
+    postId,
+    author: { name: viewerName, username: viewerHandle, displayUsername: viewerHandle },
+  });
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-3">
@@ -53,12 +57,12 @@ export const CommentComposer = ({ postId, viewerHandle, viewerName }: Props) => 
           disabled={isPending}
           render={({ field }) => (
             <>
-              <label htmlFor="comment-composer-content" className="sr-only">
+              <label htmlFor={COMMENT_COMPOSER_ID} className="sr-only">
                 Write a comment
               </label>
               <textarea
                 {...field}
-                id="comment-composer-content"
+                id={COMMENT_COMPOSER_ID}
                 placeholder="Write a comment"
                 aria-invalid={length > 0 && !canSubmit && !isPending}
                 onKeyDown={onKeyDown}
