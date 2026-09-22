@@ -24,7 +24,7 @@ interface Props {
   viewerName: string;
 }
 
-// The comment before it is one, drawn as the comment it becomes, with nothing around it
+// The comment before it is one, drawn as the card it becomes
 export const CommentComposer = ({ postId, viewerHandle, viewerName }: Props) => {
   const {
     form,
@@ -45,12 +45,17 @@ export const CommentComposer = ({ postId, viewerHandle, viewerName }: Props) => 
   });
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-3">
-      <SeededAvatar seed={viewerHandle} />
+    <form
+      onSubmit={form.handleSubmit(onSubmit)}
+      // A card like the one it becomes, a shade deeper while it is being written in
+      className="flex flex-col gap-4 rounded-3xl bg-muted/30 p-5 transition-colors focus-within:bg-muted/45"
+    >
+      <header className="flex items-center gap-3">
+        <SeededAvatar seed={viewerHandle} />
+        <p className="truncate font-semibold">{viewerName}</p>
+      </header>
 
-      <div className="flex min-w-0 flex-1 flex-col gap-2">
-        <p className="flex min-h-8 items-center truncate font-semibold">{viewerName}</p>
-
+      <div className="flex min-w-0 flex-col gap-3">
         <Controller
           name="content"
           control={form.control}
@@ -80,8 +85,8 @@ export const CommentComposer = ({ postId, viewerHandle, viewerName }: Props) => 
           onRemove={removeDraft}
         />
 
-        {/* Where the comment's actions will be, pulled left the same way */}
-        <div className="-ml-2 flex items-center justify-between gap-2">
+        {/* Where the comment's actions will be, pulled out the same way */}
+        <div className="-mx-2 -mb-1 flex items-center justify-between gap-2">
           <div className="flex items-center gap-1">
             <MediaPicker onPick={addFiles} multiple={MAX_COMMENT_MEDIA > 1} disabled={!canAttach} />
             <MediaCaptureButtons onCapture={addFiles} disabled={!canAttach} />

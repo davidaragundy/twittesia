@@ -44,7 +44,7 @@ export const Comments = ({ postId, initialPage, viewerId, composer }: Props) => 
       )}
 
       {!isPending && !!comments.length && (
-        <div ref={containerRef} className="flex flex-col gap-2">
+        <div ref={containerRef} className="flex flex-col gap-3">
           {comments.map((comment) => (
             <CommentItem key={comment.id} comment={comment} />
           ))}

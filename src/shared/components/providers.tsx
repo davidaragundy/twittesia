@@ -24,8 +24,21 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
         >
           <TooltipProvider>
             {children}
-            {/* Clear of the tab bar on a phone */}
-            <Toaster mobileOffset={{ bottom: 80 }} />
+            {/* At the top, where the eye already is and clear of the tab bar, drawn like the app's
+                cards: soft, round and borderless, floating over the page */}
+            <Toaster
+              position="top-center"
+              offset={{ top: 24 }}
+              mobileOffset={{ top: 16 }}
+              toastOptions={{
+                classNames: {
+                  toast:
+                    "cn-toast gap-3! rounded-3xl! border-0! bg-popover/95! px-5! py-4! shadow-xl! backdrop-blur-xl!",
+                  title: "text-sm! font-semibold!",
+                  description: "text-sm! leading-relaxed! text-muted-foreground!",
+                },
+              }}
+            />
           </TooltipProvider>
         </ThemeProvider>
       </RealtimeProvider>

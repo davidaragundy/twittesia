@@ -8,7 +8,6 @@ import { LandingHero } from "@/features/landing/components/landing-hero";
 import { LandingHighlights } from "@/features/landing/components/landing-highlights";
 import { LandingLifespan } from "@/features/landing/components/landing-lifespan";
 import { LandingName } from "@/features/landing/components/landing-name";
-import { LandingPreview } from "@/features/landing/components/landing-preview";
 import { LANDING_DESCRIPTION } from "@/features/landing/constants/landing-description";
 import { LANDING_JSON_LD } from "@/features/landing/constants/landing-json-ld";
 import { LANDING_TITLE } from "@/features/landing/constants/landing-title";
@@ -33,7 +32,7 @@ export const metadata: Metadata = {
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col gap-32 py-20 sm:gap-40 sm:py-32">
+    <div className="flex flex-col gap-32 pt-10 pb-20 sm:gap-40 sm:pt-16 sm:pb-32">
       <Suspense>
         <StartErrorToast />
       </Suspense>
@@ -44,10 +43,7 @@ export default function LandingPage() {
         }}
       />
 
-      <div className="flex flex-col gap-16 sm:gap-20">
-        <LandingHero />
-        <LandingPreview />
-      </div>
+      <LandingHero />
 
       <LandingHighlights />
 

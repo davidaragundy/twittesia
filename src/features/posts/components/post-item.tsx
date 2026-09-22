@@ -46,100 +46,95 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
       data-view-id={post.isPending ? undefined : post.id}
       data-view-mine={post.isMine}
       className={cn(
-        // Reaches into the margins so its hover can be round without moving the text
-        "-mx-4 flex gap-4 rounded-3xl px-4 py-5 transition-colors hover:bg-muted/40",
+        // A card, like everything else that groups things here
+        "flex flex-col gap-4 rounded-3xl bg-muted/30 p-5 transition-colors hover:bg-muted/45",
         // On its way: it breathes until it lands, and there is nothing to do to it yet
         post.isPending && "animate-pulse",
       )}
     >
-      {author ? (
-        <Link href={`/${author.username}`} className="shrink-0" tabIndex={-1} aria-hidden>
-          <SeededAvatar seed={author.username} size="lg" />
-        </Link>
-      ) : (
-        <Avatar size="lg" className="shrink-0">
-          <AvatarFallback>
-            <Icon icon={AnonymousIcon} />
-          </AvatarFallback>
-        </Avatar>
-      )}
-
-      <div className="flex min-w-0 flex-1 flex-col gap-2">
-        <header className="flex items-center gap-3">
-          <div className="flex min-w-0 flex-1 items-center gap-1.5">
-            {author ? (
-              <Link
-                id={`post-${post.id}-author`}
-                href={`/${author.username}`}
-                className="truncate font-semibold hover:underline"
-              >
-                {author.name}
-              </Link>
-            ) : (
-              <span id={`post-${post.id}-author`} className="font-semibold text-muted-foreground">
-                Someone who left
-              </span>
-            )}
-            {author ? (
-              <Link
-                href={getPostPath({ username: author.username, postId: post.id })}
-                aria-label="Open this post"
-                className="flex shrink-0 rounded-full p-1 text-muted-foreground transition-colors hover:text-foreground"
-              >
-                <PostClock createdAt={post.createdAt} />
-              </Link>
-            ) : (
-              <span className="flex shrink-0 p-1">
-                <PostClock createdAt={post.createdAt} />
-              </span>
-            )}
-          </div>
-          {post.isMine && !post.isPending && (
-            <DeleteActionsMenu subject="Post" onDelete={requestDelete} />
-          )}
-        </header>
-
-        {post.content && (
-          <p className="text-base leading-relaxed break-words whitespace-pre-wrap">
-            {post.content}
-          </p>
+      <header className="flex items-center gap-3">
+        {author ? (
+          <Link href={`/${author.username}`} className="shrink-0" tabIndex={-1} aria-hidden>
+            <SeededAvatar seed={author.username} size="lg" />
+          </Link>
+        ) : (
+          <Avatar size="lg" className="shrink-0">
+            <AvatarFallback>
+              <Icon icon={AnonymousIcon} />
+            </AvatarFallback>
+          </Avatar>
         )}
 
-        <MediaGallery media={post.media} />
+        <div className="flex min-w-0 flex-1 items-center gap-1.5">
+          {author ? (
+            <Link
+              id={`post-${post.id}-author`}
+              href={`/${author.username}`}
+              className="truncate font-semibold hover:underline"
+            >
+              {author.name}
+            </Link>
+          ) : (
+            <span id={`post-${post.id}-author`} className="font-semibold text-muted-foreground">
+              Someone who left
+            </span>
+          )}
+          {author ? (
+            <Link
+              href={getPostPath({ username: author.username, postId: post.id })}
+              aria-label="Open this post"
+              className="flex shrink-0 rounded-full p-1 text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <PostClock createdAt={post.createdAt} />
+            </Link>
+          ) : (
+            <span className="flex shrink-0 p-1">
+              <PostClock createdAt={post.createdAt} />
+            </span>
+          )}
+        </div>
+        {post.isMine && !post.isPending && (
+          <DeleteActionsMenu subject="Post" onDelete={requestDelete} />
+        )}
+      </header>
 
-        <PostReactions post={post} disabled={post.isPending} />
+      {post.content && (
+        <p className="text-base leading-relaxed break-words whitespace-pre-wrap">{post.content}</p>
+      )}
 
-        {/* One row that never wraps, pulled left by the buttons' own padding so their icons line
-            up with the text */}
-        <footer className="-ml-2 flex items-center justify-between gap-2">
-          <div className="flex items-center gap-1">
-            {author && (
-              <Button
-                variant="ghost"
-                // Square without a number beside the icon, so it sits like the reaction button
-                size={post.commentCount ? "sm" : "icon-sm"}
-                disabled={post.isPending}
-                aria-label={formatCommentCount(post.commentCount)}
-                render={
-                  <Link
-                    href={`${getPostPath({ username: author.username, postId: post.id })}#${POST_COMMENTS_ANCHOR}`}
-                  />
-                }
-                nativeButton={false}
-              >
-                <Icon icon={BubbleChatIcon} data-icon="inline-start" />
-                {!!post.commentCount && post.commentCount}
-              </Button>
-            )}
-            <PostReactionPicker post={post} disabled={post.isPending} />
-          </div>
-          <ViewCount
-            count={post.viewCount ? VIEW_COUNT_FORMAT.format(post.viewCount) : undefined}
-            label={formatViewCount(post.viewCount)}
-          />
-        </footer>
-      </div>
+      <MediaGallery media={post.media} />
 
+      <PostReactions post={post} disabled={post.isPending} />
+
+      {/* One row that never wraps, pulled out by the buttons' own padding so their icons line
+          up with the text's edges */}
+      <footer className="-mx-2 -mb-1 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-1">
+          {author && (
+            <Button
+              variant="ghost"
+              // Square without a number beside the icon, so it sits like the reaction button
+              size={post.commentCount ? "sm" : "icon-sm"}
+              disabled={post.isPending}
+              aria-label={formatCommentCount(post.commentCount)}
+              render={
+                <Link
+                  href={`${getPostPath({ username: author.username, postId: post.id })}#${POST_COMMENTS_ANCHOR}`}
+                />
+              }
+              nativeButton={false}
+            >
+              <Icon icon={BubbleChatIcon} data-icon="inline-start" />
+              {!!post.commentCount && post.commentCount}
+            </Button>
+          )}
+          <PostReactionPicker post={post} disabled={post.isPending} />
+        </div>
+        <ViewCount
+          count={post.viewCount ? VIEW_COUNT_FORMAT.format(post.viewCount) : undefined}
+          label={formatViewCount(post.viewCount)}
+        />
+      </footer>
       {post.isMine && (
         <ConfirmDialog
           isOpen={isDeleteOpen}
