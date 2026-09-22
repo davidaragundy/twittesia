@@ -2,15 +2,6 @@
 
 import { SeededAvatar } from "@/shared/components/seeded-avatar";
 import { Button } from "@/shared/components/ui/button";
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemMedia,
-  ItemTitle,
-} from "@/shared/components/ui/item";
 import { Marker, MarkerContent, MarkerIcon } from "@/shared/components/ui/marker";
 import { Spinner } from "@/shared/components/ui/spinner";
 
@@ -46,22 +37,24 @@ export const KnockList = ({ chatId, knocks }: Props) => {
 
   return (
     <section aria-labelledby="knock-list-title" className="flex flex-col gap-4">
-      <h2 id="knock-list-title" className="text-sm font-medium text-muted-foreground">
+      <h2
+        id="knock-list-title"
+        className="text-xs font-semibold tracking-wide text-muted-foreground uppercase"
+      >
         Asking to join
       </h2>
-      <ItemGroup>
+      <div className="flex flex-col gap-3">
         {knocks.map((knock) => (
-          <Item key={knock.identityId} variant="muted">
-            <ItemMedia>
-              <SeededAvatar seed={knock.handle} className="size-10" />
-            </ItemMedia>
-            <ItemContent>
-              <ItemTitle>{knock.name}</ItemTitle>
-              <ItemDescription>
-                <span className="block truncate handle">@{knock.handle}</span>
-              </ItemDescription>
-            </ItemContent>
-            <ItemActions>
+          <div
+            key={knock.identityId}
+            className="flex flex-wrap items-center gap-4 rounded-3xl bg-muted/30 p-4 sm:p-5"
+          >
+            <SeededAvatar seed={knock.handle} className="size-12" />
+            <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+              <p className="truncate font-semibold">{knock.name}</p>
+              <p className="truncate handle text-sm text-muted-foreground">@{knock.handle}</p>
+            </div>
+            <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
                 size="sm"
@@ -77,10 +70,10 @@ export const KnockList = ({ chatId, knocks }: Props) => {
               >
                 Let in
               </Button>
-            </ItemActions>
-          </Item>
+            </div>
+          </div>
         ))}
-      </ItemGroup>
+      </div>
     </section>
   );
 };

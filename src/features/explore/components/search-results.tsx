@@ -3,6 +3,7 @@
 import { Search01Icon } from "@hugeicons/core-free-icons";
 
 import { Icon } from "@/shared/components/icon";
+import { Panel } from "@/shared/components/panel";
 import {
   Empty,
   EmptyDescription,
@@ -35,17 +36,20 @@ export const SearchResults = ({ query, scope, initialPage }: Props) => {
 
   if (!results.length) {
     return (
-      <Empty>
-        <EmptyHeader>
-          <EmptyMedia variant="icon">
-            <Icon icon={Search01Icon} />
-          </EmptyMedia>
-          <EmptyTitle>Nothing matches that</EmptyTitle>
-          <EmptyDescription>
-            Only what is still alive can be found, and everything here lives a day. Try other words.
-          </EmptyDescription>
-        </EmptyHeader>
-      </Empty>
+      <Panel className="py-4">
+        <Empty>
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <Icon icon={Search01Icon} />
+            </EmptyMedia>
+            <EmptyTitle>Nothing matches that</EmptyTitle>
+            <EmptyDescription>
+              Only what is still alive can be found, and everything here lives a day. Try other
+              words.
+            </EmptyDescription>
+          </EmptyHeader>
+        </Empty>
+      </Panel>
     );
   }
 

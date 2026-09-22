@@ -2,6 +2,7 @@ import { NoteIcon } from "@hugeicons/core-free-icons";
 import { notFound } from "next/navigation";
 
 import { Icon } from "@/shared/components/icon";
+import { Panel } from "@/shared/components/panel";
 import {
   Empty,
   EmptyDescription,
@@ -59,17 +60,19 @@ export const ProfilePage = async ({ username }: Props) => {
               authorId={profile.id}
               viewerId={viewerId}
               empty={
-                <Empty>
-                  <EmptyHeader>
-                    <EmptyMedia variant="icon">
-                      <Icon icon={NoteIcon} />
-                    </EmptyMedia>
-                    <EmptyTitle>Nothing left to read</EmptyTitle>
-                    <EmptyDescription>
-                      Every post lives 24 hours. This one&apos;s are gone, or were never written.
-                    </EmptyDescription>
-                  </EmptyHeader>
-                </Empty>
+                <Panel className="py-4">
+                  <Empty>
+                    <EmptyHeader>
+                      <EmptyMedia variant="icon">
+                        <Icon icon={NoteIcon} />
+                      </EmptyMedia>
+                      <EmptyTitle>Nothing left to read</EmptyTitle>
+                      <EmptyDescription>
+                        Every post lives 24 hours. This one&apos;s are gone, or were never written.
+                      </EmptyDescription>
+                    </EmptyHeader>
+                  </Empty>
+                </Panel>
               }
             />
           )

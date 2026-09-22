@@ -1,5 +1,6 @@
 "use client";
 
+import { Panel } from "@/shared/components/panel";
 import { SortMenu } from "@/shared/components/sort-menu";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Spinner } from "@/shared/components/ui/spinner";
@@ -30,9 +31,11 @@ export const ProfileComments = ({ username, displayUsername, initialPage }: Prop
       {isPending && <Skeleton className="h-24 w-full" />}
 
       {!isPending && !comments.length && (
-        <p className="py-10 text-center text-sm text-muted-foreground">
-          <span className="handle">@{displayUsername}</span> has no comments left alive.
-        </p>
+        <Panel className="items-center py-10 text-center text-sm text-muted-foreground">
+          <p>
+            <span className="handle">@{displayUsername}</span> has no comments left alive.
+          </p>
+        </Panel>
       )}
 
       {!isPending && !!comments.length && (

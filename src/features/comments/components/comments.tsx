@@ -1,5 +1,6 @@
 "use client";
 
+import { Panel } from "@/shared/components/panel";
 import { SortMenu } from "@/shared/components/sort-menu";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Spinner } from "@/shared/components/ui/spinner";
@@ -38,9 +39,9 @@ export const Comments = ({ postId, initialPage, viewerId, composer }: Props) => 
       {isPending && <Skeleton className="h-24 w-full" />}
 
       {!isPending && !comments.length && (
-        <p className="py-10 text-center text-sm text-muted-foreground">
-          No comments yet. Say something while there&apos;s still time.
-        </p>
+        <Panel className="items-center py-10 text-center text-sm text-muted-foreground">
+          <p>No comments yet. Say something while there&apos;s still time.</p>
+        </Panel>
       )}
 
       {!isPending && !!comments.length && (

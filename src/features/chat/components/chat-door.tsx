@@ -1,5 +1,6 @@
 "use client";
 
+import { Panel } from "@/shared/components/panel";
 import { SeededAvatar } from "@/shared/components/seeded-avatar";
 import { Button } from "@/shared/components/ui/button";
 import { Spinner } from "@/shared/components/ui/spinner";
@@ -19,7 +20,7 @@ export const ChatDoor = ({ chatId, creator, handle, isWaiting }: Props) => {
   const { mutate, isPending } = useKnockMutation({ chatId });
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-8 py-16 text-center">
+    <Panel className="items-center gap-8 py-12 text-center sm:py-16">
       <SeededAvatar seed={creator.handle} className="size-20" />
 
       <div className="flex max-w-sm flex-col gap-2">
@@ -49,6 +50,6 @@ export const ChatDoor = ({ chatId, creator, handle, isWaiting }: Props) => {
           Ask to join
         </Button>
       )}
-    </div>
+    </Panel>
   );
 };

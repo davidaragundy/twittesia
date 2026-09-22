@@ -1,6 +1,7 @@
 import { KeyframeIcon } from "@hugeicons/core-free-icons";
 
 import { Icon } from "@/shared/components/icon";
+import { Panel } from "@/shared/components/panel";
 import {
   Empty,
   EmptyDescription,
@@ -12,16 +13,19 @@ import {
 // A tab that never had the key half of the invite, or no longer has it. There is nothing to fall
 // back to: the key was never anywhere else, and nothing here will send in the clear.
 export const ChatWithoutKey = () => (
-  <Empty>
-    <EmptyHeader>
-      <EmptyMedia variant="icon">
-        <Icon icon={KeyframeIcon} />
-      </EmptyMedia>
-      <EmptyTitle>This tab doesn&apos;t have the key</EmptyTitle>
-      <EmptyDescription>
-        A chat is encrypted with the half of its invite after the #, which stays in the tab that
-        opened it and is never sent to us. Open the invite again in this tab, or start another chat.
-      </EmptyDescription>
-    </EmptyHeader>
-  </Empty>
+  <Panel className="py-4">
+    <Empty>
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <Icon icon={KeyframeIcon} />
+        </EmptyMedia>
+        <EmptyTitle>This tab doesn&apos;t have the key</EmptyTitle>
+        <EmptyDescription>
+          A chat is encrypted with the half of its invite after the #, which stays in the tab that
+          opened it and is never sent to us. Open the invite again in this tab, or start another
+          chat.
+        </EmptyDescription>
+      </EmptyHeader>
+    </Empty>
+  </Panel>
 );

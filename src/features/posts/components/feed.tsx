@@ -3,6 +3,7 @@
 import { ArrowUp01Icon, Home01Icon } from "@hugeicons/core-free-icons";
 
 import { Icon } from "@/shared/components/icon";
+import { Panel } from "@/shared/components/panel";
 import { SortMenu } from "@/shared/components/sort-menu";
 import { Button } from "@/shared/components/ui/button";
 import {
@@ -60,12 +61,18 @@ export const Feed = ({ initialPage, authorId, empty, initialSort, viewerId }: Pr
         </div>
       )}
 
-      {/* Offered rather than shown: nothing moves under the reader until they ask for it */}
+      {/* Offered rather than shown: nothing moves under the reader until they ask for it. It
+          floats just under the header wherever they have scrolled to, on a line with no height,
+          and taking back its gap, so appearing never pushes the list down */}
       {!!newPostCount && (
-        <Button variant="secondary" className="self-center" onClick={showNewPosts}>
-          <Icon icon={ArrowUp01Icon} />
-          {newPostCount === 1 ? "1 new post" : `${newPostCount} new posts`}
-        </Button>
+        <div className="sticky top-24 z-30 -mb-6 flex h-0 justify-center">
+          <div className="rounded-full shadow-lg motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-2">
+            <Button onClick={showNewPosts}>
+              <Icon icon={ArrowUp01Icon} data-icon="inline-start" />
+              {newPostCount === 1 ? "1 new post" : `${newPostCount} new posts`}
+            </Button>
+          </div>
+        </div>
       )}
 
       {isPending && <FeedSkeleton />}
@@ -73,17 +80,19 @@ export const Feed = ({ initialPage, authorId, empty, initialSort, viewerId }: Pr
       {!isPending &&
         !posts.length &&
         (empty ?? (
-          <Empty>
-            <EmptyHeader>
-              <EmptyMedia variant="icon">
-                <Icon icon={Home01Icon} />
-              </EmptyMedia>
-              <EmptyTitle>Nothing here yet</EmptyTitle>
-              <EmptyDescription>
-                Posts show up here for the 24 hours they live. Write the first one.
-              </EmptyDescription>
-            </EmptyHeader>
-          </Empty>
+          <Panel className="py-4">
+            <Empty>
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <Icon icon={Home01Icon} />
+                </EmptyMedia>
+                <EmptyTitle>Nothing here yet</EmptyTitle>
+                <EmptyDescription>
+                  Posts show up here for the 24 hours they live. Write the first one.
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          </Panel>
         ))}
 
       {!isPending && !!posts.length && (

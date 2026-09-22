@@ -1,3 +1,4 @@
+import { Panel } from "@/shared/components/panel";
 import { SeededAvatar } from "@/shared/components/seeded-avatar";
 
 import { IdentityExpiryBadge } from "@/features/auth/components/identity-expiry-badge";
@@ -15,10 +16,7 @@ export const ProfileHeader = ({ profile, children }: Props) => {
   const expiresAt = new Date(getIdentityExpiry({ createdAt: profile.createdAt }));
 
   return (
-    <section
-      aria-labelledby="profile-name"
-      className="flex flex-col items-center gap-8 pt-6 text-center"
-    >
+    <Panel aria-labelledby="profile-name" className="items-center gap-8 py-10 text-center sm:py-12">
       <SeededAvatar seed={profile.handle} size="lg" className="size-24" />
 
       <div className="flex flex-col items-center gap-3">
@@ -33,6 +31,6 @@ export const ProfileHeader = ({ profile, children }: Props) => {
       </div>
 
       {children}
-    </section>
+    </Panel>
   );
 };

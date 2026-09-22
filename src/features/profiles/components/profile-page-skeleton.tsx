@@ -5,7 +5,7 @@ import { FeedSkeleton } from "@/features/posts/components/feed-skeleton";
 // The profile as it will arrive: who it is, their counts, the tabs and the posts
 export const ProfilePageSkeleton = () => (
   <div className="flex flex-col gap-10">
-    <div className="flex flex-col items-center gap-8 pt-6">
+    <div className="flex flex-col items-center gap-8 rounded-3xl bg-muted/30 px-5 py-10 sm:py-12">
       <Skeleton className="size-24" />
 
       <div className="flex flex-col items-center gap-3">
