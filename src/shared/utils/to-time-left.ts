@@ -3,7 +3,7 @@ interface Props {
   now: number;
 }
 
-// How long a chat has left, to the minute: "23h 04m", "12m", or nothing once it has ended
+// How long something has left, to the minute: "23h 04m", "12m", or nothing once it has ended
 export const toTimeLeft = ({ expiresAt, now }: Props) => {
   const left = expiresAt.getTime() - now;
 

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 
+import { toTimeLeft } from "@/shared/utils/to-time-left";
+
 import { COUNTDOWN_TICK_MS } from "@/features/chat/constants/countdown-tick-ms";
-import { toTimeLeft } from "@/features/chat/utils/to-time-left";
 
 interface Props {
   expiresAt: Date;
