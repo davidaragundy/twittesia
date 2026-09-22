@@ -8,12 +8,22 @@ import { Spinner } from "@/shared/components/ui/spinner";
 
 import { useStartChatMutation } from "@/features/chat/hooks/use-start-chat-mutation";
 
-export const StartChatButton = () => {
+interface Props {
+  // Quieter where it isn't the page's main action, such as a card beside the feed
+  variant?: "default" | "secondary";
+  className?: string;
+}
+
+export const StartChatButton = ({ variant = "default", className }: Props) => {
   const { mutate, isPending } = useStartChatMutation();
 
   return (
-    <Button onClick={() => mutate()} disabled={isPending}>
-      {isPending ? <Spinner data-icon="inline-start" /> : <Icon icon={BubbleChatAddIcon} />}
+    <Button variant={variant} className={className} onClick={() => mutate()} disabled={isPending}>
+      {isPending ? (
+        <Spinner data-icon="inline-start" />
+      ) : (
+        <Icon icon={BubbleChatAddIcon} data-icon="inline-start" />
+      )}
       Start a chat
     </Button>
   );

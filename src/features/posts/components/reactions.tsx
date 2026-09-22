@@ -28,7 +28,13 @@ export const Reactions = ({ reactions, onToggle, disabled }: Props) => {
           aria-label={`${emoji} ${count}`}
         >
           <span className="text-base leading-none">{emoji}</span>
-          <span className="tabular-nums">{count}</span>
+          {/* Keyed by the count, so a new number rolls in rather than just changing */}
+          <span
+            key={count}
+            className="tabular-nums motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-1"
+          >
+            {count}
+          </span>
         </Toggle>
       ))}
     </div>

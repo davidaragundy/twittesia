@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ConfirmDialog } from "@/shared/components/confirm-dialog";
 import { DeleteActionsMenu } from "@/shared/components/delete-actions-menu";
 import { Icon } from "@/shared/components/icon";
+import { LifespanRing } from "@/shared/components/lifespan-ring";
 import { RelativeTime } from "@/shared/components/relative-time";
 import { SeededAvatar } from "@/shared/components/seeded-avatar";
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
@@ -34,8 +35,8 @@ interface Props {
 }
 
 export const PostItem = ({ post, position, total, onDeleted }: Props) => {
-  const { isDeleteOpen, onDeleteOpenChange, requestDelete, confirmDelete, isDeleting } =
-    usePostItem({ postId: post.id, onDeleted });
+  const { expiresAt, isDeleteOpen, onDeleteOpenChange, requestDelete, confirmDelete, isDeleting } =
+    usePostItem({ postId: post.id, createdAt: post.createdAt, onDeleted });
   const { author } = post;
 
   const time = <RelativeTime date={post.createdAt} />;
@@ -68,7 +69,7 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
 
       <div className="flex min-w-0 flex-1 flex-col gap-2">
         <header className="flex items-center gap-3">
-          <div className="flex min-w-0 flex-1 items-baseline gap-1.5">
+          <div className="flex min-w-0 flex-1 items-center gap-1.5">
             {author ? (
               <Link
                 id={`post-${post.id}-author`}
@@ -95,6 +96,8 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
             ) : (
               <span className="shrink-0 text-sm text-muted-foreground">{time}</span>
             )}
+            {/* How much of its day is left, which is the one thing every post here has */}
+            <LifespanRing startsAt={post.createdAt} endsAt={expiresAt} />
           </div>
           {post.isMine && !post.isPending && (
             <DeleteActionsMenu subject="Post" onDelete={requestDelete} />
@@ -118,7 +121,8 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
             {author && (
               <Button
                 variant="ghost"
-                size="sm"
+                // Square without a number beside the icon, so it sits like the reaction button
+                size={post.commentCount ? "sm" : "icon-sm"}
                 disabled={post.isPending}
                 aria-label={formatCommentCount(post.commentCount)}
                 render={
@@ -129,13 +133,13 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
                 nativeButton={false}
               >
                 <Icon icon={BubbleChatIcon} data-icon="inline-start" />
-                {post.commentCount}
+                {!!post.commentCount && post.commentCount}
               </Button>
             )}
             <PostReactionPicker post={post} disabled={post.isPending} />
           </div>
           <ViewCount
-            count={VIEW_COUNT_FORMAT.format(post.viewCount)}
+            count={post.viewCount ? VIEW_COUNT_FORMAT.format(post.viewCount) : undefined}
             label={formatViewCount(post.viewCount)}
           />
         </footer>

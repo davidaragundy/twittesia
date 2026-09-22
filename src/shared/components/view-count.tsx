@@ -4,8 +4,8 @@ import { Icon } from "@/shared/components/icon";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip";
 
 type Props = {
-  // As shown, such as "1.2K"
-  count: string;
+  // As shown, such as "1.2K"; nothing when nobody has seen it yet, so the icon stands alone
+  count?: string;
   // Spelled out, such as "1,204 views", for the tooltip and screen readers
   label: string;
 };

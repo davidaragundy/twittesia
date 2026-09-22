@@ -80,7 +80,7 @@ export const CommentItem = ({ comment }: Props) => {
         <footer className="-ml-2 flex items-center justify-between gap-2">
           <CommentReactionPicker comment={comment} disabled={comment.isPending} />
           <ViewCount
-            count={VIEW_COUNT_FORMAT.format(comment.viewCount)}
+            count={comment.viewCount ? VIEW_COUNT_FORMAT.format(comment.viewCount) : undefined}
             label={formatViewCount(comment.viewCount)}
           />
         </footer>
