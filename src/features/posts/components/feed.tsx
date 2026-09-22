@@ -93,7 +93,7 @@ export const Feed = ({ initialPage, authorId, empty, initialSort, viewerId }: Pr
             role="feed"
             aria-label="Posts"
             aria-busy={isFetchingNextPage}
-            className="flex flex-col gap-1"
+            className="flex flex-col gap-2"
           >
             {posts.map((post, index) => (
               <PostItem

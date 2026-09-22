@@ -55,7 +55,7 @@ export const SearchResults = ({ query, scope, initialPage }: Props) => {
         role="feed"
         aria-label="Search results"
         aria-busy={isFetchingNextPage}
-        className="flex flex-col gap-1"
+        className="flex flex-col gap-2"
       >
         {results.map((result, index) => (
           <SearchResultItem

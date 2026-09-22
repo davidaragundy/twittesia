@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Icon } from "@/shared/components/icon";
+import { PageHeader } from "@/shared/components/page-header";
 import { Button } from "@/shared/components/ui/button";
 
 import { SettingsContent } from "@/features/settings/components/settings-content";
@@ -24,10 +25,7 @@ export async function SettingsPage({ params }: Props) {
 
   return (
     <div className="flex flex-col gap-10">
-      <header className="flex flex-col gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight">{SETTINGS_DIALOG_TITLE}</h1>
-        <p className="text-muted-foreground">{SETTINGS_DIALOG_DESCRIPTION}</p>
-      </header>
+      <PageHeader title={SETTINGS_DIALOG_TITLE} description={SETTINGS_DIALOG_DESCRIPTION} />
       <nav aria-label="Settings sections" className="flex flex-wrap gap-2">
         {SETTINGS_SECTIONS.map((item) => (
           <Button

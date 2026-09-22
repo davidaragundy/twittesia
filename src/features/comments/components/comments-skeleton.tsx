@@ -22,7 +22,7 @@ export const CommentsSkeleton = () => (
       </div>
     </div>
 
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-2">
       <CommentSkeleton />
       <CommentSkeleton />
     </div>
