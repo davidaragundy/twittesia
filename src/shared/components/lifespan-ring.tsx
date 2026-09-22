@@ -10,6 +10,8 @@ type Props = {
   endsAt: Date;
   // The ring's width in pixels; the stroke keeps its weight at any size
   size?: number;
+  // What else the tooltip says above how long is left, such as when it began
+  details?: string;
   children?: React.ReactNode;
 };
 
@@ -17,13 +19,14 @@ const STROKE = 1.5;
 
 // A small clock that empties as something's life runs out, with exactly how long is left on hover.
 // The server and the browser read their own clocks, so the first paint can differ by a moment.
-export function LifespanRing({ startsAt, endsAt, size = 14, children }: Props) {
+export function LifespanRing({ startsAt, endsAt, size = 14, details, children }: Props) {
   const { remaining, timeLeft, isEnding } = useLifespan({ startsAt, endsAt });
   const outer = (size - STROKE) / 2;
   // The wedge stops short of the outline, so a sliver of space keeps the two apart
   const wedge = outer - STROKE;
   const circumference = Math.PI * wedge;
-  const label = timeLeft ? `Gone in ${timeLeft}` : "Gone";
+  const left = timeLeft ? `Gone in ${timeLeft}` : "Gone";
+  const label = details ? `${details}. ${left}` : left;
 
   return (
     <Tooltip>
@@ -73,7 +76,12 @@ export function LifespanRing({ startsAt, endsAt, size = 14, children }: Props) {
           <span className="absolute inset-0 flex items-center justify-center">{children}</span>
         )}
       </TooltipTrigger>
-      <TooltipContent>{label}</TooltipContent>
+      <TooltipContent>
+        <span className="flex flex-col gap-0.5">
+          {details && <span>{details}</span>}
+          <span className={cn(details && "opacity-70")}>{left}</span>
+        </span>
+      </TooltipContent>
     </Tooltip>
   );
 }

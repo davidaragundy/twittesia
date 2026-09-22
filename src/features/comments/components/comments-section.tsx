@@ -22,7 +22,7 @@ export async function CommentsSection({ params }: Props) {
     >
       {error ? (
         <>
-          <h2 id="comments-title" className="text-lg font-semibold tracking-tight">
+          <h2 id="comments-title" className="text-2xl font-bold tracking-tight">
             Comments
           </h2>
           <p className="text-sm text-muted-foreground">Couldn&apos;t load the comments.</p>

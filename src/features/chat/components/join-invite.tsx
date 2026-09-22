@@ -28,7 +28,7 @@ export const JoinInvite = ({ chatId, creatorName, creatorHandle, isFull, hasIden
   if (isFull) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-3 py-24 text-center">
-        <h1 className="text-2xl font-semibold tracking-tight">This invite is spent</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-balance">This invite is spent</h1>
         <p className="max-w-sm text-sm text-muted-foreground">
           Someone is already in this chat, and a chat only ever has two people in it.
         </p>
@@ -41,7 +41,9 @@ export const JoinInvite = ({ chatId, creatorName, creatorHandle, isFull, hasIden
       <SeededAvatar seed={creatorHandle} className="size-20" />
 
       <div className="flex flex-col gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight">{creatorName} invited you</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-balance">
+          {creatorName} invited you
+        </h1>
         <p className="handle text-muted-foreground">@{creatorHandle}</p>
       </div>
 

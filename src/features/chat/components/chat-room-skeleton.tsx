@@ -4,7 +4,7 @@ import { Skeleton } from "@/shared/components/ui/skeleton";
 export const ChatRoomSkeleton = () => (
   // Sized like the room, so nothing moves when it arrives
   <div className="-mb-24 flex h-[calc(100svh-11.5rem)] flex-col gap-6 md:-mb-20 md:h-[calc(100svh-7rem)]">
-    <div className="flex items-center gap-3 rounded-3xl bg-muted/50 p-3 pr-4">
+    <div className="flex items-center gap-3 rounded-3xl bg-muted/30 p-3 pr-4">
       <Skeleton className="size-10 shrink-0" />
       <div className="flex flex-col gap-1.5">
         <Skeleton className="h-4 w-32" />

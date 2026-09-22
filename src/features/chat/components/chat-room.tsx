@@ -45,7 +45,7 @@ export const ChatRoom = ({ chatId, viewerId, other, expiresAt, canEnd }: Props) 
     // composer stay put while the conversation scrolls between them; it takes back most of the
     // page's bottom padding to fit
     <div className="-mb-24 flex h-[calc(100svh-11.5rem)] flex-col gap-6 md:-mb-20 md:h-[calc(100svh-7rem)]">
-      <div className="flex items-center gap-3 rounded-3xl bg-muted/50 p-3 pr-4">
+      <div className="flex items-center gap-3 rounded-3xl bg-muted/30 p-3 pr-4">
         <SeededAvatar seed={other.handle} className="size-10 shrink-0" />
         <div className="flex min-w-0 flex-col gap-0.5">
           <p className="truncate leading-none font-medium">{other.name}</p>

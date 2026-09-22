@@ -29,9 +29,9 @@ export function NavUser({ menuItems }: Props) {
 
   const identity = (
     <>
-      <SeededAvatar seed={user.username ?? user.id} size="sm" />
+      <SeededAvatar seed={user.username ?? user.id} />
       <div className="grid flex-1 text-left text-sm leading-tight">
-        <span className="truncate font-medium">{user.name}</span>
+        <span className="truncate font-semibold text-foreground">{user.name}</span>
         <span className="truncate handle text-xs text-muted-foreground">
           @{user.displayUsername}
         </span>
@@ -41,9 +41,9 @@ export function NavUser({ menuItems }: Props) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<NavButton className="h-auto min-h-12" />}>
+      <DropdownMenuTrigger render={<NavButton className="gap-3 py-2 pl-2" />}>
         {identity}
-        <Icon icon={UnfoldMoreIcon} />
+        <Icon icon={UnfoldMoreIcon} className="size-4" />
       </DropdownMenuTrigger>
       <DropdownMenuContent side="top" align="start" sideOffset={8} className="min-w-56">
         <DropdownMenuGroup>

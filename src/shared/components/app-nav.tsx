@@ -19,13 +19,12 @@ export function AppNav({ links, children }: Props) {
   const pathname = usePathname();
 
   return (
-    <nav aria-label="Main" className="flex flex-col gap-2">
+    <nav aria-label="Main" className="flex flex-col gap-1">
       {links.map((link) => (
         <NavButton
           key={link.href}
           isActive={isNavLinkActive({ href: link.href, pathname })}
           render={<Link href={link.href} />}
-          nativeButton={false}
         >
           <Icon icon={link.icon} />
           {link.label}

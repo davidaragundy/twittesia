@@ -38,7 +38,7 @@ export default function Layout({ children, modal }: LayoutProps<"/">) {
         </div>
 
         <div className="flex flex-1 gap-12">
-          <aside className="sticky top-20 hidden h-[calc(100svh-5rem)] w-60 shrink-0 flex-col justify-between pt-4 pb-12 md:flex">
+          <aside className="sticky top-20 hidden h-[calc(100svh-5rem)] w-64 shrink-0 flex-col justify-between pt-4 pb-12 md:flex">
             <AppNav links={APP_NAV_LINKS}>
               <Suspense
                 fallback={

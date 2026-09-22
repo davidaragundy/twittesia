@@ -6,8 +6,6 @@ import Link from "next/link";
 import { ConfirmDialog } from "@/shared/components/confirm-dialog";
 import { DeleteActionsMenu } from "@/shared/components/delete-actions-menu";
 import { Icon } from "@/shared/components/icon";
-import { LifespanRing } from "@/shared/components/lifespan-ring";
-import { RelativeTime } from "@/shared/components/relative-time";
 import { SeededAvatar } from "@/shared/components/seeded-avatar";
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
 import { Button } from "@/shared/components/ui/button";
@@ -15,6 +13,7 @@ import { ViewCount } from "@/shared/components/view-count";
 import { cn } from "@/shared/utils/cn";
 
 import { MediaGallery } from "@/features/media/components/media-gallery";
+import { PostClock } from "@/features/posts/components/post-clock";
 import { PostReactionPicker } from "@/features/posts/components/post-reaction-picker";
 import { PostReactions } from "@/features/posts/components/post-reactions";
 import { DELETE_POST_DIALOG_COPY } from "@/features/posts/constants/delete-post-dialog-copy";
@@ -35,11 +34,9 @@ interface Props {
 }
 
 export const PostItem = ({ post, position, total, onDeleted }: Props) => {
-  const { expiresAt, isDeleteOpen, onDeleteOpenChange, requestDelete, confirmDelete, isDeleting } =
-    usePostItem({ postId: post.id, createdAt: post.createdAt, onDeleted });
+  const { isDeleteOpen, onDeleteOpenChange, requestDelete, confirmDelete, isDeleting } =
+    usePostItem({ postId: post.id, onDeleted });
   const { author } = post;
-
-  const time = <RelativeTime date={post.createdAt} />;
 
   return (
     <article
@@ -83,21 +80,19 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
                 Someone who left
               </span>
             )}
-            <span aria-hidden className="text-sm text-muted-foreground">
-              ·
-            </span>
             {author ? (
               <Link
                 href={getPostPath({ username: author.username, postId: post.id })}
-                className="shrink-0 text-sm text-muted-foreground hover:text-foreground"
+                aria-label="Open this post"
+                className="flex shrink-0 rounded-full p-1 text-muted-foreground transition-colors hover:text-foreground"
               >
-                {time}
+                <PostClock createdAt={post.createdAt} />
               </Link>
             ) : (
-              <span className="shrink-0 text-sm text-muted-foreground">{time}</span>
+              <span className="flex shrink-0 p-1">
+                <PostClock createdAt={post.createdAt} />
+              </span>
             )}
-            {/* How much of its day is left, which is the one thing every post here has */}
-            <LifespanRing startsAt={post.createdAt} endsAt={expiresAt} />
           </div>
           {post.isMine && !post.isPending && (
             <DeleteActionsMenu subject="Post" onDelete={requestDelete} />

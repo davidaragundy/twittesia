@@ -1,6 +1,7 @@
 "use client";
 
 import { LifespanRing } from "@/shared/components/lifespan-ring";
+import { Panel } from "@/shared/components/panel";
 import { SeededAvatar } from "@/shared/components/seeded-avatar";
 
 import { IdentityTimeLeft } from "@/features/auth/components/identity-time-left";
@@ -13,7 +14,7 @@ export function IdentityCard() {
   if (!user) return null;
 
   return (
-    <section aria-label="Your identity" className="flex flex-col gap-5 rounded-3xl bg-muted/30 p-5">
+    <Panel aria-label="Your identity" className="gap-5">
       <div className="flex items-center gap-3">
         <SeededAvatar seed={user.username} size="lg" />
         <div className="flex min-w-0 flex-col">
@@ -26,6 +27,6 @@ export function IdentityCard() {
         <LifespanRing startsAt={startsAt} endsAt={endsAt} size={40} />
         <IdentityTimeLeft startsAt={startsAt} endsAt={endsAt} />
       </div>
-    </section>
+    </Panel>
   );
 }
