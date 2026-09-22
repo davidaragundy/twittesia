@@ -19,7 +19,7 @@ export function ProfileNavLink() {
   const href = `/${session.user.username}`;
 
   return (
-    <NavButton isActive={pathname === href} render={<Link href={href} />} nativeButton={false}>
+    <NavButton isActive={pathname === href} render={<Link href={href} />}>
       <Icon icon={UserIcon} />
       Profile
     </NavButton>

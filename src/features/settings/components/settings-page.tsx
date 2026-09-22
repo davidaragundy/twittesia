@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { Icon } from "@/shared/components/icon";
 import { PageHeader } from "@/shared/components/page-header";
+import { Panel } from "@/shared/components/panel";
 import { Button } from "@/shared/components/ui/button";
 
 import { SettingsContent } from "@/features/settings/components/settings-content";
@@ -40,7 +41,9 @@ export async function SettingsPage({ params }: Props) {
           </Button>
         ))}
       </nav>
-      <SettingsContent section={section} />
+      <Panel>
+        <SettingsContent section={section} />
+      </Panel>
     </div>
   );
 }

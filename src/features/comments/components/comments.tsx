@@ -25,7 +25,7 @@ export const Comments = ({ postId, initialPage, viewerId, composer }: Props) => 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between gap-4">
-        <h2 id="comments-title" className="text-lg font-semibold tracking-tight">
+        <h2 id="comments-title" className="text-2xl font-bold tracking-tight">
           Comments
         </h2>
         {canSort && (

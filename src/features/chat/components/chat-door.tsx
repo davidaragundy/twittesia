@@ -23,7 +23,7 @@ export const ChatDoor = ({ chatId, creator, handle, isWaiting }: Props) => {
       <SeededAvatar seed={creator.handle} className="size-20" />
 
       <div className="flex max-w-sm flex-col gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight">
+        <h1 className="text-3xl font-bold tracking-tight text-balance">
           {isWaiting ? `Waiting for ${creator.name}` : `${creator.name} invited you`}
         </h1>
         <p className="text-sm leading-relaxed text-muted-foreground">

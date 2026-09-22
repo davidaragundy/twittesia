@@ -4,6 +4,7 @@ import { Alert01Icon, Share08Icon } from "@hugeicons/core-free-icons";
 
 import { CopyToClipboard } from "@/shared/components/copy-to-clipboard";
 import { Icon } from "@/shared/components/icon";
+import { Panel } from "@/shared/components/panel";
 import { Alert, AlertDescription, AlertTitle } from "@/shared/components/ui/alert";
 import { Button } from "@/shared/components/ui/button";
 import { Skeleton } from "@/shared/components/ui/skeleton";
@@ -38,12 +39,9 @@ export const ChatInvite = ({ chatId }: Props) => {
   }
 
   return (
-    <section
-      aria-labelledby="chat-invite-title"
-      className="flex flex-col gap-6 rounded-3xl bg-muted/30 p-6"
-    >
+    <Panel aria-labelledby="chat-invite-title" className="gap-6">
       <div className="flex flex-col gap-2">
-        <h1 id="chat-invite-title" className="text-xl font-semibold tracking-tight">
+        <h1 id="chat-invite-title" className="text-2xl font-bold tracking-tight">
           Invite one person
         </h1>
         <p className="text-sm text-muted-foreground">
@@ -64,6 +62,6 @@ export const ChatInvite = ({ chatId }: Props) => {
           </Button>
         )}
       </div>
-    </section>
+    </Panel>
   );
 };

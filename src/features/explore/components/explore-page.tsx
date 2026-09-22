@@ -34,7 +34,7 @@ export async function ExplorePage({ searchParams }: Props) {
   return (
     <div className="flex flex-col gap-10">
       <div className="flex flex-col gap-6">
-        <PageHeader title="Explore" />
+        <PageHeader title="Explore" description="Search everything still alive, before it isn't." />
         <SearchForm query={query} scope={scope} />
       </div>
 

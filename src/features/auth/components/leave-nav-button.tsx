@@ -11,7 +11,7 @@ import { writeLeaveOpen } from "@/features/auth/utils/write-leave-open";
 // leaving, because leaving takes the identity and every post with it.
 export function LeaveNavButton() {
   return (
-    <NavButton onClick={() => writeLeaveOpen(true)} variant="ghost">
+    <NavButton onClick={() => writeLeaveOpen(true)}>
       <Icon icon={Logout01Icon} />
       Leave
     </NavButton>

@@ -23,7 +23,7 @@ export const ProfileHeader = ({ profile, children }: Props) => {
 
       <div className="flex flex-col items-center gap-3">
         <div className="flex flex-col items-center gap-1">
-          <h1 id="profile-name" className="text-2xl font-semibold tracking-tight">
+          <h1 id="profile-name" className="text-3xl font-bold tracking-tight sm:text-4xl">
             {profile.name}
           </h1>
           <p className="handle text-sm text-muted-foreground">@{profile.handle}</p>

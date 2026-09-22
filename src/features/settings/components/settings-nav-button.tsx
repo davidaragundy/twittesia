@@ -11,10 +11,7 @@ import { toSettingsPath } from "@/features/settings/utils/to-settings-path";
 
 export function SettingsNavButton() {
   return (
-    <NavButton
-      render={<Link href={toSettingsPath({ section: SETTINGS_SECTIONS[0].value })} />}
-      nativeButton={false}
-    >
+    <NavButton render={<Link href={toSettingsPath({ section: SETTINGS_SECTIONS[0].value })} />}>
       <Icon icon={Settings01Icon} />
       Settings
     </NavButton>
