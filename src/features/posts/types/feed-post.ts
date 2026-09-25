@@ -1,4 +1,5 @@
 import type { Media } from "@/features/media/types/media";
+import type { ModerationFlags } from "@/features/moderation/types/moderation-flags";
 import type { Reaction } from "@/features/posts/types/reaction";
 
 // `author` is null only for posts written before ghosts were removed, until they expire
@@ -23,4 +24,6 @@ export type FeedPost = {
   // Users other than the author who saw it
   viewCount: number;
   commentCount: number;
+  // How likely its text is to fall in each moderation category, or null if it was never screened
+  moderation: ModerationFlags | null;
 };

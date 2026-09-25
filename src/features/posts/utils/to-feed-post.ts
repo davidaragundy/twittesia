@@ -1,4 +1,5 @@
 import type { Media } from "@/features/media/types/media";
+import { toModerationFlags } from "@/features/moderation/utils/to-moderation-flags";
 import type { FeedPost } from "@/features/posts/types/feed-post";
 import type { Reaction } from "@/features/posts/types/reaction";
 
@@ -32,5 +33,6 @@ export const toFeedPost = ({ hash, viewerId, mine = [] }: Props): FeedPost | nul
     media: JSON.parse(hash.media || "[]") as Media[],
     viewCount: Number(hash.viewCount ?? 0),
     commentCount: Number(hash.commentCount ?? 0),
+    moderation: toModerationFlags({ value: hash.moderation }),
   };
 };

@@ -14,7 +14,7 @@ export default function PrivacyPage() {
   return (
     <LegalPage
       title="Privacy Policy"
-      effectiveDate="September 19, 2026"
+      effectiveDate="September 24, 2026"
       intro="Twittesia never asks who you are. There is no sign-up, no email address, no password and no social login. This policy explains the little we do collect, why, who helps us process it and how long we keep it."
     >
       <LegalSection title="1. What we collect">
@@ -74,6 +74,10 @@ export default function PrivacyPage() {
         <ul>
           <li>To run Twittesia and show your content to the people you share it with.</li>
           <li>To keep you signed in for the life of your identity, and to limit abuse.</li>
+          <li>
+            To flag the text of posts and comments that falls in a harmful category, so readers can
+            choose to have it hidden. A flag only blurs content for readers; it removes nothing.
+          </li>
           <li>To find and fix problems, and make Twittesia faster.</li>
         </ul>
         <p>We send no email, because we have no address to send it to.</p>
@@ -121,6 +125,11 @@ export default function PrivacyPage() {
             them.
           </li>
           <li>
+            <strong>TypeSafe</strong> checks the text of each post and comment when it is written,
+            to flag harmful content. It receives only that text, and does not train its models on
+            it. Chats are never sent to it: they are encrypted, and we cannot read them either.
+          </li>
+          <li>
             <strong>jsDelivr</strong> delivers the list of emoji the reaction picker shows. Your
             browser loads it from them directly when you open the picker, so jsDelivr sees your IP
             address. Nothing else about you is sent.
@@ -131,8 +140,9 @@ export default function PrivacyPage() {
 
       <LegalSection title="5. Cookies and local storage">
         <p>
-          We use a cookie only to keep your identity signed in. Your light or dark theme choice is
-          saved in your browser&apos;s local storage. We do not use advertising or tracking cookies.
+          We use a cookie only to keep your identity signed in. Your light or dark theme choice, and
+          what content you choose to have hidden, are saved in your browser&apos;s local storage. We
+          do not use advertising or tracking cookies.
         </p>
       </LegalSection>
 

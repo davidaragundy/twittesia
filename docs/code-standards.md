@@ -47,7 +47,7 @@ who depends on it. _Review._
 a folder is created when its first file is, never upfront.
 
 `auth`, `settings`, `profiles`, `posts`, `comments`, `media`, `landing`,
-`explore`, `chat`
+`explore`, `chat`, `moderation`
 
 `landing` owns how Twittesia presents itself to people who have not started yet:
 the landing page's copy, highlights and structured data.
@@ -64,6 +64,12 @@ offers it, knocking and being let in, and the conversation itself. It imports
 uploads, confirming they arrived, showing them, and deleting them
 once nothing is left for them to belong to. Posts, comments and settings import
 it; it imports none of them, nor `auth`.
+
+`moderation` owns sparing readers what they would rather not see: the
+categories content can be flagged for, screening text with TypeSafe when it is
+written, the flags stored with it, hiding flagged content behind its reasons,
+and each reader's preferences. Posts, comments and settings import it; it
+imports none of them.
 
 Adding a name is a decision worth making deliberately, because it asserts that a
 new area of the domain exists. _Review._

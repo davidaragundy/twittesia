@@ -128,6 +128,20 @@ rather than from anything kept, so it says nothing about where they were a
 moment ago.
 _Avoid_: status, online, last seen
 
+### Moderation
+
+**Flag**:
+A category a post's or comment's text falls in, as judged automatically when it
+is written: hate speech, harassment, violence, self-harm, sexual content,
+dangerous activities, or spam and scams. A flag hides the content from readers
+behind its reasons until they choose to see it; it never removes it.
+_Avoid_: report, strike, violation, takedown
+
+**Muted word**:
+A word or phrase a reader chose not to see. Content containing it is hidden from
+that reader the way flagged content is, and from nobody else.
+_Avoid_: blocked word, banned word, filter
+
 ### Time
 
 **Lifespan**:

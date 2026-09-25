@@ -1,4 +1,5 @@
 import type { Media } from "@/features/media/types/media";
+import type { ModerationFlags } from "@/features/moderation/types/moderation-flags";
 import type { Reaction } from "@/features/posts/types/reaction";
 
 // What the browser gets of a comment
@@ -19,6 +20,8 @@ export type PostComment = {
   media: Media[];
   // Users other than the author who saw it
   viewCount: number;
+  // How likely its text is to fall in each moderation category, or null if it was never screened
+  moderation: ModerationFlags | null;
   // Shown the moment it is written, before the server has it; there is nothing to do to it yet
   isPending?: boolean;
 };
