@@ -15,6 +15,7 @@ import { DELETE_COMMENT_DIALOG_COPY } from "@/features/comments/constants/delete
 import { useCommentItem } from "@/features/comments/hooks/use-comment-item";
 import type { PostComment } from "@/features/comments/types/post-comment";
 import { MediaGallery } from "@/features/media/components/media-gallery";
+import { ModeratedContent } from "@/features/moderation/components/moderated-content";
 import { VIEW_COUNT_FORMAT } from "@/features/posts/constants/view-count-format";
 import { formatViewCount } from "@/features/posts/utils/format-view-count";
 
@@ -63,13 +64,22 @@ export const CommentItem = ({ comment }: Props) => {
         )}
       </header>
 
-      {comment.content && (
-        <p className="text-base leading-relaxed break-words whitespace-pre-wrap">
-          {comment.content}
-        </p>
-      )}
+      <ModeratedContent
+        flags={comment.moderation}
+        text={comment.content}
+        isMine={comment.isMine}
+        subject="comment"
+      >
+        <div className="flex flex-col gap-3">
+          {comment.content && (
+            <p className="text-base leading-relaxed break-words whitespace-pre-wrap">
+              {comment.content}
+            </p>
+          )}
 
-      <MediaGallery media={comment.media} />
+          <MediaGallery media={comment.media} />
+        </div>
+      </ModeratedContent>
 
       <CommentReactions comment={comment} />
 

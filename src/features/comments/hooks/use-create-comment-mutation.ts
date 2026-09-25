@@ -53,6 +53,8 @@ export const useCreateCommentMutation = ({ postId, form, author, onPublished }: 
         reactions: [],
         media: [],
         viewCount: 0,
+        // Screened by the server, and only known once it has answered
+        moderation: null,
       };
 
       queryClient.setQueriesData<CommentsData>({ queryKey }, (comments) =>

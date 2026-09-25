@@ -53,6 +53,8 @@ export const useCreatePostMutation = ({ form, user, onPublished }: Props) => {
         media: [],
         viewCount: 0,
         commentCount: 0,
+        // Screened by the server, and only known once it has answered
+        moderation: null,
       };
 
       queryClient.setQueriesData<FeedData>({ queryKey: FEED_QUERY_KEY }, (feed) =>

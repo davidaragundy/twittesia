@@ -24,6 +24,7 @@ import { confirmMediaUploads } from "@/features/media/utils/confirm-media-upload
 import { toMedia } from "@/features/media/utils/to-media";
 import { toMediaFields } from "@/features/media/utils/to-media-fields";
 import { toUploadKey } from "@/features/media/utils/to-upload-key";
+import { screenText } from "@/features/moderation/utils/screen-text";
 import { RANK_SCORE_WEIGHT } from "@/features/posts/constants/rank-score-weight";
 import { getContentIndex } from "@/features/posts/utils/get-content-index";
 import { toPostKey } from "@/features/posts/utils/to-post-key";
@@ -72,10 +73,11 @@ export const createComment = async (
 
   const { user } = session;
 
-  const { data: confirmed, error: mediaError } = await confirmMediaUploads({
-    uploads: input.data.media,
-    userId: user.id,
-  });
+  // The text is screened while the files are checked, so moderation adds little to the wait
+  const [{ data: confirmed, error: mediaError }, moderation] = await Promise.all([
+    confirmMediaUploads({ uploads: input.data.media, userId: user.id }),
+    screenText({ text: input.data.content }),
+  ]);
 
   if (mediaError) return { data: null, error: mediaError };
 
@@ -113,6 +115,8 @@ export const createComment = async (
           viewCount: "0",
           createdAt: String(createdAt),
           rank: String(toRank({ score: 0, createdAt })),
+          // Never screened is left out rather than stored as nothing
+          ...(moderation && { moderation: JSON.stringify(moderation) }),
         }).flat(),
       ],
     ),
@@ -144,6 +148,7 @@ export const createComment = async (
       reactions: [],
       media: confirmed.map((item) => toMedia({ confirmed: item })),
       viewCount: 0,
+      moderation,
     },
     error: null,
   };

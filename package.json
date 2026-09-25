@@ -23,6 +23,7 @@
     "@next/env": "^16.3.5",
     "@shadcn/react": "^0.3.1",
     "@tanstack/react-query": "^5.103.1",
+    "@typesafe-ai/sdk": "^0.6.0",
     "@upstash/blob": "^0.0.5",
     "@upstash/ratelimit": "^2.1.0",
     "@upstash/realtime": "^1.1.0",

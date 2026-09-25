@@ -20,7 +20,9 @@ Requirements:
 Copy the environment template and fill in each value from the
 [Upstash Console](https://console.upstash.com): the `UPSTASH_REDIS_` variables
 from the project's Redis database, and `UPSTASH_BLOB_TOKEN` from its public Blob
-bucket. `CRON_SECRET` is any long random string:
+bucket. `CRON_SECRET` is any long random string. `TYPESAFEAI_API_KEY` comes from
+[TypeSafe](https://typesafe.ai) and screens new posts and comments for moderation;
+without it everything is published unflagged:
 
 ```bash
 cp .env.example .env.local

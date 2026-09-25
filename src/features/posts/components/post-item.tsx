@@ -13,6 +13,7 @@ import { ViewCount } from "@/shared/components/view-count";
 import { cn } from "@/shared/utils/cn";
 
 import { MediaGallery } from "@/features/media/components/media-gallery";
+import { ModeratedContent } from "@/features/moderation/components/moderated-content";
 import { PostClock } from "@/features/posts/components/post-clock";
 import { PostReactionPicker } from "@/features/posts/components/post-reaction-picker";
 import { PostReactions } from "@/features/posts/components/post-reactions";
@@ -98,11 +99,24 @@ export const PostItem = ({ post, position, total, onDeleted }: Props) => {
         )}
       </header>
 
-      {post.content && (
-        <p className="text-base leading-relaxed break-words whitespace-pre-wrap">{post.content}</p>
-      )}
+      {/* The words and what is attached to them are hidden together; who wrote it, when, and how
+          people reacted stay in view */}
+      <ModeratedContent
+        flags={post.moderation}
+        text={post.content}
+        isMine={post.isMine}
+        subject="post"
+      >
+        <div className="flex flex-col gap-4">
+          {post.content && (
+            <p className="text-base leading-relaxed break-words whitespace-pre-wrap">
+              {post.content}
+            </p>
+          )}
 
-      <MediaGallery media={post.media} />
+          <MediaGallery media={post.media} />
+        </div>
+      </ModeratedContent>
 
       <PostReactions post={post} disabled={post.isPending} />
 

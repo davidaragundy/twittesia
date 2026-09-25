@@ -17,6 +17,7 @@ import { confirmMediaUploads } from "@/features/media/utils/confirm-media-upload
 import { toMedia } from "@/features/media/utils/to-media";
 import { toMediaFields } from "@/features/media/utils/to-media-fields";
 import { toUploadKey } from "@/features/media/utils/to-upload-key";
+import { screenText } from "@/features/moderation/utils/screen-text";
 import { LIFESPAN_HOURS } from "@/features/posts/constants/lifespan-hours";
 import { createPostRateLimits } from "@/features/posts/lib/create-post-rate-limits";
 import { createPostSchema } from "@/features/posts/schemas/create-post-schema";
@@ -75,10 +76,11 @@ export const createPost = async (
 
   // Files never pass through here: the browser has already sent them to Blob, and only their
   // paths arrive, checked against the store before anything is saved
-  const { data: confirmed, error: mediaError } = await confirmMediaUploads({
-    uploads: input.data.media,
-    userId: user.id,
-  });
+  // The text is screened while the files are checked, so moderation adds little to the wait
+  const [{ data: confirmed, error: mediaError }, moderation] = await Promise.all([
+    confirmMediaUploads({ uploads: input.data.media, userId: user.id }),
+    screenText({ text: input.data.content }),
+  ]);
 
   if (mediaError) return { data: null, error: mediaError };
 
@@ -105,6 +107,8 @@ export const createPost = async (
       createdAt: String(createdAt),
       expiresAt: String(expiresAt),
       rank: String(toRank({ score: 0, createdAt })),
+      // Never screened is left out rather than stored as nothing
+      ...(moderation && { moderation: JSON.stringify(moderation) }),
     })
     .expireat(key, expiresAtSeconds)
     .expireat(toIdentityKey({ id: user.id }), expiresAtSeconds, "GT")
@@ -143,6 +147,7 @@ export const createPost = async (
       media: confirmed.map((item) => toMedia({ confirmed: item })),
       viewCount: 0,
       commentCount: 0,
+      moderation,
     },
     error: null,
   };

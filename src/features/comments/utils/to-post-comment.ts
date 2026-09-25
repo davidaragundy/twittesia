@@ -1,5 +1,6 @@
 import type { PostComment } from "@/features/comments/types/post-comment";
 import type { Media } from "@/features/media/types/media";
+import { toModerationFlags } from "@/features/moderation/utils/to-moderation-flags";
 import type { Reaction } from "@/features/posts/types/reaction";
 
 interface Props {
@@ -32,5 +33,6 @@ export const toPostComment = ({ hash, viewerId, mine = [] }: Props): PostComment
     ),
     media: JSON.parse(hash.media || "[]") as Media[],
     viewCount: Number(hash.viewCount ?? 0),
+    moderation: toModerationFlags({ value: hash.moderation }),
   };
 };
